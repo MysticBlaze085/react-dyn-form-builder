@@ -51,7 +51,7 @@ const InputFields = (props) => {
             console.log('text', props.label)
             return (
                 <div>
-                    <TextField id="filled-basic" label={props.label} variant="filled" />
+                    <TextField key={0 + 1} label="label" variant="filled" />
                 </div>
             );
         }

@@ -16,7 +16,7 @@ class DynamicFormBuilder extends React.Component {
       return (
             <div>
               <h2>Form Builder Testing</h2>
-                <FieldGroup 
+                <FieldGroup.Provider
                   control={this.props.payload}
                   render={({pristine, value}) => (
                     <form onSubmit={() => this.handleSubmit}>
