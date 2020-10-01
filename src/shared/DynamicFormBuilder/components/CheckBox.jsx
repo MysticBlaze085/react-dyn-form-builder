@@ -4,7 +4,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const CheckBox = ({ handler }) => {
-  console.log('handler', handler)
   return(
   <div>
    <FormGroup row>

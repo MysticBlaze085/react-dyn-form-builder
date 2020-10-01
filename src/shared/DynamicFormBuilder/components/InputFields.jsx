@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import DynamicFormOptionItemsBuilder from '../helpers/DynamicFormOptionItemsBuilder';
 
 const InputFields = (props) => {
-    const { type } = props;
+    const { type} = props;
 
     switch (type) {
         case 'Textarea': {
@@ -48,10 +48,10 @@ const InputFields = (props) => {
             );
         }
         default: {
-            console.log('text', props.label)
+            console.log('FIELD_INPUT_PROPS::', props)
             return (
                 <div>
-                    <TextField key={0 + 1} label="label" variant="filled" />
+                    <TextField id="filled-basic" variant="filled" />
                 </div>
             );
         }

@@ -12,11 +12,10 @@ class DynamicFormBuilder extends React.Component {
   buttonConfig = this.formConfig.filter(i => i.type === 'Button');
 
    render() {
-     console.log(this.formConfig)
       return (
             <div>
               <h2>Form Builder Testing</h2>
-                <FieldGroup.Provider
+                <FieldGroup
                   control={this.props.payload}
                   render={({pristine, value}) => (
                     <form onSubmit={() => this.handleSubmit}>

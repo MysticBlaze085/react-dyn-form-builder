@@ -6,7 +6,6 @@ const FormButtons = (props) => {
   const classesConfig = classes();
   const disabledExists = disabled ? disabled : false;
   const buttonTextExists = buttonText ? buttonText : 'Submit';
-  console.log(props)
 
   return (
     <Button

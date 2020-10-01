@@ -4,7 +4,7 @@ import { FormButtons } from '../components';
 const FormButtonsBuilder = (props) => {
   const { buttonstyles } = props;
   return (
-    <FormButtons key={0+1} classes={buttonstyles} {...props}/>
+    <FormButtons key={[props].length} classes={buttonstyles} {...props}/>
   )
 }
 
