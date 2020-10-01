@@ -4,7 +4,8 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 
-const DynamicFormOptionItemsBuilder = ({handler, name, type, options}) => {
+const DynamicFormOptionItemsBuilder = (props) => {
+  const {handler, name, type, options} = props;
   switch(type) {
     case 'RadioButtons': {
       const mapRadioInputs = options.map(i => {
