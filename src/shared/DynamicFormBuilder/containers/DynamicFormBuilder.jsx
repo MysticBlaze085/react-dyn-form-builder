@@ -21,7 +21,7 @@ class DynamicFormBuilder extends React.Component {
                     <form onSubmit={() => this.handleSubmit}>
                       <InputFields {...this.formConfig} />
                       {
-                        this.buttonConfig.map(i => <FormButtonsBuilder classes={i.classes} buttonText={i.buttonText} {...i} />)
+                        this.buttonConfig.map((i, index) => <FormButtonsBuilder key={index} classes={i.classes} buttonText={i.buttonText} {...i} />)
                       }
                       <div>
                         <h3>Values</h3>
