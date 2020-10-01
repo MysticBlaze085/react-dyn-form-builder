@@ -1,26 +1,31 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import DynamicFormBuilder from './shared/DynamicFormBuilder/containers/DynamicFormBuilder';
+import formConfig from './form.config';
+import {
+  FormBuilder,
+} from "react-reactive-form";
+
+class App extends React.Component {
+  buildPayload = (payload) => FormBuilder.group(payload.reduce((acc, post) => {
+    let { name, value } = post;
+    return { ...acc, [name]: value }
+  }, {}));
+
+  render() {
+    const buildPayload = this.buildPayload(formConfig());
+    const passPayloadToConfig = formConfig(buildPayload);
+
+    return (
+      <div className="container h-100 w-100 mt-5">
+        <div className="d-flex flex-column justify-content-center">
+          <DynamicFormBuilder formValue={passPayloadToConfig} payload={buildPayload} />
+        </div>
+      </div>
+
+    );
+  }
 }
 
 export default App;
