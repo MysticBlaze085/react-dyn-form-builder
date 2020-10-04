@@ -1,64 +1,81 @@
-import {FormButtonsStyles, FormInputFieldStyles} from './assets/FormBuilderStyles';
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import { FieldRenderer } from './shared/FormInputBuilder/helpers';
 
-const formConfig = (payload) => {
-  return [
-  {
-    name: 'first_name',
-    type: 'Input',
-    label: 'First Name',
-    placeholder: 'Enter first name',
-    value: 'Mel',
-  },
-  {
-    name: 'last_name',
-    type: 'Input',
-    label: 'Last Name',
-    placeholder: 'Enter last name',
-    value: '',
-  },
-  {
-    name: 'gender',
-    type: 'RadioButton',
-    label: 'Gender',
-    value: 'Male',
-    options: ['Male', 'Female', 'Other'],
-  },
-  {
-    name: 'nationality',
-    type: 'Selector',
-    label: 'Nationality',
-    value: '',
-    options: ['US', 'UK', 'India', 'China'],
-  },
-  {
-    name: 'notes',
-    type: 'Textarea',
-    placeholder: 'Empty',
-    label: 'Notes',
-    classes: FormInputFieldStyles,
-    value: '',
-  },
-  {
-    name: 'terms',
-    type: 'CheckBox',
-    label: 'I agree to the terms and condition.',
-    value: false,
-  },
-  {
-    type: 'Button',
-    buttonText: 'Submit',
-    classes: FormButtonsStyles,
-    isdisabled: `true`,
-    onClickAction: (e) => { e.preventDefault();
-    alert(`You submitted \n ${JSON.stringify(payload.value, null, 2)}`); }
-  },
-  {
-    type: 'Button',
-    buttonText: 'Reset',
-    classes: FormButtonsStyles,
-    isdisabled: `false`,
-    onClickAction: () => { payload.reset(); }
-  }
-]};
+const buttStyles = makeStyles({
+    root: {
+        background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+        borderRadius: 3,
+        border: 0,
+        color: 'white',
+        height: 48,
+        padding: '0 30px',
+        marginRight: '5px',
+        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+        '&$disabled': {
+            background: 'rgba(0, 0, 0, 0.12)',
+            color: 'white',
+            boxShadow: 'none',
+        },
+    },
+    label: {
+        textTransform: 'capitalize',
+    },
+    disabled: {},
+});
 
-export default formConfig;
+const fieldConfig = {
+    // Creates a FormGroup
+    controls: {
+        // Creates a control named first_name
+        first_name: {
+            render: FieldRenderer('TextInput'),
+            meta: {
+                label: 'First Name',
+                placeholder: 'Enter first name',
+            },
+        },
+        last_name: {
+            render: FieldRenderer('TextInput'),
+            meta: {
+                label: 'Last Name',
+                placeholder: 'Enter last name',
+            },
+        },
+        gender: {
+            formState: 'male',
+            render: FieldRenderer('Radio'),
+        },
+        nationality: {
+            render: FieldRenderer('SelectBox'),
+        },
+        notes: {
+            render: FieldRenderer('Textarea'),
+        },
+        terms: {
+            formState: false,
+            render: FieldRenderer('Checkbox'),
+        },
+        // Inject a component
+        $field_0: {
+            // Set isStatic false to subscribe to the form ( state ) changes
+            isStatic: false,
+            render: ({ pristine, meta: { handleSubmit, handleReset } }) => (
+                <div>
+                    <button disabled={pristine} onClick={handleSubmit}>
+                        Submit
+                    </button>
+                    <button type="button" onClick={handleReset}>
+                        Reset
+                    </button>
+                </div>
+            ),
+        },
+        $field_1: {
+            isStatic: false,
+            render: FieldRenderer('Value'),
+        },
+    },
+};
+
+export default fieldConfig;

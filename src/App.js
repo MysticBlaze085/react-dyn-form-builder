@@ -1,31 +1,33 @@
 import React from 'react';
 import './App.css';
-
-import DynamicFormBuilder from './shared/DynamicFormBuilder/containers/DynamicFormBuilder';
-import formConfig from './form.config';
-import {
-  FormBuilder,
-} from "react-reactive-form";
-
+import fieldConfig from './form.config';
+import { FormGenerator } from 'react-reactive-form';
 class App extends React.Component {
-  buildPayload = (payload) => FormBuilder.group(payload.reduce((acc, post) => {
-    let { name, value } = post;
-    return { ...acc, [name]: value }
-  }, {}));
+    handleSubmit = (e) => {
+        e.preventDefault();
+        alert(`You submitted \n ${JSON.stringify(this.myForm.value, null, 2)}`);
+    };
+    handleReset = () => {
+        this.myForm.reset();
+    };
 
-  render() {
-    const buildPayload = this.buildPayload(formConfig());
-    const passPayloadToConfig = formConfig(buildPayload);
+    setForm = (form) => {
+        this.genForm = form;
+        this.genFormData = {
+            handleSubmit: this.handleSubmit,
+            handleReset: this.handleReset,
+        };
+    };
 
-    return (
-      <div className="container h-100 w-100 mt-5">
-        <div className="d-flex flex-column justify-content-center">
-          <DynamicFormBuilder formValue={passPayloadToConfig} payload={buildPayload} />
-        </div>
-      </div>
-
-    );
-  }
+    render() {
+        return (
+            <div className="container h-100 w-100 mt-5">
+                <div className="d-flex flex-column justify-content-center">
+                    <FormGenerator onMount={this.setForm} fieldConfig={fieldConfig} />
+                </div>
+            </div>
+        );
+    }
 }
 
 export default App;
