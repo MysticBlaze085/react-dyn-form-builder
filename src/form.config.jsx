@@ -1,5 +1,5 @@
 import React from 'react';
-import { FieldRenderer } from './shared/FormInputBuilder/helpers';
+import FieldRenderer from './shared/FormInputBuilder/containers/FieldRenderer';
 
 const fieldConfig = {
     // Creates a FormGroup
