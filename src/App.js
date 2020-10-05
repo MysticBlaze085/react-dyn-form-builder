@@ -16,8 +16,15 @@ class App extends React.Component {
         this.genForm.meta = {
             handleSubmit: this.handleSubmit,
             handleReset: this.handleReset,
+            onChange: this.onChange,
         };
     };
+
+    componentDidMount() {
+        this.genForm
+            .get('first_name')
+            .onValueChanges.subscribe((res) => this.genForm.patchValue({ full_name: `${res} -` }));
+    }
 
     render() {
         return (

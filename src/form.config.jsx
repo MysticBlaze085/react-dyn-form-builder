@@ -25,6 +25,16 @@ const fieldConfig = {
                 validators: Validators.required,
             },
         },
+        full_name: {
+            render: FieldRenderer('TextInput'),
+            meta: {
+                label: 'Full Name',
+                placeholder: 'Enter Full Name',
+            },
+            options: {
+                validators: Validators.required,
+            },
+        },
         gender: {
             formState: 'other',
             render: FieldRenderer('RadioGroup'),
@@ -69,7 +79,7 @@ const fieldConfig = {
         $field_0: {
             // Set isStatic false to subscribe to the form ( state ) changes
             isStatic: false,
-            render: ({ invalid, meta: { handleSubmit, handleReset } }) => {
+            render: ({ invalid, meta: { handleSubmit, handleReset, onChanges }, ...other }) => {
                 return (
                     <div>
                         <Button

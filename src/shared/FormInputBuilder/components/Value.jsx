@@ -1,6 +1,7 @@
 import * as React from 'react';
 
-export default ({ value }) => {
+export default (props) => {
+    const { value } = props;
     return (
         <div style={styles.main}>
             <h3 style={{ color: '#389926' }}>Values</h3>
