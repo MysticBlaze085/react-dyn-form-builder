@@ -75,11 +75,10 @@ const fieldConfig = {
                 items: [{ key: 'terms', value: 'I agree to the terms and condition.' }],
             },
         },
-        // Inject a component
         $field_0: {
             // Set isStatic false to subscribe to the form ( state ) changes
             isStatic: false,
-            render: ({ invalid, meta: { handleSubmit, handleReset, onChanges }, ...other }) => {
+            render: ({ invalid, meta: { handleSubmit, handleReset, onChanges } }) => {
                 return (
                     <div>
                         <Button
