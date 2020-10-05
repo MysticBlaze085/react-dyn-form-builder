@@ -13,7 +13,7 @@ const Checkboxs = ({ handler, meta: { label, items } }) => {
         />
     ));
     return (
-        <div>
+        <div style={{ width: '100%' }}>
             <FormLabel component="legend">{label}</FormLabel>
             <FormGroup>{availableItems}</FormGroup>
         </div>

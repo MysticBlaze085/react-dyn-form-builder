@@ -22,7 +22,7 @@ class ExampleFeature extends React.Component {
     componentDidMount() {
         this.genForm
             .get('first_name')
-            .onValueChanges.subscribe((value) => this.genForm.patchValue({ full_name: `${value} - ` }));
+            .onBlurChanges.subscribe((value) => (value ? this.genForm.patchValue({ full_name: `${value} - ` }) : ''));
         this.genForm.valueChanges.subscribe((value) => {
             if (!value.terms && this.genForm.status === 'VALID') {
                 this.genForm.status = 'INVALID';
@@ -37,8 +37,8 @@ class ExampleFeature extends React.Component {
     render() {
         return (
             <div className="container h-100 w-100 mt-5">
-                <div className="d-flex flex-column justify-content-center">
-                    <FormGenerator onMount={this.setForm} fieldConfig={formInputConfig} />
+                <div className="row">
+                    <FormGenerator className="col-12" onMount={this.setForm} fieldConfig={formInputConfig} />
                 </div>
             </div>
         );

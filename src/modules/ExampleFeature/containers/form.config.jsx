@@ -12,6 +12,7 @@ const formInputConfig = {
             meta: {
                 label: 'First Name',
                 placeholder: 'Enter first name',
+                classes: 'col-6 pr-2',
             },
             options: {
                 validators: Validators.required,
@@ -22,6 +23,7 @@ const formInputConfig = {
             meta: {
                 label: 'Last Name',
                 placeholder: 'Enter last name',
+                classes: 'col-6',
             },
             options: {
                 validators: Validators.required,
@@ -32,6 +34,7 @@ const formInputConfig = {
             meta: {
                 label: 'Full Name',
                 placeholder: 'Enter Full Name',
+                classes: 'col-12 pb-5',
             },
             options: {
                 validators: Validators.required,
@@ -47,6 +50,7 @@ const formInputConfig = {
                     { key: 'female', value: 'Female' },
                     { key: 'other', value: 'other' },
                 ],
+                classes: 'col-6',
             },
             options: {
                 validators: Validators.required,
@@ -62,6 +66,7 @@ const formInputConfig = {
                     { key: 'india', value: 'India' },
                     { key: 'china', value: 'China' },
                 ],
+                classes: 'col-6 pr-2',
             },
         },
         notes: {
@@ -75,6 +80,7 @@ const formInputConfig = {
             render: FieldRenderer('Checkbox'),
             meta: {
                 items: [{ key: 'terms', value: 'I agree to the terms and condition.' }],
+                classes: 'col-6',
             },
             options: {
                 validators: Validators.required,
