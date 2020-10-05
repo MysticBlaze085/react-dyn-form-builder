@@ -1,13 +1,9 @@
 import React from 'react';
+import TextField from '@material-ui/core/TextField';
 
-const TextArea = ({ handler }) => (
+const TextArea = ({ handler, meta: { label } }) => (
     <div>
-        <div>
-            <label>Notes:</label>
-        </div>
-        <div>
-            <textarea {...handler()} />
-        </div>
+        <TextField style={{ width: '100%' }} label={label} multiline {...handler()} />
     </div>
 );
 

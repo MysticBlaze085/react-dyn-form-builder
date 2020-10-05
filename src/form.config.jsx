@@ -1,10 +1,9 @@
 import React from 'react';
 import FieldRenderer from './shared/FormInputBuilder/containers/FieldRenderer';
+import Button from '@material-ui/core/Button';
 
 const fieldConfig = {
-    // Creates a FormGroup
     controls: {
-        // Creates a control named first_name
         first_name: {
             render: FieldRenderer('TextInput'),
             meta: {
@@ -20,18 +19,41 @@ const fieldConfig = {
             },
         },
         gender: {
-            formState: 'male',
-            render: FieldRenderer('Radio'),
+            formState: 'other',
+            render: FieldRenderer('RadioGroup'),
+            meta: {
+                label: 'Gender',
+                options: [
+                    { key: 'male', value: 'Male' },
+                    { key: 'female', value: 'Female' },
+                    { key: 'other', value: 'other' },
+                ],
+            },
         },
         nationality: {
             render: FieldRenderer('SelectBox'),
+            meta: {
+                label: 'State',
+                options: [
+                    { key: 'us', value: 'US' },
+                    { key: 'uk', value: 'UK' },
+                    { key: 'india', value: 'India' },
+                    { key: 'china', value: 'China' },
+                ],
+            },
         },
         notes: {
             render: FieldRenderer('Textarea'),
+            meta: {
+                label: 'Notes',
+            },
         },
         terms: {
             formState: false,
             render: FieldRenderer('Checkbox'),
+            meta: {
+                options: [{ key: 'terms', value: 'I agree to the terms and condition.' }],
+            },
         },
         // Inject a component
         $field_0: {
@@ -39,12 +61,18 @@ const fieldConfig = {
             isStatic: false,
             render: ({ pristine, meta: { handleSubmit, handleReset } }) => (
                 <div>
-                    <button disabled={pristine} onClick={handleSubmit}>
+                    <Button
+                        style={{ marginRight: '5px' }}
+                        color="primary"
+                        variant="contained"
+                        disabled={pristine}
+                        onClick={handleSubmit}
+                    >
                         Submit
-                    </button>
-                    <button type="button" onClick={handleReset}>
+                    </Button>
+                    <Button variant="outlined" onClick={handleReset}>
                         Reset
-                    </button>
+                    </Button>
                 </div>
             ),
         },

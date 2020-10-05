@@ -1,17 +1,25 @@
 import React from 'react';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
-const SelectBox = ({ handler }) => (
-    <div>
-        <label>Nationality:</label>
-        <select {...handler()}>
-            <option value="" disabled>
-                Select
-            </option>
-            <option value="us">US</option>
-            <option value="uk">UK</option>
-            <option value="india">India</option>
-            <option value="china">China</option>
-        </select>
-    </div>
-);
+const SelectBox = ({ handler, meta: { label, options } }) => {
+    const availableOptions = options.map((option) => (
+        <MenuItem key={option.key} value={option.key}>
+            {option.value}
+        </MenuItem>
+    ));
+    return (
+        <FormControl>
+            <InputLabel>{label}</InputLabel>
+            <Select style={{ width: '100%' }} {...handler()}>
+                <MenuItem value="">
+                    <em>Select</em>
+                </MenuItem>
+                {availableOptions}
+            </Select>
+        </FormControl>
+    );
+};
 export default SelectBox;

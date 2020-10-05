@@ -5,15 +5,15 @@ import { FormGenerator } from 'react-reactive-form';
 class App extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
-        alert(`You submitted \n ${JSON.stringify(this.myForm.value, null, 2)}`);
+        alert(`You submitted \n ${JSON.stringify(this.genForm.value, null, 2)}`);
     };
     handleReset = () => {
-        this.myForm.reset();
+        this.genForm.reset();
     };
 
     setForm = (form) => {
         this.genForm = form;
-        this.genFormData = {
+        this.genForm.meta = {
             handleSubmit: this.handleSubmit,
             handleReset: this.handleReset,
         };

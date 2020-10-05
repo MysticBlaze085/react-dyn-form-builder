@@ -1,4 +1,4 @@
-import { TextInput, Checkbox, Radio, SelectBox, Textarea, Value } from '../components';
+import { TextInput, Checkbox, RadioButton, SelectBox, Textarea, Value } from '../components';
 
 const FieldRenderer = (type) => {
     switch (type) {
@@ -11,8 +11,8 @@ const FieldRenderer = (type) => {
         case 'TextInput': {
             return TextInput;
         }
-        case 'Radio': {
-            return Radio;
+        case 'RadioGroup': {
+            return RadioButton;
         }
         case 'SelectBox': {
             return SelectBox;
