@@ -23,6 +23,11 @@ class ExampleFeature extends React.Component {
         this.genForm
             .get('first_name')
             .onValueChanges.subscribe((res) => this.genForm.patchValue({ full_name: `${res} -` }));
+        this.genForm.valueChanges.subscribe((value) => {
+            if (!value.terms) {
+                this.genForm.status = 'INVALID';
+            }
+        });
     }
 
     render() {

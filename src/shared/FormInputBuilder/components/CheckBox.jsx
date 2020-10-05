@@ -8,7 +8,7 @@ const Checkboxs = ({ handler, meta: { label, items } }) => {
     const availableItems = items.map((Item) => (
         <FormControlLabel
             key={Item.key}
-            control={<Checkbox value={Item.key} label={Item.value} {...handler('checkbox', Item.key)} />}
+            control={<Checkbox value={Item.key} label={Item.value} {...handler('checkbox')} />}
             label={Item.value}
         />
     ));

@@ -74,6 +74,9 @@ const formInputConfig = {
             meta: {
                 items: [{ key: 'terms', value: 'I agree to the terms and condition.' }],
             },
+            options: {
+                validators: Validators.required,
+            },
         },
         $field_0: {
             // Set isStatic false to subscribe to the form ( state ) changes
