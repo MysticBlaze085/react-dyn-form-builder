@@ -1,5 +1,4 @@
 // Documentation for react-reactive-form https://github.com/bietkul/react-reactive-form
-
 import React from 'react';
 import FieldRenderer from '../../../shared/FormInputBuilder/containers/FieldRenderer';
 import Button from '@material-ui/core/Button';
