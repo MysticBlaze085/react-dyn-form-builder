@@ -4,10 +4,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
-const SelectBox = ({ handler, meta: { label, options } }) => {
-    const availableOptions = options.map((option) => (
-        <MenuItem key={option.key} value={option.key}>
-            {option.value}
+const SelectBox = ({ handler, meta: { label, items } }) => {
+    const availableItems = items.map((item) => (
+        <MenuItem key={item.key} value={item.key}>
+            {item.value}
         </MenuItem>
     ));
     return (
@@ -17,7 +17,7 @@ const SelectBox = ({ handler, meta: { label, options } }) => {
                 <MenuItem value="">
                     <em>Select</em>
                 </MenuItem>
-                {availableOptions}
+                {availableItems}
             </Select>
         </FormControl>
     );

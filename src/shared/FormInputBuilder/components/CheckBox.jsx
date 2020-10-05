@@ -4,18 +4,18 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
-const Checkboxs = ({ handler, meta: { label, options } }) => {
-    const availableOptions = options.map((option) => (
+const Checkboxs = ({ handler, meta: { label, items } }) => {
+    const availableItems = items.map((Item) => (
         <FormControlLabel
-            key={option.key}
-            control={<Checkbox value={option.key} label={option.value} {...handler('checkbox', option.key)} />}
-            label={option.value}
+            key={Item.key}
+            control={<Checkbox value={Item.key} label={Item.value} {...handler('checkbox', Item.key)} />}
+            label={Item.value}
         />
     ));
     return (
         <div>
             <FormLabel component="legend">{label}</FormLabel>
-            <FormGroup>{availableOptions}</FormGroup>
+            <FormGroup>{availableItems}</FormGroup>
         </div>
     );
 };

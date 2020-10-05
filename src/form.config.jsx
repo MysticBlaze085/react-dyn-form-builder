@@ -1,6 +1,7 @@
 import React from 'react';
 import FieldRenderer from './shared/FormInputBuilder/containers/FieldRenderer';
 import Button from '@material-ui/core/Button';
+import { Validators } from 'react-reactive-form';
 
 const fieldConfig = {
     controls: {
@@ -10,6 +11,9 @@ const fieldConfig = {
                 label: 'First Name',
                 placeholder: 'Enter first name',
             },
+            options: {
+                validators: Validators.required,
+            },
         },
         last_name: {
             render: FieldRenderer('TextInput'),
@@ -17,24 +21,30 @@ const fieldConfig = {
                 label: 'Last Name',
                 placeholder: 'Enter last name',
             },
+            options: {
+                validators: Validators.required,
+            },
         },
         gender: {
             formState: 'other',
             render: FieldRenderer('RadioGroup'),
             meta: {
                 label: 'Gender',
-                options: [
+                items: [
                     { key: 'male', value: 'Male' },
                     { key: 'female', value: 'Female' },
                     { key: 'other', value: 'other' },
                 ],
+            },
+            options: {
+                validators: Validators.required,
             },
         },
         nationality: {
             render: FieldRenderer('SelectBox'),
             meta: {
                 label: 'State',
-                options: [
+                items: [
                     { key: 'us', value: 'US' },
                     { key: 'uk', value: 'UK' },
                     { key: 'india', value: 'India' },
@@ -52,29 +62,31 @@ const fieldConfig = {
             formState: false,
             render: FieldRenderer('Checkbox'),
             meta: {
-                options: [{ key: 'terms', value: 'I agree to the terms and condition.' }],
+                items: [{ key: 'terms', value: 'I agree to the terms and condition.' }],
             },
         },
         // Inject a component
         $field_0: {
             // Set isStatic false to subscribe to the form ( state ) changes
             isStatic: false,
-            render: ({ pristine, meta: { handleSubmit, handleReset } }) => (
-                <div>
-                    <Button
-                        style={{ marginRight: '5px' }}
-                        color="primary"
-                        variant="contained"
-                        disabled={pristine}
-                        onClick={handleSubmit}
-                    >
-                        Submit
-                    </Button>
-                    <Button variant="outlined" onClick={handleReset}>
-                        Reset
-                    </Button>
-                </div>
-            ),
+            render: ({ invalid, meta: { handleSubmit, handleReset } }) => {
+                return (
+                    <div>
+                        <Button
+                            style={{ marginRight: '5px' }}
+                            color="primary"
+                            variant="contained"
+                            disabled={invalid}
+                            onClick={handleSubmit}
+                        >
+                            Submit
+                        </Button>
+                        <Button variant="outlined" onClick={handleReset}>
+                            Reset
+                        </Button>
+                    </div>
+                );
+            },
         },
         $field_1: {
             isStatic: false,
