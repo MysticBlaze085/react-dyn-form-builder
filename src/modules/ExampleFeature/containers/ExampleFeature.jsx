@@ -16,7 +16,6 @@ class ExampleFeature extends React.Component {
         this.genForm.meta = {
             handleSubmit: this.handleSubmit,
             handleReset: this.handleReset,
-            onChange: this.onChange,
         };
     };
 
