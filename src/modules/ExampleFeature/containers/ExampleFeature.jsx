@@ -28,9 +28,12 @@ class ExampleFeature extends React.Component {
                 this.genForm.status = 'INVALID';
             }
         });
+
+        console.log(this.genForm);
     }
 
     componentWillUnmount() {
+        this.genForm.get('first_name').unsubscribe();
         this.genForm.valueChanges.unsubscribe();
     }
 
