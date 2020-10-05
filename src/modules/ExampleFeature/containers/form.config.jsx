@@ -1,9 +1,9 @@
 import React from 'react';
-import FieldRenderer from './shared/FormInputBuilder/containers/FieldRenderer';
+import FieldRenderer from '../../../shared/FormInputBuilder/containers/FieldRenderer';
 import Button from '@material-ui/core/Button';
 import { Validators } from 'react-reactive-form';
 
-const fieldConfig = {
+const formInputConfig = {
     controls: {
         first_name: {
             render: FieldRenderer('TextInput'),
@@ -104,4 +104,4 @@ const fieldConfig = {
     },
 };
 
-export default fieldConfig;
+export default formInputConfig;
