@@ -28,8 +28,6 @@ class ExampleFeature extends React.Component {
                 this.genForm.status = 'INVALID';
             }
         });
-
-        console.log(this.genForm);
     }
 
     componentWillUnmount() {
