@@ -22,9 +22,9 @@ class ExampleFeature extends React.Component {
     componentDidMount() {
         this.genForm
             .get('first_name')
-            .onValueChanges.subscribe((value) => this.genForm.patchValue({ full_name: `${value} -` }));
+            .onValueChanges.subscribe((value) => this.genForm.patchValue({ full_name: `${value} - ` }));
         this.genForm.valueChanges.subscribe((value) => {
-            if (!value.terms) {
+            if (!value.terms && this.genForm.status === 'VALID') {
                 this.genForm.status = 'INVALID';
             }
         });
