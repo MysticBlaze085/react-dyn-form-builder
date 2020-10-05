@@ -81,7 +81,7 @@ const formInputConfig = {
         $field_0: {
             // Set isStatic false to subscribe to the form ( state ) changes
             isStatic: false,
-            render: ({ invalid, meta: { handleSubmit, handleReset, onChanges } }) => {
+            render: ({ invalid, meta: { handleSubmit, handleReset } }) => {
                 return (
                     <div>
                         <Button
