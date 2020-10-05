@@ -30,6 +30,10 @@ class ExampleFeature extends React.Component {
         });
     }
 
+    componentWillUnmount() {
+        this.genForm.valueChanges.unsubscribe();
+    }
+
     render() {
         return (
             <div className="container h-100 w-100 mt-5">
