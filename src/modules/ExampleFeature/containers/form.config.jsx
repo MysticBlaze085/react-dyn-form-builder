@@ -88,20 +88,24 @@ const formInputConfig = {
         $field_0: {
             // Set isStatic false to subscribe to the form ( state ) changes
             isStatic: false,
-            render: ({ invalid, meta: { handleSubmit, handleReset } }) => {
+            render: ({ invalid, status, meta: { handleSubmit, handleReset, handleEditMode } }) => {
+                const isValid = status !== 'VALID';
                 return (
                     <div>
                         <Button
                             style={{ marginRight: '5px' }}
                             color="primary"
                             variant="contained"
-                            disabled={invalid}
+                            disabled={isValid}
                             onClick={handleSubmit}
                         >
                             Submit
                         </Button>
-                        <Button variant="outlined" onClick={handleReset}>
+                        <Button style={{ marginRight: '5px' }} variant="outlined" onClick={handleReset}>
                             Reset
+                        </Button>
+                        <Button variant="outlined" onClick={handleEditMode}>
+                            Edit
                         </Button>
                     </div>
                 );

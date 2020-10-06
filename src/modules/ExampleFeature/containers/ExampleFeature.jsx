@@ -3,23 +3,7 @@ import formInputConfig from './form.config';
 import { FormGenerator } from 'react-reactive-form';
 
 class ExampleFeature extends React.Component {
-    handleSubmit = (e) => {
-        e.preventDefault();
-        alert(`You submitted \n ${JSON.stringify(this.genForm.value, null, 2)}`);
-    };
-    handleReset = () => {
-        this.genForm.reset();
-    };
-
-    setForm = (form) => {
-        this.genForm = form;
-        this.genForm.meta = {
-            handleSubmit: this.handleSubmit,
-            handleReset: this.handleReset,
-        };
-    };
-
-    componentDidMount() {
+    setInputNesting = () => {
         this.genForm
             .get('first_name')
             .onBlurChanges.subscribe((value) => (value ? this.genForm.patchValue({ full_name: `${value} - ` }) : ''));
@@ -28,6 +12,36 @@ class ExampleFeature extends React.Component {
                 this.genForm.status = 'INVALID';
             }
         });
+    };
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+        alert(`You submitted \n ${JSON.stringify(this.genForm.value, null, 2)}`);
+    };
+
+    handleReset = () => {
+        this.genForm.reset();
+    };
+
+    handleEditMode = () => {
+        this.genForm.status === 'DISABLED'
+            ? this.genForm.enable({ onlySelf: true })
+            : this.genForm.disable({ onlySelf: true });
+    };
+
+    setForm = (form) => {
+        this.genForm = form;
+        this.genForm.meta = {
+            handleSubmit: this.handleSubmit,
+            handleReset: this.handleReset,
+            handleEditMode: this.handleEditMode,
+        };
+    };
+
+    componentDidMount() {
+        console.log(this.genForm);
+        this.setInputNesting();
+        this.handleEditMode();
     }
 
     componentWillUnmount() {
