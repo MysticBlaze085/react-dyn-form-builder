@@ -39,7 +39,6 @@ class ExampleFeature extends React.Component {
     };
 
     componentDidMount() {
-        console.log(this.genForm);
         this.setInputNesting();
         this.handleEditMode();
     }
