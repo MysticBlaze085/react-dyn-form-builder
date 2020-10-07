@@ -1,58 +1,57 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import formInputConfig from './form.config';
 import { FormGenerator } from 'react-reactive-form';
 
-class ExampleFeature extends React.Component {
-    setInputNesting = () => {
-        this.genForm
+const ExampleFeature = () => {
+    let genForm;
+
+    const setInputNesting = () => {
+        genForm
             .get('first_name')
-            .onBlurChanges.subscribe((value) => (value ? this.genForm.patchValue({ full_name: `${value} - ` }) : ''));
-        this.genForm.valueChanges.subscribe((value) => {
-            if (!value.terms && this.genForm.status === 'VALID') {
-                this.genForm.status = 'INVALID';
+            .onBlurChanges.subscribe((value) => (value ? genForm.patchValue({ full_name: `${value} - ` }) : ''));
+        genForm.valueChanges.subscribe((value) => {
+            if (!value.terms && genForm.status === 'VALID') {
+                genForm.status = 'INVALID';
             }
         });
     };
 
-    handleSubmit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        alert(`You submitted \n ${JSON.stringify(this.genForm.value, null, 2)}`);
+        alert(`You submitted \n ${JSON.stringify(genForm.value, null, 2)}`);
     };
 
-    handleEditMode = () => {
-        this.genForm.status === 'DISABLED'
-            ? this.genForm.enable({ onlySelf: true })
-            : this.genForm.disable({ onlySelf: true });
-        this.genForm.reset();
+    const handleEditMode = () => {
+        genForm.status === 'DISABLED' ? genForm.enable({ onlySelf: true }) : genForm.disable({ onlySelf: true });
+        genForm.reset();
     };
 
-    setForm = (form) => {
-        this.genForm = form;
-        this.genForm.meta = {
-            handleSubmit: this.handleSubmit,
-            handleEditMode: this.handleEditMode,
+    const setForm = (form) => {
+        genForm = form;
+        genForm.meta = {
+            handleSubmit: handleSubmit,
+            handleEditMode: handleEditMode,
         };
     };
 
-    componentDidMount() {
-        this.setInputNesting();
-        this.handleEditMode();
-    }
+    const unSubscribe = () => {
+        genForm.valueChanges.unsubscribe();
+    };
 
-    componentWillUnmount() {
-        this.genForm.get('first_name').unsubscribe();
-        this.genForm.valueChanges.unsubscribe();
-    }
+    useEffect(() => {
+        setInputNesting();
+        handleEditMode();
 
-    render() {
-        return (
-            <div className="container h-100 w-100 mt-5">
-                <div className="row">
-                    <FormGenerator className="col-12" onMount={this.setForm} fieldConfig={formInputConfig} />
-                </div>
+        unSubscribe();
+    }, []);
+
+    return (
+        <div className="container h-100 w-100 mt-5">
+            <div className="row">
+                <FormGenerator className="col-12" onMount={setForm} fieldConfig={formInputConfig} />
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
 
 export default ExampleFeature;
