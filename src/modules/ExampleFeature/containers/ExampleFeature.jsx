@@ -19,21 +19,17 @@ class ExampleFeature extends React.Component {
         alert(`You submitted \n ${JSON.stringify(this.genForm.value, null, 2)}`);
     };
 
-    handleReset = () => {
-        this.genForm.reset();
-    };
-
     handleEditMode = () => {
         this.genForm.status === 'DISABLED'
             ? this.genForm.enable({ onlySelf: true })
             : this.genForm.disable({ onlySelf: true });
+        this.genForm.reset();
     };
 
     setForm = (form) => {
         this.genForm = form;
         this.genForm.meta = {
             handleSubmit: this.handleSubmit,
-            handleReset: this.handleReset,
             handleEditMode: this.handleEditMode,
         };
     };
