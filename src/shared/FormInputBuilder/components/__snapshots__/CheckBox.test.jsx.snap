@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CheckBox expect CheckBox to render 1`] = `
+<div
+  style={
+    Object {
+      "width": "100%",
+    }
+  }
+>
+  <WithStyles(ForwardRef(FormLabel))
+    component="legend"
+  >
+    Gender
+  </WithStyles(ForwardRef(FormLabel))>
+  <WithStyles(ForwardRef(FormGroup))>
+    <WithStyles(ForwardRef(FormControlLabel))
+      control={
+        <ForwardRef(WithStyles)
+          label="Male"
+          value="male"
+        />
+      }
+      key="male"
+      label="Male"
+    />
+    <WithStyles(ForwardRef(FormControlLabel))
+      control={
+        <ForwardRef(WithStyles)
+          label="Female"
+          value="female"
+        />
+      }
+      key="female"
+      label="Female"
+    />
+    <WithStyles(ForwardRef(FormControlLabel))
+      control={
+        <ForwardRef(WithStyles)
+          label="other"
+          value="other"
+        />
+      }
+      key="other"
+      label="other"
+    />
+  </WithStyles(ForwardRef(FormGroup))>
+</div>
+`;
