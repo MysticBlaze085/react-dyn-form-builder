@@ -17,6 +17,8 @@ const MOCK_DATA = {
     handler: () => {},
 };
 
-it('expect CheckBox to render', () => {
-    expect(shallow(<CheckBox {...MOCK_DATA} />)).toMatchSnapshot();
+describe('CheckBox', () => {
+    it('expect CheckBox to render', () => {
+        expect(shallow(<CheckBox {...MOCK_DATA} />)).toMatchSnapshot();
+    });
 });
