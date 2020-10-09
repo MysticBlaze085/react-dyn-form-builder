@@ -22,7 +22,7 @@ const formInputConfig = {
             meta: {
                 label: 'Last Name',
                 placeholder: 'Enter last name',
-                classes: 'col-6 nested-input',
+                classes: 'col-6',
             },
             options: {
                 validators: Validators.required,
@@ -33,7 +33,7 @@ const formInputConfig = {
             meta: {
                 label: 'Full Name',
                 placeholder: 'Enter Full Name',
-                classes: 'col-12 pb-5',
+                classes: 'col-12 pb-5 nested-input',
             },
             options: {
                 validators: Validators.required,
