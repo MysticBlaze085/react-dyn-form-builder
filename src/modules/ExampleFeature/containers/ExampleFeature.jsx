@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { FormGenerator } from 'react-reactive-form';
 import formInputConfig from './form.config';
 
 const ExampleFeature = () => {
     let genForm;
 
-    const setInputNesting = () => {
+    const setInputNesting = useCallback(() => {
         genForm
             .get('first_name')
             .onBlurChanges.subscribe((value) => (value ? genForm.patchValue({ full_name: `${value} - ` }) : ''));
@@ -14,7 +14,8 @@ const ExampleFeature = () => {
                 genForm.status = 'INVALID';
             }
         });
-    };
+        genForm.disable();
+    }, [genForm]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -39,16 +40,14 @@ const ExampleFeature = () => {
         };
     };
 
-    const unSubscribe = () => {
+    const unSubscribe = useCallback(() => {
         genForm.valueChanges.unsubscribe();
-    };
+    }, [genForm]);
 
     useEffect(() => {
         setInputNesting();
-        genForm.disable();
-
         unSubscribe();
-    }, []);
+    }, [setInputNesting, unSubscribe]);
 
     return (
         <div className="container h-100 w-100 mt-5">
