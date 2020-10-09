@@ -9,17 +9,20 @@ const ExampleFeature = () => {
         genForm
             .get('first_name')
             .onBlurChanges.subscribe((value) => (value ? genForm.patchValue({ full_name: `${value} - ` }) : ''));
-        genForm.valueChanges.subscribe((value) => {
-            if (!value.terms && genForm.status === 'VALID') {
-                genForm.status = 'INVALID';
-            }
-        });
+        // genForm.valueChanges.subscribe((value) => {
+        //     console.log(genForm.status);
+        //     if (genForm.status === 'VALID') {
+        //         console.log('value', value);
+        //         genForm.status = 'INVALID';
+        //     }
+        // });
         genForm.disable();
     }, [genForm]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         alert(`You submitted \n ${JSON.stringify(genForm.value, null, 2)}`);
+        console.log(genForm);
     };
 
     const handleEditMode = () => {
@@ -47,7 +50,7 @@ const ExampleFeature = () => {
     useEffect(() => {
         setInputNesting();
         unSubscribe();
-    }, [setInputNesting, unSubscribe]);
+    }, [unSubscribe]);
 
     return (
         <div className="container h-100 w-100 mt-5">

@@ -1,21 +1,26 @@
 import React from 'react';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormGroup from '@material-ui/core/FormGroup';
+import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
-const Checkboxs = ({ handler, meta: { label, items } }) => {
-    const availableItems = items.map((Item) => (
+const Checkboxs = ({ handler, hasError, meta: { label, items, classes } }) => {
+    const availableItems = items.map((item) => (
         <FormControlLabel
-            key={Item.key}
-            control={<Checkbox value={Item.key} label={Item.value} {...handler('checkbox')} />}
-            label={Item.value}
+            key={item.key}
+            control={<Checkbox value={item.key} label={item.value} {...handler('checkbox')} />}
+            label={item.value}
         />
     ));
     return (
         <div style={{ width: '100%' }}>
-            <FormLabel component="legend">{label}</FormLabel>
-            <FormGroup>{availableItems}</FormGroup>
+            <FormControl component="fieldset" className={classes}>
+                <FormLabel component="legend">{label}</FormLabel>
+                <FormGroup>{availableItems}</FormGroup>
+                {/* <FormHelperText>{isValid ? `${label} is required` : null}</FormHelperText> */}
+            </FormControl>
         </div>
     );
 };

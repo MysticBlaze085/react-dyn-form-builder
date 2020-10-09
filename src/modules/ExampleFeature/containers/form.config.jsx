@@ -81,21 +81,19 @@ const formInputConfig = {
                 items: [{ key: 'terms', value: 'I agree to the terms and condition.' }],
                 classes: 'col-6',
             },
-            options: {
-                validators: Validators.required,
-            },
+            validators: Validators.required,
         },
         $field_0: {
             isStatic: false,
-            render: ({ status, meta: { handleSubmit, handleEditMode, handleCancelMode } }) => {
-                const isValid = status !== 'VALID';
+            render: ({ status, value, meta: { handleSubmit, handleEditMode, handleCancelMode } }) => {
+                const isValid = status === 'VALID' && value.terms === true;
                 return (
                     <div>
                         <Button
                             style={{ marginRight: '5px' }}
                             color="primary"
                             variant="contained"
-                            disabled={isValid}
+                            disabled={!isValid}
                             onClick={handleSubmit}
                         >
                             Submit
