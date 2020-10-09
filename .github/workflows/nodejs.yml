@@ -24,3 +24,9 @@ jobs:
                   record: true
                   start: npm start
                   wait-on: http://localhost:3000
+            - name: Cache dependencies
+                  uses: actions/cache@v2
+                  with:
+                    path: |
+                      **/node_modules
+                    key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
