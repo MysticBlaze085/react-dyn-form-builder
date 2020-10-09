@@ -1,0 +1,21 @@
+name: Github Actions Example
+
+on: [push]
+
+jobs:
+    test:
+        name: Running End to End Testing - Cypress
+        runs-on: unbuntu-latest
+
+        steps:
+            - users: actions/checkout@v1
+            - name: Use Node.js ${{matrix.node-version}}
+              uses: actions/setup-node@v1
+              with:
+                  node-version: ${{matrix.node-version}}
+            - name: Install
+              run: npm install
+            - name: Start Application
+              run: npm start
+            - name: End to End Testing
+              run: npm run test:e2e
