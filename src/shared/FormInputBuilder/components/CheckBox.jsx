@@ -4,9 +4,8 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import FormHelperText from '@material-ui/core/FormHelperText';
 
-const Checkboxs = ({ handler, hasError, meta: { label, items, classes } }) => {
+const Checkboxs = ({ handler, meta: { label, items, classes } }) => {
     const availableItems = items.map((item) => (
         <FormControlLabel
             key={item.key}
@@ -19,7 +18,6 @@ const Checkboxs = ({ handler, hasError, meta: { label, items, classes } }) => {
             <FormControl component="fieldset" className={classes}>
                 <FormLabel component="legend">{label}</FormLabel>
                 <FormGroup>{availableItems}</FormGroup>
-                {/* <FormHelperText>{isValid ? `${label} is required` : null}</FormHelperText> */}
             </FormControl>
         </div>
     );

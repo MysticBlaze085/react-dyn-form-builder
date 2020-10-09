@@ -9,13 +9,6 @@ const ExampleFeature = () => {
         genForm
             .get('first_name')
             .onBlurChanges.subscribe((value) => (value ? genForm.patchValue({ full_name: `${value} - ` }) : ''));
-        // genForm.valueChanges.subscribe((value) => {
-        //     console.log(genForm.status);
-        //     if (genForm.status === 'VALID') {
-        //         console.log('value', value);
-        //         genForm.status = 'INVALID';
-        //     }
-        // });
         genForm.disable();
     }, [genForm]);
 
@@ -50,7 +43,7 @@ const ExampleFeature = () => {
     useEffect(() => {
         setInputNesting();
         unSubscribe();
-    }, [unSubscribe]);
+    }, [setInputNesting, unSubscribe]);
 
     return (
         <div className="container h-100 w-100 mt-5">
