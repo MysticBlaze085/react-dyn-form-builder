@@ -1,7 +1,6 @@
 name: Unit/Integration/E2E Test Run
 
-on:
-    push: [push]
+on: [push]
 
 jobs:
     build:
