@@ -1,21 +1,34 @@
-name: Github Actions Example
+name: Unit/Integration/E2E Test Run
 
-on: [push]
+on:
+    push:
+        branches: [master]
+    pull_request:
+        branches: [master]
 
 jobs:
-    test:
-        name: Running End to End Testing - Cypress
-        runs-on: unbuntu-latest
-
+    build:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [12.x]
         steps:
-            - uses: actions/checkout@v1
-            - name: Use Node.js ${{matrix.node-version}}
-              uses: actions/setup-node@v1
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v1
               with:
-                  node-version: ${{matrix.node-version}}
-            - name: Install
-              run: npm install
-            - name: Start Application
-              run: npm start
-            - name: End to End Testing
-              run: npm run test:e2e
+                  node-version: ${{ matrix.node-version }}
+            - run: yarn install
+            - run: yarn test:coverage
+            - name: Upload coverage to Codecov
+              uses: codecov/codecov-action@v1
+            - name: Cypress run
+              uses: cypress-io/github-action@v2
+              with:
+                  browser: chrome
+                  headless: true
+                  record: true
+                  start: npm start
+                  wait-on: http://localhost:3000
+              env:
+                  CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
