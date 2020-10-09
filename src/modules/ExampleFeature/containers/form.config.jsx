@@ -89,6 +89,7 @@ const formInputConfig = {
             isStatic: false,
             render: ({ status, meta: { handleSubmit, handleEditMode, handleCancelMode } }) => {
                 const isValid = status !== 'VALID';
+                console.log(status);
                 return (
                     <div>
                         <Button
