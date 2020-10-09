@@ -1,8 +1,8 @@
 // Documentation for react-reactive-form https://github.com/bietkul/react-reactive-form
 import React from 'react';
-import FieldRenderer from '../../../shared/FormInputBuilder/containers/FieldRenderer';
 import Button from '@material-ui/core/Button';
 import { Validators } from 'react-reactive-form';
+import FieldRenderer from '../../../shared/FormInputBuilder/containers/FieldRenderer';
 
 const formInputConfig = {
     controls: {
@@ -22,7 +22,7 @@ const formInputConfig = {
             meta: {
                 label: 'Last Name',
                 placeholder: 'Enter last name',
-                classes: 'col-6',
+                classes: 'col-6 nested-input',
             },
             options: {
                 validators: Validators.required,
@@ -86,9 +86,8 @@ const formInputConfig = {
             },
         },
         $field_0: {
-            // Set isStatic false to subscribe to the form ( state ) changes
             isStatic: false,
-            render: ({ status, meta: { handleSubmit, handleEditMode } }) => {
+            render: ({ status, meta: { handleSubmit, handleEditMode, handleCancelMode } }) => {
                 const isValid = status !== 'VALID';
                 return (
                     <div>
@@ -101,7 +100,7 @@ const formInputConfig = {
                         >
                             Submit
                         </Button>
-                        <Button variant="outlined" onClick={handleEditMode}>
+                        <Button variant="outlined" onClick={status === 'DISABLED' ? handleEditMode : handleCancelMode}>
                             {status === 'DISABLED' ? `Edit` : `Cancel`}
                         </Button>
                     </div>

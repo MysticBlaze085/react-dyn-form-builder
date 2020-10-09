@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import formInputConfig from './form.config';
 import { FormGenerator } from 'react-reactive-form';
+import formInputConfig from './form.config';
 
 const ExampleFeature = () => {
     let genForm;
@@ -22,7 +22,11 @@ const ExampleFeature = () => {
     };
 
     const handleEditMode = () => {
-        genForm.status === 'DISABLED' ? genForm.enable({ onlySelf: true }) : genForm.disable({ onlySelf: true });
+        genForm.enable({ onlySelf: true });
+    };
+
+    const handleOnCancelMode = () => {
+        genForm.disable({ onlySelf: true });
         genForm.reset();
     };
 
@@ -31,6 +35,7 @@ const ExampleFeature = () => {
         genForm.meta = {
             handleSubmit: handleSubmit,
             handleEditMode: handleEditMode,
+            handleCancelMode: handleOnCancelMode,
         };
     };
 
@@ -40,7 +45,7 @@ const ExampleFeature = () => {
 
     useEffect(() => {
         setInputNesting();
-        handleEditMode();
+        genForm.disable();
 
         unSubscribe();
     }, []);

@@ -1,7 +1,9 @@
 {
     "plugins": [
-      "cypress"
+      "cypress",
+      "react", "jsx-a11y", "import", "prettier"
     ],
+    "extends": ["plugin:prettier/recommended", "airbnb"],
     "rules": {
       "cypress/no-assigning-return-values": "error",
       "cypress/no-unnecessary-waiting": "error",
