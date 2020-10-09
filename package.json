@@ -6,8 +6,12 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject",
-        "test:e2e": "cypress open"
+        "test:coverage": "yarn test --watchAll=false --coverage",
+        "cy:run": "cypress run",
+        "cy:open": "cypress open",
+        "test:e2e": "start-server-and-test start http://localhost:3000 cy:open",
+        "test:e2e:run": "start-server-and-test start http://localhost:3000 cy:run",
+        "eject": "react-scripts eject"
     },
     "dependencies": {
         "@material-ui/core": "^4.11.0",
