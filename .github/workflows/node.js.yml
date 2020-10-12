@@ -12,6 +12,7 @@ jobs:
       - name: Run E2E tests
         uses: cypress-io/github-action@v1.16.1
         with:
+          run: "npm install"
           start: "npm start"
           wait-on: "http://localhost:3000"
           # let's see if the Test Runner handles url in the config
