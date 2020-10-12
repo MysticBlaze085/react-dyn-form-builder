@@ -7,10 +7,10 @@ jobs:
   cypress-run:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Setup
         uses: actions/checkout@v1
-      - name: Run E2E tests
-        uses: cypress-io/github-action@v1.16.1
       - run: npm install
       - run: npm start
+      - name: Run E2E tests
+        uses: cypress-io/github-action@v1.16.1
       - run: npm run cy:run
