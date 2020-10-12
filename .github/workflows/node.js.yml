@@ -5,27 +5,13 @@ on: [push]
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
-    # let's make sure our "app" works on several versions of Node
-    strategy:
-      matrix:
-        node: [10, 12]
-    name: E2E on Node v${{ matrix.node }}
+    
+    name: E2E
     steps:
       - name: Setup Node
         uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node }}
-      - run: node -v
+      - run: npm i
+      - run: npm start
 
-      - name: Checkout
-        uses: actions/checkout@v1
-
-      - name: Cypress run
-        uses: cypress-io/github-action@v2
-        with:
-          record: true
-          tag: node-${{ matrix.node }}
-        env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
+      - name: Cypress.io
+        uses: cypress-io/github-action@v1.16.1
