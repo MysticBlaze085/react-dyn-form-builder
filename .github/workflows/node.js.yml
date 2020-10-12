@@ -11,10 +11,6 @@ jobs:
         uses: actions/checkout@v1
       - name: Run E2E tests
         uses: cypress-io/github-action@v1.16.1
-        with:
-          run: "npm install"
-          start: "npm start"
-          wait-on: "http://localhost:3000"
-          # let's see if the Test Runner handles url in the config
-          # https://github.com/cypress-io/cypress/issues/5466
-          config: baseUrl=http://localhost:3000
+      - run: npm install
+      - run: npm start
+      - run: npm run test:e2e
