@@ -3,11 +3,7 @@
 
 name: Node.js CI
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+on: push
 
 jobs:
   buildApplication:
@@ -20,9 +16,12 @@ jobs:
       - run: npm install
       - run: npm build
       
-      - name: Cypress Run
-        uses: cypress-io/github-action@v2
-        with:
-          browser: chrome
-          headless: true
+      - name: Checkout
+        uses: actions/checkout@v1
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests with `quiet` parameter
+      - name: Cypress run
+        uses: ./
+          working-directory: examples/quiet
+          quiet: true
         
