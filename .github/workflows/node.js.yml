@@ -10,20 +10,19 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  buildApplication:
 
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [12.x]
-
+    
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install
-    - run: npm build
-    - run: npm run test:e2e
+      - name: Build
+        uses: actions/checkout@v2
+      - run: npm install
+      - run: npm build
+      
+      - name: Cypress Run
+        uses: cypress-io/github-action@v2
+        with:
+          browser: chrome
+          headless: true
+        
