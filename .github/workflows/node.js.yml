@@ -4,15 +4,15 @@
 name: End-to-end tests
 on: [push]
 jobs:
-  cypress-run:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Cypress Run
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        
-        with:
-          install: npm install
-          start: npm start
-          wait-on: http://localhost:3000
+    cypress-run:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Cypress Run
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v1
+
+              with:
+                  - run: npm install
+                  - run: npm start
+                  - wait-on: http://localhost:3000
