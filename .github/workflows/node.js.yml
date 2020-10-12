@@ -5,14 +5,14 @@ name: End-to-end tests
 on: [push]
 jobs:
   cypress-run:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Run E2E tests
         uses: cypress-io/github-action@v1.16.1
         with:
-          start: "npm run start:ci"
+          start: "npm start"
           wait-on: "http://localhost:3000"
           # let's see if the Test Runner handles url in the config
           # https://github.com/cypress-io/cypress/issues/5466
