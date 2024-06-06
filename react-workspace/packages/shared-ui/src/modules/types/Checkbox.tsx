@@ -1,5 +1,3 @@
-import '../../.storybook/styles.css';
-
 import React from 'react';
 
 const Checkbox = ({ handler, touched, hasError, meta: { label, placeholder, classes } }) => {

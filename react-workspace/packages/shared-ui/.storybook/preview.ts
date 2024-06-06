@@ -1,5 +1,6 @@
 // Import Tailwind CSS
-import './styles.css';
+// .storybook/preview.js or .storybook/preview.ts
+import '../src/index.css';
 
 import type { Preview } from '@storybook/react';
 
