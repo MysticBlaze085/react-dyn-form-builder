@@ -6,9 +6,17 @@ const ExampleFeature = () => {
     let genForm;
 
     const setInputNesting = useCallback(() => {
+        console.log('genForm', genForm.get('last_name'));
         genForm
             .get('first_name')
             .onBlurChanges.subscribe((value) => (value ? genForm.patchValue({ full_name: `${value} - ` }) : ''));
+        genForm
+            .get('last_name')
+            .onBlurChanges.subscribe((value) => {
+                const initial = genForm.get('first_name').value;
+                genForm.patchValue({ full_name: `` });
+                genForm.patchValue({ full_name: `${initial} - ${value}` })
+            })
         genForm.disable();
     }, [genForm]);
 
