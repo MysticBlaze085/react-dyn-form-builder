@@ -1,3 +1,4 @@
+import { Button } from '../modules/components';
 import FieldRenderer from '../modules/FieldRenderer';
 // Documentation for react-reactive-form https://github.com/bietkul/react-reactive-form
 import React from 'react';
@@ -6,18 +7,19 @@ import { Validators } from 'react-reactive-form';
 const formInputConfig = {
     controls: {
         first_name: {
-            render: FieldRenderer('TextInput'),
+            render: FieldRenderer('text'),
             meta: {
                 label: 'First Name',
                 placeholder: 'Enter first name',
-                classes: 'col-6 pr-2',
+                value: '',
+                required: false
             },
             options: {
                 validators: Validators.required,
             },
         },
         last_name: {
-            render: FieldRenderer('TextInput'),
+            render: FieldRenderer('text'),
             meta: {
                 label: 'Last Name',
                 placeholder: 'Enter last name',
@@ -28,7 +30,7 @@ const formInputConfig = {
             },
         },
         full_name: {
-            render: FieldRenderer('TextInput'),
+            render: FieldRenderer('text'),
             meta: {
                 label: 'Full Name',
                 placeholder: 'Enter Full Name',
@@ -40,7 +42,7 @@ const formInputConfig = {
         },
         gender: {
             formState: 'other',
-            render: FieldRenderer('RadioGroup'),
+            render: FieldRenderer('radio'),
             meta: {
                 label: 'Gender',
                 items: [
@@ -55,7 +57,7 @@ const formInputConfig = {
             },
         },
         nationality: {
-            render: FieldRenderer('SelectBox'),
+            render: FieldRenderer('dropdown'),
             meta: {
                 label: 'State',
                 items: [
@@ -68,40 +70,39 @@ const formInputConfig = {
             },
         },
         notes: {
-            render: FieldRenderer('Textarea'),
+            render: FieldRenderer('textarea'),
             meta: {
                 label: 'Notes',
             },
         },
         terms: {
             formState: false,
-            render: FieldRenderer('Checkbox'),
+            render: FieldRenderer('checkbox'),
             meta: {
                 items: [{ key: 'terms', value: 'I agree to the terms and condition.' }],
                 classes: 'col-6',
+                required: true,
             },
-            validators: Validators.required,
         },
         $field_0: {
             isStatic: false,
             render: ({ status, value, meta: { handleSubmit, handleEditMode, handleCancelMode } }) => {
                 const isValid = status === 'VALID' && value.terms === true;
                 return (
-                    <div />
-                    // <div>
-                    //     <Button
-                    //         style={{ marginRight: '5px' }}
-                    //         color="primary"
-                    //         variant="contained"
-                    //         disabled={!isValid}
-                    //         onClick={handleSubmit}
-                    //     >
-                    //         Submit
-                    //     </Button>
-                    //     <Button variant="outlined" onClick={status === 'DISABLED' ? handleEditMode : handleCancelMode}>
-                    //         {status === 'DISABLED' ? `Edit` : `Cancel`}
-                    //     </Button>
-                    // </div>
+                    <div>
+                        <Button
+                            style={{ marginRight: '5px' }}
+                            color="primary"
+                            variant="contained"
+                            disabled={!isValid}
+                            onClick={handleSubmit}
+                        >
+                            Submit
+                        </Button>
+                        <Button variant="outlined" onClick={status === 'DISABLED' ? handleEditMode : handleCancelMode}>
+                            {status === 'DISABLED' ? `Edit` : `Cancel`}
+                        </Button>
+                    </div>
                 );
             },
         },

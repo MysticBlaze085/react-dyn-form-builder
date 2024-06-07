@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Text from './Text';
+import TextFunction from './Text';
 
 const meta = {
-  title: 'Field/Type/Text',
-  component: Text,
+  title: 'Field/Type/TextFunction',
+  component: TextFunction,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ['autodocs'],
   parameters: {
@@ -11,21 +11,27 @@ const meta = {
     // layout: 'fullscreen',
   },
   args: {
+    handler: () => {},
+    meta: {
+      label: 'Username',
+      placeholder: 'Username',
+      value: '',
+     required: true
+    },
   },
-} satisfies Meta<typeof Text>;
+} satisfies Meta<typeof TextFunction>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    handler: null,
-    touched: null,
-    hasError: null,
+    handler: () => {},
     meta: {
-      label: null,
-      placeholder: null,
-      classes: null,
+      label: 'Username',
+      placeholder: 'Username',
+      value: '',
+     required: true
     },
   },
 };

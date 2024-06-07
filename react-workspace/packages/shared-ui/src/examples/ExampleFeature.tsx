@@ -57,7 +57,7 @@ const ExampleFeature = () => {
     return (
         <div className="container h-100 w-100 mt-5">
             <div className="row">
-                <FormGenerator className="col-12" onMount={setForm} fieldConfig={formInputConfig} />
+                <FormGenerator onMount={setForm} fieldConfig={formInputConfig} />
             </div>
         </div>
     );
