@@ -4,13 +4,14 @@ import CheckboxGroup from "./types/CheckboxGroup";
 import Radio from "./types/Radio";
 import RadioGroup from "./types/RadioGroup";
 import Select from "./types/Select";
-import TextField from "./types/TextField";
+import TextFieldControl from "./types/TextField";
 import TextareaField from "./types/TextareaField";
+import { Value } from "./types";
 
 const FieldRenderer = (type: string) => {
     switch(type) {
         case 'Text':
-            return TextField;
+            return TextFieldControl;
         case 'Textarea':
             return TextareaField;
         case 'Radio':
@@ -23,8 +24,10 @@ const FieldRenderer = (type: string) => {
             return CheckboxGroup;
         case 'Select':
             return Select;
+        case 'Value':
+            return Value;
         default:
-            return TextField;
+            return TextFieldControl;
     }
 }
 

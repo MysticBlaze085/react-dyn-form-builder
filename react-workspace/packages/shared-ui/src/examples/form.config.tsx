@@ -1,3 +1,4 @@
+import { Button } from '../modules/components';
 import FieldRenderer from '../modules/FieldRenderer';
 import { Validators } from 'react-reactive-form';
 
@@ -37,41 +38,41 @@ const formInputConfig = {
                 validators: Validators.required,
             },
         },
-        // gender: {
-        //     formState: 'other',
-        //     render: FieldRenderer('RadioGroup'),
-        //     meta: {
-        //         label: 'Gender',
-        //         items: [
-        //             { id: 'male', value: 'Male' },
-        //             { id: 'female', value: 'Female' },
-        //             { id: 'other', value: 'other' },
-        //         ],
-        //         // classes: 'col-6',
-        //     },
-        //     options: {
-        //         validators: Validators.required,
-        //     },
-        // },
-        // nationality: {
-        //     render: FieldRenderer('Select'),
-        //     meta: {
-        //         label: 'State',
-        //         items: [
-        //             { value: 'us', label: 'US' },
-        //             { value: 'uk', label: 'UK' },
-        //             { value: 'india', label: 'India' },
-        //             { value: 'china', label: 'China' },
-        //         ],
-        //         // classes: 'col-6 pr-2',
-        //     },
-        // },
-        // notes: {
-        //     render: FieldRenderer('Textarea'),
-        //     meta: {
-        //         label: 'Notes',
-        //     },
-        // },
+        gender: {
+            formState: 'other',
+            render: FieldRenderer('RadioGroup'),
+            meta: {
+                label: 'Gender',
+                items: [
+                    { id: 'male', value: 'Male' },
+                    { id: 'female', value: 'Female' },
+                    { id: 'other', value: 'other' },
+                ],
+                // classes: 'col-6',
+            },
+            options: {
+                validators: Validators.required,
+            },
+        },
+        nationality: {
+            render: FieldRenderer('Select'),
+            meta: {
+                label: 'State',
+                items: [
+                    { value: 'us', label: 'US' },
+                    { value: 'uk', label: 'UK' },
+                    { value: 'india', label: 'India' },
+                    { value: 'china', label: 'China' },
+                ],
+                // classes: 'col-6 pr-2',
+            },
+        },
+        notes: {
+            render: FieldRenderer('Textarea'),
+            meta: {
+                label: 'Notes',
+            },
+        },
         terms: {
             // formState: false,
             render: FieldRenderer('Checkbox'),
@@ -81,32 +82,32 @@ const formInputConfig = {
                 // required: true,
             },
         },
-        // $field_0: {
-        //     isStatic: false,
-        //     render: ({ status, value, meta: { handleSubmit, handleEditMode, handleCancelMode } }) => {
-        //         const isValid = status === 'VALID' && value.terms === true;
-        //         return (
-        //             <div>
-        //                 <Button
-        //                     style={{ marginRight: '5px' }}
-        //                     color="primary"
-        //                     variant="contained"
-        //                     disabled={!isValid}
-        //                     onClick={handleSubmit}
-        //                 >
-        //                     Submit
-        //                 </Button>
-        //                 <Button variant="outlined" onClick={status === 'DISABLED' ? handleEditMode : handleCancelMode}>
-        //                     {status === 'DISABLED' ? `Edit` : `Cancel`}
-        //                 </Button>
-        //             </div>
-        //         );
-        //     },
-        // },
-        // $field_1: {
-        //     isStatic: false,
-        //     render: FieldRenderer('Value'),
-        // },
+        $field_0: {
+            isStatic: false,
+            render: ({ status, value, meta: { handleSubmit, handleEditMode, handleCancelMode } }) => {
+                const isValid = status === 'VALID' && value.terms === true;
+                return (
+                    <div>
+                        <Button
+                            style={{ marginRight: '5px' }}
+                            color="primary"
+                            variant="contained"
+                            disabled={!isValid}
+                            onClick={handleSubmit}
+                        >
+                            Submit
+                        </Button>
+                        <Button variant="outlined" onClick={status === 'DISABLED' ? handleEditMode : handleCancelMode}>
+                            {status === 'DISABLED' ? `Edit` : `Cancel`}
+                        </Button>
+                    </div>
+                );
+            },
+        },
+        $field_1: {
+            isStatic: false,
+            render: FieldRenderer('Value'),
+        },
     },
 };
 

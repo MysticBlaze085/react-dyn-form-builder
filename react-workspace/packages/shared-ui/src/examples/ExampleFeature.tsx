@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 
-import { FormGenerator } from 'react-reactive-form';
+import FormGeneratorWrapper from '../modules/FormGeneratorWrapper';
 import formInputConfig from './form.config';
 
 const ExampleFeature = () => {
@@ -55,9 +55,9 @@ const ExampleFeature = () => {
     }, [setInputNesting, unSubscribe]);
 
     return (
-        <div className="container h-100 w-100 mt-5">
+        <div className="h-100">
             <div className="row">
-                <FormGenerator onMount={setForm} fieldConfig={formInputConfig} />
+                <FormGeneratorWrapper onMount={setForm} fieldConfig={formInputConfig} />
             </div>
         </div>
     );

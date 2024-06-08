@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import TextField from './TextField';
+import TextFieldControl from './TextField';
 
-const meta: Meta<typeof TextField> = {
-  title: 'Field/Fields/TextField',
-  component: TextField,
+const meta: Meta<typeof TextFieldControl> = {
+  title: 'Field/Fields/TextFieldControl',
+  component: TextFieldControl,
   tags: ['autodocs'],
   parameters: {
     // layout: 'fullscreen',
