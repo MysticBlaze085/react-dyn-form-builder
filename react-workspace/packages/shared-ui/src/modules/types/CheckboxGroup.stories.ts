@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import TextFunction from './Text';
+import CheckboxGroup from './CheckboxGroup';
 
 const meta = {
-  title: 'Field/Type/TextFunction',
-  component: TextFunction,
+  title: 'Field/Fields/CheckboxGroup',
+  component: CheckboxGroup,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ['autodocs'],
   parameters: {
@@ -11,15 +11,8 @@ const meta = {
     // layout: 'fullscreen',
   },
   args: {
-    handler: () => {},
-    meta: {
-      label: 'Username',
-      placeholder: 'Username',
-      value: '',
-     required: true
-    },
   },
-} satisfies Meta<typeof TextFunction>;
+} satisfies Meta<typeof CheckboxGroup>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -28,12 +21,7 @@ export const Primary: Story = {
   args: {
     handler: () => {},
     meta: {
-      label: 'Username',
-      placeholder: 'Username',
-      value: '',
-     required: true
+      items: [{ id: '1', value: 'React.js' }, { id: '2', value: 'Vue.js' }, { id: '3', value: 'Svelte' }],
     },
   },
 };
-
-// export const LoggedOut: Story = {};

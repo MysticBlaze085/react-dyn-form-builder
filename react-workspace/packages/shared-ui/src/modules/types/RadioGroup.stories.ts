@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import TextareaFormControl from './Textarea';
+import Radio from './Radio';
+import RadioGroup from './RadioGroup';
+
 
 const meta = {
-  title: 'Field/Type/Textarea',
-  component: TextareaFormControl,
+  title: 'Field/Fields/RadioGroup',
+  component: RadioGroup,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ['autodocs'],
   parameters: {
@@ -12,19 +14,17 @@ const meta = {
   },
   args: {
   },
-} satisfies Meta<typeof TextareaFormControl>;
+} satisfies Meta<typeof RadioGroup>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    handler: null,
+    handler: () => {},
     meta: {
-      label: 'Textarea',
-      placeholder: null,
-      value: '',
-      required: true
+      label: 'Label',
+      items: [{ id: '1', value: 'React.js' }, { id: '2', value: 'Vue.js' }, { id: '3', value: 'Svelte' }],
     },
   },
 };

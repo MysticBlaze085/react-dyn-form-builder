@@ -1,8 +1,10 @@
-import Checkbox from './Checkbox';
-import Dropdown from './Dropdown';
-import Radio from './Radio';
-import Text from './Text';
-import Textarea from './Textarea';
-import Value from './Value';
+import CheckboxControl from "./Checkbox";
+import CheckboxGroup from "./CheckboxGroup";
+import Radio from "./Radio";
+import RadioGroup from "./RadioGroup";
+import Select from "./Select";
+import TextField from "./TextField";
+import TextareaField from "./TextareaField";
+import Value from "./Value";
 
-export { Checkbox, Dropdown, Radio, Text, Textarea, Value};
+export {CheckboxControl, CheckboxGroup, Radio, RadioGroup, Select, TextField, TextareaField, Value}

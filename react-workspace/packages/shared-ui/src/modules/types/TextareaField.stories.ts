@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Radio from './Radio';
+import TextareaField from './TextareaField';
 
 
 const meta = {
-  title: 'Field/Fields/Radio',
-  component: Radio,
+  title: 'Field/Fields/TextareaField',
+  component: TextareaField,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ['autodocs'],
   parameters: {
@@ -13,14 +13,17 @@ const meta = {
   },
   args: {
   },
-} satisfies Meta<typeof Radio>;
+} satisfies Meta<typeof TextareaField>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    item: { id: '1', value: 'React.js' },
+    handler: () => {},
+    meta: {
+      label: 'Label',
+    },
   },
 };
 

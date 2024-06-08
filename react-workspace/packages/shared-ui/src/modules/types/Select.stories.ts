@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Dropdown from './Dropdown';
-
+import Select from './Select';
 
 const meta = {
-  title: 'Field/Type/Dropdown',
-  component: Dropdown,
+  title: 'Field/Fields/Select',
+  component: Select,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ['autodocs'],
   parameters: {
@@ -13,22 +12,22 @@ const meta = {
   },
   args: {
   },
-} satisfies Meta<typeof Dropdown>;
+} satisfies Meta<typeof Select>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    handler: null,
-    touched: null,
-    hasError: null,
+    handler: () => {},
     meta: {
-      label: null,
-      placeholder: null,
-      classes: null,
+      label: 'Select a City',
+      items: [
+        { value: 'brazil', label: 'Brazil' },
+        { value: 'bucharest', label: 'Bucharest' },
+        { value: 'london', label: 'London' },
+        { value: 'washington', label: 'Washington' },
+      ]
     },
   },
 };
-
-// export const LoggedOut: Story = {};

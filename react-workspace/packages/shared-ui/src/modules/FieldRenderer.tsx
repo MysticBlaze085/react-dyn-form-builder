@@ -1,24 +1,30 @@
-import { Checkbox, Dropdown, Radio, Text, Textarea } from './types';
-
-import CheckboxFormControl from './types/Checkbox';
-import TextFormControl from './types/Text';
+import Checkbox from "./types/Checkbox";
+import CheckboxControl from "./types/Checkbox";
+import CheckboxGroup from "./types/CheckboxGroup";
+import Radio from "./types/Radio";
+import RadioGroup from "./types/RadioGroup";
+import Select from "./types/Select";
+import TextField from "./types/TextField";
+import TextareaField from "./types/TextareaField";
 
 const FieldRenderer = (type: string) => {
-    switch (type) {
-        case 'text':
-            return TextFormControl;
-        case 'texterea':
-            return Textarea;
-        case 'radio':
+    switch(type) {
+        case 'Text':
+            return TextField;
+        case 'Textarea':
+            return TextareaField;
+        case 'Radio':
             return Radio;
-        case 'checkbox':
-            return CheckboxFormControl;
-        case 'dropdown':
-            return Dropdown;
-        // case 'date':
-        //     return DatePicker;
+        case 'RadioGroup':
+            return RadioGroup;
+        case 'Checkbox':
+            return CheckboxControl;
+        case 'CheckboxGroup':
+            return CheckboxGroup;
+        case 'Select':
+            return Select;
         default:
-            return null;
+            return TextField;
     }
 }
 
