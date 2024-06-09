@@ -6,13 +6,16 @@
         "allowSyntheticDefaultImports": true,
         "module": "commonjs",
         "outDir": "./dist",
+        "lib": ["es2015", "dom"],
     },
     "include": [
         "."
     ],
     "exclude": [
         "dist",
+        "stories",
         "node_modules",
-        "**/*.spec.ts"
+        "**/*.spec.ts",
+        "**/*.stories.ts"
     ]
 }
