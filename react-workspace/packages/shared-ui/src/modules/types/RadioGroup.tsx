@@ -12,7 +12,7 @@ const RadioGroup = ({ handler, meta: { label, items } }) => (
                 items && items.length ?
 
                     items.map((item, index) => (
-                        <Radio key={index} item={item} />
+                        <Radio key={index} item={item} {...handler()}/>
                     ))
                     : null
             }

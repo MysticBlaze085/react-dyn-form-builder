@@ -1,5 +1,6 @@
 import ButtonComponent from "./components/Button";
-import TestFormGenComponent from "./testing-builder";
+import TestFormGenComponent from "../../../my-remix-app/app/components/testing-builder";
+
 // import Image from "next/image";
 export default function Home() {
   return (

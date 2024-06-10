@@ -2,8 +2,9 @@
   "name": "shared-ui",
   "version": "1.0.0",
   "main": "dist/index.js",
+  "private": true,
   "scripts": {
-    "build": "rm -rf dist && tsc",
+    "build": "rm -rf dist && npx tsc",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "pack": "cd dist && npm pack"
