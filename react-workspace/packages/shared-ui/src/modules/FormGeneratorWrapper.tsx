@@ -4,7 +4,7 @@ import React from 'react';
 
 const FormGeneratorWrapper: React.FC<FormGeneratorProps> = ({
   onMount = () => {},
-  fieldConfig = { controls: {} }, // Provide a valid FieldConfig object here
+  fieldConfig = { controls: {} },
   ...props
 }) => {
   return <FormGenerator onMount={onMount} fieldConfig={fieldConfig} {...props} />;
