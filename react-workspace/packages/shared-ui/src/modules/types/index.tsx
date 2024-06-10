@@ -7,4 +7,4 @@ import TextFieldControl from "./TextField";
 import TextareaField from "./TextareaField";
 import Value from "./Value";
 
-export {CheckboxControl, CheckboxGroup, Radio, RadioGroup, Select, TextFieldControl, TextareaField, Value}
+export { CheckboxControl, CheckboxGroup, Radio, RadioGroup, Select, TextFieldControl, TextareaField, Value }

@@ -1,14 +1,14 @@
-import Checkbox from "./types/Checkbox";
-import CheckboxControl from "./types/Checkbox";
+import CheckboxControl, { CheckboxProps } from "./types/Checkbox";
+import Radio, { RadioProps } from "./types/Radio";
+import TextFieldControl, { TextFieldProps } from "./types/TextField";
+
 import CheckboxGroup from "./types/CheckboxGroup";
-import Radio from "./types/Radio";
 import RadioGroup from "./types/RadioGroup";
 import Select from "./types/Select";
-import TextFieldControl from "./types/TextField";
 import TextareaField from "./types/TextareaField";
 import { Value } from "./types";
 
-const FieldRenderer = (type: string) => {
+export const FieldRenderer = (type: string): React.FC<CheckboxProps | RadioProps | TextFieldProps> => {
     switch(type) {
         case 'Text':
             return TextFieldControl;
@@ -29,6 +29,6 @@ const FieldRenderer = (type: string) => {
         default:
             return TextFieldControl;
     }
-}
+};
 
 export default FieldRenderer;

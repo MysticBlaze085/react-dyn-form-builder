@@ -1,6 +1,8 @@
 import { FormControl, useFormControlContext } from "@mui/base";
 
-interface CheckboxProps {
+import React from "react";
+
+export interface CheckboxProps {
     handler: () => any;
     meta: {
       item: {

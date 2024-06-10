@@ -1,12 +1,12 @@
 {
   "name": "shared-ui",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "build": "rm -rf dist && tsc && cp package.json dist/",
+    "build": "rm -rf dist && tsc",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "pack": "cd dist && npm pack"
   },
   "keywords": [],
   "author": "",

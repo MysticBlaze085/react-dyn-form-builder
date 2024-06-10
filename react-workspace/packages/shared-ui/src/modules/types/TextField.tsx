@@ -1,6 +1,8 @@
 import { FormControl, useFormControlContext } from '@mui/base';
 
-interface TextFieldProps {
+import React from "react";
+
+export interface TextFieldProps {
   handler: () => any;
   meta: {
     label: string;

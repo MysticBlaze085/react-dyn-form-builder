@@ -1,4 +1,5 @@
 import Checkbox from "./Checkbox";
+import React from "react";
 
 const CheckboxGroup = ({ handler, meta: { items } }) => (
     <div className="relative flex flex-col text-gray-700 bg-white shadow-md rounded-xl bg-clip-border mt-2">

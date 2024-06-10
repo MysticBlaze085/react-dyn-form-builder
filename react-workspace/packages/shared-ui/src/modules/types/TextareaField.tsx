@@ -1,3 +1,5 @@
+import React from "react";
+
 const TextareaField = ({ handler, meta: { label } }) => (
   <div className="relative w-full min-w-[200px] mt-2">
     <textarea

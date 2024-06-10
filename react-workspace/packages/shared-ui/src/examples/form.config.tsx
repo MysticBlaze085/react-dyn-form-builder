@@ -1,5 +1,6 @@
 import { Button } from '../modules/components';
 import FieldRenderer from '../modules/FieldRenderer';
+import React from 'react';
 import { Validators } from 'react-reactive-form';
 
 const formInputConfig = {

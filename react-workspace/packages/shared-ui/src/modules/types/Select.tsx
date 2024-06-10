@@ -1,3 +1,5 @@
+import React from "react";
+
 const Select = ({ handler, meta: { label, items } }) => (
     <div className="relative w-100 min-w-[200px] mt-2">
         <select

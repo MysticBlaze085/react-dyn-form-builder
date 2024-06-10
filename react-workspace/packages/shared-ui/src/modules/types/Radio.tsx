@@ -1,4 +1,10 @@
-const Radio = ({ item  }) => (
+import React from "react";
+
+export interface RadioProps {
+    [key: string]: any; // Allow additional props
+  }
+
+const Radio: React.FC<RadioProps>  = ({ item  }) => (
     <div role="button"
         className="flex items-center w-full p-0 leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900">
         <label htmlFor={`vertical-list-${item.id}`} className="flex items-center w-full px-3 py-2 cursor-pointer">

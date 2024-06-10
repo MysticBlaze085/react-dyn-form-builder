@@ -1,4 +1,5 @@
 import Radio from "./Radio";
+import React from "react";
 
 const RadioGroup = ({ handler, meta: { label, items } }) => (
     <div className="relative flex flex-col text-gray-700 rounded-xl bg-clip-border mt-4">

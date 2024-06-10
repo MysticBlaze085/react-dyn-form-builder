@@ -1,2 +1,13 @@
-export * from './src/modules/types';
-export * from './src/modules';
+import '@material-tailwind/html/styles/material-tailwind.css';
+export { default as Button} from './src/modules/components/general/Button';
+export { default as FieldRenderer } from "./src/modules/FieldRenderer";
+export { default as FormGeneratorWrapper} from "./src/modules/FormGeneratorWrapper";
+export { default as Value} from './src/modules/types/Value';
+export { default as Checkbox} from './src/modules/types/Checkbox';
+export { default as CheckboxControl } from './src/modules/types/Checkbox';
+export { default as CheckboxGroup } from './src/modules/types/CheckboxGroup';
+export { default as Radio } from './src/modules/types/Radio';
+export { default as RadioGroup } from './src/modules/types/RadioGroup';
+export { default as Select } from './src/modules/types/Select';
+export { default as Text } from './src/modules/types/TextField';
+export { default as TextareaField } from './src/modules/types/TextareaField';
