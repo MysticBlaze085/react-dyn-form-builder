@@ -1,0 +1,24 @@
+<div class="d-flex flex-column justify-content-center align-items-center gap-2">
+  <div mat-dialog-content>
+    <form [formGroup]="form">
+      <lyn-form-input-control
+        *ngFor="let input of fileControls"
+        [inputControl]="input"
+        [formValue]="form.get(input.controlName)?.value ?? ''"
+        (formControlChanges)="onFormChanges($event)"
+      ></lyn-form-input-control>
+    </form>
+  </div>
+</div>
+<ng-template #actionsRight>
+  <button
+    mat-raised-button
+    class="edit-file-btn"
+    [color]="data.type === 'Delete' ? 'warn' : 'accent'"
+    [mat-dialog-close]="{type: data.type, file: form.value}"
+    [disabled]="form.pristine || form.invalid"
+    data-cy="edit-file-btn"
+  >
+    {{data.type === 'Add' ? 'Save' : data.type}}
+  </button>
+</ng-template>

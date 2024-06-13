@@ -1,0 +1,79 @@
+<ng-container *ngIf="data">
+  <div data-cy="modal-template-title" class="d-flex flex-row modal-template-title">
+    <div class="modal-template-title-text">
+      <ng-container *ngIf="isInnerHtmlTitle; else title"><span [innerHtml]="data.title"></span></ng-container>
+      <ng-template #title><h2>{{data.title}}</h2></ng-template>
+    </div>
+    <ng-container *ngIf="data.close">
+      <button data-cy="modal-template-title-close-btn" class="modal-template-title-button" mat-button [mat-dialog-close]>x</button>
+    </ng-container>
+  </div>
+  <div data-cy="modal-template-body" class="d-flex flex-row modal-template-body">
+    <div>
+      <ng-container *ngIf="isForm; else notForm">
+        <form class="form" [formGroup]="form">
+          <ng-container *ngIf="isFormArray(data.body)">
+            <ng-container *ngIf="!checkFormControls(data.body); else isNewFBControls">
+              <lyn-form-input-control
+                *ngFor="let control of data.body"
+                [inputControl]="control"
+                [formValue]="control.value"
+                [inputControl]="data.body"
+                [formValue]="data.value"
+                (formControlChanges)="onFormChanges($event)"
+              ></lyn-form-input-control>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf="!isFormArray(data.body)">
+            <ng-container *ngIf="!checkFormControls(data.body); else isNewFBControls">
+              <lyn-form-input-control
+                [inputControl]="data.body"
+                [formValue]="data.value"
+                (formControlChanges)="onFormChanges($event)"
+              ></lyn-form-input-control>
+            </ng-container>
+          </ng-container>
+          <ng-template #isNewFBControls>
+            <ng-container *ngIf="isFormArray(data.body)">
+              <lyn-dyn-form
+                width="100%"
+                *ngFor="let control of data.body"
+                [fieldControl]="control"
+                [formValue]="control.value"
+                (valueChanges)="onFormChanges($event)"
+              ></lyn-dyn-form>
+            </ng-container>
+            <lyn-dyn-form *ngIf="!isFormArray(data.body)" width="100%"></lyn-dyn-form>
+          </ng-template>
+        </form>
+      </ng-container>
+      <ng-template #notForm>
+        <ng-container *ngIf="isInnerHtmlBody; else body"><span [innerHtml]="data.body"></span></ng-container>
+        <ng-template #body><h3>{{data.body}}</h3></ng-template>
+      </ng-template>
+    </div>
+  </div>
+  <ng-container *ngIf="data.info">
+    <div data-cy="modal-template-info" class="d-flex flex-row modal-template-body">
+      <span [innerHtml]="data.info"></span>
+    </div>
+  </ng-container>
+  <div class="d-flex flex-row justify-content-end align-items-end modal-template-action">
+    <ng-container *ngFor="let btn of data.btnControl">
+      <button
+        mat-raised-button
+        [color]="btn.btnColor"
+        [disabled]="btn.btnDisabled || form.invalid"
+        [mat-dialog-close]="closeValue(btn)"
+        [attr.data-Cy]="btn.dataCy"
+      >
+        {{btn.btnText}}
+      </button>
+    </ng-container>
+    <ng-container *ngIf="!data.close || data.cancelBtnText">
+      <button *ngIf="data.cancelBtnText" data-cy="modal-template-cancel-btn" mat-raised-button [mat-dialog-close]>
+        {{data.cancelBtnText}}
+      </button>
+    </ng-container>
+  </div>
+</ng-container>

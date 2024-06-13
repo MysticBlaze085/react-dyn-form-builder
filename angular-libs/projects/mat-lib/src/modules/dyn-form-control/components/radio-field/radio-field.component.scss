@@ -1,0 +1,15 @@
+.radio-button-group-wrapper {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+  mat-label {
+    font-weight: 450 !important;
+  }
+  .mat-radio-label-content {
+    font-weight: 400;
+  }
+  mat-radio-button {
+    margin: 0.5rem 10px;
+  }
+}

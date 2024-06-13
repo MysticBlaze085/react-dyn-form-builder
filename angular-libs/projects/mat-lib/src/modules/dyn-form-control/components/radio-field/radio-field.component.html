@@ -1,0 +1,27 @@
+<!-- Field control display outputs through depending on instanceOf RadioFieldHelper  -->
+<ng-container *ngIf="fieldControl && !fieldControl.hidden">
+  <ng-container [ngSwitch]="fieldControl.controlType">
+    <!-- Default Radio Group Field -->
+    <ng-container *ngSwitchDefault>
+      <section class="radio-button-group-wrapper">
+        <mat-label>{{ fieldControl.label }}:</mat-label>
+        <mat-radio-group
+          [formControl]="formControl[fieldControl.controlName]"
+          [required]="fieldControl.required"
+          [attr.disabled]="fieldControl.disabled"
+        >
+          <ng-container *ngFor="let option of fieldControl.options">
+            <mat-radio-button
+              *ngIf="!option.hidden"
+              [disabled]="fieldControl.disabled"
+              [checked]="option.value === formValue"
+              [value]="option.value"
+              [aria-describedby]="option.key"
+              >{{ option.key }}</mat-radio-button
+            >
+          </ng-container>
+        </mat-radio-group>
+      </section>
+    </ng-container>
+  </ng-container>
+</ng-container>

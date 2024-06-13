@@ -1,0 +1,9 @@
+<form [formGroup]="form">
+  <lyn-form-input-control
+    *ngIf="(gatewayList$ | async) && inputControls"
+    [inputAppearance]="'outline'"
+    [inputControl]="inputControls"
+    [formValue]="form.get(inputControls.controlName)?.value ?? gatewayValue"
+    (formControlChanges)="onValueChanges($event)"
+  ></lyn-form-input-control>
+</form>

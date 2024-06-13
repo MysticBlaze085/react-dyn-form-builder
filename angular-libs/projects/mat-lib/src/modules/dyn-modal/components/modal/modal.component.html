@@ -1,0 +1,31 @@
+<div class="modal-container" [attr.data-cy]="modal.options.dataCy">
+  <header class="d-flex flex-row justify-content-center align-items-center pt-2 pr-2 pb-2">
+    <h1 class="d-flex flex-fill justify-content-center" mat-dialog-title [innerHtml]="modal.options.title" aria-label="Modal Title"></h1>
+    <span></span>
+    <button class="d-flex justify-content-end" *ngIf="isClose" mat-icon-button mat-dialog-close="true">
+      <mat-icon>clear</mat-icon>
+    </button>
+  </header>
+
+  <mat-dialog-content class="pt-0">
+    <ng-template #component></ng-template>
+  </mat-dialog-content>
+
+  <div *ngIf="modal.options.footer">
+    <footer class="d-flex flex-row justify-content-end align-items-between flex-fill mb-2">
+      <div class="modalFooterLeft">
+        <mat-dialog-actions>
+          <ng-container [ngTemplateOutlet]="actionsLeft"></ng-container>
+        </mat-dialog-actions>
+      </div>
+
+      <div class="modalFooterRight">
+        <mat-dialog-actions>
+          <ng-container [ngTemplateOutlet]="actionsRight"></ng-container>
+          <button *ngIf="modal.options.cancel" mat-raised-button [mat-dialog-close]="'cancel'" cdkFocusInitial>Cancel</button>
+          <button *ngIf="modal.options.close" mat-raised-button mat-dialog-close>Close</button>
+        </mat-dialog-actions>
+      </div>
+    </footer>
+  </div>
+</div>

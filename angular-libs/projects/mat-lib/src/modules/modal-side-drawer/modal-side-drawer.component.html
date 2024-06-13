@@ -1,0 +1,26 @@
+<mat-sidenav-container class="modal-side-drawer-container">
+  <mat-sidenav
+    class="modal-drawer-content"
+    #sideDrawer
+    mode="over"
+    color="primary"
+    position="end"
+    [attr.role]="'features'"
+    disableClose="true"
+    [opened]="openMenu$ | async"
+  >
+    <div class="d-flex flex-row justify-content-end">
+      <button mat-button (click)="closeMenu()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="d-flex flex-column feature-wrapper">
+      <ng-content select="[drawer-content]"></ng-content>
+      <ng-template #component></ng-template>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,0 +1,120 @@
+<form [formGroup]="formGroup" class="date-time-range-picker-container" data-cy="date-time-range-picker" (click)="onClick($event)">
+  <mat-form-field appearance="outline">
+    <mat-label>Enter a date range</mat-label>
+    <mat-date-range-input [formGroup]="formGroup" [rangePicker]="picker" [disabled]="disabled" class="mr-2">
+      <input
+        matStartDate
+        formControlName="startDate"
+        placeholder="Start date"
+        aria-label="Start Date Input"
+        data-cy="start-date-input"
+        (click)="picker.open()"
+        [value]="startDate"
+        (dateChange)="dateRangeChange()"
+        (wheel)="'passive'"
+      />
+      <input
+        matEndDate
+        formControlName="endDate"
+        placeholder="End date"
+        aria-label="End Date Input"
+        data-cy="end-date-input"
+        (click)="picker.open()"
+        [value]="endDate"
+        (dateChange)="dateRangeChange()"
+        (wheel)="'passive'"
+      />
+    </mat-date-range-input>
+    <span class="time-range-content" (click)="picker.open()">{{'- ' + displayTime}}</span>
+    <mat-datepicker-toggle matSuffix [for]="picker" data-cy="datepicker-toggle"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker>
+      <mat-datepicker-actions>
+        <div class="d-flex flex-column justify-content-center align-items-center date-range-actions-wrapper">
+          <form [formGroup]="timeFormGroup" class="d-flex flex-column justify-content-center align-items-center gap-2">
+            <div class="d-flex flex-row justify-content-center align-items-center gap-2">
+              <mat-form-field appearance="outline">
+                <mat-label>Start Time</mat-label>
+                <input
+                  matInput
+                  lynDateTimeFormat
+                  formControlName="startTime"
+                  placeholder="12:00:00"
+                  aria-label="Start time input"
+                  data-cy="start-time-input"
+                  autocomplete="off"
+                  [value]="timeFormGroup.controls['startTime']?.value"
+                  (blur)="valueChange('start', $event)"
+                  (wheel)="'passive'"
+                />
+                <mat-error *ngIf="timeFormGroup.controls['startTime'].hasError('customInvalidMessage')" data-cy="start-time-invalid">
+                  {{timeFormGroup.controls['startTime'].errors?.customInvalidMessage?.message}}
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="w-25">
+                <mat-select
+                  formControlName="startMidday"
+                  [value]="timeFormGroup.controls['startMidday']?.value"
+                  (selectionChange)="valueChange('start', $event)"
+                  data-cy="select-start-midday"
+                >
+                  <mat-option value="AM" data-cy="midday-option-am">AM</mat-option>
+                  <mat-option value="PM" data-cy="midday-option-pm">PM</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="d-flex flex-row justify-content-center align-items-center gap-2">
+              <mat-form-field appearance="outline">
+                <mat-label>End Time</mat-label>
+                <input
+                  matInput
+                  lynDateTimeFormat
+                  formControlName="endTime"
+                  placeholder="11:59:59"
+                  aria-label="End time input"
+                  data-cy="end-time-input"
+                  autocomplete="off"
+                  [value]="timeFormGroup.controls['endTime']?.value"
+                  (blur)="valueChange('end', $event)"
+                  (wheel)="'passive'"
+                />
+                <mat-error
+                  *ngIf="timeFormGroup.controls['endTime'].touched && timeFormGroup.controls['endTime'].errors?.required || timeFormGroup.controls['endTime'].errors"
+                >
+                  {{timeFormGroup.controls['endTime'].errors?.customInvalidMessage?.message ?? 'End time required'}}
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="w-25">
+                <mat-select
+                  ormControlName="endMidday"
+                  [value]="timeFormGroup.controls['endMidday']?.value"
+                  (selectionChange)="valueChange('end', $event)"
+                  data-cy="select-end-midday"
+                >
+                  <mat-option value="AM" data-cy="midday-option-am">AM</mat-option>
+                  <mat-option value="PM" data-cy="midday-option-pm">PM</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <span class="d-flex flex-row flex-fill" style="width: 100%">
+              <button
+                class="w-50"
+                mat-raised-button
+                color="primary"
+                matDateRangePickerApply
+                (click)="emitValueChanges()"
+                [disabled]="timeFormGroup.invalid || !isValid"
+                data-cy="btn-apply"
+              >
+                Apply
+              </button>
+              <button class="w-50" mat-button matDatepickerCancel data-cy="btn-cancel">Cancel</button>
+            </span>
+          </form>
+        </div>
+      </mat-datepicker-actions>
+    </mat-date-range-picker>
+
+    <mat-error *ngIf="formGroup.controls.startDate.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+    <mat-error *ngIf="formGroup.controls.endDate.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+  </mat-form-field>
+</form>

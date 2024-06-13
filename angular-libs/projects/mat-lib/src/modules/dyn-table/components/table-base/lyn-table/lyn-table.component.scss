@@ -1,0 +1,236 @@
+@keyframes highlight {
+  0% {
+    background: #59abfd;
+    color: #333333 !important;
+  }
+
+  100% {
+    background: #efefef;
+    color: #333333 !important;
+  }
+}
+
+@mixin cellFlexAlign($direction, $justify: 'start', $items: 'start') {
+  display: flex;
+  flex-direction: $direction;
+  @if $justify {
+    justify-content: $justify;
+  }
+  @if $items {
+    align-items: $items;
+  }
+}
+
+:host::ng-deep.filter-input-menu {
+  position: absolute;
+  z-index: 2000;
+  top: -18px !important;
+  height: auto;
+  width: 315px;
+
+  .mat-mdc-form-field-subscript-wrapper.mat-mdc-form-field-bottom-align {
+    display: none;
+  }
+
+  span {
+    float: right;
+  }
+}
+
+::ng-deep.filter-column-input-menu {
+  padding: 1rem 1rem 0;
+}
+
+.filter-form-column {
+  button {
+    width: 100%;
+  }
+}
+
+.dyn-table {
+  margin-top: 0.5rem;
+  height: inherit;
+
+  mat-card {
+    border-top: 4px solid rgba(0, 0, 0, 0.5) !important;
+  }
+
+  .table-container {
+    position: relative;
+    min-height: 200px;
+    overflow: auto;
+
+    mat-table {
+      width: 100%;
+      height: auto;
+
+      mat-header-cell {
+        @include cellFlexAlign(row);
+        &:first-child {
+          justify-content: flex-start;
+        }
+      }
+
+      mat-footer-cell {
+        @include cellFlexAlign(row);
+        &:first-child {
+          justify-content: flex-start;
+        }
+      }
+
+      mat-row mat-header-row {
+        height: 48px;
+      }
+
+      .cell-button mat-icon {
+        margin: 10px;
+      }
+
+      .expandable-row:hover {
+        background: whitesmoke;
+      }
+
+      mat-cell {
+        @include cellFlexAlign(row);
+
+        &:first-child {
+          justify-content: flex-start;
+        }
+
+        .hidden {
+          opacity: 0;
+        }
+      }
+    }
+  }
+}
+
+.filter-input-actions {
+  margin-right: 0px !important;
+}
+
+.text-to-find {
+  width: 20px !important;
+  height: 20px !important;
+  padding: 0 !important;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+// Header checkbox color override
+::ng-deep .table-container mat-header-cell .mat-mdc-checkbox .mdc-checkbox .mdc-checkbox__background {
+  border: 2px solid #ffffff !important;
+  font-weight: 400;
+}
+
+.table-data-checkbox {
+  margin-left: 1rem;
+}
+
+mat-header-cell,
+mat-footer-cell,
+mat-cell {
+  min-width: 80px;
+  box-sizing: border-box;
+}
+
+.no-records {
+  margin: 0.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.mat-paginator-page-size-label {
+  width: 125px;
+}
+
+mat-header-row {
+  top: 48px !important;
+  z-index: 999;
+}
+
+// Mat Table display color changes
+mat-row.element-row:not(.expanded-row):active {
+  background: #efefef;
+}
+
+mat-header-cell {
+  color: #fff;
+  font-weight: 400;
+}
+
+mat-footer-cell {
+  color: #fff;
+  font-weight: 400;
+}
+
+.element-row mat-cell {
+  border-bottom-width: 0;
+}
+
+// Click and Hover color changes
+.highlighted {
+  animation: highlight 1s;
+  background: #efefef;
+  color: #333333 !important;
+}
+
+.clickable:hover {
+  background: #efefef;
+}
+
+// // Header Styles
+.table-header {
+  width: auto;
+  height: 48px;
+  background: lightgray;
+  vertical-align: middle;
+  color: #465a64;
+  top: 0px;
+  z-index: 1000;
+  position: sticky !important;
+}
+
+.column-header-content {
+  @include cellFlexAlign(row, center, center);
+
+  .table-filter-action-icon {
+    @include cellFlexAlign(column, center);
+    margin-left: 0.3rem;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+}
+
+.mat-table-sticky-border-elem-right {
+  border-left: 1px solid #e0e0e0;
+}
+
+.mat-table-sticky-border-elem-left {
+  border-right: 1px solid #e0e0e0;
+}
+
+mat-header-cell:last-of-type,
+mat-footer-cell:last-of-type {
+  padding-right: 0px !important;
+}
+
+mat-cell:last-of-type {
+  padding-right: 3px !important;
+}
+
+.cell-link {
+  justify-content: center !important;
+}
+
+.cell-flex-end {
+  @include cellFlexAlign(row, flex-end);
+}
+
+.cell-flex-center {
+  @include cellFlexAlign(row, center);
+}
+
+.cell-flex-start {
+  @include cellFlexAlign(row, flex-start);
+}

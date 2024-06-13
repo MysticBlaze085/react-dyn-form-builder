@@ -1,0 +1,65 @@
+<div class="d-flex flex-column">
+  <lyn-table
+    #mainTable
+    id="main-table"
+    [ngClass]="{'table-height': data.length !== 0}"
+    attr.data-cy="main-table"
+    [data]="data"
+    [defaultPageSize]="defaultPageSize"
+    [filterBy]="filterBy"
+    [isFilter]="isFilter"
+    [isFilterAction]="isMainFilterAction"
+    [isFormFilterLabel]="isFormFilterLabel"
+    [isRowClickable]="isRowClickable"
+    [isTextToFind]="isTextToFind"
+    [showPagination]="showPagination"
+    [tableHeaders]="tableHeaders"
+    (rowSelectionList)="emitSelectionList($event)"
+    (rowValue)="cellClick($event)"
+    (textToFindAction)="textToFind($event)"
+    [isSearching]="isSearching"
+    [noRecordsFoundMessage]="noRecordsFoundMessage"
+  >
+    <ng-container action-buttons>
+      <ng-content select="[action-buttons]"></ng-content>
+    </ng-container>
+    <ng-container search-action-buttons>
+      <ng-content select="[search-action-buttons]"></ng-content>
+    </ng-container>
+    <h1 table-header-title>&nbsp;&nbsp;{{mainTableTitle}}</h1>
+    <ng-container table-header-content>
+      <ng-content select="[main-table-content]"></ng-content>
+    </ng-container>
+  </lyn-table>
+  <lyn-table
+    *ngIf="!isSearching"
+    #dualTable
+    id="dual-table-details"
+    [ngClass]="{'dual-table-height': dualData.length !== 0}"
+    attr.data-cy="dual-table-details"
+    [data]="dualData"
+    [defaultPageSize]="defaultPageSize"
+    [filterBy]="dualFilterBy"
+    [findText]="dualTable.textToFindControl.value"
+    [findTextColumn]="dualFindTextColumn"
+    [isFilter]="false"
+    [isFilterAction]="isDualFilterAction"
+    [isRowClickable]="isRowClickable"
+    [isTextToFind]="isDualTextToFind"
+    [showPagination]="dualData.length > 0"
+    [tableHeaders]="dualTableHeaders"
+    (rowValue)="dualClick($event)"
+    (rowSelectionList)="emitSelectionList($event)"
+    (textToFindAction)="textToFind($event)"
+    [isSearching]="isDualSearching"
+    [noRecordsFoundMessage]="dualNoRecordsFoundMessage"
+  >
+    <h1 table-header-title>&nbsp;&nbsp;{{detailTableTitle}}</h1>
+    <ng-container table-header-content>
+      <ng-content select="[dual-table-content]"> </ng-content>
+    </ng-container>
+    <ng-container filter-control>
+      <ng-content select="[dual-filter-control]"></ng-content>
+    </ng-container>
+  </lyn-table>
+</div>

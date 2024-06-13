@@ -1,0 +1,79 @@
+<form *ngIf="form && inputControl" [formGroup]="form" autocomplete="off">
+  <div class="d-flex flex-column" [ngClass]="inputControl.class">
+    <ng-container [ngSwitch]="inputControl.addControlType">
+      <ng-container *ngSwitchDefault>
+        <div class="d-flex flex-row add-item-selection" [ngClass]="inputControl.class">
+          <mat-form-field [appearance]="inputAppearance" [style]="{'width': width}">
+            <mat-label *ngIf="inputControl.addInputLabel">{{ inputControl.addInputLabel }}</mat-label>
+            <input
+              #txtInput
+              matInput
+              lynTrimVal
+              [attr.aria-label]="inputControl.placeholder"
+              [formControlName]="inputControl.addControlName"
+              [required]="inputControl.required"
+              [attr.data-cy]="inputControl.dataCy"
+              (keydown.enter)="txtInput.blur()"
+            />
+            <mat-hint
+              *ngIf="inputControl.hint"
+              [ngClass]="{'text-red': !formControl[inputControl.addControlName].valid && formControl[inputControl.addControlName].dirty}"
+            >
+              {{inputControl.hint }}
+              <lyn-icon
+                *ngIf="inputControl.info"
+                class="pointer"
+                [matTooltip]="inputControl.info"
+                [matTooltipPosition]="'right'"
+              ></lyn-icon>
+            </mat-hint>
+            <mat-error *ngIf="formControl[inputControl.addControlName].touched && formControl[inputControl.controlName].errors?.required">
+              {{inputControl.errorMessage}}
+            </mat-error>
+            <mat-error
+              *ngIf="formControl[inputControl.addControlName].dirty && formControl[inputControl.controlName].errors?.customInvalidMessage"
+            >
+              {{ formControl[inputControl.addControlName].errors?.customInvalidMessage.message }}
+            </mat-error>
+            <button
+              *ngIf="inputControl.addInputButton && formControl[inputControl.addControlName].value && formControl[inputControl.addControlName].valid"
+              matSuffix
+              mat-icon-button
+              (click)="addValueToSelectionList(inputControl?.group, inputControl?.subGroup, inputControl.controlName, inputControl.addControlName, formControl[inputControl.addControlName].value)"
+              data-cy="whitelist-add-item-btn"
+            >
+              <mat-icon [ngClass]="inputControl.addInputButton.color" [matTooltip]="inputControl.addInputButton.text"
+                >{{inputControl.addInputButton.icon}}</mat-icon
+              >
+            </button>
+          </mat-form-field>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <div class="lyn-selection-list">
+      <h3>{{inputControl.label}}</h3>
+
+      <mat-list *ngIf="formControl[inputControl.controlName].value.length">
+        <mat-list-item class="d-flex flex-row" *ngFor="let item of formControl[inputControl.controlName].value" [attr.data-cy]="item">
+          <div class="d-flex flex-row justify-content-center align-items-center">
+            {{ item }}
+            <span class="d-flex flex-fill"></span>
+            <button
+              class="selection-button"
+              *ngIf="inputControl.removeInputButton && formControl[inputControl.controlName].value"
+              matSuffix
+              mat-icon-button
+              (click)="removeValueToSelectionList(inputControl?.group, inputControl?.subGroup, inputControl.controlName, item)"
+              data-cy="whitelist-remove-item-btn"
+            >
+              <mat-icon [ngClass]="inputControl.removeInputButton.color" [matTooltip]="inputControl.removeInputButton.text"
+                >{{inputControl.removeInputButton.icon}}</mat-icon
+              >
+            </button>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,10 @@
+<ng-container *ngIf="iconConfig">
+  <mat-icon
+    class="pointer"
+    color="accent"
+    [ngClass]="iconConfig.color"
+    [matTooltip]="iconConfig.text"
+    [matTooltipPosition]="matTooltipPosition ?? 'above'"
+    >{{iconConfig.icon}}</mat-icon
+  >
+</ng-container>

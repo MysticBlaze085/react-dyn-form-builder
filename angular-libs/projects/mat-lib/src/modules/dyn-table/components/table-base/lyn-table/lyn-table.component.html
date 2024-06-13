@@ -1,0 +1,400 @@
+<lyn-card *ngIf="isFilter" [breadcrumb]="true" class="table-header">
+  <div card-title>
+    <ng-content select="[table-title]"></ng-content>
+  </div>
+  <div action-buttons class="d-flex flex-row align-items-center gap-2">
+    <ng-content select="[action-buttons]"></ng-content>
+    <ng-content select="[search-action-buttons]"></ng-content>
+    <ng-container *ngTemplateOutlet="filterAction; context: {isFilterMenu: isFilterMenu}"></ng-container>
+  </div>
+</lyn-card>
+
+<ng-container>
+  <lyn-card [borderColor]="'grey-border'" class="d-flex flex-row dyn-table">
+    <!-- Table Ghost loader -->
+    <lyn-ghost-table *ngIf="isSearching"></lyn-ghost-table>
+    <div *ngIf="dataSource && !isSearching" class="d-flex flex-column table-container" [ngStyle]="{maxHeight: maxTableHeight}">
+      <!-- Table Heading -->
+      <div class="d-flex flex-row justify-content-start align-items-center table-header">
+        <ng-content select="[table-header-title]"></ng-content>
+        <span class="d-flex flex-fill"></span>
+        <ng-content select="[table-header-content]"></ng-content>
+        <ng-container *ngTemplateOutlet="filterAction; context: { isFilterAction: isFilterAction }"></ng-container>
+      </div>
+      <!-- Setting Dynamic Table Build -->
+      <mat-table [dataSource]="dataSource" class="d-flex flex-column mat-elevation-z0">
+        <ng-container *ngFor="let column of tableHeaders; let i = index;">
+          <ng-container *ngIf="!column.hidden">
+            <ng-container matColumnDef="{{ column.headerName }}" [sticky]="column.sticky" [stickyEnd]="column.stick">
+              <mat-header-cell *matHeaderCellDef [class]="column.class" [ngStyle]="column.style" [attr.data-cy]="column.dataCy">
+                <ng-container *ngTemplateOutlet="columnHeaderDisplay; context: {column: column}"></ng-container>
+                <ng-container *ngTemplateOutlet="groupByFilter; context: {column: column}"></ng-container>
+              </mat-header-cell>
+              <mat-cell
+                *matCellDef="let row; let k = index"
+                [attr.data-cy]="column.dataCy + '-cell-' + (k+1)"
+                [class]="column.class"
+                [ngStyle]="column.style"
+              >
+                <ng-container *ngTemplateOutlet="cellType; context: {column: column, row: row}"></ng-container>
+              </mat-cell>
+              <mat-footer-cell *matFooterCellDef [class]="column.class" [ngStyle]="column.style">
+                <span
+                  class="column-header-content"
+                  *ngIf="column.setFooterName && column.isFooter"
+                  [attr.data-cy]="'table-header' + column.dataCy"
+                >
+                  {{column.setFooterName() | cmlToTitleCase}}
+                  <ng-container *ngTemplateOutlet="columnFilter; context: {column: column}"></ng-container>
+                </span>
+                <span *ngIf="column.cellParamCalc && column.isFooter" [ngClass]="{'hidden': column.displayGroupByFilter}">
+                  {{ column.cellParamCalc(calculateColumnData(column.headerName, data))}}
+                </span>
+              </mat-footer-cell>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+
+        <mat-header-row mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+        <mat-row
+          #matRow
+          [ngClass]="{clickable: isRowClickable, highlighted: selection.isSelected(row)}"
+          *matRowDef="let row; columns: displayedColumns;"
+          (click)="cellClick(row)"
+        ></mat-row>
+        <mat-footer-row
+          *matFooterRowDef="displayedColumns; sticky: true"
+          [ngStyle]="{ visibility: showFooter ? 'visible' : 'hidden' }"
+        ></mat-footer-row>
+
+        <!-- Group header -->
+        <ng-container *ngIf="groupByColumns.length">
+          <ng-container matColumnDef="groupHeader">
+            <mat-cell colspan="999" *matCellDef="let group" class="pointer" [attr.data-cy]="'table-cell-group-header'">
+              <span [ngStyle]="{'margin-left': group.level-1 + 'rem' }"></span>
+              <mat-icon *ngIf="group.expanded">expand_less</mat-icon>
+              <mat-icon *ngIf="!group.expanded">expand_more</mat-icon>
+              <strong>{{ displayGroupTitle(groupByColumns[group.level-1], group) }}</strong>
+            </mat-cell>
+          </ng-container>
+
+          <mat-row class="expandable-row" *matRowDef="let row; columns: ['groupHeader']; when: isGroup" (click)="groupHeaderClick(row)">
+          </mat-row>
+        </ng-container>
+      </mat-table>
+
+      <div class="no-records" *ngIf="dataSource.data.length === 0">
+        <p>{{noRecordsFoundMessage}}</p>
+      </div>
+    </div>
+    <mat-paginator
+      #paginator
+      *ngIf="showPagination && dataSource.data.length !== 0"
+      [length]="length === 0 ? 1 : length"
+      [pageSize]="defaultPageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="pageEvent = $event"
+      showFirstLastButtons
+    ></mat-paginator>
+  </lyn-card>
+</ng-container>
+
+<!-- Filter action -->
+<ng-template #filterAction let-isFilterAction="isFilterAction" let-isFilterMenu="isFilterMenu">
+  <button
+    class="filter-input-actions"
+    *ngIf="isFilterAction || isFilterMenu"
+    mat-icon-button
+    [matMenuTriggerFor]="filterMenu"
+    aria-label="Example icon-button with a menu"
+    [matTooltip]="'Filter'"
+    [matTooltipPosition]="'above'"
+    [attr.data-cy]="'btn-filter-by-' + filterBy"
+    color="accent"
+  >
+    <mat-icon>filter_list</mat-icon>
+  </button>
+  <mat-menu #filterMenu="matMenu" class="filter-input-menu">
+    <div (click)="$event.stopPropagation()">
+      <ng-container *ngTemplateOutlet="filterControls; context: { formInputs: formInputs}"></ng-container>
+    </div>
+  </mat-menu>
+</ng-template>
+<!-- Filtering filter inputs -->
+<ng-template #filterControls let-formInputs="formInputs">
+  <form
+    class="d-flex flex-row flex-wrap justify-content-center align-items-center filter-form-fields"
+    *ngIf="isFilterAction || isFilterMenu"
+  >
+    <lyn-dyn-form
+      *ngIf="isFilterByValue"
+      class="w-100"
+      width="100%"
+      [fieldControl]="formInputs"
+      (valueChanges)="filterGroupValueChanges($event)"
+      (click)="$event.stopPropagation()"
+    ></lyn-dyn-form>
+    <ng-container *ngIf="isTextToFind">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Text to Find by {{ findTextColumn | cmlToTitleCase }}</mat-label>
+        <input
+          matInput
+          placeholder="Text to find"
+          [formControl]="textToFindControl"
+          aria-label="Text to Find"
+          autocomplete="off"
+          (click)="$event.stopPropagation()"
+          (keydown.enter)="searchTextDirection(true)"
+          (wheel)="'passive'"
+          [attr.data-cy]="'text-to-find'"
+        />
+        <div matSuffix (click)="$event.stopPropagation()" class="d-flex flex-column">
+          <button
+            mat-icon-button
+            class="text-to-find"
+            [matTooltip]="'Find Previous'"
+            aria-label="Find Previous"
+            (click)="$event.stopPropagation()"
+            (click)="searchTextDirection(false)"
+            [disabled]="textToFindControl.value === ''"
+            [attr.data-cy]="'text-to-find-prev'"
+          >
+            <mat-icon>expand_less</mat-icon>
+          </button>
+          <button
+            #findNext
+            mat-icon-button
+            class="text-to-find"
+            [matTooltip]="'Find Next'"
+            aria-label="Find Next"
+            (click)="$event.stopPropagation()"
+            (click)="searchTextDirection(true)"
+            [disabled]="textToFindControl.value === ''"
+            [attr.data-cy]="'text-to-find-next'"
+          >
+            <mat-icon>expand_more</mat-icon>
+          </button>
+        </div>
+      </mat-form-field>
+    </ng-container>
+    <ng-content select="[filter-control]"></ng-content>
+  </form>
+</ng-template>
+<!-- Output Column Header Display -->
+<ng-template #columnHeaderDisplay let-column="column">
+  <mat-checkbox
+    *ngIf="column.cellType === tableCellEnums.SELECT && isMultiSelect"
+    class="select-column-header-checkbox"
+    (change)="$event ? toggleAllRows() : null"
+    [checked]="selectedRowItems.hasValue() && isAllSelected()"
+    [indeterminate]="selectedRowItems.hasValue() && !isAllSelected()"
+    [aria-label]="checkboxLabel()"
+  >
+  </mat-checkbox>
+  <div *ngIf="(!column.headerHidden || column.headerIcon) && column.cellType !== tableCellEnums.SELECT">
+    <span class="column-header-content" *ngIf="column.headerIcon; else headerName" [attr.data-cy]="'table-header' + column.dataCy">
+      <mat-icon *ngIf="column.headerIcon" [matTooltip]="getHeaderName(column.headerName) | cmlToTitleCase" [matTooltipPosition]="'above'"
+        >{{column.headerIcon}}</mat-icon
+      >
+      <ng-container *ngTemplateOutlet="columnFilter; context: {column: column}"></ng-container>
+    </span>
+    <ng-template #headerName>
+      <span class="column-header-content" *ngIf="!column.setHeaderName; else cellParamVal" [attr.data-cy]="'table-header' + column.dataCy"
+        >{{ getHeaderName(column.headerName) | cmlToTitleCase}}
+        <ng-container *ngTemplateOutlet="columnFilter; context: {column: column}"></ng-container>
+      </span>
+      <ng-template #cellParamVal>{{ column.setHeaderName(getHeaderName(column.headerName)) | cmlToTitleCase}}</ng-template>
+    </ng-template>
+  </div>
+</ng-template>
+<!-- Filter by column display -->
+<ng-template #columnFilter let-column="column">
+  <ng-container *ngIf="column.isColumnFilter">
+    <mat-icon
+      class="table-filter-action-icon"
+      [matMenuTriggerFor]="filterColumnMenu"
+      (click)="setColumnControl(getHeaderName(column.headerName))"
+      >filter_list</mat-icon
+    >
+    <mat-menu #filterColumnMenu="matMenu" class="filter-column-input-menu" xPosition="before">
+      <div (click)="$event.stopPropagation()">
+        <ng-container *ngTemplateOutlet="filteringColumnAction; context: {column: column}"></ng-container>
+      </div>
+    </mat-menu>
+  </ng-container>
+</ng-template>
+<!-- Filtering column input action menu -->
+<ng-template #filteringColumnAction let-column="column">
+  <form class="d-flex flex-column justify-content-center align-items-center filter-form-fields filter-form-column">
+    <lyn-dyn-form
+      class="w-100"
+      width="100%"
+      *ngIf="formColumnInput.length && formColumnGroup"
+      [fieldControl]="getFormControl(column.headerName)"
+      (valueChanges)="handleColumnFiltering(column.headerName, $event)"
+      (click)="$event.stopPropagation()"
+    ></lyn-dyn-form>
+    <button mat-raised-button color="primary" (click)="clearColumnFilter()">Clear Filter</button>
+  </form>
+</ng-template>
+<!-- Group by parent level filter icon menu display -->
+<ng-template #groupByFilter let-column="column">
+  <ng-container *ngIf="column.displayGroupByFilter">
+    <!-- As feature grows can remove this ngIf to display mat-menu action icon -->
+    <button
+      *ngIf="!column.displayGroupByFilter"
+      class="grid-view-header-menu"
+      mat-icon-button
+      [matMenuTriggerFor]="menu"
+      [attr.data-cy]="'filter-menu' + column.dataCy"
+    >
+      <mat-icon>filter_list</mat-icon>
+    </button>
+    <mat-menu #menu>
+      <button
+        mat-menu-item
+        (click)="groupBy($event, getHeaderName(column.headerName));"
+        [attr.data-cy]="'filter-action' + column.dataCy + 'Group By Field'"
+      >
+        Group By This Field
+      </button>
+      <button
+        mat-menu-item
+        (click)="unGroupBy($event, getHeaderName(column.headerName));"
+        [attr.data-cy]="'filter-action' + column.dataCy + 'Ungroup By Field'"
+      >
+        Ungroup
+      </button>
+    </mat-menu>
+  </ng-container>
+</ng-template>
+<!-- Cell data type output display -->
+<ng-template #cellType let-column="column" let-row="row">
+  <ng-container [ngSwitch]="column.cellType">
+    <!-- Button cell -->
+    <ng-container *ngSwitchCase="tableCellEnums.BUTTON">
+      <button
+        *ngIf="!hiddenButton(column.hiddenCellButton(row)) && column.icon"
+        mat-flat-button
+        class="cell-button"
+        [ngClass]="{'hidden': column.displayGroupByFilter}"
+        [attr.data-cy]="'btn-' + column.dataCy"
+        (click)="cellClick(column.cellParam(row))"
+        [attr.aria-label]="'btn-' + column.dataCy"
+      >
+        <lyn-icon [iconConfig]="column.icon"></lyn-icon>
+      </button>
+      <button
+        *ngIf="!hiddenButton(column.hiddenCellButton(row)) && column.buttonText && !column.icon"
+        mat-raised-button
+        color="accent"
+        class="cell-button"
+        [ngClass]="{'hidden': column.displayGroupByFilter}"
+        [attr.data-cy]="'btn-' + column.dataCy"
+        (click)="cellClick(column.cellParam(row))"
+      >
+        {{column.buttonText}}
+      </button>
+    </ng-container>
+    <!-- Truncate Text values within a cell -->
+    <ng-container *ngSwitchCase="tableCellEnums.TRUNCATE">
+      <span
+        class="d-flex flex-row justify-content-start align-items-center"
+        [ngClass]="{'hidden': column.displayGroupByFilter}"
+        *ngIf="!column.cellParamValue; else cellParamVal"
+        >{{getCellRowValue(column.headerName, row) | truncate:[15]}}
+        <button
+          mat-flat-button
+          class="cell-button"
+          [ngClass]="{'hidden': column.displayGroupByFilter}"
+          [attr.data-cy]="'truncate-btn-' + column.dataCy"
+          (click)="cellClick(row[column.headerName])"
+        >
+          More info
+        </button>
+      </span>
+      <ng-template #cellParamVal>
+        <span [ngClass]="{'hidden': column.displayGroupByFilter}">
+          {{ column.cellParamValue(getCellRowValue(column.headerName, row) | truncate:[20])}}
+        </span>
+        <button
+          mat-flat-button
+          class="cell-button"
+          [ngClass]="{'hidden': column.displayGroupByFilter}"
+          [attr.data-cy]="'truncate-btn-' + column.dataCy"
+          (click)="cellClick(row[column.headerName])"
+        >
+          More info
+        </button>
+      </ng-template>
+    </ng-container>
+    <!-- Icon Cell -->
+    <ng-container *ngSwitchCase="tableCellEnums.ICON">
+      <lyn-icon
+        [ngClass]="{'hidden': column.displayGroupByFilter}"
+        [iconConfig]="column.cellParam(getCellRowValue(column.headerName, row))"
+      ></lyn-icon>
+    </ng-container>
+    <ng-container *ngSwitchCase="tableCellEnums.LINK">
+      <ng-container *ngIf="column.icon; else defaultLink">
+        <a
+          class="cell-icon pointer"
+          *ngIf="row[column.headerName]"
+          [class]="column.cellParam.class"
+          [ngClass]="{'hidden': column.displayGroupByFilter}"
+          (click)="openLink(row[column.headerName])"
+        >
+          <lyn-icon [iconConfig]="column.icon"></lyn-icon>
+        </a>
+      </ng-container>
+      <ng-template #defaultLink>
+        <a
+          class="cell-icon pointer"
+          [class]="column.cellParam.class"
+          [ngClass]="{'hidden': column.displayGroupByFilter}"
+          (click)="cellClick(getCellRowValue(column.headerName, row))"
+        >
+          {{getCellRowValue(column.headerName, row)}}
+        </a>
+      </ng-template>
+    </ng-container>
+    <!-- Click Action Cell -->
+    <ng-container *ngSwitchCase="tableCellEnums.CLICK_ACTION">
+      <span class="pointer" [ngClass]="{'hidden': column.displayGroupByFilter}" (click)="cellClick(column.cellParam(row))">
+        {{getCellRowValue(column.headerName, row)}}
+      </span>
+    </ng-container>
+    <!-- Select checkbox Cell -->
+    <ng-container *ngSwitchCase="tableCellEnums.SELECT">
+      <mat-checkbox
+        *ngIf="isMultiSelect; else singleSelect"
+        class="table-data-checkbox"
+        (click)="$event.stopPropagation()"
+        (change)="$event ? selectedRowItems.toggle(row) : null"
+        [checked]="selectedRowItems.isSelected(row)"
+        [aria-label]="checkboxLabel(row)"
+      >
+      </mat-checkbox>
+      <ng-template #singleSelect>
+        <mat-checkbox
+          (click)="$event.stopPropagation()"
+          (change)="handleSingleSelect($event, row)"
+          [checked]="selection.isSelected(row)"
+          [aria-label]="checkboxLabel(row)"
+        >
+        </mat-checkbox>
+      </ng-template>
+    </ng-container>
+    <!-- Default text Cell -->
+    <ng-container *ngSwitchDefault>
+      <span [ngClass]="{'hidden': column.displayGroupByFilter}" *ngIf="!column.cellParamValue; else cellParamVal"
+        >{{getCellRowValue(column.headerName, row)}}
+      </span>
+      <ng-template #cellParamVal>
+        <span [ngClass]="{'hidden': column.displayGroupByFilter}">
+          {{ column.cellParamValue(getCellRowValue(column.headerName, row))}}
+        </span>
+      </ng-template>
+    </ng-container>
+  </ng-container>
+</ng-template>

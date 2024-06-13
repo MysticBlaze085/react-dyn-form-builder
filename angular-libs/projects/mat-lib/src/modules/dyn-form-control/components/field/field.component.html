@@ -1,0 +1,313 @@
+<!-- Field control display outputs through depending on instanceOf FieldControlHelper  -->
+<ng-container *ngIf="fieldControl && !fieldControl.hidden">
+  <ng-container [ngSwitch]="fieldControl.controlType">
+    <!-- Checkbox Field -->
+    <ng-container *ngSwitchCase="fieldControlEnums.CheckBox">
+      <mat-checkbox
+        [ngStyle]="fieldStyle"
+        [formControl]="formControl[fieldControl.controlName]"
+        [checked]="fieldControl.value"
+        [required]="fieldControl.required"
+        [attr.data-cy]="fieldControl.label"
+        >{{ fieldControl.label }}</mat-checkbox
+      >
+      <mat-hint *ngIf="fieldControl.hint" class="mat-checkbox-hint">
+        {{fieldControl.hint }}
+        <lyn-icon *ngIf="fieldControl.info" class="pointer" [matTooltip]="fieldControl.info" [matTooltipPosition]="'right'"></lyn-icon>
+      </mat-hint>
+      <mat-error *ngIf="formControl[fieldControl.controlName].touched && formControl[fieldControl.controlName].errors?.required">
+        {{fieldControl.errorMessage}}
+      </mat-error>
+      <mat-error
+        *ngIf="formControl[fieldControl.controlName].touched && formControl[fieldControl.controlName].errors?.customInvalidMessage"
+      >
+        {{ formControl[fieldControl.controlName].errors?.customInvalidMessage.message }}
+      </mat-error>
+    </ng-container>
+    <!-- Textarea Field -->
+    <ng-container *ngSwitchCase="fieldControlEnums.Textarea">
+      <mat-form-field
+        [appearance]="fieldControl.appearance"
+        [ngClass]="fieldControl.class"
+        [style]="{'width': width}"
+        [ngStyle]="fieldStyle"
+      >
+        <mat-label *ngIf="fieldControl.label">{{ fieldControl.label }}</mat-label>
+        <textarea
+          matInput
+          lynTrimVal
+          [formControl]="formControl[fieldControl.controlName]"
+          [required]="fieldControl.required"
+          cdkTextareaAutosize
+          [cdkAutosizeMinRows]="fieldControl.textareaMinRows"
+          [cdkAutosizeMaxRows]="fieldControl.textareaMaxRows"
+          [attr.data-cy]="fieldControl.dataCy"
+          autocomplete="off"
+          (wheel)="'passive'"
+        >
+        ></textarea
+        >
+        <mat-hint *ngIf="fieldControl.hint">
+          {{fieldControl.hint }}
+          <lyn-icon *ngIf="fieldControl.info" class="pointer" [matTooltip]="fieldControl.info" [matTooltipPosition]="'right'"></lyn-icon>
+        </mat-hint>
+        <mat-error *ngIf="formControl[fieldControl.controlName].touched && formControl[fieldControl.controlName].errors?.required">
+          {{fieldControl.errorMessage}}
+        </mat-error>
+        <mat-error
+          *ngIf="formControl[fieldControl.controlName].touched && formControl[fieldControl.controlName].errors?.customInvalidMessage"
+        >
+          {{ formControl[fieldControl.controlName].errors?.customInvalidMessage.message }}
+        </mat-error>
+      </mat-form-field>
+    </ng-container>
+    <!-- Password Field -->
+    <ng-container *ngSwitchCase="fieldControlEnums.Password">
+      <mat-form-field
+        [appearance]="fieldControl.appearance"
+        [ngClass]="fieldControl.class"
+        [style]="{'width': width}"
+        [ngStyle]="fieldStyle"
+      >
+        <mat-label *ngIf="fieldControl.label">{{ fieldControl.label }}</mat-label>
+        <input
+          matInput
+          lynTrimVal
+          [type]="isHiddenPassword ? 'password' : 'text'"
+          [formControl]="formControl[fieldControl.controlName]"
+          [required]="fieldControl.required"
+          [attr.data-cy]="fieldControl.dataCy"
+          autocomplete="off"
+          (wheel)="'passive'"
+        />
+        <mat-icon matSuffix color="accent" class="pointer" (click)="isHiddenPassword = !isHiddenPassword">
+          {{ isHiddenPassword ? 'visibility_off' : 'visibility' }}
+        </mat-icon>
+        <mat-hint *ngIf="fieldControl.hint">
+          {{fieldControl.hint }}
+          <lyn-icon *ngIf="fieldControl.info" class="pointer" [matTooltip]="fieldControl.info" [matTooltipPosition]="'right'"></lyn-icon>
+        </mat-hint>
+        <mat-error *ngIf="formControl[fieldControl.controlName].touched && formControl[fieldControl.controlName].errors?.required">
+          {{fieldControl.errorMessage}}
+        </mat-error>
+        <mat-error
+          *ngIf="formControl[fieldControl.controlName].touched && formControl[fieldControl.controlName].errors?.customInvalidMessage"
+        >
+          {{ formControl[fieldControl.controlName].errors?.customInvalidMessage.message }}
+        </mat-error>
+      </mat-form-field>
+    </ng-container>
+    <!-- Insight Icon Field -->
+    <ng-container *ngSwitchCase="fieldControlEnums.InsightText">
+      <mat-form-field
+        class="insight-text-field"
+        [appearance]="fieldControl.appearance"
+        [ngClass]="{'warning-validation': formControl[fieldControl.controlName].errors?.customHintIcon && !formControl[fieldControl.controlName].errors?.customInvalidMessage}"
+        [style]="{'width': width}"
+        [ngStyle]="fieldStyle"
+      >
+        <mat-label *ngIf="fieldControl.label">{{ fieldControl.label }}</mat-label>
+        <span
+          matPrefix
+          *ngIf="fieldControl.icon?.type === iconTypeEnum.PRE && formControl[fieldControl.controlName].touched && formControl[fieldControl.controlName].errors?.required"
+        >
+          <lyn-icon [iconConfig]="fieldControl.icon"></lyn-icon>
+        </span>
+        <input
+          matInput
+          lynTrimVal
+          [formControl]="formControl[fieldControl.controlName]"
+          [required]="fieldControl.required"
+          [attr.data-cy]="fieldControl.dataCy"
+          autocomplete="off"
+          (wheel)="'passive'"
+        />
+        <span matSuffix>
+          <ng-container *ngIf="fieldControl.icon?.type === iconTypeEnum.SUFFIX">
+            <ng-container [ngSwitch]="fieldControl.icon?.eventType">
+              <ng-container *ngSwitchCase="iconEventType.WARNING">
+                <ng-container
+                  *ngIf="formControl[fieldControl.controlName].touched && formControl[fieldControl.controlName].errors?.customHintIcon"
+                >
+                  <lyn-icon class="pointer" [iconConfig]="fieldControl.icon"></lyn-icon>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngSwitchDefault>
+                <lyn-icon class="pointer" [iconConfig]="fieldControl.icon" (click)="onResetFormValue()"></lyn-icon>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </span>
+
+        <mat-hint *ngIf="fieldControl.hint">
+          {{fieldControl.hint }}
+          <lyn-icon *ngIf="fieldControl.info" class="pointer" [matTooltip]="fieldControl.info" [matTooltipPosition]="'right'"></lyn-icon>
+        </mat-hint>
+        <mat-error *ngIf="formControl[fieldControl.controlName].touched && formControl[fieldControl.controlName].errors?.required">
+          {{fieldControl.errorMessage}}
+        </mat-error>
+        <mat-error
+          *ngIf="formControl[fieldControl.controlName].touched && formControl[fieldControl.controlName].errors?.customInvalidMessage"
+        >
+          {{ formControl[fieldControl.controlName].errors?.customInvalidMessage.message }}
+        </mat-error>
+      </mat-form-field>
+    </ng-container>
+    <!-- Integer Field -->
+    <ng-container *ngSwitchCase="fieldControlEnums.Int">
+      <mat-form-field
+        [appearance]="fieldControl.appearance"
+        [ngClass]="fieldControl.class"
+        [style]="{'width': width}"
+        [ngStyle]="fieldStyle"
+      >
+        <mat-label *ngIf="fieldControl.label">{{ fieldControl.label }}</mat-label>
+        <input
+          matInput
+          lynTrimVal
+          type="number"
+          [updateTo]="fieldControl.updateTo"
+          [formControl]="formControl[fieldControl.controlName]"
+          [required]="fieldControl.required"
+          [attr.data-cy]="fieldControl.dataCy"
+          autocomplete="off"
+          (wheel)="'passive'"
+        />
+        <span class="suffix-text" *ngIf="fieldControl.isSuffix" matSuffix>{{fieldControl.suffixValue}}</span>
+        <mat-hint *ngIf="fieldControl.hint">
+          {{fieldControl.hint }}
+          <lyn-icon *ngIf="fieldControl.info" class="pointer" [matTooltip]="fieldControl.info" [matTooltipPosition]="'right'"></lyn-icon>
+        </mat-hint>
+        <mat-error *ngIf="formControl[fieldControl.controlName].touched && formControl[fieldControl.controlName].errors?.required">
+          {{fieldControl.errorMessage}}
+        </mat-error>
+        <mat-error
+          *ngIf="formControl[fieldControl.controlName].touched && formControl[fieldControl.controlName].errors?.customInvalidMessage"
+        >
+          {{ formControl[fieldControl.controlName].errors?.customInvalidMessage.message }}
+        </mat-error>
+      </mat-form-field>
+    </ng-container>
+    <!-- Slider Field -->
+    <ng-container *ngSwitchCase="fieldControlEnums.Slider">
+      <mat-slide-toggle [formControl]="formControl[fieldControl.controlName]" [checked]="formControl[fieldControl.controlName]?.value"
+        >{{ fieldControl.label }}</mat-slide-toggle
+      >
+    </ng-container>
+    <!-- File Field -->
+    <ng-container *ngSwitchCase="fieldControlEnums.File">
+      <mat-form-field
+        [appearance]="fieldControl.appearance"
+        [ngClass]="fieldControl.class"
+        [style]="{'width': width}"
+        [ngStyle]="fieldStyle"
+      >
+        <mat-label *ngIf="fieldControl.label">{{ fieldControl.label }}</mat-label>
+        <input
+          matInput
+          lynTrimVal
+          [required]="fieldControl.required"
+          [disabled]="true"
+          [attr.data-cy]="fieldControl.dataCy"
+          [value]="formControl[fieldControl.controlName]?.value['name'] ?? null"
+        />
+        <mat-hint *ngIf="fieldControl.hint">
+          {{fieldControl.hint }}
+          <lyn-icon *ngIf="fieldControl.info" class="pointer" [matTooltip]="fieldControl.info" [matTooltipPosition]="'right'"></lyn-icon>
+        </mat-hint>
+        <mat-error *ngIf="formControl[fieldControl.controlName].touched && formControl[fieldControl.controlName].errors?.required">
+          {{fieldControl.errorMessage}}
+        </mat-error>
+        <mat-error
+          *ngIf="formControl[fieldControl.controlName].touched && formControl[fieldControl.controlName].errors?.customInvalidMessage"
+        >
+          {{ formControl[fieldControl.controlName].errors?.customInvalidMessage.message }}
+        </mat-error>
+      </mat-form-field>
+      <button
+        mat-raised-button
+        color="accent"
+        style="margin-bottom: 17px; width: 100%; margin-top: 0.5rem"
+        (click)="file.click()"
+        [disabled]="fieldControl.disabled"
+        [attr.data-cy]="fieldControl.dataCy"
+        class="load-file-btn"
+      >
+        <input
+          #file
+          type="file"
+          [attr.data-cy]="fieldControl.dataCy"
+          hidden="true"
+          (change)="fileValue($event)"
+          aria-label="Selected Files Upload"
+        />
+        {{fieldControl.buttonText}}
+      </button>
+    </ng-container>
+    <!-- Custom Disabled Field -->
+    <ng-container *ngSwitchCase="fieldControlEnums.CustomDisplay">
+      <mat-form-field
+        [appearance]="fieldControl.appearance"
+        [ngClass]="fieldControl.class"
+        [style]="{'width': width}"
+        [ngStyle]="fieldStyle"
+      >
+        <mat-label *ngIf="fieldControl.label">{{ fieldControl.label }}</mat-label>
+        <input
+          matInput
+          lynTrimVal
+          [value]="(customDisplay.change$ | async)"
+          autocomplete="off"
+          (wheel)="'passive'"
+          [disabled]="true"
+          [attr.data-cy]="'Display Input'"
+        />
+        <input
+          style="visibility: hidden"
+          matInput
+          lynTrimVal
+          [formControl]="formControl[fieldControl.controlName]"
+          [required]="fieldControl.required"
+          [attr.data-cy]="fieldControl.dataCy"
+          autocomplete="off"
+          (wheel)="'passive'"
+        />
+      </mat-form-field>
+    </ng-container>
+    <!-- Default Field -->
+    <ng-container *ngSwitchDefault>
+      <mat-form-field
+        [appearance]="fieldControl.appearance"
+        [ngClass]="fieldControl.class"
+        [style]="{'width': width}"
+        [ngStyle]="fieldStyle"
+      >
+        <mat-label *ngIf="fieldControl.label">{{ fieldControl.label }}</mat-label>
+        <input
+          matInput
+          lynTrimVal
+          [type]="fieldControl.controlType"
+          [formControl]="formControl[fieldControl.controlName]"
+          [required]="fieldControl.required"
+          [attr.data-cy]="fieldControl.dataCy"
+          autocomplete="off"
+          (wheel)="'passive'"
+        />
+        <span *ngIf="fieldControl.isSuffix" matSuffix>{{fieldControl.suffixValue}}</span>
+        <mat-hint *ngIf="fieldControl.hint">
+          {{fieldControl.hint }}
+          <lyn-icon *ngIf="fieldControl.info" class="pointer" [matTooltip]="fieldControl.info" [matTooltipPosition]="'right'"></lyn-icon>
+        </mat-hint>
+        <mat-error *ngIf="formControl[fieldControl.controlName].touched && formControl[fieldControl.controlName].errors?.required">
+          {{fieldControl.errorMessage}}
+        </mat-error>
+
+        <mat-error
+          *ngIf="formControl[fieldControl.controlName].touched && formControl[fieldControl.controlName].errors?.customInvalidMessage"
+        >
+          {{ formControl[fieldControl.controlName].errors?.customInvalidMessage.message }}
+        </mat-error>
+      </mat-form-field>
+    </ng-container>
+  </ng-container>
+</ng-container>

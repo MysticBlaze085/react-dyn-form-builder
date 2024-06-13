@@ -1,0 +1,16 @@
+.additional-selection {
+  opacity: 0.85;
+  font-size: 0.85em;
+}
+
+:host.mat-option:first-child .mat-pseudo-checkbox {
+  display: none;
+}
+
+.action-buttons {
+  z-index: 1000;
+}
+
+.manage-file-btn {
+  margin-bottom: 17px;
+}

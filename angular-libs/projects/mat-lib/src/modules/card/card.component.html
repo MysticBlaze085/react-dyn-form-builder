@@ -1,0 +1,23 @@
+<mat-card [ngClass]="borderColor" class="d-flex flex-fill w-100">
+  @if(breadcrumb) {
+  <div class="d-flex flex-column card-wrapper mt-auto mb-auto">
+    <div class="d-flex flex-row justify-content-center align-items-center flex-fill">
+      <ng-container *ngIf="cardTitle$ | async as title">
+        <h3 id="lyn-card-title-label" class="m-auto">{{title}}</h3>
+      </ng-container>
+      @if(!(cardTitle$ | async)){
+      <strong *ngIf="!(cardTitle$ | async)"><ng-content select="[card-title]"></ng-content></strong>
+      }
+      <span class="flex-fill">
+        <ng-content></ng-content>
+      </span>
+      <ng-content select="[action-buttons]"></ng-content>
+    </div>
+  </div>
+  }
+  @if(!breadcrumb){
+  <div class="card-wrapper">
+    <ng-content></ng-content>
+  </div>
+  }
+</mat-card>
