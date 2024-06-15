@@ -1,0 +1,157 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+@import './pattern-theme';
+
+@mixin accordion-theme($theme) {
+  $config: mat-get-color-config($theme);
+  $primary: map-get($config, primary);
+  $accent: map-get($config, accent);
+  $warn: map-get($config, warn);
+
+
+  .mat-expansion-panel {
+    margin-bottom: 0.5rem !important;
+
+    &:has(.mat-expanded) {
+      .mat-expansion-panel-header {
+        background-color: mat.get-color-from-palette($primary) !important;
+        color: #FFFFFF !important;
+
+        .mat-expansion-panel-header-title {
+          color: #FFFFFF !important;
+        }
+
+        .mat-expansion-indicator::before {
+          color: #FFFFFF;
+        }
+
+        .mat-expansion-indicator::after {
+          color: #FFFFFF;
+        }
+      }
+    }
+
+    &:not(.mat-expanded) .mat-expansion-panel-header {
+      background-color: $rhapsody-secondary;
+      color: #333333;
+
+      .mat-expansion-panel-header-title {
+        color: #333333;
+      }
+    }
+
+    &:hover .mat-expansion-panel-header {
+      background-color: mat.get-color-from-palette($primary) !important;
+      color: #FFFFFF !important;
+
+      .mat-expansion-panel-header-title {
+        color: #FFFFFF !important;
+      }
+
+      .mat-expansion-indicator::before {
+        color: #FFFFFF;
+      }
+
+      .mat-expansion-indicator::after {
+        color: #FFFFFF;
+      }
+    }
+
+    &[ng-reflect-disabled="true"] {
+      .mat-expansion-panel-header {
+        background-color: $rhapsody-secondary;
+        color: rgba(0, 0, 0, 0.26) !important;
+
+        .mat-expansion-panel-header-title {
+          color: rgba(0, 0, 0, 0.26) !important;
+        }
+
+        &:hover {
+          background-color: $rhapsody-secondary !important;
+          color: rgba(0, 0, 0, 0.26) !important;
+        }
+      }
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+@mixin accordion-dark-theme($theme) {
+  $config: mat-get-color-config($theme);
+  $primary: map-get($config, primary);
+  $accent: map-get($config, accent);
+  $warn: map-get($config, warn);
+
+
+  .mat-expansion-panel {
+    margin-bottom: 0.5rem !important;
+
+    &:has(.mat-expanded) {
+      .mat-expansion-panel-header {
+        background-color: mat.get-color-from-palette($primary) !important;
+        color: #FFFFFF !important;
+
+        .mat-expansion-panel-header-title {
+          color: #FFFFFF !important;
+        }
+
+        .mat-expansion-indicator::before {
+          color: #FFFFFF;
+        }
+
+        .mat-expansion-indicator::after {
+          color: #FFFFFF;
+        }
+      }
+    }
+
+    &:not(.mat-expanded) .mat-expansion-panel-header {
+      background-color: $rhapsody-dark-secondary;
+      color: #EDEDED;
+
+      .mat-expansion-panel-header-title {
+        color: #EDEDED;
+      }
+    }
+
+    &:hover .mat-expansion-panel-header {
+      background-color: mat.get-color-from-palette($primary) !important;
+      color: #FFFFFF !important;
+
+      .mat-expansion-panel-header-title {
+        color: #FFFFFF !important;
+      }
+
+      .mat-expansion-indicator::before {
+        color: #FFFFFF;
+      }
+
+      .mat-expansion-indicator::after {
+        color: #FFFFFF;
+      }
+    }
+
+    &[ng-reflect-disabled="true"] {
+      .mat-expansion-panel-header {
+        background-color: $rhapsody-dark-secondary;
+        color: rgba(0, 0, 0, 0.26) !important;
+
+        .mat-expansion-panel-header-title {
+          color: rgba(0, 0, 0, 0.26) !important;
+        }
+
+        &:hover {
+          background-color: $rhapsody-dark-secondary !important;
+          color: rgba(0, 0, 0, 0.26) !important;
+        }
+      }
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

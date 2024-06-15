@@ -1,0 +1,161 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+
+/* Styles to be applied to buttons */
+$custom-button: mat.define-typography-level(
+  $font-family: 'Roboto',
+  $font-weight: 500,
+  $font-size: 14px,
+  $line-height: 1,
+  $letter-spacing: 'normal',
+);
+
+/* Styles to be applied to input-fields */
+$custom-input: mat.define-typography-level(
+  $font-family: 'Roboto',
+  $font-weight: 500,
+  $font-size: 14px,
+  $line-height: 1,
+  $letter-spacing: 'normal',
+);
+
+/* Merge custom configs into existing config */
+$custom-typography: map.merge(
+  mat.define-typography-config(/* 'button'-property will work out of the box */ $button: $custom-button),
+  (/* 'input'-property will have to be assigned under '@mixin typography' further below */ 'input': $custom-input)
+);
+
+/* Apply custom config */
+@include mat.all-component-typographies($custom-typography);
+
+@mixin typography($theme) {
+  $custom-typography-config: mat.get-typography-config($theme);
+  $config: mat-get-color-config($theme);
+  $primary: map-get($config, primary);
+  $accent: map-get($config, accent);
+
+  .mat-mdc-form-field {
+    @include mat.typography-level($custom-typography, 'input');
+    margin-top: 0.5rem;
+
+    .mdc-floating-label {
+      font-size: 10pt;
+      letter-spacing: 1px;
+    }
+
+    .mdc-text-field--outlined .mdc-floating-label--float-above {
+      font-size: 14px !important;
+    }
+
+    .mat-mdc-form-field-wrapper {
+      padding: 0;
+      margin: 0;
+    }
+    .suffix-text {
+      margin-right: 1rem !important;
+    }
+    .mat-mdc-form-field-infix {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .mat-mdc-option .mdc-list-item__primary-text {
+    font-size: 14px !important;
+  }
+
+  .nav-header .mdc-list-item__primary-text {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .mat-mdc-card {
+    padding: 0.5rem 1rem;
+
+    .mat-mdc-card-header {
+      .mat-mdc-card-title {
+        font-size: 20px;
+        margin-top: 0;
+      }
+    }
+
+    .mat-mdc-card-content {
+      padding: 0.5rem;
+    }
+  }
+
+  .mat-mdc-card-content:last-child {
+    padding-bottom: 0.5rem;
+  }
+
+  .mat-mdc-tab-group {
+    .mat-mdc-tab-body-wrapper {
+      .mat-mdc-tab-body {
+        margin: 0.5rem 0;
+      }
+    }
+  }
+
+  .mat-mdc-menu-panel {
+    padding: 0.5rem;
+    max-width: 350px !important;
+    .mat-mdc-menu-content {
+      margin: 0.5rem;
+    }
+
+    .mat-mdc-menu-item:hover {
+      background-color: #f4f4f4 !important;
+    }
+
+  }
+
+  .dark-theme .mat-mdc-menu-item:hover {
+    background-color: rgba(255, 255, 255, 0) !important;
+
+    .mat-mdc-menu-item-text{
+      color: #333333;
+    }
+    .mat-icon-no-color {
+      color: #333333;
+    }
+  }
+
+  .mat-mdc-menu-panel.mat-mdc-menu-panel.mat-menu-after {
+    max-width: 425px;
+  }
+
+  .dark-theme .mat-date-range-input-inner {
+    color: #f4f4f4 !important;
+  }
+
+  .dark-theme .time-range-content {
+    color: #f4f4f4 !important;
+  }
+
+  .dark-theme .mat-expansion-panel-header.mat-expanded {
+    border-top: 4px solid rgba(255, 255, 255, 0.5) !important;
+  }
+
+  .mat-mdc-snack-bar-container {
+    &.error-message {
+      --mdc-snackbar-container-color: #d50000;
+      --mat-mdc-snack-bar-button-color: #ffffff !important;
+      --mdc-snackbar-supporting-text-color: #ffffff;
+    }
+    &.success-message {
+      --mdc-snackbar-container-color: #15b600;
+      --mat-mdc-snack-bar-button-color: #ffffff !important;
+      --mdc-snackbar-supporting-text-color: #ffffff;
+    }
+    &.primary-message {
+      --mdc-snackbar-container-color: #8DC0FA;
+      --mat-mdc-snack-bar-button-color: #000000 !important;
+      --mdc-snackbar-supporting-text-color: #000000;
+      --mat-snack-bar-button-color: #000000 !important;
+    }
+  }
+
+  .mat-mdc-dialog-surface {
+    overflow: hidden;
+  }
+}

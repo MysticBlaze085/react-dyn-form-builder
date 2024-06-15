@@ -1,0 +1,58 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+@import './pattern-theme';
+
+@mixin table-theme($theme) {
+  $config: mat-get-color-config($theme);
+  $primary: map-get($config, primary);
+  $accent: map-get($config, accent);
+  $warn: map-get($config, warn);
+
+  .mat-mdc-header-row .mat-mdc-header-cell {
+    background-color: mat.get-color-from-palette($primary) !important;
+  }
+
+  .mat-mdc-footer-row .mat-mdc-footer-cell {
+    background-color: mat.get-color-from-palette($primary) !important;
+  }
+}
+
+@mixin table-dark-theme($theme) {
+  $config: mat-get-color-config($theme);
+  $primary: map-get($config, primary);
+  $accent: map-get($config, accent);
+  $warn: map-get($config, warn);
+
+  .mat-mdc-header-row .mat-mdc-header-cell {
+    background-color: mat.get-color-from-palette($primary) !important;
+  }
+
+  .mat-mdc-footer-row .mat-mdc-footer-cell {
+    background-color: mat.get-color-from-palette($primary) !important;
+  }
+
+  .expandable-row .mdc-data-table__cell:hover {
+    color: #333333 !important;
+  }
+
+  .highlighted .mdc-data-table__cell {
+    color: #333333;
+  }
+
+  .table-header {
+    background-color: #5E5E5E !important;
+
+    h1 {
+      color: #C6C6C6 !important;
+    }
+  }
+
+  .no-records p {
+    color: #C6C6C6 !important;
+  }
+
+  .dyn-table .table-container mat-table .expandable-row:hover {
+    background: $rhapsody-dark-secondary;
+    color: $rhapsody-secondary
+  }
+}

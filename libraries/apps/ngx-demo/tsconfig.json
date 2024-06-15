@@ -22,15 +22,15 @@
     "lib": [
       "ES2022",
       "dom"
-    ]
-  },
-  "paths": {
-    "@ngx-ang-mat": [
-      "./node_modules/ngx-ang-mat"
     ],
-    "@angular/*": [
-      "./node_modules/@angular/*"
-    ]
+    "paths": {
+      "@ngx-ang-mat": [
+        "../../packages/angular-material-pkg/dist/ngx-ang-mat"
+      ],
+      "@angular/*": [
+        "./node_modules/@angular/*"
+      ]
+    },
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

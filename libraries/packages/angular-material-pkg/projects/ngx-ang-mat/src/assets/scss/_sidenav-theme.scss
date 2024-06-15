@@ -1,0 +1,66 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+
+@mixin sidenav-theme($theme) {
+  $config: mat-get-color-config($theme);
+  $primary: map-get($config, primary);
+  $accent: map-get($config, accent);
+  $warn: map-get($config, warn);
+
+  .sidenav.mat-sidenav {
+    background-color: mat.get-color-from-palette($warn) !important;
+  }
+
+  .feature-content.mat-sidenav {
+    background-color: mat.get-color-from-palette($warn) !important;
+  }
+
+  .modal-drawer-content {
+    background-color: mat.get-color-from-palette($warn) !important;
+  }
+
+  .collapsed-sidenav {
+    background-color: mat.get-color-from-palette($warn) !important;
+  }
+  .nav-item .mdc-list-item__primary-text, .nav-header .mdc-list-item__primary-text {
+    color: white !important;
+  }
+  .nav-item {
+    &:hover {
+      background-color: mat.get-color-from-palette($primary) !important;
+      .mdc-list-item__primary-text {
+      color: white !important;
+    }
+  }
+  }
+  .nav-item.is-active {
+    background-color: mat.get-color-from-palette($primary) !important;
+  }
+
+  .is-active {
+    .mdc-list-item__primary-text {
+      color: white !important;
+    }
+  }
+  .mat-mdc-nav-list {
+    .mat-mdc-menu-item:hover:not([disabled]) {
+      background-color: mat.get-color-from-palette($primary) !important;
+      .mdc-list-item__primary-text {
+        color: white !important;
+      }
+      .mat-mdc-menu-item-text {
+        color: white !important;
+      }
+    }
+  }
+  .sub-nav-list {
+    background-color: rgba(126, 126, 126, .5) !important;
+    .nav-item-text {
+      color: white !important;
+    }
+  }
+  .nav-header:hover {
+    background-color: mat.get-color-from-palette($primary) !important;
+  }
+
+}

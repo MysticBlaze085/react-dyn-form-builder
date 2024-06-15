@@ -1,0 +1,49 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+@import './pattern-theme';
+
+@mixin tab-group-theme($theme) {
+  $config: mat-get-color-config($theme);
+  $primary: map-get($config, primary);
+  $accent: map-get($config, accent);
+  $warn: map-get($config, warn);
+
+    .mat-mdc-tab {
+      &.mdc-tab--active {
+        background-color: mat.get-color-from-palette($primary) !important;
+      }
+    }
+    .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+      color: #ffffff !important;
+    }
+
+    .mdc-tab__text-label {
+      .filter-menu mat-icon {
+        color: #ffffff !important
+      }
+    }
+
+    .mat-mdc-tab-header {
+      background-color: #f2f2f2 !important;
+    }
+  }
+
+  @mixin tab-group-dark-theme($theme) {
+    $config: mat-get-color-config($theme);
+    $primary: map-get($config, primary);
+    $accent: map-get($config, accent);
+    $warn: map-get($config, warn);
+
+      .mat-mdc-tab {
+        &.mdc-tab--active {
+          background-color: mat.get-color-from-palette($primary) !important;
+        }
+      }
+      .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+        color: #ffffff !important;
+      }
+
+      .mat-mdc-tab-header {
+        background-color: $rhapsody-dark-secondary !important;
+      }
+  }

@@ -1,0 +1,13 @@
+@use '@angular/material' as mat;
+@import '@angular/material/theming';
+
+@mixin feature-theme($theme) {
+  $config: mat-get-color-config($theme);
+  $primary: map-get($config, primary);
+  $accent: map-get($config, accent);
+
+  .feature-content {
+    background-color: mat.get-color-from-palette($primary);
+    color: white;
+  }
+}

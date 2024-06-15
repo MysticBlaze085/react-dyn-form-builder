@@ -1,0 +1,17 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+@import './pattern-theme';
+
+@mixin selection-list-dark-theme($theme) {
+  $config: mat-get-color-config($theme);
+  $primary: map-get($config, primary);
+  $accent: map-get($config, accent);
+  $warn: map-get($config, warn);
+
+  .alerts-v2-list-container  {
+    background-color: $rhapsody-dark-secondary !important;
+    .mat-selection-list .mdc-list-item__primary-text strong {
+      font-weight: 400 !important;
+    }
+  }
+}

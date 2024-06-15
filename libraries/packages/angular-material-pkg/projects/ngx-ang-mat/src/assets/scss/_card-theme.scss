@@ -1,0 +1,166 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+
+@mixin card-theme($theme) {
+  $config: mat-get-color-config($theme);
+  $primary: map-get($config, primary);
+  $accent: map-get($config, accent);
+  $warn: map-get($config, warn);
+
+  lyn-card .mat-mdc-card {
+    border-top: 6px solid mat.get-color-from-palette($primary);
+  }
+
+  .signup {
+    background-color: mat.get-color-from-palette($warn) !important;
+  }
+
+  .dark-theme lyn-card .mat-mdc-card {
+    border-top: 6px solid rgba(255, 255, 255, 0.5) !important;
+  }
+
+  #lyn-card-title-label {
+    color: mat.get-color-from-palette($primary);
+  }
+
+  .gateway-domain-filter {
+    border-top: 6px solid mat.get-color-from-palette($primary);
+  }
+
+  .gateways-list-container {
+    .is-selected {
+      border: 2px solid mat.get-color-from-palette($primary);
+      background-color: rgba(255, 255, 255, 0);
+    }
+  }
+
+  .proxies-list-container {
+    .is-selected {
+      border: 2px solid mat.get-color-from-palette($primary);
+      background-color: rgba(255, 255, 255, 0);
+    }
+  }
+
+  .gateways-container {
+    .gateway-item-title {
+      color: mat.get-color-from-palette($primary);
+      background-color: rgba(255, 255, 255, 0);
+    }
+  }
+
+  .alerting-workflow-content-wrapper {
+    margin: 0.5rem 0.5rem 0px;
+    .alerting-list-container {
+      margin: 0.5rem;
+      padding: 0.5rem;
+      background-color: #f4f4f4;
+    }
+  }
+
+  .alerts-list-container {
+    .is-selected {
+      border: 2px solid mat.get-color-from-palette($primary);
+      background-color: rgba(255, 255, 255, 0);
+    }
+  }
+
+  .modal-template-container {
+    background-color: #f4f4f4;
+    .modal-template-title {
+      background-color: mat.get-color-from-palette($primary);
+    }
+    .modal-template-title-button {
+      background-color: mat.get-color-from-palette($primary);
+    }
+  }
+}
+
+
+@mixin card-dark-theme($theme) {
+  $config: mat-get-color-config($theme);
+  $primary: map-get($config, primary);
+  $accent: map-get($config, accent);
+  $warn: map-get($config, warn);
+
+  lyn-card .mat-mdc-card {
+    border-top: 6px solid mat.get-color-from-palette($primary);
+  }
+
+  .signup {
+    background-color: mat.get-color-from-palette($warn) !important;
+  }
+
+  .dark-theme lyn-card .mat-mdc-card {
+    border-top: 6px solid rgba(255, 255, 255, 0.5) !important;
+  }
+
+  #lyn-card-title-label {
+    color: mat.get-color-from-palette($primary);
+  }
+
+  .dark-theme #lyn-card-title-label {
+    color: white !important;
+  }
+
+  .dark-theme .gateway-item-title {
+    color: white !important;
+  }
+
+  .gateway-domain-filter {
+    border-top: 6px solid mat.get-color-from-palette($primary);
+  }
+
+  .gateways-list-container {
+    .is-selected {
+      border: 2px solid mat.get-color-from-palette($primary);
+      background-color: rgba(255, 255, 255, 0);
+    }
+  }
+
+  .gateways-container {
+      background-color: #4f4e4e;
+    .gateway-item-title {
+      color: mat.get-color-from-palette($primary);
+      background-color: rgba(255, 255, 255, 0);
+    }
+  }
+
+  .alerting-workflow-content-wrapper {
+    margin: 0.5rem 0.5rem 0px;
+    .alerting-list-container {
+      margin: 0.5rem;
+      padding: 0.5rem;
+      background-color: #4f4e4e !important;
+    }
+  }
+
+  .feature-wrapper form {
+    background-color: #4f4e4e !important;
+  }
+
+  .alerting-workflow-content-wrapper {
+    margin: 0.5rem 0.5rem 0px;
+    .alerting-list-container {
+      margin: 0.5rem;
+      padding: 0.5rem;
+      background-color: #f4f4f4;
+    }
+  }
+
+  .alerts-list-container {
+    .is-selected {
+      border: 2px solid mat.get-color-from-palette($primary);
+      background-color: rgba(255, 255, 255, 0);
+    }
+  }
+
+  .modal-template-container {
+    background-color: #f4f4f4;
+    .modal-template-title {
+      background-color: mat.get-color-from-palette($primary);
+    }
+    .modal-template-title-button {
+      background-color: mat.get-color-from-palette($primary);
+    }
+  }
+}
