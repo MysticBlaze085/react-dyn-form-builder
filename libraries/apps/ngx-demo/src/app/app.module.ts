@@ -1,11 +1,11 @@
 import { AppComponent } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { NgxAngMatComponent } from 'ngx-ang-mat';
+import { CardModule, NgxAngMatComponent } from 'ngx-ang-mat';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, NgxAngMatComponent],
+  imports: [BrowserModule, NgxAngMatComponent, CardModule],
   providers: [],
   bootstrap: [AppComponent],
 })
