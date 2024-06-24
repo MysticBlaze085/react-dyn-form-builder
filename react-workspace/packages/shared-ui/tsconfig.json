@@ -13,6 +13,7 @@
         "stories",
         "node_modules",
         "**/*.spec.ts",
-        "**/*.stories.ts"
+        "**/*.stories.ts",
+        "**/*.stories.tsx"
     ]
 }
