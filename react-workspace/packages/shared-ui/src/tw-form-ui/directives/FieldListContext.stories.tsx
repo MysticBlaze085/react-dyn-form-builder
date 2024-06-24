@@ -55,6 +55,7 @@ const meta: Meta<typeof App> = {
       </FieldListProvider>
     ),
   ],
+  tags: ['autodocs'],
 };
 export default meta;
 

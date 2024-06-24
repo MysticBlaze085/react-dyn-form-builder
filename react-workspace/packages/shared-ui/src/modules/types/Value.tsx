@@ -24,7 +24,10 @@ const styles = {
     text: {
         color: '#DDE1DC',
         fontSize: '18px',
-        lineHeight: '30px',
+        lineHeight: '1.4',
+        whiteSpace: 'pre-wrap',
+        wordWrap: 'break-word' as 'break-word',
+        overflowWrap: 'break-word' as 'break-word'
     },
 };
 

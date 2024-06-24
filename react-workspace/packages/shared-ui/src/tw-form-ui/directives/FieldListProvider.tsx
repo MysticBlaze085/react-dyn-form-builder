@@ -31,7 +31,7 @@ const fieldsReducer = (state: Record<ID, Field>, action: any): Record<ID, Field>
     case 'CLEAR':
       return {};
     case 'RESET':
-      return action.initialState; // Handle reset by returning the initial state
+      return action.initialState;
     default:
       return state;
   }
