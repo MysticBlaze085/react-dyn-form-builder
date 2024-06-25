@@ -152,3 +152,88 @@ const MyComponent = () => {
   // Component logic here, such as making a POST request or resetting the state
 };
 ```
+# AdkNgEquiv.tsx Overview
+
+This TypeScript file defines a set of React components and hooks inspired by Angular's directives and async handling, providing similar functionality within a React environment. It includes implementations for conditional rendering, list rendering with tracking, and a custom hook for handling asynchronous operations.
+
+## Components
+
+### NgIf
+
+The `NgIf` component is a straightforward implementation of conditional rendering. It renders its children only if the provided condition is true.
+
+#### Usage
+
+```tsx
+<NgIf condition={true}>
+  <div>This will be rendered</div>
+</NgIf>
+```
+
+### NgFor Component
+
+The `NgFor` component is a custom React component designed to mimic Angular's `*ngFor` directive. It allows for iterating over a list of items and rendering each item using a provided render function. Additionally, it supports a `trackBy` function to identify each item uniquely, which is useful for optimizing re-renders.
+
+#### Props
+
+- `items`: An array of items to be rendered.
+- `render`: A function that takes an item and its index as arguments and returns a React element. This function is called for each item in the `items` array.
+- `trackBy`: A function that takes an item and its index as arguments and returns a unique identifier for the item. This is useful for optimizing rendering performance.
+
+#### Usage Example
+
+```tsx
+const items = [{ id: 1, name: 'Item 1' }, { id: 2, name: 'Item 2' }];
+
+const renderItem = (item, index) => (
+  <div key={index}>
+    {item.name}
+  </div>
+);
+
+const MyComponent = () => (
+  <NgFor items={items} render={renderItem} trackBy={(item) => item.id} />
+);
+```
+
+# useAsync Hook
+
+The `useAsync` hook simplifies handling asynchronous operations in React components. It is designed to mimic the behavior of Angular's async pipe, providing an easy way to fetch, display, and manage asynchronous data such as API calls.
+
+## Features
+
+- **Data Fetching**: Automatically fetches data when the component mounts or the async function changes.
+- **Loading State**: Tracks the loading state of the asynchronous operation, allowing for conditional rendering of loading indicators.
+- **Error Handling**: Catches and stores any errors that occur during the asynchronous operation, enabling error display or handling within the component.
+- **Cleanup**: Prevents memory leaks by cleaning up after itself if the component unmounts before the asynchronous operation completes.
+
+## Usage
+
+To use the `useAsync` hook, you need to pass an asynchronous function that returns a promise. The hook will invoke this function and manage its result, loading state, and any errors that occur.
+
+### Example
+
+```tsx
+import React from 'react';
+import { useAsync } from './useAsync';
+
+const fetchData = () => {
+  return fetch('https://api.example.com/data')
+    .then(response => response.json());
+};
+
+const MyComponent = () => {
+  const { data, isLoading, error } = useAsync(fetchData);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  return (
+    <div>
+      <h1>Data</h1>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
+    </div>
+  );
+};
+
+export default MyComponent;
+```
