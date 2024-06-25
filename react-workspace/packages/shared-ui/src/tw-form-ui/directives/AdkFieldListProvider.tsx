@@ -5,7 +5,7 @@ import {Field} from '../models'
 // Define types
 type ID = string | number;
 
-export interface FieldListContextType<T extends Field> {
+export interface AdkFieldListContextType<T extends Field> {
   fields: T[];
   get: (id: ID) => T | undefined;
   add: (...newFields: T[]) => void;
@@ -16,7 +16,7 @@ export interface FieldListContextType<T extends Field> {
 }
 
 // Create context
-export const FieldListContext = createContext<FieldListContextType<Field> | undefined>(undefined);
+export const AdkFieldListContext = createContext<AdkFieldListContextType<Field> | undefined>(undefined);
 
 // Reducer to manage the fields state
 const fieldsReducer = (state: Record<ID, Field>, action: any): Record<ID, Field> => {
@@ -39,7 +39,7 @@ const fieldsReducer = (state: Record<ID, Field>, action: any): Record<ID, Field>
 
 // Hook to use the FieldListContext
 export const useFieldList = <T extends Field>() => {
-  const context = useContext(FieldListContext) as FieldListContextType<T>;
+  const context = useContext(AdkFieldListContext) as AdkFieldListContextType<T>;
   if (!context) {
     throw new Error('useFieldList must be used within a FieldListProvider');
   }
@@ -47,7 +47,7 @@ export const useFieldList = <T extends Field>() => {
 };
 
 // Provider component
-export const FieldListProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AdkFieldListProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const initialState = {}; // Define initial state
   const initialStateRef = useRef(initialState); // Store initial state in a ref
 
@@ -70,8 +70,8 @@ export const FieldListProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   }), [fields]);
 
   return (
-    <FieldListContext.Provider value={contextValue}>
+    <AdkFieldListContext.Provider value={contextValue}>
       {children}
-    </FieldListContext.Provider>
+    </AdkFieldListContext.Provider>
   );
 };

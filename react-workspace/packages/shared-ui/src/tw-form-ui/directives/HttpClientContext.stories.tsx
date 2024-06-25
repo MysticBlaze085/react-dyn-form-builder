@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import AdkHttpClientWrapper from './AdkHttpClientWrapper';
+import AdkHttpClientWrapper from './HttpClientWrapper';
 import React from 'react';
 
 const meta: Meta<typeof AdkHttpClientWrapper> = {
-  title: 'Directives/AdkHttpClientWrapper',
+  title: 'Directives/HttpClientWrapper',
   component: AdkHttpClientWrapper,
   argTypes: {
     adkUrl: { control: 'text' },

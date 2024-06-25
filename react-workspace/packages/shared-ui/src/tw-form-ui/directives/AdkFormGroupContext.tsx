@@ -1,8 +1,6 @@
 import { createContext, useContext, useMemo, useReducer, useRef } from "react";
 
-type ID = string | number;
-
-export interface FormGroup {
+export interface AdkFormGroup {
   generatedForm: any | undefined;
   edit: () => void;
   cancel: () => void;
@@ -10,7 +8,7 @@ export interface FormGroup {
   set: (form: any) => void;
 }
 
-export const FormGroupContext = createContext<FormGroup>(undefined);
+export const AdkFormGroupContext = createContext<AdkFormGroup>(undefined);
 
 // Reducer to manage FormGroup State
 const formGroupReducer = (state: any, action: any): any => {
@@ -28,15 +26,15 @@ const formGroupReducer = (state: any, action: any): any => {
   }
 };
 
-export const useFormGroup = <T extends FormGroup>() => {
-  const context = useContext(FormGroupContext) as FormGroup;
+export const useFormGroup = <T extends AdkFormGroup>() => {
+  const context = useContext(AdkFormGroupContext) as AdkFormGroup;
   if (!context) {
     throw new Error('useFormGroup must be used within FormGroupProvider');
   }
   return context;
 };
 
-export const FormGroupProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AdkFormGroupProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const initialState = {}; // Define initial state
   const initialStateRef = useRef(initialState); // Store initial state in a ref
 
@@ -51,8 +49,8 @@ export const FormGroupProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   }), [generatedForm]);
 
   return (
-    <FormGroupContext.Provider value={contextValue}>
+    <AdkFormGroupContext.Provider value={contextValue}>
       {children}
-    </FormGroupContext.Provider>
+    </AdkFormGroupContext.Provider>
   );
 };

@@ -1,8 +1,8 @@
-import { FormGroup, FormGroupProvider, useFormGroup } from "./FormGroupContext";
+import { AdkFormGroup, AdkFormGroupProvider, useFormGroup } from "./AdkFormGroupContext";
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useCallback, useEffect, useState } from "react";
 
-interface MyFormGroup extends FormGroup {
+interface MyFormGroup extends AdkFormGroup {
   id: number;
   firstName: string;
   lastName: string;
@@ -32,9 +32,9 @@ const MyComponent: React.FC = () => {
   };
 
   const setForm = useCallback(() => {
-    set(formState);
-  }, [formState, set]);
-
+    set((prevFormState) => ({ ...prevFormState, ...formState }));
+  }, []);
+  
   useEffect(() => {
     setForm();
   }, [setForm]);
@@ -48,7 +48,7 @@ const MyComponent: React.FC = () => {
             <input
               type="text"
               value={formState.firstName}
-              onChange={(e) => setFormState({ ...formState, firstName: e.target.value })}
+              onChange={(e) => setFormState((prevState) => ({ ...prevState, firstName: e.target.value }))}
               disabled={isDisabled}
             />
           </label>
@@ -59,7 +59,7 @@ const MyComponent: React.FC = () => {
             <input
               type="text"
               value={formState.lastName}
-              onChange={(e) => setFormState({ ...formState, lastName: e.target.value })}
+              onChange={(e) => setFormState((prevState) => ({ ...prevState, lastName: e.target.value }))}
               disabled={isDisabled}
             />
           </label>
@@ -70,7 +70,7 @@ const MyComponent: React.FC = () => {
             <input
               type="text"
               value={formState.fullName}
-              onChange={(e) => setFormState({ ...formState, fullName: e.target.value })}
+              onChange={(e) => setFormState((prevState)=> ({ ...prevState, fullName: e.target.value }))}
               disabled={isDisabled}
             />
           </label>
@@ -90,21 +90,22 @@ const MyComponent: React.FC = () => {
 };
 
 const App: React.FC = () => (
-  <FormGroupProvider>
+  <AdkFormGroupProvider>
     <MyComponent />
-  </FormGroupProvider>
+  </AdkFormGroupProvider>
 );
 
 const meta: Meta<typeof App> = {
-  title: "Directives/FormGroupProvider",
+  title: "Directives/AdkFormGroupProvider",
   component: App,
   decorators: [
     (Story) => (
-      <FormGroupProvider>
+      <AdkFormGroupProvider>
         <Story />
-      </FormGroupProvider>
+      </AdkFormGroupProvider>
     ),
   ],
+  tags: ['autodocs'],
 };
 export default meta;
 

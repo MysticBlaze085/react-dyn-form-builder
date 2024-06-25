@@ -2,8 +2,6 @@ import React, { ReactNode, createContext, useCallback, useContext, useMemo, useR
 
 import axios from 'axios';
 
-type ID = string | number;
-
 interface HttpResponse<T> {
   total: number;
   items: T[];
@@ -16,7 +14,7 @@ interface HttpClientState<T> {
 }
 
 interface HttpClientAction<T> {
-  type: 'FETCH_INIT' | 'FETCH_SUCCESS' | 'FETCH_FAILURE' | 'RESET';
+  type: 'FETCH_INIT' | 'FETCH_SUCCESS' | 'FETCH_FAILURE' | 'RESET' | 'POST_INIT' | 'POST_SUCCESS' | 'POST_FAILURE';
   payload?: HttpResponse<T>;
   error?: Error;
 }
@@ -24,6 +22,7 @@ interface HttpClientAction<T> {
 interface HttpClientContextType<T> {
   state: HttpClientState<T>;
   fetch: (url: string, page?: number, limit?: number) => void;
+  post: (url: string, data: any) => void;
   reset: () => void;
 }
 
@@ -43,6 +42,12 @@ const httpClientReducer = <T,>(state: HttpClientState<T>, action: HttpClientActi
       return { ...state, loading: false, data: action.payload! };
     case 'FETCH_FAILURE':
       return { ...state, loading: false, error: action.error! };
+    case 'POST_INIT':
+      return { ...state, loading: true };
+    case 'POST_SUCCESS':
+      return { ...state, loading: false, data: action.payload };
+    case 'POST_FAILURE':
+      return { ...state, loading: false, error: action.error };
     case 'RESET':
       return initialState;
     default:
@@ -69,6 +74,16 @@ export const HttpClientProvider: React.FC<{ children: ReactNode }> = ({ children
     }
   }, []);
 
+  const post = useCallback(async (url: string, data: any) => {
+    dispatch({ type: 'POST_INIT' });
+    try {
+      const response = await axios.post(url, data);
+      dispatch({ type: 'POST_SUCCESS', payload: response.data });
+    } catch (error) {
+      dispatch({ type: 'POST_FAILURE', error });
+    }
+  }, []);
+
   const reset = useCallback(() => {
     dispatch({ type: 'RESET' });
   }, []);
@@ -76,6 +91,7 @@ export const HttpClientProvider: React.FC<{ children: ReactNode }> = ({ children
   const contextValue = useMemo(() => ({
     state,
     fetch,
+    post,
     reset,
   }), [state, fetch, reset]);
 

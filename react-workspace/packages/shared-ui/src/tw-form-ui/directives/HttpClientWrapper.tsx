@@ -10,7 +10,7 @@ export interface AdkHttpClientProps {
 }
 
 const AdkHttpClient: React.FC<AdkHttpClientProps> = ({ adkUrl, adkPage = 1, adkLimit = 10 }) => {
-  const { state, fetch, reset } = useHttpClient<any>();
+  const { state, fetch, post, reset } = useHttpClient<any>();
 
   useEffect(() => {
     fetch(adkUrl, adkPage, adkLimit);
@@ -19,13 +19,20 @@ const AdkHttpClient: React.FC<AdkHttpClientProps> = ({ adkUrl, adkPage = 1, adkL
     };
   }, [fetch, reset, adkUrl, adkPage, adkLimit]);
 
-  const handleNextPage = () => {
-    fetch(adkUrl, Math.floor(state.data.items.length / adkLimit) + 1, adkLimit);
+  const handleNextPage = async () => {
+    await fetch(adkUrl, Math.floor(state.data.items.length / adkLimit) + 1, adkLimit);
   };
 
-  const handlePrevPage = () => {
-    fetch(adkUrl, Math.max(Math.floor(state.data.items.length / adkLimit) - 1, 1), adkLimit);
+  const handlePrevPage = async () => {
+    await fetch(adkUrl, Math.max(Math.floor(state.data.items.length / adkLimit) - 1, 1), adkLimit);
   };
+
+    // New method to handle POST requests
+    // const handleSubmit = async (postData) => {
+    //   const response = await post(adkUrl, postData);
+    //   // Handle response or state updates based on the POST request's result
+    //   console.log(response);
+    // };
 
   return (
     <div>
@@ -36,9 +43,11 @@ const AdkHttpClient: React.FC<AdkHttpClientProps> = ({ adkUrl, adkPage = 1, adkL
         ))}
       <p>Total: {state.data.total}</p>
       <span style={{ margin: '5px' }}></span>
-      <button onClick={handlePrevPage} disabled={adkPage === 1}>Previous Page</button>
+      <button onClick={handlePrevPage}>Previous Page</button>
       <span style={{ margin: '5px' }}></span>
       <button onClick={handleNextPage}>Next Page</button>
+      {/* Assuming there's a form or some input elements to gather postData from */}
+      {/* <button onClick={() => handleSubmit(postData)}>Submit Data</button> */}
     </div>
   );
 };
