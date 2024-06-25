@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 
-import FormGeneratorWrapper from '../modules/FormGeneratorWrapper';
+import FormGeneratorWrapper from '../components/FormGeneratorWrapper';
 import formInputConfig from './form.config';
 
 const ExampleFeature = () => {

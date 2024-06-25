@@ -1,5 +1,5 @@
-import { Button } from '../modules/components';
-import FieldRenderer from '../modules/FieldRenderer';
+import { Button } from '../components';
+import FieldRenderer from '../components/FieldRenderer';
 import React from 'react';
 import { Validators } from 'react-reactive-form';
 
