@@ -1,0 +1,17 @@
+services:
+#----------------------------------------------------------------
+  ui-shared-lib:
+    build:
+      context: ..
+      dockerfile: packages/shared-ui/Dockerfile
+    container_name: us-shared-lib
+    restart: on-failure
+    expose:
+      - '6006'
+    ports:
+      - "6006:80"
+    networks:
+      - uisharedlib-network
+#----------------------------------------------------------------
+networks:
+  uisharedlib-network:

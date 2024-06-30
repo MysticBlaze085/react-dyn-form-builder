@@ -1,4 +1,4 @@
-import Checkbox from "./Checkbox";
+import CheckboxControl from "./Checkbox";
 import React from "react";
 
 const CheckboxGroup = ({ handler, meta: { items } }) => (
@@ -7,7 +7,7 @@ const CheckboxGroup = ({ handler, meta: { items } }) => (
             {
                 items && items.length ?
                     items.map((item, index) => (
-                        <Checkbox key={index} handler={handler} meta={{ item }} />
+                        <CheckboxControl key={index} handler={handler} meta={{ item }} />
                     ))
                     : null
             }

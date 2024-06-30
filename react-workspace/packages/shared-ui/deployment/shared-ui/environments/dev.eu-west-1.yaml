@@ -1,0 +1,56 @@
+global:
+  gateway: "atlas-gateway"
+  clusterName: "rcp-dev-eu-west-1-core"
+  clusterDomain: "dev.eu-west-1.rcp.rhapsody.health"
+  nodeGroup: "control-plane"
+
+serviceDefinitions:
+  - name: atlas-console-ui
+    workload:
+      enabled: true
+      containerPorts:
+        - name: "ingress-port"
+          port: 8080
+      image:
+        repository: 976898467737.dkr.ecr.eu-west-1.amazonaws.com/atlas-console-ui
+        pullPolicy: IfNotPresent
+      envConfig:
+        # REACT_APP_ATLAS_CLIENT_ID: "256795700245913380@atlas"
+        # REACT_APP_ZITADEL_URL: "https://iam.dev.eu-west-1.rcp.rhapsody.health"
+        # REACT_APP_ATLAS_REDIRECT_URL: "https://ui.dev.eu-west-1.rcp.rhapsody.health/atlas-console-ui/"
+        # REACT_APP_ATLAS_IAM_PROJECT_ID: "256795697108508452"
+        # REACT_APP_ATLAS_BASE_URL: "https://api.dev.eu-west-1.rcp.rhapsody.health/v1/atlas"
+      resources:
+        enabled: true
+        cpuRequest: 100m
+        memoryRequest: 128Mi
+        memoryLimit: 512Mi
+        cpuLimit: 1000m
+      emptyDirVolumeMounts:
+        - name: 'nginx-cache'
+          mountPath: '/var/cache/nginx'
+          sizeLimit: 500Mi
+        - name: 'nginx-bitnami-logs'
+          mountPath: '/opt/bitnami/nginx/logs'
+          sizeLimit: 500Mi
+        - name: 'nginx-bitnami-cache'
+          mountPath: '/opt/bitnami/nginx/tmp'
+          sizeLimit: 500Mi
+        - name: 'nginx-bitnami-client-body-tmp'
+          mountPath: '/opt/bitnami/nginx/client_body_temp'
+          sizeLimit: 500Mi
+        - name: 'nginx-bitnami-client-proxy-tmp'
+          mountPath: '/opt/bitnami/nginx/proxy_temp'
+          sizeLimit: 500Mi
+        - name: 'nginx-bitnami-client-fastcgi-tmp'
+          mountPath: '/opt/bitnami/nginx/fastcgi_temp'
+          sizeLimit: 500Mi
+        - name: 'nginx-bitnami-client-uwsgi-tmp'
+          mountPath: '/opt/bitnami/nginx/uwsgi_temp'
+          sizeLimit: 500Mi
+        - name: 'nginx-bitnami-client-scgi-tmp'
+          mountPath: '/opt/bitnami/nginx/scgi_temp'
+          sizeLimit: 500Mi
+    ingress:
+      enabled: true
+      subdomain: "console"

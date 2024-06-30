@@ -1,4 +1,4 @@
-import Radio from "./Radio";
+import RadioControl from "./Radio";
 import React from "react";
 
 const RadioGroup = ({ handler, meta: { label, items } }) => (
@@ -10,9 +10,8 @@ const RadioGroup = ({ handler, meta: { label, items } }) => (
             </label>
             {
                 items && items.length ?
-
                     items.map((item, index) => (
-                        <Radio key={index} item={item} {...handler()}/>
+                        <RadioControl key={index} item={item} {...handler()} />
                     ))
                     : null
             }
