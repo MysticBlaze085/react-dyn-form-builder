@@ -1,7 +1,14 @@
 import Checkbox from "./Checkbox";
 import React from "react";
 
-const CheckboxGroup = ({ handler, meta: { items } }) => (
+interface CheckboxGroupProps {
+    handler: any;
+    meta: {
+        items: {id: string; value: string}[];
+    };
+}
+
+const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ handler, meta: { items } }) => (
     <div className="relative flex flex-col text-gray-700 bg-white shadow-md rounded-xl bg-clip-border mt-2">
         <nav className="flex min-w-[240px] flex-col gap-1 p-2 font-sans text-base font-normal text-blue-gray-700">
             {

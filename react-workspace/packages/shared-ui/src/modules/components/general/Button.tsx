@@ -1,19 +1,16 @@
+import { Button } from '@material-tailwind/react';
 import React from 'react';
 interface ButtonProps {
     children: React.ReactNode;
     [key: string]: any;
   }
   
- const Button: React.FC<ButtonProps> = (props) => {
+ const ButtonDefault: React.FC<ButtonProps> = (props) => {
     return (
-      <button
-        className="select-none rounded-lg bg-blue-500 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-        type="button"
-        {...props}
-      >
+      <Button placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} {...props}>
         {props.children}
-      </button>
+      </Button>
     );
   };
 
-  export default Button;
+  export default ButtonDefault;

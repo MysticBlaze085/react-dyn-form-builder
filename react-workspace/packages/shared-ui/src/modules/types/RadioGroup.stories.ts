@@ -4,11 +4,9 @@ import RadioGroup from "./RadioGroup";
 const meta = {
   title: "Field/Fields/RadioGroup",
   component: RadioGroup,
-  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ["autodocs"],
   parameters: {
-    // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
-    // layout: 'fullscreen',
+    layout: 'fullscreen',
   },
   args: {},
 } satisfies Meta<typeof RadioGroup>;
@@ -18,7 +16,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    handler: () => {},
+    handler: () => {
+      onclick: () => console.log("Radio clicked");
+      onChange: () => console.log("Radio changed");
+    },
     meta: {
       label: "Label",
       items: [

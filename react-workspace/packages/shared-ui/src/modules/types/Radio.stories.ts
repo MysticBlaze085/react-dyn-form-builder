@@ -1,30 +1,23 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import RadioControl from "./Radio";
+import { Meta, StoryObj } from '@storybook/react';
 
-const meta = {
-  title: "Field/Fields/Radio",
-  component: RadioControl,
-  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
-  tags: ["autodocs"],
-  parameters: {
-    // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
-    // layout: 'fullscreen',
-  },
+import Radio from './Radio';
+
+export default {
+  title: 'Field/Fields/Radio',
+  component: Radio,
+  tags: ['autodocs'],
+  parameters: {},
   args: {},
-} satisfies Meta<typeof RadioControl>;
+} as Meta<typeof Radio>;
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Primary: Story = {
+export const Primary: StoryObj<typeof Radio> = {
   args: {
     handler: () => ({
-      onClick: () => console.log("Radio clicked"),
+      onClick: () => console.log('Radio clicked'),
+      onChange: (e) => console.log('Radio changed', e.target.value),
     }),
     meta: {
-      item: { id: "1", value: "React.js" },
+      item: { id: '1', value: 'React.js' },
     },
   },
 };
-
-// export const LoggedOut: Story = {};

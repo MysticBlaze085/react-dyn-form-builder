@@ -1,7 +1,21 @@
 import RadioControl from "./Radio";
 import React from "react";
 
-const RadioGroup = ({ handler, meta: { label, items } }) => (
+interface RadioGroupProps {
+    handler: () => any;
+    meta: {
+        label: string;
+        items: {
+            id: string;
+            value: string;
+        }[];
+    };
+
+}
+
+const RadioGroup: React.FC<RadioGroupProps> = ({ ...props }) => {
+    const { handler, meta: { label, items } } = props;
+    return (
     <div className="relative flex flex-col text-gray-700 rounded-xl bg-clip-border mt-4">
         <nav className="flex min-w-[240px] flex-col gap-1 p-2 font-sans text-base font-normal text-blue-gray-700">
             <label
@@ -11,12 +25,12 @@ const RadioGroup = ({ handler, meta: { label, items } }) => (
             {
                 items && items.length ?
                     items.map((item, index) => (
-                        <RadioControl key={index} item={item} {...handler()} />
+                        <RadioControl key={index} meta={{ item }} handler={handler} />
                     ))
                     : null
             }
         </nav>
     </div>
-);
+)};
 
 export default RadioGroup;

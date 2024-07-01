@@ -6,9 +6,15 @@
         "esModuleInterop": true,
         "module": "commonJS",
         "jsx": "react-jsx",
-        "lib": ["dom", "esnext"],
+        "lib": [
+            "dom",
+            "esnext"
+        ],
     },
-    "include": ["src/**/*", "index.tsx"],
+    "include": [
+        "src/**/*",
+        "index.tsx"
+    ],
     "exclude": [
         "stories",
         "node_modules",
