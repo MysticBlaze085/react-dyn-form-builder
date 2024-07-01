@@ -7,7 +7,12 @@ interface ButtonProps {
   
  const ButtonDefault: React.FC<ButtonProps> = (props) => {
     return (
-      <Button placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} {...props}>
+      <Button 
+        ripple={true}
+        placeholder=""
+        onPointerEnterCapture={() => {}}
+        onPointerLeaveCapture={() => {}}
+        {...props}>
         {props.children}
       </Button>
     );

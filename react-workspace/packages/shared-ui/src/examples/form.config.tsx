@@ -1,4 +1,4 @@
-import { Button } from '../modules/components';
+import { ButtonDefault } from '../modules/components';
 import FieldRenderer from '../modules/FieldRenderer';
 import React from 'react';
 import { Validators } from 'react-reactive-form';
@@ -89,18 +89,18 @@ const formInputConfig = {
                 const isValid = status === 'VALID' && value.terms === true;
                 return (
                     <div>
-                        <Button
+                        <ButtonDefault
                             style={{ marginRight: '5px' }}
-                            color="primary"
+                            color="blue"
                             variant="contained"
                             disabled={!isValid}
                             onClick={handleSubmit}
                         >
                             Submit
-                        </Button>
-                        <Button variant="outlined" onClick={status === 'DISABLED' ? handleEditMode : handleCancelMode}>
+                        </ButtonDefault>
+                        <ButtonDefault variant="outlined" onClick={status === 'DISABLED' ? handleEditMode : handleCancelMode}>
                             {status === 'DISABLED' ? `Edit` : `Cancel`}
-                        </Button>
+                        </ButtonDefault>
                     </div>
                 );
             },

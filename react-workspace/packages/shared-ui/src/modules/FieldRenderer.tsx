@@ -4,7 +4,7 @@ import TextFieldControl, { TextFieldProps } from "./types/TextField";
 
 import CheckboxGroup from "./types/CheckboxGroup";
 import { RadioProps } from "./types/Radio";
-import Select from "./types/Select";
+import SelectDefault from "./types/Select";
 import TextareaField from "./types/TextareaField";
 
 export const FieldRenderer = (type: string): React.FC<CheckboxProps | RadioProps | TextFieldProps | any> => {
@@ -22,7 +22,7 @@ export const FieldRenderer = (type: string): React.FC<CheckboxProps | RadioProps
         case 'CheckboxGroup':
             return CheckboxGroup;
         case 'Select':
-            return Select;
+            return SelectDefault;
         case 'Value':
             return Value;
         default:

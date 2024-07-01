@@ -1,18 +1,26 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Select from './Select';
+import SelectControl from './Select';
+import React from 'react';
 
 const meta = {
   title: 'Field/Fields/Select',
-  component: Select,
-  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
+  component: SelectControl,
   tags: ['autodocs'],
   parameters: {
-    // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
-    // layout: 'fullscreen',
+    layout: 'fullscreen',
   },
+  decorators: [
+    (Story) => (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+        <div style={{ width: '500px' }}>
+        <Story />
+        </div>
+      </div>
+    ),
+  ],
   args: {
   },
-} satisfies Meta<typeof Select>;
+} satisfies Meta<typeof SelectControl>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -29,5 +37,6 @@ export const Primary: Story = {
         { value: 'washington', label: 'Washington' },
       ]
     },
+    defaultValue: 'brazil',
   },
 };
