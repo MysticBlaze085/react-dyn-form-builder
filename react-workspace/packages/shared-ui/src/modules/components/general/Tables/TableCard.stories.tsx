@@ -2,8 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
 
 import React from 'react';
-import Table from './Table';
+// import Table from './Table';
 import TableCard from "./TableCard";
+import TableDefault from './Table';
 
 const meta: Meta<typeof TableCard> = {
   title: 'Components/General/Tables/Table Card',
@@ -50,20 +51,20 @@ export const Primary: Story = {
             icon:<UserPlusIcon strokeWidth={2} className="h-4 w-4" />
         }
     ],
-    children: <Table headers={["Name", "Job", "Date", ""]} rows={[{
+    children: <TableDefault isDraggable={true} isSortable={true} headers={["Name", "Job", "Date", ""]} rows={[{
         name: "John Michael",
         job: "Manager",
-        date: "23/04/18",
+        date: "23/04/10",
       },
       {
         name: "Alexa Johnson",
         job: "CEO",
-        date: "23/04/18",
+        date: "23/04/01",
       },
       {
         name: "Sierra Brooks",
         job: "Designer",
-        date: "23/04/18",
+        date: "23/04/05",
       },
       {
         name: "Thomas Smith",
@@ -73,7 +74,7 @@ export const Primary: Story = {
       {
         name: "Jenna Kian",
         job: "Marketing",
-        date: "23/04/18",
+        date: "23/04/11",
       }
     ]}  />,
   },
@@ -99,25 +100,25 @@ export const WithoutHeaderAndFooter: Story = {
     showFooter: false,
     currentPage: 1,
     totalPages: 5,
-    children: <Table headers={["Name", "Job", "Date", ""]} rows={[{
+    children: <TableDefault isDraggable={true} isSortable={true} headers={["Name", "Job", "Date", ""]} rows={[{
         name: "John Michael",
         job: "Manager",
-        date: "23/04/18",
+        date: "23/04/10",
       },
       {
         name: "Alexa Johnson",
         job: "CEO",
-        date: "23/04/18",
+        date: "23/04/02",
       },
       {
         name: "Sierra Brooks",
         job: "Designer",
-        date: "23/04/18",
+        date: "23/04/05",
       },
       {
         name: "Thomas Smith",
         job: "Developer",
-        date: "23/04/18",
+        date: "23/04/05",
       },
       {
         name: "Jenna Kian",

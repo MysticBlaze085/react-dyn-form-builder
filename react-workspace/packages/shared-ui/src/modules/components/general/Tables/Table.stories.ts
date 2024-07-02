@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import DefaultTable from "./Table";
+import TableDefault from './Table';
 
 const meta = {
   title: 'Components/General/Tables/DefaultTable',
@@ -10,7 +11,7 @@ const meta = {
   },
   args: {
   },
-} satisfies Meta<typeof DefaultTable>;
+} satisfies Meta<typeof TableDefault>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -44,7 +45,8 @@ export const Primary: Story = {
       job: "Marketing",
       date: "23/04/01",
     }
-    ]
+    ],
+    isSortable: true
   }
 };
 

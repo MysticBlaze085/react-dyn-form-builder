@@ -1,10 +1,11 @@
+import { SortableTableProvider, useSortableTable } from "../../../../tw-form-ui/directives";
+
 import {
   ChevronUpDownIcon,
 } from "@heroicons/react/24/outline";
 import React from 'react';
 import { Typography } from "@material-tailwind/react";
 
-// Define props interfaces
 interface TableRow {
   [key: string]: any;
 }
@@ -19,12 +20,11 @@ interface DefaultTableProps {
 const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
   const [isDraggable, setIsDraggable] = React.useState(props.isDraggable);
   const [isSortable, setIsSortable] = React.useState(props.isSortable);
-
-  const [tableProps, setTableProps] = React.useState(props);
   const [headers, setHeaders] = React.useState(props.headers);
   const [rows, setRows] = React.useState(props.rows);
-  const [sortConfig, setSortConfig] = React.useState({ key: null, direction: 'ascending' });
   const [draggedColIndex, setDraggedColIndex] = React.useState(null);
+
+  const { rowData, sortRows, sortConfig } = useSortableTable();
 
   const handleDragStart = (index) => (event) => {
     setDraggedColIndex(index);
@@ -33,16 +33,16 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
   const handleDragOver = (event) => {
     event.preventDefault(); // Necessary to allow dropping
   };
-  
+
   const handleDrop = (targetIndex) => (event) => {
     event.preventDefault();
     if (draggedColIndex === null || draggedColIndex === targetIndex) return;
-  
+
     // Reorder headers
     const newHeaders = [...headers];
     const draggedHeader = newHeaders.splice(draggedColIndex, 1)[0];
     newHeaders.splice(targetIndex, 0, draggedHeader);
-  
+
     // Reorder each row's data accordingly
     const newRows = rows.map((row) => {
       const entries = Object.entries(row);
@@ -50,7 +50,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
       entries.splice(targetIndex, 0, draggedEntry);
       return Object.fromEntries(entries);
     });
-  
+
     setHeaders(newHeaders);
     setRows(newRows);
     setDraggedColIndex(null); // Reset dragged column index
@@ -59,50 +59,9 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
   React.useEffect(() => {
     setIsDraggable(props.isDraggable);
     setIsSortable(props.isSortable);
-    setTableProps(props);
     setHeaders(props.headers);
     setRows(props.rows);
   }, [props.headers, props.rows, props.isDraggable, props.isSortable]);
-
-  const isDate = (value) => {
-    const date = new Date(value);
-    return !isNaN(date.getTime());
-  };
-  
-
-  const sortedRows = React.useMemo(() => {
-    if (!sortConfig.key) return rows;
-  
-    const lowerCaseSortKey = sortConfig.key.toLowerCase();
-  
-    return [...rows].sort((a, b) => {
-      const aValue = String(a[lowerCaseSortKey]).toLowerCase();
-      const bValue = String(b[lowerCaseSortKey]).toLowerCase();
-  
-      // Check if the values are dates
-      if (isDate(aValue) && isDate(bValue)) {
-        const dateA = new Date(aValue) as any;
-        const dateB = new Date(bValue) as any;
-        return sortConfig.direction === 'ascending' ? dateA - dateB : dateB - dateA;
-      } else {
-        if (aValue < bValue) {
-          return sortConfig.direction === 'ascending' ? Number(-1) : Number(1);
-        }
-        if (aValue > bValue) {
-          return sortConfig.direction === 'ascending' ? 1 : -1;
-        }
-      }
-      return 0;
-    });
-  }, [rows, sortConfig]);
-
-  const sortRows = (key) => {
-    let direction = 'ascending';
-    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
-      direction = 'descending';
-    }
-    setSortConfig({ key, direction });
-  };
 
   return (
     <table className="w-full min-w-max table-auto text-left">
@@ -112,7 +71,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
             <th
               key={head}
               className={`border-b border-blue-gray-100 bg-blue-gray-50 p-4 cursor-pointer`}
-              onClick={() => isSortable ? sortRows(head): null}
+              onClick={() => isSortable ? sortRows(head) : null}
               draggable={isDraggable}
               onDragStart={handleDragStart(index)}
               onDragOver={handleDragOver}
@@ -138,7 +97,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
         </tr>
       </thead>
       <tbody>
-        {sortedRows.map((row, index) => {
+        {rowData.map((row, index) => {
           const isLast = index === rows.length - 1;
           const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
 
@@ -146,7 +105,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
             <tr key={index}>
               {Object.values(row).map((value, cellIndex) => (
                 <td key={cellIndex} className={classes}>
-                  {value}
+                  {value as React.ReactNode}
                 </td>
               ))}
             </tr>
@@ -157,4 +116,13 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
   );
 };
 
-export default DefaultTable;
+// export default DefaultTable;
+const TableDefault = ({ ...props }) => {
+  return (
+    <SortableTableProvider initialRows={props.rows}>
+      <DefaultTable  {...props as any} />
+    </SortableTableProvider>
+  );
+};
+
+export default TableDefault;
