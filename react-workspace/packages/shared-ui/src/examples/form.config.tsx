@@ -98,7 +98,7 @@ const formInputConfig = {
                         >
                             Submit
                         </ButtonDefault>
-                        <ButtonDefault variant="outlined" onClick={status === 'DISABLED' ? handleEditMode : handleCancelMode}>
+                        <ButtonDefault onClick={status === 'DISABLED' ? handleEditMode : handleCancelMode}>
                             {status === 'DISABLED' ? `Edit` : `Cancel`}
                         </ButtonDefault>
                     </div>

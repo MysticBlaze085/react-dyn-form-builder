@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { SortableTableProvider, useSortableTable } from './AdkSortableTableRow.Context'; // Adjust the import path according to your project structure
 
-// AdkSortableTableContext.stories.tsx
 import React from 'react';
+
+// AdkSortableTableContext.stories.tsx
+
 
 // Mock component to demonstrate context usage
 const MockSortableTable = () => {
@@ -28,13 +30,16 @@ const MockSortableTable = () => {
 };
 
 export default {
-  title: 'Directives/AdkSortableTableContext',
-  component: MockSortableTable,
-  decorators: [(Story) => (
-    <SortableTableProvider initialRows={initialRows}>
-      <Story />
-    </SortableTableProvider>
-  )],
+    title: 'Directives/AdkSortableTableContext',
+    component: MockSortableTable,
+    decorators: [
+        (Story) => (
+            <SortableTableProvider initialRows={initialRows}>
+                <Story />
+            </SortableTableProvider>
+        ),
+    ],
+    tags: ['autodocs'],
 } as Meta;
 
 // Mock data for the table

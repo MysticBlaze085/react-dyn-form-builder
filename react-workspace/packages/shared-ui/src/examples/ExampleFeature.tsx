@@ -16,7 +16,7 @@ const ExampleFeature = () => {
             .onBlurChanges.subscribe((value) => {
                 const initial = genForm.get('first_name').value;
                 genForm.patchValue({ full_name: `` });
-                genForm.patchValue({ full_name: `${initial} - ${value}` })
+                genForm.patchValue({ full_name: `${initial ?? ''} - ${value ?? ''}` });
             })
         genForm.disable();
     }, [genForm]);

@@ -1,4 +1,5 @@
 // @ts-nocheck
+
 import { Card, CardBody } from "@material-tailwind/react";
 
 import React from "react"; // Ensure React is imported if using its features directly
@@ -22,17 +23,18 @@ const TableCard: React.FC<TableCardProps> = ({ children, showHeader = true, show
     }, [showHeader, showFooter]);
     
     return (
-        <Card className="h-full w-full overflow-scroll">
+        <Card className="h-full w-full overflow-auto">
             {isHeaderVisible && <TableHeader {...props} />}
-            {
-                children && isHeaderVisible || children && isFooterVisible ? (
-                    <CardBody className="overflow-scroll px-0">
-                    {children}
-                    </CardBody>) : children
-            }
+            {(children && isHeaderVisible) || (children && isFooterVisible) ? (
+                <CardBody className="overflow-auto px-0">{children}</CardBody>
+            ) : (
+                children
+            )}
             {isFooterVisible && <TableFooter {...props} />}
         </Card>
     );
 }
 
 export default TableCard;
+
+//wrap context around tablecard here when header being shown is true

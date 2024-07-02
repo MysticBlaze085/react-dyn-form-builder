@@ -1,40 +1,48 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { SortableTableProvider, useSortableTable } from './AdkSortableTableRow.Context'; // Adjust the import path according to your project structure
 
-// AdkSortableTableContext.stories.tsx
 import React from 'react';
+
+// AdkSortableTableContext.stories.tsx
 
 // Mock component to demonstrate context usage
 const MockSortableTable = () => {
-  const { rowData, sortRows } = useSortableTable();
-  return (
-    <table>
-      <thead>
-        <tr>
-          <th onClick={() => sortRows('name')} style={{cursor: "pointer"}}>Name</th>
-          <th onClick={() => sortRows('date')} style={{cursor: "pointer"}}>Date</th>
-        </tr>
-      </thead>
-      <tbody>
-        {rowData.map((row) => (
-          <tr key={row.id}>
-            <td>{row.name}</td>
-            <td>{row.date}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
+    const { rowData, sortRows } = useSortableTable();
+    return (
+        <table>
+            <thead>
+                <tr>
+                    <th onClick={() => sortRows('name')} style={{ cursor: 'pointer' }}>
+                        Name
+                    </th>
+                    <th onClick={() => sortRows('date')} style={{ cursor: 'pointer' }}>
+                        Date
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {rowData.map((row) => (
+                    <tr key={row.id}>
+                        <td>{row.name}</td>
+                        <td>{row.date}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    );
 };
 
 export default {
-  title: 'Directives/AdkSortableTableContext',
-  component: MockSortableTable,
-  decorators: [(Story) => (
-    <SortableTableProvider initialRows={initialRows}>
-      <Story />
-    </SortableTableProvider>
-  )],
+    title: 'Directives/AdkDraggableTableContext',
+    component: MockSortableTable,
+    decorators: [
+        (Story) => (
+            <SortableTableProvider initialRows={initialRows}>
+                <Story />
+            </SortableTableProvider>
+        ),
+    ],
+    tags: ['autodocs'],
 } as Meta;
 
 // Mock data for the table
