@@ -4,11 +4,9 @@ import DefaultTable from "./Table";
 const meta = {
   title: 'Components/General/Tables/DefaultTable',
   component: DefaultTable,
-  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ['autodocs'],
   parameters: {
-    // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
-    // layout: 'fullscreen',
+    layout: 'fullscreen',
   },
   args: {
   },
@@ -19,7 +17,34 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
+    headers: ["Name", "Job", "Date", ""],
+    rows: [
+    {
+      name: "John Michael",
+      job: "Manager",
+      date: "23/04/15",
+    },
+    {
+      name: "Alexa Johnson",
+      job: "CEO",
+      date: "23/04/18",
+    },
+    {
+      name: "Sierra Brooks",
+      job: "Designer",
+      date: "23/04/12",
+    },
+    {
+      name: "Thomas Smith",
+      job: "Developer",
+      date: "23/04/10",
+    },
+    {
+      name: "Jenna Kian",
+      job: "Marketing",
+      date: "23/04/01",
+    }
+    ]
   }
 };
 
-// export const LoggedOut: Story = {};
