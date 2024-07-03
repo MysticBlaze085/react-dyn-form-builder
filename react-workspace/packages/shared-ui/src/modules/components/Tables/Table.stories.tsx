@@ -20,7 +20,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
     args: {
-        headers: ['Name', 'Job', 'Date', ''],
+        headers: ['Name', 'Job', 'Date'],
         rows: [
             {
                 name: 'John Michael',
@@ -50,5 +50,6 @@ export const Primary: Story = {
         ],
         isSortable: true,
         isDraggable: true,
+        isSelectable: true,
     },
 };

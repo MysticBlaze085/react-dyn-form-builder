@@ -84,7 +84,8 @@ export const Primary: Story = {
             <TableDefault
             isDraggable={true}
             isSortable={true}
-            headers={['Name', 'Job', 'Date', '']}
+            isSelectable={true}
+            headers={['Name', 'Job', 'Date']}
             rows={mockData}
             />
         ),
@@ -115,7 +116,8 @@ export const WithoutHeaderAndFooter: Story = {
             <TableDefault
             isDraggable={true}
             isSortable={true}
-            headers={['Name', 'Job', 'Date', '']}
+            isSelectable={true}
+            headers={['Name', 'Job', 'Date']}
             rows={mockData}
             />
         ),
