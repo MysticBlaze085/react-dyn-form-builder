@@ -130,10 +130,14 @@ const tableDataSourceSlice = createSlice({
         },
         // Reducer to toggle selection of a specific row
         setSelectedRows(state, action) {
-            const selectedRow = action.payload;
-            const existingIndex = state.selectedRows.findIndex(row => row === selectedRow);
-            if (existingIndex !== -1) state.selectedRows = state.selectedRows.filter(row => row !== selectedRow); // Toggle selection
-            else state.selectedRows.push(selectedRow);
+            const existingRows = [...state.selectedRows];
+            const selectedRow = {...action.payload};
+            const existingIndex = existingRows.findIndex(row => isEqual(row, selectedRow));
+            if (existingIndex !== -1) state.selectedRows = existingRows.filter(row => !isEqual(row, selectedRow));
+            else {
+                existingRows.push(selectedRow);
+                state.selectedRows = existingRows;
+            }
         },
         // Reducer to toggle selection of all rows
         toggleSelectedAllRows(state) {
@@ -162,3 +166,8 @@ export const { setHeaders, setTableDataSource, clearTableDataSource, sortDataSou
 // Log initial state to console (for debugging purposes)
 const startState = store.getState();
 console.log(JSON.stringify(startState));
+
+
+function isEqual(obj1, obj2) {
+    return JSON.stringify(obj1) === JSON.stringify(obj2);
+}

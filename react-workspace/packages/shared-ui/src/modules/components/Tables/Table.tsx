@@ -98,6 +98,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
                                 ref={selectAllRef}
                                 checked={selectedRows.length === dataSource.length} // Check if all rows are selected
                                 onChange={toggleSelectAll} // Toggle select all handler
+                                className='w-4 h-4'
                                 onPointerEnterCapture={undefined} // Pointer enter capture handler
                                 onPointerLeaveCapture={undefined} // Pointer leave capture handler
                                 crossOrigin={undefined} // Cross origin attribute
@@ -107,7 +108,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
                     {headers.map((head, index) => (
                         <th
                             key={head}
-                            className={`border-b border-blue-gray-100 bg-blue-gray-50 p-1 cursor-pointer`}
+                            className={`border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer`}
                             onClick={() => (isSortable ? sortRows(head) : null)} // Sort rows handler if sortable
                             draggable={isDraggable} // Draggable attribute based on flag
                             onDragStart={handleDragStart(index)} // Drag start handler
@@ -135,10 +136,11 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
                 {dataSource.map((row, index) => (
                     <tr key={index}>
                         {isSelectable && ( // Render checkbox for row selection if selectable
-                            <td className="border-b border-blue-gray-50 p-1">
+                            <td className={`border-b border-blue-gray-50 ${isSelectable ? 'p-1' : 'p-2'} max-h-[38px]`}>
                                 <Checkbox
                                     checked={selectedRows.some(selectedRow => JSON.stringify(selectedRow) === JSON.stringify(row))} // Check if row is selected
                                     onChange={() => toggleRowSelection(row)} // Toggle row selection handler
+                                    className='w-4 h-4'
                                     onPointerEnterCapture={undefined} // Pointer enter capture handler
                                     onPointerLeaveCapture={undefined} // Pointer leave capture handler
                                     crossOrigin={undefined} // Cross origin attribute
@@ -146,7 +148,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
                             </td>
                         )}
                         {headers.map((key) => (
-                            <td key={key} className="border-b border-blue-gray-50 p-1">
+                            <td key={key} className={`border-b border-blue-gray-50 ${isSelectable ? 'p-1' : 'p-2'} max-h-[40px]`}>
                                 <Typography variant="small" color="blue-gray" className="font-normal">
                                     {row[key.toLowerCase()]} {/* Render cell data */}
                                 </Typography>
