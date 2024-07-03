@@ -93,7 +93,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
             <thead>
                 <tr>
                     {isSelectable && ( // Render checkbox for select all if selectable
-                        <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+                        <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-1">
                             <Checkbox
                                 ref={selectAllRef}
                                 checked={selectedRows.length === dataSource.length} // Check if all rows are selected
@@ -107,7 +107,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
                     {headers.map((head, index) => (
                         <th
                             key={head}
-                            className={`border-b border-blue-gray-100 bg-blue-gray-50 p-4 cursor-pointer`}
+                            className={`border-b border-blue-gray-100 bg-blue-gray-50 p-1 cursor-pointer`}
                             onClick={() => (isSortable ? sortRows(head) : null)} // Sort rows handler if sortable
                             draggable={isDraggable} // Draggable attribute based on flag
                             onDragStart={handleDragStart(index)} // Drag start handler
@@ -135,7 +135,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
                 {dataSource.map((row, index) => (
                     <tr key={index}>
                         {isSelectable && ( // Render checkbox for row selection if selectable
-                            <td className="border-b border-blue-gray-50 p-4">
+                            <td className="border-b border-blue-gray-50 p-1">
                                 <Checkbox
                                     checked={selectedRows.some(selectedRow => JSON.stringify(selectedRow) === JSON.stringify(row))} // Check if row is selected
                                     onChange={() => toggleRowSelection(row)} // Toggle row selection handler
@@ -146,7 +146,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
                             </td>
                         )}
                         {headers.map((key) => (
-                            <td key={key} className="border-b border-blue-gray-50 p-4">
+                            <td key={key} className="border-b border-blue-gray-50 p-1">
                                 <Typography variant="small" color="blue-gray" className="font-normal">
                                     {row[key.toLowerCase()]} {/* Render cell data */}
                                 </Typography>

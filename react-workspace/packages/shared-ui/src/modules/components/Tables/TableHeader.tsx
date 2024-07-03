@@ -2,6 +2,7 @@
 import { CardHeader, Tab, Tabs, TabsHeader, Typography } from "@material-tailwind/react";
 
 import ButtonDefault from "../Button";
+import { CogIcon } from "@heroicons/react/24/outline";
 import FormGeneratorWrapper from "../../FormGeneratorWrapper";
 import { FormGroup } from '@mui/base';
 import React from 'react';
@@ -77,17 +78,18 @@ const TableHeader: React.FC<TableHeaderProps> = ({ title, subtitle, buttons, tab
                     }
 
                 </div>
-                {
-                    buttons && buttons.length ? (
-                        <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-                            {buttons.map(({ label, onClick, color, icon }, index) => (
-                                <ButtonDefault key={index} size="sm" onClick={onClick} color={color} className="flex items-center gap-3">
-                                    {icon} {label}
-                                </ButtonDefault>
-                            ))}
-                        </div>
-                    ) : null
-                }
+                <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+                    {
+                        buttons && buttons.length > 0 && buttons.map(({ label, onClick, color, icon }, index) => (
+                            <ButtonDefault key={index} size="sm" onClick={onClick} color={color} className="flex items-center gap-3">
+                                {icon} {label}
+                            </ButtonDefault>
+                        ))
+                    }
+                    <div className="flex items-center gap-3 cursor-pointer">
+                        <CogIcon strokeWidth={2} className="h-4 w-4" />
+                    </div>
+                </div>
             </div>
 
             <div className="flex flex-col items-center justify-between gap-4 md:flex-row">

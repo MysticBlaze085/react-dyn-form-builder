@@ -25,7 +25,7 @@ const TableCard: React.FC<TableCardProps> = ({ children, showHeader = true, show
         <Card className="h-full w-full overflow-auto">
             {isHeaderVisible && <TableHeader {...props} />}
             {(children && isHeaderVisible) || (children && isFooterVisible) ? (
-                <CardBody className="overflow-auto px-0">{children}</CardBody>
+                <CardBody className="overflow-auto px-0 p-2">{children}</CardBody>
             ) : (
                 children
             )}

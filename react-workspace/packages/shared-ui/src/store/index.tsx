@@ -66,6 +66,10 @@ const dragRows = (state: any, action: any) => {
 const tableDataSourceSlice = createSlice({
     name: 'tableDataSource',
     initialState: {
+        preferences: {
+            visibleColumns: [],
+            pageSize: 10,
+        },
         headers: [], // Array of column headers
         initialDataSource: [], // Initial unfiltered and unsorted data source
         dataSource: [], // Current data source after sorting and filtering
@@ -125,6 +129,9 @@ const tableDataSourceSlice = createSlice({
         toggleSelectedAllRows(state) {
             if (state.selectedRows.length === state.dataSource.length) state.selectedRows = []; // Deselect all if all are selected
             else state.selectedRows = [...state.dataSource]; // Select all rows if none or some are selected
+        },
+        setPreferences(state, action) {
+            state.preferences = action.payload;
         }
     },
 });
