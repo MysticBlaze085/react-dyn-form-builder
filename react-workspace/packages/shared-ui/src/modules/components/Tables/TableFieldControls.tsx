@@ -13,30 +13,6 @@ export const tableFilterInputConfig = {
     },
 };
 
-export const preferenceInputControls = (items: { id: string; value: string }[]) => {
-    return {
-        controls: {
-            column: {
-                render: FieldRenderer('CheckboxGroup'),
-                meta: {
-                    items,
-                },
-            }
-        },
-        
-        $field_0: {
-            isStatic: false,
-            render: ({ status, value, meta: { handleSubmit, handleEditMode, handleCancelMode } }) => {
-                console.log('status', status, 'value', value, 'meta', { handleSubmit, handleEditMode, handleCancelMode });
-                return (
-                    <div>
-                    </div>
-                );
-            },
-        },
-    }
-}
-
 export const tableFilterInputControls = (items: string[]) => {
     const mapItems = items.map((item) => ({ label: item, value: item }));
     return {

@@ -145,7 +145,6 @@ const tableDataSourceSlice = createSlice({
             else state.selectedRows = [...state.dataSource]; // Select all rows if none or some are selected
         },
         setPreferences(state, action) {
-            console.log('state pref', action.payload);
             state.preferences.visibleColumns = action.payload;
             state.headers = state.preferences.visibleColumns;
         }

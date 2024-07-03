@@ -56,12 +56,9 @@ const TableSettingsDialog = () => {
                 form.value = { ...form.value, keyPressed: 'Enter' };
             }
         };
-
         // Add the eventCatcher for both click and keydown events
         document.addEventListener('click', eventCatcher);
         document.addEventListener('keydown', eventCatcher);
-        console.log('Event Listeners Added', form.value);
-
         return () => {
             // Remove the eventCatcher for both events when the component unmounts or the effect cleanup runs
             document.removeEventListener('click', eventCatcher);
