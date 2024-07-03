@@ -2,10 +2,10 @@
 import { CardHeader, Tab, Tabs, TabsHeader, Typography } from "@material-tailwind/react";
 
 import ButtonDefault from "../Button";
-import { CogIcon } from "@heroicons/react/24/outline";
 import FormGeneratorWrapper from "../../FormGeneratorWrapper";
-import { FormGroup } from '@mui/base';
+import { FormGroup } from "react-reactive-form";
 import React from 'react';
+import TableSettingsDialog from "./TableSettingsDialog";
 import { filter } from "../../../store";
 import { tableFilterInputConfig } from "./TableFieldControls";
 import { useDispatch } from 'react-redux';
@@ -39,16 +39,12 @@ const TableHeader: React.FC<TableHeaderProps> = ({ title, subtitle, buttons, tab
         handleSub();
     };
 
-    const handleSub = React.useCallback(() => {
+    const handleSub = () => {
         genForm.valueChanges.subscribe((value) => {
             const action = filter(value);
             dispatch(action);
         });
-    }, []);
-
-    // const unSubscribe = React.useCallback(() => {
-    //     genForm.valueChanges.unsubscribe();
-    // }, [genForm]);
+    };
 
     React.useEffect(() => {
         const handleKeyDown = (event) => {
@@ -87,7 +83,7 @@ const TableHeader: React.FC<TableHeaderProps> = ({ title, subtitle, buttons, tab
                         ))
                     }
                     <div className="flex items-center gap-3 cursor-pointer">
-                        <CogIcon strokeWidth={2} className="h-4 w-4" />
+                        <TableSettingsDialog />
                     </div>
                 </div>
             </div>

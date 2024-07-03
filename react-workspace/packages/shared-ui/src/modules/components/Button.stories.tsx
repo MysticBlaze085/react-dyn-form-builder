@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import ButtonDefault from './Button';
 
 const meta = {
-  title: 'Components/General/Button',
+  title: 'Components/Button',
   component: ButtonDefault,
   tags: ['autodocs'],
   parameters: {

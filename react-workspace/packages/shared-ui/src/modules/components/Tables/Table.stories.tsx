@@ -5,7 +5,7 @@ import {store} from '../../../store';
 import React from 'react';
 
 const meta = {
-    title: 'Components/General/Tables/DefaultTable',
+    title: 'Components/Tables/DefaultTable',
     component: DefaultTable,
     tags: ['autodocs'],
     parameters: {

@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 
 import React from "react";
 
-export const NgIf = ({ condition, children }) => {
-  return condition ? children : null;
+export const NgIf: React.FC<{ condition: boolean; children: any }> = ({ condition, children }) => {
+  return condition ? <>{children}</> : null;
 };
 
 export const NgFor = ({ items, render, trackBy }) => {

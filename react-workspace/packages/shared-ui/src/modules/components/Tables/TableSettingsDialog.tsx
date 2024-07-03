@@ -1,78 +1,82 @@
-import { Button, Card, CardBody, CardFooter, Checkbox, Dialog, Input, Typography } from '@material-tailwind/react';
+// @ts-nocheck
+import { Button, Card, CardBody, CardFooter, Checkbox, Dialog, DialogHeader, IconButton, Typography } from '@material-tailwind/react';
+import { filter, setPreferences } from '../../../store';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { CheckboxGroup } from '../../types';
 import { CogIcon } from '@heroicons/react/24/solid';
+import { FormBuilder } from 'react-reactive-form';
 import FormGeneratorWrapper from '../../FormGeneratorWrapper';
-import { FormGroup } from 'react-reactive-form';
 import React from 'react';
-import { preferenceInputControls } from './TableFieldControls';
-import { useSelector } from 'react-redux';
+import { tableFilterInputControls } from './TableFieldControls';
 
 const TableSettingsDialog = () => {
+    const dispatch = useDispatch();
     const [open, setOpen] = React.useState(false);
-    const [items, setItems] = React.useState([]);
-    const headers = useSelector((state) => state['tableDataSource']['headers']);
+    const selectedItems = useSelector((state) => state['tableDataSource']['preferences']['visibleColumns']);
+    const initHeaders = useSelector((state) => state['tableDataSource']['initialHeaders']);
+    const filterColumn = useSelector((state) => state['tableDataSource']['filterDataSource']['column']);
+
+    let form = FormBuilder.group({
+        value: [],
+        column: [filterColumn],
+    });
 
     const handleOpen = () => setOpen(!open);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        alert(`You submitted \n ${JSON.stringify(genForm.value, null, 2)}`);
-        handleOpen();
+    const handleCheckboxChange = async (itemId, isChecked) => {
+        let newItems;
+        if (isChecked) {
+            newItems = [...selectedItems, itemId]; // Assuming selectedItems is the current state
+        } else {
+            newItems = selectedItems.filter((item) => item !== itemId);
+        }
+        const action = setPreferences(newItems);
+        dispatch(action);
     };
 
-
-    let genForm: FormGroup;
-
-    const setForm = (form) => {
-        genForm = form;
-        genForm.meta = {
-            handleSubmit,
-        }
+    const setForm = (formValue) => {
+        form = formValue;
+        form.get('column').setValue(filterColumn);
         handleSub();
     };
 
-    const handleSub = React.useCallback(() => {
-        const subscribeToFormChanges = async () => {
-            // Assuming valueChanges returns a Promise or is thenable
-            if (!genForm) return;
-            genForm.valueChanges.subscribe(async (value) => {
-                console.log('value', value);
-                // Perform any async operation here
-            });
-        };
+    const handleSub = () => {
+        form.valueChanges.subscribe((value) => {
+            const action = filter(value);
+            dispatch(action);
+        });
+    };
 
-        subscribeToFormChanges();
-    }, []);
-
-    // const unSubscribe = React.useCallback(() => {
-    //     genForm.valueChanges.unsubscribe();
-    // }, [genForm]);
-
-    React.useEffect(() => {
-        const handleKeyDown = async (event) => {
-            if (event.key === 'Enter') {
-                // Assuming setting genForm.value is synchronous, but if you have async operations, they can be handled here.
-                genForm.value = { ...genForm.value, keyPressed: 'Enter' };
+    const handleEventTriggers = () => {
+        const eventCatcher = (event) => {
+            // Check the type of event and act accordingly
+            if (event.type === 'click') {
+                form.value = { ...form.value, clicked: true };
+            } else if (event.type === 'keydown' && event.key === 'Enter') {
+                form.value = { ...form.value, keyPressed: 'Enter' };
             }
         };
 
-        document.addEventListener('keydown', handleKeyDown);
+        // Add the eventCatcher for both click and keydown events
+        document.addEventListener('click', eventCatcher);
+        document.addEventListener('keydown', eventCatcher);
+        console.log('Event Listeners Added', form.value);
+
         return () => {
-            document.removeEventListener('keydown', handleKeyDown);
+            // Remove the eventCatcher for both events when the component unmounts or the effect cleanup runs
+            document.removeEventListener('click', eventCatcher);
+            document.removeEventListener('keydown', eventCatcher);
         };
-    }, []);
+    }
 
     React.useEffect(() => {
         const mapHeadersToItems = async () => {
-            // This assumes headers fetching or processing could be asynchronous
-            // For demonstration, headers are used directly
-            const mappedItems = headers.map((header, index) => ({ id: `${index + 1}`, value: header }));
-            console.log('mappedItems', mappedItems);
-            setItems(mappedItems);
+            const action = setPreferences(initHeaders);
+            dispatch(action);
         };
 
         mapHeadersToItems();
+        handleEventTriggers();
     }, []);
 
     return (
@@ -84,10 +88,33 @@ const TableSettingsDialog = () => {
                 handler={handleOpen}
                 className="bg-transparent shadow-none"
             >
+
                 <Card className="mx-auto w-full max-w-[24rem]">
                     <CardBody className="flex flex-col gap-4">
-                        <Typography variant="h4" color="blue-gray">
+                        <Typography variant="h4" color="blue-gray" className='flex flex-row'>
                             Column preferences
+                            <span className='flex-grow'></span>
+                            <IconButton
+                                color="blue-gray"
+                                size="sm"
+                                variant="text"
+                                onClick={handleOpen}
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    strokeWidth={2}
+                                    className="h-5 w-5"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                </svg>
+                            </IconButton>
                         </Typography>
                         <Typography
                             className="mb-3 font-normal"
@@ -96,25 +123,24 @@ const TableSettingsDialog = () => {
                         >
                             Customize the columns visibility.
                         </Typography>
-                        <FormGeneratorWrapper onMount={setForm} fieldConfig={preferenceInputControls(items)} />
+                        {
+                            initHeaders.map((item) => (
+                                item ? <Checkbox key={item} label={item} defaultChecked={selectedItems.includes(item)} onChange={(e) => handleCheckboxChange(item, e.target.checked)} /> : null
+                            ))
+                        }
+                        <Typography
+                            className="mb-3 font-normal"
+                            variant="paragraph"
+                            color="gray"
+                        >
+                            Select the column to filter a search value
+                        </Typography>
+                        <FormGeneratorWrapper onMount={setForm} fieldConfig={tableFilterInputControls(selectedItems)} />
                     </CardBody>
                     <CardFooter className="pt-0">
-                        <Button variant="gradient" onClick={handleSubmit} fullWidth>
-                            Sign In
+                        <Button variant="filled" color='blue' onClick={handleOpen} fullWidth>
+                            Close Preferences
                         </Button>
-                        <Typography variant="small" className="mt-4 flex justify-center">
-                            Don&apos;t have an account?
-                            <Typography
-                                as="a"
-                                href="#signup"
-                                variant="small"
-                                color="blue-gray"
-                                className="ml-1 font-bold"
-                                onClick={handleOpen}
-                            >
-                                Sign up
-                            </Typography>
-                        </Typography>
                     </CardFooter>
                 </Card>
             </Dialog>

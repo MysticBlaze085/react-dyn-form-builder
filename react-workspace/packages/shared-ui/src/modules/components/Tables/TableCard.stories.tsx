@@ -39,7 +39,7 @@ const mockData = [
 ]
 
 const meta: Meta<typeof TableCard> = {
-    title: 'Components/General/Tables/Table Card',
+    title: 'Components/Tables/Table Card',
     component: TableCard,
     tags: ['autodocs'],
     parameters: {

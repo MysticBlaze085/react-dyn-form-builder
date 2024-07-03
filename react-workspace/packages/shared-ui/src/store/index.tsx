@@ -69,6 +69,7 @@ const tableDataSourceSlice = createSlice({
         preferences: {
             visibleColumns: [],
         },
+        initialHeaders : [],
         headers: [], // Array of column headers
         initialDataSource: [], // Initial unfiltered and unsorted data source
         dataSource: [], // Current data source after sorting and filtering
@@ -81,6 +82,8 @@ const tableDataSourceSlice = createSlice({
         // Reducer to set headers
         setHeaders(state, action) {
             state.headers = action.payload;
+            state.initialHeaders = action.payload;
+            state.preferences.visibleColumns = action.payload;
         },
         // Reducer to set initial and current data source
         setTableDataSource(state, action) {
@@ -89,8 +92,14 @@ const tableDataSourceSlice = createSlice({
         },
         // Reducer to clear data source and selected rows
         clearTableDataSource(state) {
+            state.headers = [];
+            state.initialHeaders = [];
+            state.initialDataSource = [];
             state.dataSource = [];
             state.selectedRows = [];
+            state.sortDataSource = { key: '', direction: 'ascending' };
+            state.filterDataSource = { column: '', value: '' };
+            state.draggedColIndex = null;
         },
         // Reducer to set sorting configuration and apply sorting
         sortDataSource(state, action) {
@@ -102,7 +111,9 @@ const tableDataSourceSlice = createSlice({
         },
         // Reducer to set filtering configuration and apply filtering
         filter(state, action) {
-            state.filterDataSource = action.payload;
+            const column = action.payload.column ?? state.filterDataSource.column;
+            const value = action.payload.value ?? state.filterDataSource.value;
+            state.filterDataSource = { column, value };
             state.selectedRows = []; // Clear selected rows on filtering
             if (state.filterDataSource.column) {
                 if (state.filterDataSource.value === '') state.dataSource = [...state.initialDataSource];
@@ -130,7 +141,9 @@ const tableDataSourceSlice = createSlice({
             else state.selectedRows = [...state.dataSource]; // Select all rows if none or some are selected
         },
         setPreferences(state, action) {
-            state.preferences = action.payload;
+            console.log('state pref', action.payload);
+            state.preferences.visibleColumns = action.payload;
+            state.headers = state.preferences.visibleColumns;
         }
     },
 });
@@ -144,7 +157,7 @@ const store = configureStore({
 
 // Export store and action creators
 export { store };
-export const { setHeaders, setTableDataSource, clearTableDataSource, sortDataSource, filter, dragStart, dragDrop, setSelectedRows, toggleSelectedAllRows } = tableDataSourceSlice.actions;
+export const { setHeaders, setTableDataSource, clearTableDataSource, sortDataSource, filter, dragStart, dragDrop, setSelectedRows, toggleSelectedAllRows, setPreferences } = tableDataSourceSlice.actions;
 
 // Log initial state to console (for debugging purposes)
 const startState = store.getState();

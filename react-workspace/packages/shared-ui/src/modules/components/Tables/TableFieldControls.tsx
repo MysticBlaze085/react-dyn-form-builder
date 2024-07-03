@@ -2,17 +2,7 @@ import FieldRenderer from "../../FieldRenderer";
 
 export const tableFilterInputConfig = {
     controls: {
-        column: {
-            render: FieldRenderer('Select'),
-            meta: {
-                label: 'Column',
-                items: [
-                    { value: 'name', label: 'Name' },
-                    { value: 'job', label: 'Job' },
-                    { value: 'date', label: 'Date' },
-                ],
-            },
-        },
+        column: {},
         value: {
             render: FieldRenderer('Text'),
             meta: {
@@ -46,3 +36,18 @@ export const preferenceInputControls = (items: { id: string; value: string }[]) 
         },
     }
 }
+
+export const tableFilterInputControls = (items: string[]) => {
+    const mapItems = items.map((item) => ({ label: item, value: item }));
+    return {
+    controls: {
+        column: {
+            render: FieldRenderer('Select'),
+            meta: {
+                label: 'Column',
+                items: mapItems
+            },
+        },
+        value: { },
+    },
+}};

@@ -5,7 +5,7 @@ import { store } from '../../../store';
 import React from 'react';
 
 const meta = {
-    title: 'Components/General/Tables/TableSettingsDialog',
+    title: 'Components/Tables/TableSettingsDialog',
     component: TableSettingsDialog,
     tags: ['autodocs'],
     parameters: {
