@@ -1,5 +1,6 @@
 import '@material-tailwind/html/styles/material-tailwind.css';
-export { default as Button} from './src/modules/components/general/Button';
+export * from './src/store';
+export { default as Button} from './src/modules/components/Button';
 export { default as FieldRenderer } from "./src/modules/FieldRenderer";
 export { default as FormGeneratorWrapper} from "./src/modules/FormGeneratorWrapper";
 export { default as Value} from './src/modules/types/Value';

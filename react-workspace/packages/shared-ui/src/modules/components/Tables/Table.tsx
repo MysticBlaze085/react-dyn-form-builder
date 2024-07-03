@@ -1,11 +1,12 @@
-import { SortableTableProvider, useSortableTable } from '../../../../tw-form-ui/directives/AdkSortableTableRow.Context';
+import { SortableTableProvider, useSortableTable } from '../../../tw-form-ui/directives/AdkSortableTableRow.Context';
+import { setTableDataSource, sortDataSource } from '../../../store';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import React from 'react';
 import { Typography } from '@material-tailwind/react';
 
 //TODO: selectable rows
-//TODO: filtering
 //TODO: sidenav
 //TODO: settings display controls
 
@@ -22,13 +23,14 @@ interface DefaultTableProps {
 }
 
 const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
+    const dispatch = useDispatch();
+    const dataSource = useSelector((state) => state['tableDataSource']['dataSource']);
+    const sortConfig = useSelector((state) => state['tableDataSource']['sortDataSource']);
+
     const [isDraggable, setIsDraggable] = React.useState(props.isDraggable);
     const [isSortable, setIsSortable] = React.useState(props.isSortable);
     const [headers, setHeaders] = React.useState(props.headers);
-    const [rows, setRows] = React.useState(props.rows);
     const [draggedColIndex, setDraggedColIndex] = React.useState(null);
-
-    const { rowData, sortRows, sortConfig } = useSortableTable();
 
     const handleDragStart = (index) => (event) => {
         setDraggedColIndex(index);
@@ -48,7 +50,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
         newHeaders.splice(targetIndex, 0, draggedHeader);
 
         // Reorder each row's data accordingly
-        const newRows = rows.map((row) => {
+        const newRows = dataSource.map((row) => {
             const entries = Object.entries(row);
             const draggedEntry = entries.splice(draggedColIndex, 1)[0];
             entries.splice(targetIndex, 0, draggedEntry);
@@ -56,16 +58,26 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
         });
 
         setHeaders(newHeaders);
-        setRows(newRows);
+        dispatch(setTableDataSource(newRows));
         setDraggedColIndex(null); // Reset dragged column index
     };
 
+    const handleDataSource = (rows) => {
+        const action = setTableDataSource(rows);
+        dispatch(action);
+    };
+
+    const sortRows = (key) => {
+        const action = sortDataSource({ key, direction: sortConfig.direction === 'ascending' ? 'descending' : 'ascending' });
+        dispatch(action);
+    }
+
     React.useEffect(() => {
+        handleDataSource(props.rows);
         setIsDraggable(props.isDraggable);
         setIsSortable(props.isSortable);
         setHeaders(props.headers);
-        setRows(props.rows);
-    }, [props.headers, props.rows, props.isDraggable, props.isSortable]);
+    }, [props.headers, props.isDraggable, props.isSortable]);
 
     return (
         <table className="w-full min-w-max table-auto text-left">
@@ -101,8 +113,8 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
                 </tr>
             </thead>
             <tbody>
-                {rowData.map((row, index) => {
-                    const isLast = index === rows.length - 1;
+                {dataSource.map((row, index) => {
+                    const isLast = index === dataSource.length - 1;
                     const classes = isLast ? 'p-4' : 'p-4 border-b border-blue-gray-50';
 
                     return (
@@ -120,12 +132,4 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
     );
 };
 
-const TableDefault: React.FC<DefaultTableProps | any> = ({ ...props }) => {
-    return (
-        <SortableTableProvider initialRows={props.rows}>
-            <DefaultTable {...props} />
-        </SortableTableProvider>
-    );
-};
-
-export default TableDefault;
+export default DefaultTable;

@@ -1,5 +1,4 @@
 // @ts-nocheck
-
 import { Card, CardBody } from "@material-tailwind/react";
 
 import React from "react"; // Ensure React is imported if using its features directly
@@ -36,5 +35,3 @@ const TableCard: React.FC<TableCardProps> = ({ children, showHeader = true, show
 }
 
 export default TableCard;
-
-//wrap context around tablecard here when header being shown is true

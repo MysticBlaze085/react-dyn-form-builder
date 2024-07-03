@@ -1,9 +1,13 @@
 // @ts-nocheck
-
-import { CardHeader, Input, Tab, Tabs, TabsHeader, Typography } from "@material-tailwind/react";
+import { CardHeader, Tab, Tabs, TabsHeader, Typography } from "@material-tailwind/react";
 
 import ButtonDefault from "../Button";
+import FormGeneratorWrapper from "../../FormGeneratorWrapper";
+import { FormGroup } from '@mui/base';
 import React from 'react';
+import { filter } from "../../../store";
+import { tableFilterInputConfig } from "./TableFieldControls";
+import { useDispatch } from 'react-redux';
 
 // Define the types for the props
 interface TabItem {
@@ -26,8 +30,37 @@ interface TableHeaderProps {
 }
 
 const TableHeader: React.FC<TableHeaderProps> = ({ title, subtitle, buttons, tabs }) => {
+    const dispatch = useDispatch();
+    let genForm: FormGroup;
+
+    const setForm = (form) => {
+        genForm = form;
+        handleSub();
+    };
+
+    const handleSub = React.useCallback(() => {
+        genForm.valueChanges.subscribe((value) => {
+            const action = filter(value);
+            dispatch(action);
+        });
+    }, []);
+
+    // const unSubscribe = React.useCallback(() => {
+    //     genForm.valueChanges.unsubscribe();
+    // }, [genForm]);
+
+    React.useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Enter') genForm.value = { ...genForm.value, keyPressed: 'Enter' };
+        };
+        document.addEventListener('keydown', handleKeyDown);
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
+
     return (
-        <CardHeader floated={false} shadow={false} className="rounded-none">
+        <CardHeader floated={false} shadow={false} className="rounded-none overflow-visible">
             <div className="mb-2 flex items-center justify-between gap-8">
                 <div>
                     {
@@ -56,9 +89,10 @@ const TableHeader: React.FC<TableHeaderProps> = ({ title, subtitle, buttons, tab
                     ) : null
                 }
             </div>
-            {
-                tabs && tabs.length ? (
-                    <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+
+            <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+                {
+                    tabs && tabs.length ? (
                         <Tabs value={tabs.length > 0 ? tabs[0].value : ''} className="w-full md:w-max">
                             <TabsHeader>
                                 {tabs.map(({ label, value }) => (
@@ -68,17 +102,16 @@ const TableHeader: React.FC<TableHeaderProps> = ({ title, subtitle, buttons, tab
                                 ))}
                             </TabsHeader>
                         </Tabs>
-                        <div className="w-full md:w-72">
-                            <Input
-                                label="Search"
-                                icon={<MagnifyingGlassIcon className="h-5 w-5" />}
-                            />
-                        </div>
-                    </div>
-                ) : null
-            }
+                    ) : null
+                }
+            </div>
+            <div className="flex flex-row gap-2 w-full flex-wrap z-[20000]">
+                <FormGeneratorWrapper className="flex flex-row flex-nowrap" onMount={setForm} fieldConfig={tableFilterInputConfig} />
+            </div>
+
         </CardHeader>
     );
 };
 
 export default TableHeader;
+

@@ -37,13 +37,12 @@ const SelectDefault: React.FC<SelectProps> = ({ ...props }) => {
         <Select
             label={label}
             value={selectedValue}
-            onChange={(val) =>
-                setValue(val)
-            }
+            onChange={(val) => setValue(val)}
             required={required}
             disabled={disabled}
             onFocus={onFocus}
             onBlur={onBlur}
+            styles={{ zIndex: 9999, position: 'fixed' }}
             {...handler('select', selectedValue)}
             {...props}
         >
@@ -58,7 +57,7 @@ const SelectDefault: React.FC<SelectProps> = ({ ...props }) => {
 
 const SelectControl: React.FC<SelectProps> = ({ ...props }) => {
     return (
-        <FormControl required={true} disabled={false}>
+        <FormControl className="grow" required={true} disabled={false}>
             <SelectDefault {...props} />
         </FormControl>
     )

@@ -7,7 +7,6 @@ const ExampleFeature = () => {
     let genForm;
 
     const setInputNesting = useCallback(() => {
-        console.log('genForm', genForm.get('first_name'));
         genForm
             .get('first_name')
             .onBlurChanges.subscribe((value) => (value ? genForm.patchValue({ full_name: `${value} - ` }) : ''));
@@ -24,7 +23,6 @@ const ExampleFeature = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         alert(`You submitted \n ${JSON.stringify(genForm.value, null, 2)}`);
-        console.log(genForm);
     };
 
     const handleEditMode = () => {

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ButtonDefault from './Button';
 import React, { useEffect, useState } from 'react';
+import ButtonDefault from './Button';
 
 const meta = {
   title: 'Components/General/Button',
@@ -9,6 +9,15 @@ const meta = {
   parameters: {
     layout: 'fullscreen',
   },
+  decorators: [
+    (Story) => (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'auto', overflow: 'hidden' }}>
+        <div style={{ width: '80%', margin: '0 auto' }}>
+          <Story />
+        </div>
+      </div>
+    ),
+  ],
   args: {
   },
 } satisfies Meta<typeof ButtonDefault>;
@@ -20,7 +29,6 @@ type Story = StoryObj<typeof meta>;
 class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
   constructor(props) {
     super(props);
-    console.log('Props', props)
     this.state = { hasError: false };
   }
 
@@ -40,7 +48,6 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
 // Wrapper Component with Debounce and Error Handling
 const ButtonWrapper: React.FC<{ color: string; children: React.ReactNode; disabled: boolean }> = ({ color, children, disabled }) => {
   const [debouncedColor, setDebouncedColor] = useState(color);
-  console.log('Disabled', disabled);
 
   useEffect(() => {
     const handler = setTimeout(() => setDebouncedColor(color), 500); // Debounce for 500ms

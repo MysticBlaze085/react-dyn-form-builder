@@ -1,15 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import TableDefault from './Table';
+import DefaultTable from './Table';
+import { Provider } from 'react-redux';
+import {store} from '../../../store';
+import React from 'react';
 
 const meta = {
     title: 'Components/General/Tables/DefaultTable',
-    component: TableDefault,
+    component: DefaultTable,
     tags: ['autodocs'],
     parameters: {
         layout: 'fullscreen',
     },
+    decorators: [(story) => <Provider store={store}>{story()}</Provider>],
     args: {},
-} satisfies Meta<typeof TableDefault>;
+} satisfies Meta<typeof DefaultTable>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

@@ -9,7 +9,7 @@ interface SortConfig {
 
 // Define the context type including sorting logic
 export interface SortableTableContextType {
-  rowData: any[]; // Assuming rows could be of any type
+  rowData: any[];
   sortRows: (key: string) => void;
   sortConfig: SortConfig;
 }
@@ -42,7 +42,7 @@ export const useSortableTable = () => {
 
 // Provider component
 export const SortableTableProvider: React.FC<{ children: React.ReactNode; initialRows: any[] }> = ({ children, initialRows }) => {
-  const initialState: SortConfig = { key: '', direction: 'ascending' };
+  const initialState: SortConfig = { key: '', direction: null };
   const [sortConfig, dispatch] = useReducer(sortReducer, initialState);
 
   const isDate = (value) => {

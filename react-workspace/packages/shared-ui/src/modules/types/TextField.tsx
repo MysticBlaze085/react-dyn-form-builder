@@ -7,6 +7,8 @@ export interface TextFieldProps {
   handler: () => any;
   meta: {
     label: string;
+    required: boolean;
+    disabled: boolean;
   };
   [key: string]: any; // Allow additional props
 }
@@ -25,9 +27,9 @@ const TextField: React.FC<TextFieldProps> = ({...props}) => {
   handler = handler instanceof Function ? handler : () => {};
 
   return (
-    <div className="relative h-10 w-full min-w-[200px] mt-2">
-      <Input 
-        variant="outlined" 
+      <Input
+        className="w-full"
+        variant="outlined"
         label={label}
         required={required}
         onChange={onChange}
@@ -37,13 +39,13 @@ const TextField: React.FC<TextFieldProps> = ({...props}) => {
         value={value}
         {...handler()}
         />
-    </div>
   );
 };
 
 const TextFieldControl:React.FC<TextFieldProps>  = ({ ...props }) => {
+  const { meta: { required, disabled } } = props;
   return (
-      <FormControl defaultValue="" required={true} disabled={false}>
+      <FormControl className='grow' defaultValue="" required={required} disabled={disabled ?? false}>
           <TextField {...props} />
           <HelperText />
       </FormControl>
