@@ -24,21 +24,26 @@ export const CheckboxDefault: React.FC<CheckboxProps> = ({ ...props }) => {
     const { value, required, onChange, disabled, onFocus, onBlur } =
         formControlContext;
 
-    const { handler, meta: { item } } = props;
+    let { handler, meta: { item } } = props;
+
+    handler = handler instanceof Function ? handler : () => {};
+
+    const itemHandler = item ? item : { id: '1', value: 'Example' };
+
+    console.log('itemHandler', itemHandler);
 
     return (
         <Checkbox
-            id={item.id}
-            name="type"
-            label={item.value}
+            id={itemHandler.id}
+            label={itemHandler.value}
             required={required}
             onChange={onChange}
             disabled={disabled}
             onFocus={onFocus}
             onBlur={onBlur}
-            value={item.value}
+            value={itemHandler.value}
             ripple={true}
-            {...handler('checkbox', item.value)}
+            {...handler('checkbox', itemHandler.value)}
         />
     )
 };

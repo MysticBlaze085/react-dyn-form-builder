@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import TableSettingsDialog from './TableSettingsDialog';
+import { Provider } from 'react-redux';
+import { store } from '../../../store';
+import React from 'react';
 
 const meta = {
     title: 'Components/General/Tables/TableSettingsDialog',
@@ -8,6 +11,7 @@ const meta = {
     parameters: {
         layout: 'fullscreen',
     },
+    decorators: [(story) => <Provider store={store}>{story()}</Provider>],
     args: {},
 } satisfies Meta<typeof TableSettingsDialog>;
 

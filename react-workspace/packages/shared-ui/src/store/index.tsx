@@ -68,7 +68,6 @@ const tableDataSourceSlice = createSlice({
     initialState: {
         preferences: {
             visibleColumns: [],
-            pageSize: 10,
         },
         headers: [], // Array of column headers
         initialDataSource: [], // Initial unfiltered and unsorted data source

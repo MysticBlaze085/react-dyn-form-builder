@@ -55,6 +55,22 @@ const formInputConfig = {
                 validators: Validators.required,
             },
         },
+        genderX: {
+            formState: 'other',
+            render: FieldRenderer('CheckboxGroup'),
+            meta: {
+                label: 'Gender',
+                items: [
+                    { id: 'male', value: 'Male' },
+                    { id: 'female', value: 'Female' },
+                    { id: 'other', value: 'other' },
+                ],
+                // classes: 'col-6',
+            },
+            options: {
+                validators: Validators.required,
+            },
+        },
         nationality: {
             render: FieldRenderer('Select'),
             meta: {
