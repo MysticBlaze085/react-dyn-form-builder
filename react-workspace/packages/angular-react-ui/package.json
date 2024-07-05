@@ -27,11 +27,15 @@
     "@angular/common": "^17.0.0",
     "@angular/compiler": "^17.0.0",
     "@angular/core": "^17.0.0",
+    "@angular/elements": "^18.0.6",
     "@angular/forms": "^17.0.0",
     "@angular/platform-browser": "^17.0.0",
     "@angular/platform-browser-dynamic": "^17.0.0",
     "@angular/router": "^17.0.0",
+    "react-redux": "^9.1.2",
+    "redux": "^5.0.1",
     "rxjs": "~7.8.0",
+    "shared-ui": "file:shared-ui-1.0.0.tgz",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.0"
   },
@@ -62,8 +66,8 @@
     "msw": "^1.2.1",
     "msw-storybook-addon": "^1.10.0",
     "npm": "^10.8.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "storybook": "^7.6.6",
     "typescript": "~5.2.2"
   }

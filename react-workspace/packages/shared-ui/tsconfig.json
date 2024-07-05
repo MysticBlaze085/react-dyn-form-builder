@@ -4,16 +4,32 @@
         "allowJs": true,
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
-        "module": "commonJS",
+        "module": "commonjs",
         "jsx": "react-jsx",
+        "skipLibCheck": true,
+        "typeRoots": [
+            "./node_modules/@types",
+            "./@types"
+        ],
         "lib": [
             "dom",
             "esnext"
         ],
+        "paths": {
+            "@material-tailwind/react/*": [
+                "./node_modules/@material-tailwind/react/*"
+            ]
+        },
+        "types": [
+            "node",
+            "react",
+            "react-dom"
+        ]
     },
     "include": [
         "src/**/*",
-        "index.tsx"
+        "index.tsx",
+        "node_modules/@material-tailwind/react"
     ],
     "exclude": [
         "stories",
