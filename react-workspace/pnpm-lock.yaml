@@ -373,6 +373,12 @@ importers:
       '@types/node':
         specifier: ^20.14.9
         version: 20.14.9
+      '@types/react':
+        specifier: ^18.3.3
+        version: 18.3.3
+      '@types/react-dom':
+        specifier: ^18.3.0
+        version: 18.3.0
       i:
         specifier: ^0.3.7
         version: 0.3.7

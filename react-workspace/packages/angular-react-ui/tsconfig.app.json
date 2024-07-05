@@ -3,7 +3,13 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": []
+    "paths": {
+      "shared-ui/*": ["node_modules/shared-ui/dist/*"],
+    },
+    "typeRoots": ["./node_modules/@types", "./types"],
+    "types": ["node"],
+     "jsx": "react-jsx",
+     "allowSyntheticDefaultImports": true
   },
   "files": ["src/main.ts"],
   "include": ["src/**/*.d.ts"]
