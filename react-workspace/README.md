@@ -37,7 +37,7 @@ To start the lib storybook, run:
 .\shared-ui-storybook.sh
 ```
 ## TODO
-- [ ] sidenav
+- [x] sidenav
 - [ ] pagination controls
 - [ ] click action within table like a button
 - [ ] nested table accordions actions
