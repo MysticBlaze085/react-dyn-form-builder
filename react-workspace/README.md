@@ -4,9 +4,14 @@ Welcome to UI SHARED LIB, where components are build to be dynamically re-used t
 
 ## Table of Contents
 
-- [Deployment](#deployment)
-- [Installation](#installation)
-- [Application Requirements](#application-requirements)
+- [UI SHARED LIB](#ui-shared-lib)
+  - [Table of Contents](#table-of-contents)
+  - [Deployment](#deployment)
+  - [Installation](#installation)
+  - [Application Requirements](#application-requirements)
+  - [Usage](#usage)
+    - [Running Shared UI Storybook](#running-shared-ui-storybook)
+  - [TODO](#todo)
 
 ## Deployment
 
@@ -30,3 +35,9 @@ To start the lib storybook, run:
 
 ```bash
 .\shared-ui-storybook.sh
+```
+## TODO
+- [ ] sidenav
+- [ ] pagination controls
+- [ ] click action within table like a button
+- [ ] nested table accordions actions
