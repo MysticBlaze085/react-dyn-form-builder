@@ -1,7 +1,8 @@
 import { FormControl, useFormControlContext } from "@mui/base";
-import { Option, Select } from "@material-tailwind/react";
+import React, { Suspense } from "react";
 
-import React from "react";
+const Option = React.lazy(() => import('@material-tailwind/react/components/Select/SelectOption'));
+const Select = React.lazy(() => import('@material-tailwind/react/components/Select'));
 
 export interface SelectProps {
     handler: any;
@@ -35,6 +36,7 @@ const SelectDefault: React.FC<SelectProps> = ({ ...props }) => {
 
 
     return (
+        <Suspense fallback={<div>Loading...</div>}>
             <Select
                 label={label}
                 value={selectedValue}
@@ -53,6 +55,7 @@ const SelectDefault: React.FC<SelectProps> = ({ ...props }) => {
                     ))
                 }
             </Select>
+        </Suspense>
     )
 };
 

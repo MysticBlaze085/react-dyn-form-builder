@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import TextareaField from './TextareaField';
+import TextareaFieldControl from './TextareaField';
 
 
 const meta = {
   title: 'Field/Fields/TextareaField',
-  component: TextareaField,
+  component: TextareaFieldControl,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ['autodocs'],
   parameters: {
@@ -13,7 +13,7 @@ const meta = {
   },
   args: {
   },
-} satisfies Meta<typeof TextareaField>;
+} satisfies Meta<typeof TextareaFieldControl>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -23,6 +23,8 @@ export const Primary: Story = {
     handler: () => {},
     meta: {
       label: 'Label',
+      required: false,
+      disabled: false
     },
   },
 };

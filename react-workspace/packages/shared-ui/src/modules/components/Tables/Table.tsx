@@ -1,10 +1,11 @@
 // @ts-nocheck
-import { Checkbox, Typography } from '@material-tailwind/react';
-import React, { useRef } from 'react';
+import React, { Suspense, useRef } from 'react';
 import { dragDrop, dragStart, setHeaders, setSelectedRows, setTableDataSource, sortDataSource, toggleSelectedAllRows } from '../../../store';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
+const Checkbox = React.lazy(() => import('@material-tailwind/react/components/Checkbox'));
+const Typography = React.lazy(() => import('@material-tailwind/react/components/Typography'));
+const ChevronUpDownIcon = React.lazy(() => import('@heroicons/react/24/outline/ChevronUpDownIcon'));
 
 interface TableRow {
     [key: string]: any; // Interface for table rows, allowing any properties
@@ -89,75 +90,77 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
     }, [props.isDraggable, props.isSortable, props.isSelectable]); // Dependencies for effect
 
     return (
-        <table className="w-full min-w-max table-auto text-left">
-            <thead>
-                <tr>
-                    {isSelectable && ( // Render checkbox for select all if selectable
-                        <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-1">
-                            <Checkbox
-                                ref={selectAllRef}
-                                checked={selectedRows.length === dataSource.length} // Check if all rows are selected
-                                onChange={toggleSelectAll} // Toggle select all handler
-                                className='w-4 h-4'
-                                onPointerEnterCapture={undefined} // Pointer enter capture handler
-                                onPointerLeaveCapture={undefined} // Pointer leave capture handler
-                                crossOrigin={undefined} // Cross origin attribute
-                            />
-                        </th>
-                    )}
-                    {headers.map((head, index) => (
-                        <th
-                            key={head}
-                            className={`border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer`}
-                            onClick={() => (isSortable ? sortRows(head) : null)} // Sort rows handler if sortable
-                            draggable={isDraggable} // Draggable attribute based on flag
-                            onDragStart={handleDragStart(index)} // Drag start handler
-                            onDragOver={handleDragOver} // Drag over handler
-                            onDrop={handleDrop(index)} // Drop handler
-                        >
-                            <Typography
-                                variant="small"
-                                color="blue-gray"
-                                className="flex items-center justify-between gap-2 font-normal leading-none opacity-70"
-                            >
-                                {head}{' '}
-                                {index !== headers.length - 1 && isSortable && ( // Render sort icon if sortable
-                                    <ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
-                                )}
-                                {sortConfig?.key === head && isSortable && ( // Render sort direction indicator
-                                    <span>{sortConfig.direction === 'ascending' ? '🔼' : '🔽'}</span>
-                                )}
-                            </Typography>
-                        </th>
-                    ))}
-                </tr>
-            </thead>
-            <tbody>
-                {dataSource.map((row, index) => (
-                    <tr key={index}>
-                        {isSelectable && ( // Render checkbox for row selection if selectable
-                            <td className={`border-b border-blue-gray-50 ${isSelectable ? 'p-1' : 'p-2'} max-h-[38px]`}>
+        <Suspense fallback={<div>Loading...</div>}>
+            <table className="w-full min-w-max table-auto text-left">
+                <thead>
+                    <tr>
+                        {isSelectable && ( // Render checkbox for select all if selectable
+                            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-1">
                                 <Checkbox
-                                    checked={selectedRows.some(selectedRow => JSON.stringify(selectedRow) === JSON.stringify(row))} // Check if row is selected
-                                    onChange={() => toggleRowSelection(row)} // Toggle row selection handler
+                                    ref={selectAllRef}
+                                    checked={selectedRows.length === dataSource.length} // Check if all rows are selected
+                                    onChange={toggleSelectAll} // Toggle select all handler
                                     className='w-4 h-4'
                                     onPointerEnterCapture={undefined} // Pointer enter capture handler
                                     onPointerLeaveCapture={undefined} // Pointer leave capture handler
                                     crossOrigin={undefined} // Cross origin attribute
                                 />
-                            </td>
+                            </th>
                         )}
-                        {headers.map((key) => (
-                            <td key={key} className={`border-b border-blue-gray-50 ${isSelectable ? 'p-1' : 'p-2'} max-h-[40px]`}>
-                                <Typography variant="small" color="blue-gray" className="font-normal">
-                                    {row[key.toLowerCase()]} {/* Render cell data */}
+                        {headers.map((head, index) => (
+                            <th
+                                key={head}
+                                className={`border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer`}
+                                onClick={() => (isSortable ? sortRows(head) : null)} // Sort rows handler if sortable
+                                draggable={isDraggable} // Draggable attribute based on flag
+                                onDragStart={handleDragStart(index)} // Drag start handler
+                                onDragOver={handleDragOver} // Drag over handler
+                                onDrop={handleDrop(index)} // Drop handler
+                            >
+                                <Typography
+                                    variant="small"
+                                    color="blue-gray"
+                                    className="flex items-center justify-between gap-2 font-normal leading-none opacity-70"
+                                >
+                                    {head}{' '}
+                                    {index !== headers.length - 1 && isSortable && ( // Render sort icon if sortable
+                                        <ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
+                                    )}
+                                    {sortConfig?.key === head && isSortable && ( // Render sort direction indicator
+                                        <span>{sortConfig.direction === 'ascending' ? '🔼' : '🔽'}</span>
+                                    )}
                                 </Typography>
-                            </td>
+                            </th>
                         ))}
                     </tr>
-                ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {dataSource.map((row, index) => (
+                        <tr key={index}>
+                            {isSelectable && ( // Render checkbox for row selection if selectable
+                                <td className={`border-b border-blue-gray-50 ${isSelectable ? 'p-1' : 'p-2'} max-h-[38px]`}>
+                                    <Checkbox
+                                        checked={selectedRows.some(selectedRow => JSON.stringify(selectedRow) === JSON.stringify(row))} // Check if row is selected
+                                        onChange={() => toggleRowSelection(row)} // Toggle row selection handler
+                                        className='w-4 h-4'
+                                        onPointerEnterCapture={undefined} // Pointer enter capture handler
+                                        onPointerLeaveCapture={undefined} // Pointer leave capture handler
+                                        crossOrigin={undefined} // Cross origin attribute
+                                    />
+                                </td>
+                            )}
+                            {headers.map((key) => (
+                                <td key={key} className={`border-b border-blue-gray-50 ${isSelectable ? 'p-1' : 'p-2'} max-h-[40px]`}>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {row[key.toLowerCase()]} {/* Render cell data */}
+                                    </Typography>
+                                </td>
+                            ))}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </Suspense>
     );
 };
 

@@ -1,7 +1,7 @@
 import { FormControl, useFormControlContext } from '@mui/base';
+import React, { Suspense } from "react";
 
-import { Input } from '@material-tailwind/react';
-import React from "react";
+const Input = React.lazy(() => import('@material-tailwind/react/components/Input'));
 
 export interface TextFieldProps {
   handler: () => any;
@@ -13,20 +13,21 @@ export interface TextFieldProps {
   [key: string]: any; // Allow additional props
 }
 
-const TextField: React.FC<TextFieldProps> = ({...props}) => {
+const TextField: React.FC<TextFieldProps> = ({ ...props }) => {
   const formControlContext = useFormControlContext();
 
   if (formControlContext === undefined) {
-      return null;
+    return null;
   }
 
   const { value, required, onChange, disabled, onFocus, onBlur } =
-      formControlContext;
-  
+    formControlContext;
+
   let { handler, meta: { label } } = props;
-  handler = handler instanceof Function ? handler : () => {};
+  handler = handler instanceof Function ? handler : () => { };
 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
       <Input
         className="w-full"
         variant="outlined"
@@ -38,17 +39,18 @@ const TextField: React.FC<TextFieldProps> = ({...props}) => {
         onBlur={onBlur}
         value={value}
         {...handler()}
-        />
+      />
+    </Suspense>
   );
 };
 
-const TextFieldControl:React.FC<TextFieldProps>  = ({ ...props }) => {
+const TextFieldControl: React.FC<TextFieldProps> = ({ ...props }) => {
   const { meta: { required, disabled } } = props;
   return (
-      <FormControl className='grow' defaultValue="" required={required} disabled={disabled ?? false}>
-          <TextField {...props} />
-          <HelperText />
-      </FormControl>
+    <FormControl className='grow' defaultValue="" required={required} disabled={disabled ?? false}>
+      <TextField {...props} />
+      <HelperText />
+    </FormControl>
   )
 }
 

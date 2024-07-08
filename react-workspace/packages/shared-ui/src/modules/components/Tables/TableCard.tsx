@@ -1,9 +1,11 @@
 // @ts-nocheck
-import { Card, CardBody } from "@material-tailwind/react";
+import React, { Suspense } from "react"; // Ensure React is imported if using its features directly
 
-import React from "react"; // Ensure React is imported if using its features directly
-import TableFooter from "./TableFooter";
-import TableHeader from "./TableHeader";
+const Card = React.lazy(() => import('@material-tailwind/react/components/Card'));
+const CardBody = React.lazy(() => import('@material-tailwind/react/components/Card/CardBody'));
+const TableHeader = React.lazy(() => import('./TableHeader'));
+const TableFooter = React.lazy(() => import('./TableFooter'));
+
 
 interface TableCardProps {
     children?: React.ReactNode;
@@ -20,17 +22,19 @@ const TableCard: React.FC<TableCardProps> = ({ children, showHeader = true, show
         setIsHeaderVisible(showHeader);
         setIsFooterVisible(showFooter);
     }, [showHeader, showFooter]);
-    
+
     return (
-        <Card className="h-full w-full overflow-auto">
-            {isHeaderVisible && <TableHeader {...props} />}
-            {(children && isHeaderVisible) || (children && isFooterVisible) ? (
-                <CardBody className="overflow-auto px-0 p-2">{children}</CardBody>
-            ) : (
-                children
-            )}
-            {isFooterVisible && <TableFooter {...props} />}
-        </Card>
+        <Suspense fallback={<div>Loading...</div>}>
+            <Card className="h-full w-full overflow-auto">
+                {isHeaderVisible && <TableHeader {...props} />}
+                {(children && isHeaderVisible) || (children && isFooterVisible) ? (
+                    <CardBody className="overflow-auto px-0 p-2">{children}</CardBody>
+                ) : (
+                    children
+                )}
+                {isFooterVisible && <TableFooter {...props} />}
+            </Card>
+        </Suspense>
     );
 }
 

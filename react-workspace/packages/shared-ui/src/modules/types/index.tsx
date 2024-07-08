@@ -1,10 +1,10 @@
 import CheckboxControl from "./Checkbox";
 import CheckboxGroup from "./CheckboxGroup";
-import Radio from "./Radio";
+import RadioControl from "./Radio";
 import RadioGroup from "./RadioGroup";
-import SelectDefault from "./Select";
+import SelectControl from "./Select";
 import TextFieldControl from "./TextField";
-import TextareaField from "./TextareaField";
+import TextareaFieldControl from "./TextareaField";
 import Value from "./Value";
 
-export { CheckboxControl, CheckboxGroup, Radio as RadioControl, RadioGroup as RadioGroupControl, SelectDefault, TextFieldControl, TextareaField, Value }
+export { CheckboxControl, CheckboxGroup, RadioControl, RadioGroup, SelectControl, TextFieldControl, TextareaFieldControl, Value }

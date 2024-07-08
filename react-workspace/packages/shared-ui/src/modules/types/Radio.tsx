@@ -1,7 +1,6 @@
 import { FormControl, useFormControlContext } from "@mui/base";
-
-import { Radio } from "@material-tailwind/react";
-import React from "react";
+import React, { Suspense } from "react";
+const Radio = React.lazy(() => import('@material-tailwind/react/components/Radio'));
 
 export interface RadioProps {
     handler: any;
@@ -28,19 +27,21 @@ const RadioDefault: React.FC<RadioProps> = ({ ...props }) => {
     const itemHandler = item ? item : { id: '1', value: 'Example' };
 
     return (
-        <Radio
-            id={itemHandler.id}
-            name="type" 
-            label={itemHandler.value}
-            required={required}
-            onChange={onChange}
-            disabled={disabled}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            value={itemHandler.value}
-            ripple={true}
-            {...handler('radio', itemHandler.value)}
-        />
+        <Suspense fallback={<div>Loading...</div>}>
+            <Radio
+                id={itemHandler.id}
+                name="type"
+                label={itemHandler.value}
+                required={required}
+                onChange={onChange}
+                disabled={disabled}
+                onFocus={onFocus}
+                onBlur={onBlur}
+                value={itemHandler.value}
+                ripple={true}
+                {...handler('radio', itemHandler.value)}
+            />
+        </Suspense>
     );
 };
 

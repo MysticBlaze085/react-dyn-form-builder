@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 
-import { Button } from '@material-tailwind/react';
+const Button = React.lazy(() => import('@material-tailwind/react/components/Button'));
 
 interface ButtonProps {
     children: React.ReactNode;
@@ -20,9 +20,11 @@ const ButtonDefault: React.FC<ButtonProps | any> = ({ variant = 'filled', ...pro
     }, [props.color, props.disabled, props.onClick, ...Object.keys(props).filter((key) => key !== 'children')]);
 
     return (
-        <Button ripple={true} variant={validVariant} size={validSize} {...buttonProps}>
-            {buttonProps.children}
-        </Button>
+        <Suspense fallback={<div>Loading...</div>}>
+            <Button ripple={true} variant={validVariant} size={validSize} {...buttonProps}>
+                {buttonProps.children}
+            </Button>
+        </Suspense>
     );
 };
 
