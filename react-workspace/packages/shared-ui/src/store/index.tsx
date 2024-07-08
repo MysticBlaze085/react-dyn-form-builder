@@ -60,6 +60,7 @@ const dragRows = (state: any, action: any) => {
     state.headers = newHeaders;
     state.dataSource = newRows;
     state.draggedColIndex = null;
+    state.selectedRows = [];
 };
 
 // Create a slice for managing table data source state

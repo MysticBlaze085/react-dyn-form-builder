@@ -7,9 +7,6 @@ import TableDefault from './Table';
 import { UserPlusIcon } from '@heroicons/react/24/solid';
 import { store } from '../../../store';
 
-//TODO: sidenav
-//TODO: settings display controls
-
 const mockData = [
     {
         name: 'John Michael',
@@ -35,6 +32,16 @@ const mockData = [
         name: 'Jenna Kian',
         job: 'Marketing',
         date: '23/04/18',
+    },
+    {
+        name: 'Denzel Washington',
+        job: 'Actor',
+        date: '23/04/05',
+    },
+    {
+        name: 'Morgan Freeman',
+        job: 'Actor',
+        date: '23/04/05',
     },
 ]
 

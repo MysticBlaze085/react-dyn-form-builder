@@ -33,18 +33,18 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
     const selectAllRef = useRef<HTMLInputElement>(null); // Ref for select all checkbox
 
     // Handler for drag start on headers
-    const handleDragStart = (index: number) => (event: React.DragEvent<HTMLTableHeaderCellElement>) => {
+    const handleDragStart = (index: number) => (event: React.DragEvent<HTMLTableCellElement>) => {
         const action = dragStart(index); // Dispatch drag start action
         dispatch(action);
     };
 
     // Handler for drag over events
-    const handleDragOver = (event: React.DragEvent<HTMLTableHeaderCellElement>) => {
+    const handleDragOver = (event: React.DragEvent<HTMLTableCellElement>) => {
         event.preventDefault(); // Prevent default behavior
     };
 
     // Handler for drop events
-    const handleDrop = (targetIndex: number) => (event: React.DragEvent<HTMLTableHeaderCellElement>) => {
+    const handleDrop = (targetIndex: number) => (event: React.DragEvent<HTMLTableCellElement>) => {
         event.preventDefault(); // Prevent default behavior
         const action = dragDrop(targetIndex); // Dispatch drag drop action with target index
         dispatch(action);
