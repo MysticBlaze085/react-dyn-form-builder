@@ -1,9 +1,12 @@
 // @ts-nocheck
 
-import React, { Suspense } from 'react';
-
+import ButtonDefault from "../Button";
+import FormGeneratorWrapper from "../../FormGeneratorWrapper";
 import { FormGroup } from "react-reactive-form";
+import React from 'react';
+import TableSettingsDialog from "./TableSettingsDialog";
 import { filter } from "../../../store";
+import { tableFilterInputConfig } from "./TableFieldControls";
 import { useDispatch } from 'react-redux';
 
 const CardHeader = React.lazy(() => import('@material-tailwind/react/components/Card/CardHeader'));
@@ -11,10 +14,6 @@ const Tab = React.lazy(() => import('@material-tailwind/react/components/Tabs/Ta
 const Tabs = React.lazy(() => import('@material-tailwind/react/components/Tabs'));
 const TabsHeader = React.lazy(() => import('@material-tailwind/react/components/Tabs/TabsHeader'));
 const Typography = React.lazy(() => import('@material-tailwind/react/components/Typography'));
-const ButtonDefault = React.lazy(() => import('../Button'));
-const FormGeneratorWrapper = React.lazy(() => import('../../FormGeneratorWrapper'));
-const TableSettingsDialog = React.lazy(() => import('./TableSettingsDialog'));
-const { tableFilterInputConfig } = React.lazy(() => import('./TableFieldControls'));
 
 // Define the types for the props
 interface TabItem {
@@ -63,59 +62,57 @@ const TableHeader: React.FC<TableHeaderProps> = ({ title, subtitle, buttons, tab
     }, []);
 
     return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <CardHeader floated={false} shadow={false} className="rounded-none overflow-visible">
-                <div className="mb-2 flex items-center justify-between gap-8">
-                    <div>
-                        {
-                            title ? (
-                                <Typography variant="h5" color="blue-gray">
-                                    {title}
-                                </Typography>
-                            ) : null
-                        }
-                        {
-                            subtitle ? (<Typography color="gray" className="mt-1 font-normal">
-                                {subtitle}
-                            </Typography>) : null
-                        }
-
-                    </div>
-                    <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-                        {
-                            buttons && buttons.length > 0 && buttons.map(({ label, onClick, color, icon }, index) => (
-                                <ButtonDefault key={index} size="sm" onClick={onClick} color={color} className="flex items-center gap-3">
-                                    {icon} {label}
-                                </ButtonDefault>
-                            ))
-                        }
-                        <div className="flex items-center gap-3 cursor-pointer">
-                            <TableSettingsDialog />
-                        </div>
-                    </div>
-                </div>
-
-                <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+        <CardHeader floated={false} shadow={false} className="rounded-none overflow-visible">
+            <div className="mb-2 flex items-center justify-between gap-8">
+                <div>
                     {
-                        tabs && tabs.length ? (
-                            <Tabs value={tabs.length > 0 ? tabs[0].value : ''} className="w-full md:w-max">
-                                <TabsHeader>
-                                    {tabs.map(({ label, value }) => (
-                                        <Tab key={value} value={value}>
-                                            &nbsp;&nbsp;{label}&nbsp;&nbsp;
-                                        </Tab>
-                                    ))}
-                                </TabsHeader>
-                            </Tabs>
+                        title ? (
+                            <Typography variant="h5" color="blue-gray">
+                                {title}
+                            </Typography>
                         ) : null
                     }
-                </div>
-                <div className="flex flex-row gap-2 w-full flex-wrap z-[20000]">
-                    <FormGeneratorWrapper className="flex flex-row flex-nowrap" onMount={setForm} fieldConfig={tableFilterInputConfig} />
-                </div>
+                    {
+                        subtitle ? (<Typography color="gray" className="mt-1 font-normal">
+                            {subtitle}
+                        </Typography>) : null
+                    }
 
-            </CardHeader>
-        </Suspense>
+                </div>
+                <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+                    {
+                        buttons && buttons.length > 0 && buttons.map(({ label, onClick, color, icon }, index) => (
+                            <ButtonDefault key={index} size="sm" onClick={onClick} color={color} className="flex items-center gap-3">
+                                {icon} {label}
+                            </ButtonDefault>
+                        ))
+                    }
+                    <div className="flex items-center gap-3 cursor-pointer">
+                        <TableSettingsDialog />
+                    </div>
+                </div>
+            </div>
+
+            <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+                {
+                    tabs && tabs.length ? (
+                        <Tabs value={tabs.length > 0 ? tabs[0].value : ''} className="w-full md:w-max">
+                            <TabsHeader>
+                                {tabs.map(({ label, value }) => (
+                                    <Tab key={value} value={value}>
+                                        &nbsp;&nbsp;{label}&nbsp;&nbsp;
+                                    </Tab>
+                                ))}
+                            </TabsHeader>
+                        </Tabs>
+                    ) : null
+                }
+            </div>
+            <div className="flex flex-row gap-2 w-full flex-wrap z-[20000]">
+                <FormGeneratorWrapper className="flex flex-row flex-nowrap" onMount={setForm} fieldConfig={tableFilterInputConfig} />
+            </div>
+
+        </CardHeader>
     );
 };
 
