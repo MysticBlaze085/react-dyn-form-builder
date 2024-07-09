@@ -74,8 +74,7 @@ export const Primary: Story = {
         showFooter: true,
         title: 'Table Card',
         subtitle: 'This is a table card',
-        currentPage: 1,
-        totalPages: 5,
+        pageSizes: ['5', '10', '20', '100'],
         buttons: [
             {
                 label: 'View All',
@@ -119,8 +118,7 @@ export const WithoutHeaderAndFooter: Story = {
     args: {
         showHeader: false,
         showFooter: false,
-        currentPage: 1,
-        totalPages: 5,
+        pageSizes: ['5', '10', '20', '100'],
         children: (
             <TableDefault
             isDraggable={true}

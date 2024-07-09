@@ -1,4 +1,4 @@
-import { setDataSourcePagination, updateChangedCurrentPage } from './pagination.util';
+import { setDataSourcePagination, setPaginationState, updateChangedCurrentPage } from './pagination.util';
 
 import { createSlice } from '@reduxjs/toolkit';
 import { dragRows } from './drag.util';
@@ -23,9 +23,9 @@ interface TableState {
     },
     selectedRows: any[],
     sortDataSource: { key: string, direction: 'ascending' | 'descending' },
-  }
-  
-  const initialState: TableState = {
+}
+
+const initialState: TableState = {
     dataSource: [],
     draggedColIndex: null,
     filterDataSource: { column: '', value: '' },
@@ -42,7 +42,7 @@ interface TableState {
     },
     selectedRows: [],
     sortDataSource: { key: '', direction: 'ascending' },
-  };
+};
 
 export const tableDataSourceSlice = createSlice({
     name: 'tableDataSource',
@@ -53,6 +53,7 @@ export const tableDataSourceSlice = createSlice({
             state.headers = action.payload;
             state.initialHeaders = action.payload;
             state.preferences.visibleColumns = action.payload;
+            state.filterDataSource = { column: state.headers[0], value: '' };
         },
         // Reducer to set initial and current data source
         setTableDataSource(state, action) {
@@ -82,10 +83,7 @@ export const tableDataSourceSlice = createSlice({
         setPagination(state, action) {
             state.pagination = action.payload;
             // calculate page size
-            state.pagination.pageSize = state.pagination.pageSize ?? 10;
-            state.pagination.currentPage = state.pagination.currentPage ?? 1;
-            state.pagination.totalPages = Math.ceil(state.dataSource.length / state.pagination.pageSize);
-            setDataSourcePagination(state, action);
+            setPaginationState(state, action.payload.pageSize, action.payload.currentPage);
         },
         // Pagination set current page
         setCurrentPage(state, action) {
@@ -97,11 +95,13 @@ export const tableDataSourceSlice = createSlice({
             const column = action.payload.column ?? state.filterDataSource.column;
             const value = action.payload.value ?? state.filterDataSource.value;
             state.filterDataSource = { column, value };
-            state.selectedRows = []; // Clear selected rows on filtering
+            const selectedRows = state.selectedRows;
+            state.selectedRows = [];
             if (state.filterDataSource.column) {
                 if (state.filterDataSource.value === '') state.dataSource = [...state.initialDataSource];
                 else state.dataSource = filterRows(state.dataSource, state.filterDataSource);
             }
+            state.selectedRows = selectedRows;
         },
         // Reducer to set the index of the dragged column
         dragStart(state, action) {

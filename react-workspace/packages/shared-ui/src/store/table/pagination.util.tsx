@@ -19,3 +19,15 @@ export const updateChangedCurrentPage = (state: any, action: any) => {
     // Update dataSource based on currentPage
     setDataSourcePagination(state, action);
 }
+
+export const setPaginationState = (state: any, pageSize: number, currentPage: number) => {
+    // Set pageSize and currentPage in pagination state
+    state.pagination.pageSize = pageSize;
+    state.pagination.currentPage = currentPage;
+
+    // Recalculate totalPages based on the new pageSize
+    state.pagination.totalPages = Math.ceil(state.initialDataSource.length / pageSize);
+
+    // Update dataSource based on the new currentPage and pageSize
+    setDataSourcePagination(state, {});
+}

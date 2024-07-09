@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { useDispatch, useSelector } from 'react-redux';
 
 import ButtonDefault from "../Button";
 import FormGeneratorWrapper from "../../FormGeneratorWrapper";
@@ -7,7 +8,6 @@ import React from 'react';
 import TableSettingsDialog from "./TableSettingsDialog";
 import { filter } from "../../../store";
 import { tableFilterInputConfig } from "./TableFieldControls";
-import { useDispatch } from 'react-redux';
 
 const CardHeader = React.lazy(() => import('@material-tailwind/react/components/Card/CardHeader'));
 const Tab = React.lazy(() => import('@material-tailwind/react/components/Tabs/Tab'));
@@ -37,6 +37,7 @@ interface TableHeaderProps {
 
 const TableHeader: React.FC<TableHeaderProps> = ({ title, subtitle, buttons, tabs }) => {
     const dispatch = useDispatch();
+    const searchColumn = useSelector((state) => state['tableDataSource']['filterDataSource']['column']);
     let genForm: FormGroup;
 
     const setForm = (form) => {
@@ -108,9 +109,14 @@ const TableHeader: React.FC<TableHeaderProps> = ({ title, subtitle, buttons, tab
                     ) : null
                 }
             </div>
-            <div className="flex flex-row gap-2 w-full flex-wrap z-[20000]">
-                <FormGeneratorWrapper className="flex flex-row flex-nowrap" onMount={setForm} fieldConfig={tableFilterInputConfig} />
-            </div>
+            {
+                searchColumn && (
+                    <div className="flex flex-row gap-2 w-full flex-wrap z-[20000]">
+                        <FormGeneratorWrapper className="flex flex-row flex-nowrap" onMount={setForm} fieldConfig={tableFilterInputConfig(searchColumn)} />
+                    </div>
+                )
+            }
+
 
         </CardHeader>
     );
