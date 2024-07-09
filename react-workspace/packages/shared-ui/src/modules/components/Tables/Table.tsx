@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { Suspense, useRef } from 'react';
 import { dragDrop, dragStart, setHeaders, setSelectedRows, setTableDataSource, sortDataSource, toggleSelectedAllRows } from '../../../store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,6 +29,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
     const [isDraggable, setIsDraggable] = React.useState(props.isDraggable); // State for draggable flag
     const [isSortable, setIsSortable] = React.useState(props.isSortable); // State for sortable flag
     const [isSelectable, setIsSelectable] = React.useState(props.isSelectable); // State for selectable flag
+    const [selectedRow, setSelectedRow] = React.useState(null);
     const selectAllRef = useRef<HTMLInputElement>(null); // Ref for select all checkbox
 
     // Handler for drag start on headers
@@ -80,20 +80,45 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
         dispatch(action);
     };
 
-    // Handler to handle pagination changes
-    const handlePagination = (page: number, limit: number) => {
-        // Handle pagination changes
-        setPagination({ page, limit });
+    const onRowClick = (identifier) => {
+        setSelectedRow(identifier);
+    };
+
+    const renderRow = (rowData, rowIndex) => {
+        const rowIdentifier = rowData;
+        const isSelected = selectedRow === rowIdentifier;
+        const rowClasses = isSelected ? "bg-light-blue-500" : "";
+
+        return (
+            <tr key={rowIndex} className={`${rowClasses}`} onClick={() => onRowClick(rowIdentifier)}>
+                {isSelectable && (
+                    <td className={`border-b border-blue-gray-50 ${isSelectable ? 'p-1' : 'p-2'} max-h-[38px]`}>
+                        <Checkbox
+                            checked={selectedRows.some(selectedRow => JSON.stringify(selectedRow) === JSON.stringify(rowData))}
+                            onChange={() => toggleRowSelection(rowData)}
+                            className='w-4 h-4'
+                        />
+                    </td>
+                )}
+                {headers.map((key) => (
+                    <td key={key} className={`border-b border-blue-gray-50 ${isSelectable ? 'p-1' : 'p-2'} max-h-[40px]`}>
+                        <Typography variant="small" color="blue-gray" className="font-normal">
+                            {rowData[key.toLowerCase()]}
+                        </Typography>
+                    </td>
+                ))}
+            </tr>
+        );
     };
 
     // Effect to update component state based on props changes
     React.useEffect(() => {
-        handleHeaders(props.headers); // Update headers in Redux state
-        handleDataSource(props.rows); // Update data source in Redux state
-        setIsDraggable(props.isDraggable); // Update draggable flag
-        setIsSortable(props.isSortable); // Update sortable flag
-        setIsSelectable(props.isSelectable); // Update selectable flag
-    }, [props.isDraggable, props.isSortable, props.isSelectable]); // Dependencies for effect
+        handleHeaders(props.headers);
+        handleDataSource(props.rows);
+        setIsDraggable(props.isDraggable);
+        setIsSortable(props.isSortable);
+        setIsSelectable(props.isSelectable);
+    }, [props.isDraggable, props.isSortable, props.isSelectable]);
 
     return (
         <Suspense fallback={<div>Loading...</div>}>
@@ -142,27 +167,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
                 </thead>
                 <tbody>
                     {dataSource.map((row, index) => (
-                        <tr key={index}>
-                            {isSelectable && ( // Render checkbox for row selection if selectable
-                                <td className={`border-b border-blue-gray-50 ${isSelectable ? 'p-1' : 'p-2'} max-h-[38px]`}>
-                                    <Checkbox
-                                        checked={selectedRows.some(selectedRow => JSON.stringify(selectedRow) === JSON.stringify(row))} // Check if row is selected
-                                        onChange={() => toggleRowSelection(row)} // Toggle row selection handler
-                                        className='w-4 h-4'
-                                        onPointerEnterCapture={undefined} // Pointer enter capture handler
-                                        onPointerLeaveCapture={undefined} // Pointer leave capture handler
-                                        crossOrigin={undefined} // Cross origin attribute
-                                    />
-                                </td>
-                            )}
-                            {headers.map((key) => (
-                                <td key={key} className={`border-b border-blue-gray-50 ${isSelectable ? 'p-1' : 'p-2'} max-h-[40px]`}>
-                                    <Typography variant="small" color="blue-gray" className="font-normal">
-                                        {row[key.toLowerCase()]} {/* Render cell data */}
-                                    </Typography>
-                                </td>
-                            ))}
-                        </tr>
+                        renderRow(row, index)
                     ))}
                 </tbody>
             </table>
