@@ -88,9 +88,6 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
                                     checked={selectedRows.length === dataSource.length} // Check if all rows are selected
                                     onChange={handlers.toggleSelectAll} // Toggle select all handler
                                     className='w-4 h-4'
-                                    onPointerEnterCapture={undefined} // Pointer enter capture handler
-                                    onPointerLeaveCapture={undefined} // Pointer leave capture handler
-                                    crossOrigin={undefined} // Cross origin attribute
                                 />
                             </th>
                         )}

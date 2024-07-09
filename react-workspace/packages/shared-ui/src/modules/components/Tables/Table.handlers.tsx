@@ -10,6 +10,7 @@ class TableHandlers {
     constructor(dispatch: Dispatch, sortConfig: { key: string; direction: string }) {
         this.dispatch = dispatch;
         this.sortConfig = sortConfig;
+        this.toggleSelectAll = this.toggleSelectAll.bind(this);
     }
 
     handleDragStart = (index: number) => (event: React.DragEvent<HTMLTableCellElement>) => {
@@ -49,6 +50,7 @@ class TableHandlers {
 
     toggleSelectAll() {
         const action = toggleSelectedAllRows();
+        console.log('actions', action)
         this.dispatch(action);
     }
 }
