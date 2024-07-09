@@ -1,85 +1,41 @@
+// @ts-nocheck
 import React, { Suspense, useRef } from 'react';
-import { dragDrop, dragStart, setHeaders, setSelectedRows, setTableDataSource, sortDataSource, toggleSelectedAllRows } from '../../../store';
 import { useDispatch, useSelector } from 'react-redux';
+
+import TableHandlers from './Table.handlers';
 
 const Checkbox = React.lazy(() => import('@material-tailwind/react/components/Checkbox'));
 const Typography = React.lazy(() => import('@material-tailwind/react/components/Typography'));
 const ChevronUpDownIcon = React.lazy(() => import('@heroicons/react/24/outline/ChevronUpDownIcon'));
 
-interface TableRow {
-    [key: string]: any; // Interface for table rows, allowing any properties
+export interface TableRow {
+    [key: string]: any;
 }
 
-interface DefaultTableProps {
+export interface DefaultTableProps {
     headers: string[];
     rows: TableRow[];
     isDraggable?: boolean;
     isSortable?: boolean;
     isSelectable?: boolean;
-    [key: string]: any; // Props allowing any additional custom properties
+    [key: string]: any;
 }
 
 const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
-    const dispatch = useDispatch(); // Redux dispatch function
-    const dataSource = useSelector((state) => state['tableDataSource']['dataSource']); // Selecting data source from Redux state
-    const sortConfig = useSelector((state) => state['tableDataSource']['sortDataSource']); // Selecting sort configuration from Redux state
-    const headers = useSelector((state) => state['tableDataSource']['headers']); // Selecting headers from Redux state
-    const selectedRows = useSelector((state) => state['tableDataSource']['selectedRows']); // Selecting selected rows from Redux state
+    const dispatch = useDispatch();
+    const dataSource = useSelector((state) => state['tableDataSource']['dataSource']);
+    const sortConfig = useSelector((state) => state['tableDataSource']['sortDataSource']);
+    const headers = useSelector((state) => state['tableDataSource']['headers']);
+    const selectedRows = useSelector((state) => state['tableDataSource']['selectedRows']);
 
-    const [isDraggable, setIsDraggable] = React.useState(props.isDraggable); // State for draggable flag
-    const [isSortable, setIsSortable] = React.useState(props.isSortable); // State for sortable flag
-    const [isSelectable, setIsSelectable] = React.useState(props.isSelectable); // State for selectable flag
+    const [isDraggable, setIsDraggable] = React.useState(props.isDraggable);
+    const [isSortable, setIsSortable] = React.useState(props.isSortable);
+    const [isSelectable, setIsSelectable] = React.useState(props.isSelectable);
     const [selectedRow, setSelectedRow] = React.useState(null);
-    const selectAllRef = useRef<HTMLInputElement>(null); // Ref for select all checkbox
+    const selectAllRef = useRef<HTMLInputElement>(null);
 
-    // Handler for drag start on headers
-    const handleDragStart = (index: number) => (event: React.DragEvent<HTMLTableCellElement>) => {
-        const action = dragStart(index); // Dispatch drag start action
-        dispatch(action);
-    };
-
-    // Handler for drag over events
-    const handleDragOver = (event: React.DragEvent<HTMLTableCellElement>) => {
-        event.preventDefault(); // Prevent default behavior
-    };
-
-    // Handler for drop events
-    const handleDrop = (targetIndex: number) => (event: React.DragEvent<HTMLTableCellElement>) => {
-        event.preventDefault(); // Prevent default behavior
-        const action = dragDrop(targetIndex); // Dispatch drag drop action with target index
-        dispatch(action);
-    };
-
-    // Handler to set headers in Redux state
-    const handleHeaders = (headers: string[]) => {
-        const action = setHeaders(headers); // Dispatch set headers action
-        dispatch(action);
-    };
-
-    // Handler to set data source in Redux state
-    const handleDataSource = (rows: TableRow[]) => {
-        const action = setTableDataSource(rows); // Dispatch set table data source action
-        dispatch(action);
-    };
-
-    // Handler to sort rows based on header key
-    const sortRows = (key: string) => {
-        const action = sortDataSource({ key, direction: sortConfig.direction === 'ascending' ? 'descending' : 'ascending' }); // Dispatch sort data source action with key and direction
-        dispatch(action);
-    };
-
-    // Handler to toggle selection of a single row
-    const toggleRowSelection = (row: TableRow) => {
-        const action = setSelectedRows(row); // Dispatch set selected rows action with row data
-        dispatch(action);
-    };
-
-    // Handler to toggle selection of all rows
-    const toggleSelectAll = () => {
-        const action = toggleSelectedAllRows(); // Dispatch toggle selected all rows action
-        dispatch(action);
-    };
-
+    const handlers = new TableHandlers(dispatch, sortConfig);
+    
     const onRowClick = (identifier) => {
         setSelectedRow(identifier);
     };
@@ -95,7 +51,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
                     <td className={`border-b border-blue-gray-50 ${isSelectable ? 'p-1' : 'p-2'} max-h-[38px]`}>
                         <Checkbox
                             checked={selectedRows.some(selectedRow => JSON.stringify(selectedRow) === JSON.stringify(rowData))}
-                            onChange={() => toggleRowSelection(rowData)}
+                            onChange={() => handlers.toggleRowSelection(rowData)}
                             className='w-4 h-4'
                         />
                     </td>
@@ -113,8 +69,8 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
 
     // Effect to update component state based on props changes
     React.useEffect(() => {
-        handleHeaders(props.headers);
-        handleDataSource(props.rows);
+        handlers.handleHeaders(props.headers);
+        handlers.handleDataSource(props.rows);
         setIsDraggable(props.isDraggable);
         setIsSortable(props.isSortable);
         setIsSelectable(props.isSelectable);
@@ -130,7 +86,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
                                 <Checkbox
                                     ref={selectAllRef}
                                     checked={selectedRows.length === dataSource.length} // Check if all rows are selected
-                                    onChange={toggleSelectAll} // Toggle select all handler
+                                    onChange={handlers.toggleSelectAll} // Toggle select all handler
                                     className='w-4 h-4'
                                     onPointerEnterCapture={undefined} // Pointer enter capture handler
                                     onPointerLeaveCapture={undefined} // Pointer leave capture handler
@@ -142,11 +98,11 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
                             <th
                                 key={head}
                                 className={`border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer`}
-                                onClick={() => (isSortable ? sortRows(head) : null)} // Sort rows handler if sortable
+                                onClick={() => (isSortable ? handlers.sortRows(head) : null)} // Sort rows handler if sortable
                                 draggable={isDraggable} // Draggable attribute based on flag
-                                onDragStart={handleDragStart(index)} // Drag start handler
-                                onDragOver={handleDragOver} // Drag over handler
-                                onDrop={handleDrop(index)} // Drop handler
+                                onDragStart={handlers.handleDragStart(index)} // Drag start handler
+                                onDragOver={handlers.handleDragOver} // Drag over handler
+                                onDrop={handlers.handleDrop(index)} // Drop handler
                             >
                                 <Typography
                                     variant="small"
