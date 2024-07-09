@@ -80,6 +80,12 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
         dispatch(action);
     };
 
+    // Handler to handle pagination changes
+    const handlePagination = (page: number, limit: number) => {
+        // Handle pagination changes
+        setPagination({ page, limit });
+    };
+
     // Effect to update component state based on props changes
     React.useEffect(() => {
         handleHeaders(props.headers); // Update headers in Redux state
