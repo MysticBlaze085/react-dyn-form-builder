@@ -42,3 +42,4 @@ To start the lib storybook, run:
 - [ ] click action within table like a button
 - [ ] table should allow props max-height to be set and overflow auto
 - [ ] nested table accordions actions
+- [ ] preference control for if groupBy exists should have a collapse/expand all action button

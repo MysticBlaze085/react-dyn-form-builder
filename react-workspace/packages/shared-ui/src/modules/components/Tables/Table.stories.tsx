@@ -4,6 +4,44 @@ import { Provider } from 'react-redux';
 import {store} from '../../../store';
 import React from 'react';
 
+const mockData = [
+    {
+        name: 'John Michael',
+        job: 'Manager',
+        date: '23/04/10',
+    },
+    {
+        name: 'Alexa Johnson',
+        job: 'CEO',
+        date: '23/04/02',
+    },
+    {
+        name: 'Sierra Brooks',
+        job: 'Designer',
+        date: '23/04/05',
+    },
+    {
+        name: 'Thomas Smith',
+        job: 'Developer',
+        date: '23/04/05',
+    },
+    {
+        name: 'Jenna Kian',
+        job: 'Marketing',
+        date: '23/04/18',
+    },
+    {
+        name: 'Denzel Washington',
+        job: 'Actor',
+        date: '23/04/05',
+    },
+    {
+        name: 'Morgan Freeman',
+        job: 'Actor',
+        date: '23/04/05',
+    },
+]
+
 const meta = {
     title: 'Components/Tables/DefaultTable',
     component: DefaultTable,
@@ -21,35 +59,20 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
     args: {
         headers: ['Name', 'Job', 'Date'],
-        rows: [
-            {
-                name: 'John Michael',
-                job: 'Manager',
-                date: '23/04/15',
-            },
-            {
-                name: 'Alexa Johnson',
-                job: 'CEO',
-                date: '23/04/18',
-            },
-            {
-                name: 'Sierra Brooks',
-                job: 'Designer',
-                date: '23/04/12',
-            },
-            {
-                name: 'Thomas Smith',
-                job: 'Developer',
-                date: '23/04/10',
-            },
-            {
-                name: 'Jenna Kian',
-                job: 'Marketing',
-                date: '23/04/01',
-            },
-        ],
+        rows: mockData,
         isSortable: true,
         isDraggable: true,
         isSelectable: true,
+    },
+};
+
+export const WithGroupBy: Story = {
+    args: {
+        headers: ['Name', 'Job', 'Date'],
+        rows: mockData,
+        isSortable: true,
+        isDraggable: true,
+        isSelectable: true,
+        groupBy: 'job',
     },
 };

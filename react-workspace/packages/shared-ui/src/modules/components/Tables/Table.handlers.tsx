@@ -1,4 +1,4 @@
-import { dragDrop, dragStart, setHeaders, setSelectedRows, setTableDataSource, sortDataSource, toggleSelectedAllRows } from '../../../store'; // Adjust import paths as necessary
+import { dragDrop, dragStart, setGroupBy, setHeaders, setSelectedRows, setTableDataSource, sortDataSource, toggleSelectedAllRows } from '../../../store'; // Adjust import paths as necessary
 
 import { Dispatch } from '@reduxjs/toolkit';
 import { TableRow } from './Table';
@@ -35,6 +35,12 @@ class TableHandlers {
 
     handleDataSource(rows: TableRow[]) {
         const action = setTableDataSource(rows);
+        this.dispatch(action);
+    }
+
+    handleGroupBy(key: string) {
+        const action = setGroupBy(key);
+        console.log('actions group', action, key)
         this.dispatch(action);
     }
 

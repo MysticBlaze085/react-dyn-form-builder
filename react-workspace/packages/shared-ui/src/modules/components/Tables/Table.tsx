@@ -6,6 +6,9 @@ import TableHandlers from './Table.handlers';
 
 const Checkbox = React.lazy(() => import('@material-tailwind/react/components/Checkbox'));
 const Typography = React.lazy(() => import('@material-tailwind/react/components/Typography'));
+const Accordion = React.lazy(() => import('@material-tailwind/react/components/Accordion'));
+const AccordionHeader = React.lazy(() => import('@material-tailwind/react/components/Accordion/AccordionHeader'));
+const AccordionBody = React.lazy(() => import('@material-tailwind/react/components/Accordion/AccordionBody'));
 const ChevronUpDownIcon = React.lazy(() => import('@heroicons/react/24/outline/ChevronUpDownIcon'));
 
 export interface TableRow {
@@ -18,10 +21,11 @@ export interface DefaultTableProps {
     isDraggable?: boolean;
     isSortable?: boolean;
     isSelectable?: boolean;
+    groupBy?: string; // Add groupBy property
     [key: string]: any;
 }
 
-const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
+const DefaultTable: React.FC<DefaultTableProps> = ({ groupBy, ...props }) => {
     const dispatch = useDispatch();
     const dataSource = useSelector((state) => state['tableDataSource']['dataSource']);
     const sortConfig = useSelector((state) => state['tableDataSource']['sortDataSource']);
@@ -32,6 +36,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
     const [isSortable, setIsSortable] = React.useState(props.isSortable);
     const [isSelectable, setIsSelectable] = React.useState(props.isSelectable);
     const [selectedRow, setSelectedRow] = React.useState(null);
+    const [openGroup, setOpenGroup] = React.useState(null);
     const selectAllRef = useRef<HTMLInputElement>(null);
 
     const handlers = new TableHandlers(dispatch, sortConfig);
@@ -40,15 +45,28 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
         setSelectedRow(identifier);
     };
 
+    const groupByData = (array, key) => {
+        return array.reduce((result, currentValue) => {
+            const groupKey = currentValue[key];
+            if (!result[groupKey]) {
+                result[groupKey] = [];
+            }
+            result[groupKey].push(currentValue);
+            return result;
+        }, {});
+    };
+
+    const groupedData = groupBy ? groupByData(dataSource, groupBy) : { '': dataSource };
+
     const renderRow = (rowData, rowIndex) => {
         const rowIdentifier = rowData;
         const isSelected = selectedRow === rowIdentifier;
-        const rowClasses = isSelected ? "bg-light-blue-500" : "";
+        const rowClasses = isSelected ? "bg-light-blue-50" : "";
 
         return (
             <tr key={rowIndex} className={`${rowClasses}`} onClick={() => onRowClick(rowIdentifier)}>
                 {isSelectable && (
-                    <td className={`border-b border-blue-gray-50 ${isSelectable ? 'p-1' : 'p-2'} max-h-[38px]`}>
+                    <td className={`border-b border-blue-gray-50 ${isSelectable ? 'p-1' : 'p-2'} max-h-[38px] max-w-[15px]`}>
                         <Checkbox
                             checked={selectedRows.some(selectedRow => JSON.stringify(selectedRow) === JSON.stringify(rowData))}
                             onChange={() => handlers.toggleRowSelection(rowData)}
@@ -57,8 +75,8 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
                     </td>
                 )}
                 {headers.map((key) => (
-                    <td key={key} className={`border-b border-blue-gray-50 ${isSelectable ? 'p-1' : 'p-2'} max-h-[40px]`}>
-                        <Typography variant="small" color="blue-gray" className="font-normal">
+                    <td key={key} className={`border-b border-blue-gray-50 ${isSelectable ? 'p-1' : 'p-2'} max-h-[40px] min-w-[60px] max-w-[60px]`}>
+                        <Typography variant="small" color="blue-gray" className="font-normal ml-2">
                             {rowData[key.toLowerCase()]}
                         </Typography>
                     </td>
@@ -82,7 +100,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
                 <thead>
                     <tr>
                         {isSelectable && ( // Render checkbox for select all if selectable
-                            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-1">
+                            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-1 max-w-[10px]">
                                 <Checkbox
                                     ref={selectAllRef}
                                     checked={selectedRows.length === dataSource.length} // Check if all rows are selected
@@ -104,7 +122,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
                                 <Typography
                                     variant="small"
                                     color="blue-gray"
-                                    className="flex items-center justify-between gap-2 font-normal leading-none opacity-70"
+                                    className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 max-w-[15px]"
                                 >
                                     {head}{' '}
                                     {index !== headers.length - 1 && isSortable && ( // Render sort icon if sortable
@@ -119,8 +137,33 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {dataSource.map((row, index) => (
-                        renderRow(row, index)
+                    {Object.keys(groupedData).map((groupKey, groupIndex) => (
+                        <React.Fragment key={groupKey}>
+                            {groupBy ? (
+                                <tr>
+                                    <td colSpan={headers.length + (isSelectable ? 1 : 0)} className="p-0">
+                                        <Accordion open={openGroup === groupKey} icon={<ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />}>
+                                            <AccordionHeader className="pl-2 text-base"  onClick={() => setOpenGroup(openGroup === groupKey ? null : groupKey)}>
+                                                {groupKey}
+                                            </AccordionHeader>
+                                            <AccordionBody className="p-0">
+                                                <table className="w-full min-w-max table-auto text-left">
+                                                    <tbody>
+                                                        {groupedData[groupKey].map((row, rowIndex) => (
+                                                            renderRow(row, `${groupKey}-${rowIndex}`)
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </AccordionBody>
+                                        </Accordion>
+                                    </td>
+                                </tr>
+                            ) : (
+                                groupedData[groupKey].map((row, rowIndex) => (
+                                    renderRow(row, `${groupKey}-${rowIndex}`)
+                                ))
+                            )}
+                        </React.Fragment>
                     ))}
                 </tbody>
             </table>

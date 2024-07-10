@@ -100,6 +100,39 @@ export const Primary: Story = {
     },
 };
 
+export const WithGrouping: Story = {
+    args: {
+        showHeader: true,
+        showFooter: true,
+        title: 'Table Card',
+        subtitle: 'This is a table card',
+        pageSizes: ['5', '10', '20', '100'],
+        buttons: [
+            {
+                label: 'View All',
+                color: 'blue',
+                onClick: () => { },
+            },
+            {
+                label: 'Add Member',
+                color: 'blue',
+                onClick: () => { },
+                icon: <UserPlusIcon strokeWidth={2} className="h-4 w-4" />,
+            },
+        ],
+        children: (
+            <TableDefault
+            isDraggable={true}
+            isSortable={true}
+            isSelectable={true}
+            headers={['Name', 'Job', 'Date']}
+            rows={mockData}
+            groupBy='job'
+            />
+        ),
+    },
+};
+
 export const WithoutHeader: Story = {
     args: {
         ...Primary.args,

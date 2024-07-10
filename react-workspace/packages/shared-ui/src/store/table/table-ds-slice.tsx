@@ -3,6 +3,7 @@ import { setDataSourcePagination, setPaginationState, updateChangedCurrentPage }
 import { createSlice } from '@reduxjs/toolkit';
 import { dragRows } from './drag.util';
 import { filterRows } from './filter-table.util';
+import { groupRowBy } from './group-by.util';
 import { isEqual } from './is-equal.util';
 import { sortRows } from './sort-rows.util';
 
@@ -70,6 +71,14 @@ export const tableDataSourceSlice = createSlice({
             state.sortDataSource = { key: '', direction: 'ascending' };
             state.filterDataSource = { column: '', value: '' };
             state.draggedColIndex = null;
+            state.pagination = {
+                currentPage: 1,
+                totalPages: 1,
+                pageSize: 10,
+            };
+            state.preferences = {
+                visibleColumns: [],
+            };
         },
         // Reducer to set sorting configuration and apply sorting
         sortDataSource(state, action) {
@@ -130,7 +139,7 @@ export const tableDataSourceSlice = createSlice({
         setPreferences(state, action) {
             state.preferences.visibleColumns = action.payload;
             state.headers = state.preferences.visibleColumns;
-        }
+        },
     },
 });
 
