@@ -12,6 +12,10 @@ const mockData = [
         name: 'John Michael',
         job: 'Manager',
         date: '23/04/10',
+        values: [{
+           test: 'testing data',
+           val: 'val of the data'
+        }]
     },
     {
         name: 'Alexa Johnson',
@@ -94,6 +98,7 @@ export const Primary: Story = {
             isSortable={true}
             isSelectable={true}
             headers={['Name', 'Job', 'Date']}
+            nestedHeaders={['Test', 'Val']}
             rows={mockData}
             />
         ),
