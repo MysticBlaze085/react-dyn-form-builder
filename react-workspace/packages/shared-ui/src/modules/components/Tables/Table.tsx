@@ -1,13 +1,15 @@
-//@ts-nocheck
-import React, { Suspense, useRef, useState } from 'react';
+// @ts-nocheck
+import React, { Suspense, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import TableHandlers from './Table.handlers';
 
 const Checkbox = React.lazy(() => import('@material-tailwind/react/components/Checkbox'));
 const Typography = React.lazy(() => import('@material-tailwind/react/components/Typography'));
-const ChevronUpIcon = React.lazy(() => import('@heroicons/react/24/outline/ChevronUpIcon'));
-const ChevronDownIcon = React.lazy(() => import('@heroicons/react/24/outline/ChevronDownIcon'));
+const Accordion = React.lazy(() => import('@material-tailwind/react/components/Accordion'));
+const AccordionHeader = React.lazy(() => import('@material-tailwind/react/components/Accordion/AccordionHeader'));
+const AccordionBody = React.lazy(() => import('@material-tailwind/react/components/Accordion/AccordionBody'));
+const ChevronUpDownIcon = React.lazy(() => import('@heroicons/react/24/outline/ChevronUpDownIcon'));
 
 export interface TableRow {
     [key: string]: any;
@@ -19,12 +21,11 @@ export interface DefaultTableProps {
     isDraggable?: boolean;
     isSortable?: boolean;
     isSelectable?: boolean;
-    groupBy?: string;
-    nestedHeaders?: string[];
+    groupBy?: string; // Add groupBy property
     [key: string]: any;
 }
 
-const DefaultTable: React.FC<DefaultTableProps> = ({ nestedHeaders = [], groupBy, ...props }) => {
+const DefaultTable: React.FC<DefaultTableProps> = ({ groupBy, ...props }) => {
     const dispatch = useDispatch();
     const dataSource = useSelector((state) => state['tableDataSource']['dataSource']);
     const sortConfig = useSelector((state) => state['tableDataSource']['sortDataSource']);
@@ -35,11 +36,11 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ nestedHeaders = [], groupBy
     const [isSortable, setIsSortable] = React.useState(props.isSortable);
     const [isSelectable, setIsSelectable] = React.useState(props.isSelectable);
     const [selectedRow, setSelectedRow] = React.useState(null);
-    const [expandedRows, setExpandedRows] = useState({});
+    const [openGroup, setOpenGroup] = React.useState(null);
     const selectAllRef = useRef<HTMLInputElement>(null);
 
     const handlers = new TableHandlers(dispatch, sortConfig);
-
+    
     const onRowClick = (identifier) => {
         setSelectedRow(identifier);
     };
@@ -57,104 +58,30 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ nestedHeaders = [], groupBy
 
     const groupedData = groupBy ? groupByData(dataSource, groupBy) : { '': dataSource };
 
-    const hasNestedData = (rowData) => {
-        return Object.values(rowData).some(
-            (value) => Array.isArray(value) && value.length > 0 && typeof value[0] === 'object'
-        );
-    };
-
-    const toggleRowExpansion = (rowIndex) => {
-        setExpandedRows((prevState) => ({
-            ...prevState,
-            [rowIndex]: !prevState[rowIndex],
-        }));
-    };
-
-    const renderNestedRows = (nestedData, nestedHeaders) => {
-        return (
-            <tr>
-                <td colSpan={headers.length + (isSelectable ? 1 : 0)} className="p-0">
-                    <table className="w-full min-w-max table-auto text-left bg-blue-100">
-                        {/* <thead>
-                            <tr>
-                            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-2"></th>
-                                {nestedHeaders.map((nestedHeader) => (
-                                    <th key={nestedHeader} className="border-b border-blue-gray-100 bg-blue-gray-50 p-2">
-                                        <Typography variant="small" color="blue-gray" className="font-normal">
-                                            {nestedHeader}
-                                        </Typography>
-                                    </th>
-                                ))}
-                            </tr>
-                        </thead> */}
-                        <tbody>
-                            {nestedData.map((nestedRow, nestedIndex) => (
-                                <tr key={nestedIndex}>
-                                    <td className="border-b border-blue-gray-50 p-2 max-h-[40px] min-w-[60px] max-w-[60px]"></td>
-                                    {nestedHeaders.map((key) => (
-                                        <td
-                                            key={key}
-                                            className='border-b border-blue-gray-50 p-2 max-h-[40px] min-w-[60px] max-w-[60px]'
-                                        >
-                                            <Typography variant="small" color="blue-gray" className="font-normal ml-2">
-                                                {nestedRow[key.toLowerCase()]}
-                                            </Typography>
-                                        </td>
-                                    ))}
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-        );
-    };
-
     const renderRow = (rowData, rowIndex) => {
         const rowIdentifier = rowData;
         const isSelected = selectedRow === rowIdentifier;
-        const isExpanded = expandedRows[rowIndex];
         const rowClasses = isSelected ? "bg-light-blue-50" : "";
 
-        const nestedDataKey = Object.keys(rowData).find((key) => Array.isArray(rowData[key]) && rowData[key].length > 0);
-
         return (
-            <React.Fragment key={rowIndex}>
-                <tr className={`${rowClasses}`} onClick={() => onRowClick(rowIdentifier)}>
-                    {isSelectable && (
-                        <td className={`border-b border-blue-gray-50 ${isSelectable ? 'p-1' : 'p-2'} max-h-[38px] max-w-[15px]`}>
-                            <Checkbox
-                                checked={selectedRows.some(selectedRow => JSON.stringify(selectedRow) === JSON.stringify(rowData))}
-                                onChange={() => handlers.toggleRowSelection(rowData)}
-                                className="w-4 h-4"
-                            />
-                        </td>
-                    )}
-                    {headers.map((key, index) => (
-                        <td key={key} className={`border-b border-blue-gray-50 ${isSelectable ? 'p-1' : 'p-2'} max-h-[40px] min-w-[60px] max-w-[60px]`} onClick={() => toggleRowExpansion(rowIndex)}>
-                            <Typography variant="small" color="blue-gray" className="font-normal ml-2 flex items-center">
-                                {rowData[key.toLowerCase()]}
-                                {hasNestedData && nestedDataKey && index === headers.length - 1 && (
-                                    isExpanded ? (
-                                        <ChevronUpIcon
-                                            strokeWidth={2}
-                                            className="h-4 w-4 cursor-pointer mr-2 ml-auto"
-                                            onClick={() => toggleRowExpansion(rowIndex)}
-                                        />
-                                    ) : (
-                                        <ChevronDownIcon
-                                            strokeWidth={2}
-                                            className="h-4 w-4 cursor-pointer mr-2 ml-auto"
-                                            onClick={() => toggleRowExpansion(rowIndex)}
-                                        />
-                                    )
-                                )}
-                            </Typography>
-                        </td>
-                    ))}
-                </tr>
-                {hasNestedData && isExpanded && nestedDataKey && renderNestedRows(rowData[nestedDataKey], nestedHeaders)}
-            </React.Fragment>
+            <tr key={rowIndex} className={`${rowClasses}`} onClick={() => onRowClick(rowIdentifier)}>
+                {isSelectable && (
+                    <td className={`border-b border-blue-gray-50 ${isSelectable ? 'p-1' : 'p-2'} max-h-[38px] max-w-[15px]`}>
+                        <Checkbox
+                            checked={selectedRows.some(selectedRow => JSON.stringify(selectedRow) === JSON.stringify(rowData))}
+                            onChange={() => handlers.toggleRowSelection(rowData)}
+                            className='w-4 h-4'
+                        />
+                    </td>
+                )}
+                {headers.map((key) => (
+                    <td key={key} className={`border-b border-blue-gray-50 ${isSelectable ? 'p-1' : 'p-2'} max-h-[40px] min-w-[60px] max-w-[60px]`}>
+                        <Typography variant="small" color="blue-gray" className="font-normal ml-2">
+                            {rowData[key.toLowerCase()]}
+                        </Typography>
+                    </td>
+                ))}
+            </tr>
         );
     };
 
@@ -178,7 +105,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ nestedHeaders = [], groupBy
                                     ref={selectAllRef}
                                     checked={selectedRows.length === dataSource.length} // Check if all rows are selected
                                     onChange={handlers.toggleSelectAll} // Toggle select all handler
-                                    className="w-4 h-4"
+                                    className='w-4 h-4'
                                 />
                             </th>
                         )}
@@ -199,7 +126,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ nestedHeaders = [], groupBy
                                 >
                                     {head}{' '}
                                     {index !== headers.length - 1 && isSortable && ( // Render sort icon if sortable
-                                        <ChevronDownIcon strokeWidth={2} className="h-4 w-4" />
+                                        <ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
                                     )}
                                     {sortConfig?.key === head && isSortable && ( // Render sort direction indicator
                                         <span>{sortConfig.direction === 'ascending' ? '🔼' : '🔽'}</span>
@@ -215,15 +142,26 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ nestedHeaders = [], groupBy
                             {groupBy ? (
                                 <tr>
                                     <td colSpan={headers.length + (isSelectable ? 1 : 0)} className="p-0">
-                                        {groupedData[groupKey].map((row, rowIndex) =>
-                                            renderRow(row, `${groupKey}-${rowIndex}`)
-                                        )}
+                                        <Accordion open={openGroup === groupKey} icon={<ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />}>
+                                            <AccordionHeader className="pl-2 text-base"  onClick={() => setOpenGroup(openGroup === groupKey ? null : groupKey)}>
+                                                {groupKey}
+                                            </AccordionHeader>
+                                            <AccordionBody className="p-0">
+                                                <table className="w-full min-w-max table-auto text-left">
+                                                    <tbody>
+                                                        {groupedData[groupKey].map((row, rowIndex) => (
+                                                            renderRow(row, `${groupKey}-${rowIndex}`)
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </AccordionBody>
+                                        </Accordion>
                                     </td>
                                 </tr>
                             ) : (
-                                groupedData[groupKey].map((row, rowIndex) =>
+                                groupedData[groupKey].map((row, rowIndex) => (
                                     renderRow(row, `${groupKey}-${rowIndex}`)
-                                )
+                                ))
                             )}
                         </React.Fragment>
                     ))}
