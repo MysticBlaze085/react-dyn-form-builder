@@ -10,6 +10,7 @@ export const tableFilterInputConfig = (column: string) => ({
                 required: false
             },
         },
+        groupBy: {}
     },
 });
 
@@ -25,5 +26,12 @@ export const tableFilterInputControls = (items: string[]) => {
             },
         },
         value: { },
+        groupBy: {
+            render: FieldRenderer('Select'),
+            meta: {
+                label: 'Group By',
+                items: [...mapItems.map((item) => ({ ...item, value: item.value.toLowerCase() })), { label: 'None', value: '' }]
+            },
+        }
     },
 }};

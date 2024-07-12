@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { FormBuilder, FormGenerator } from 'react-reactive-form';
 import React, { Suspense } from 'react';
-import { filter, setPreferences } from '../../../store';
+import { filter, setGroupBy, setPreferences } from '../../../store';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { tableFilterInputControls } from './TableFieldControls';
@@ -29,6 +29,7 @@ const TableSettingsDialog = () => {
     let form = FormBuilder.group({
         value: [],
         column: [filterColumn],
+        groupBy: [],
     });
 
     const handleOpen = () => setOpen(!open);
@@ -47,13 +48,20 @@ const TableSettingsDialog = () => {
     const setForm = (formValue) => {
         form = formValue;
         form.get('column').setValue(filterColumn);
+        form.get('groupBy').setValue('');
         handleSub();
     };
 
     const handleSub = () => {
         form.valueChanges.subscribe((value) => {
-            const action = filter(value);
-            dispatch(action);
+            if (value['value']) {
+                const action = filter(value);
+                dispatch(action);
+            };
+            if (value['groupBy']) {
+                const action = setGroupBy(value['groupBy']);
+                dispatch(action);
+            }
         });
     };
 
