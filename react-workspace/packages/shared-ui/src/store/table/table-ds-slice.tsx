@@ -143,7 +143,6 @@ export const tableDataSourceSlice = createSlice({
             state.headers = state.preferences.visibleColumns;
         },
         setGroupBy(state, action) {
-            console.log('action Trigger', action.payload)
             state.preferences.groupBy = action.payload;
         }
     },

@@ -23,13 +23,14 @@ const TableSettingsDialog = () => {
     const dispatch = useDispatch();
     const [open, setOpen] = React.useState(false);
     const selectedItems = useSelector((state) => state['tableDataSource']['preferences']['visibleColumns']);
+    const groupBy = useSelector((state) => state['tableDataSource']['preferences']['groupBy']);
     const initHeaders = useSelector((state) => state['tableDataSource']['initialHeaders']);
     const filterColumn = useSelector((state) => state['tableDataSource']['filterDataSource']['column']);
 
     let form = FormBuilder.group({
         value: [],
         column: [filterColumn],
-        groupBy: [],
+        groupBy: [groupBy],
     });
 
     const handleOpen = () => setOpen(!open);
@@ -48,7 +49,7 @@ const TableSettingsDialog = () => {
     const setForm = (formValue) => {
         form = formValue;
         form.get('column').setValue(filterColumn);
-        form.get('groupBy').setValue('');
+        form.get('groupBy').setValue(groupBy);
         handleSub();
     };
 

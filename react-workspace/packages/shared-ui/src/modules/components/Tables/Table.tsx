@@ -98,19 +98,18 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
 
     // Effect to update component state based on props changes
     React.useEffect(() => {
+        setGroupBy(props.groupBy);
         handlers.handleHeaders(props.headers);
         handlers.handleDataSource(props.rows);
-        handlers.handleGroupBy(props.groupBy);
+        handlers.handleGroupBy(groupBy);
         setIsDraggable(props.isDraggable);
         setIsSortable(props.isSortable);
         setIsSelectable(props.isSelectable);
-        setGroupBy(props.groupBy);
-    }, [props.isDraggable, props.isSortable, props.isSelectable]);
+    }, [props.isDraggable, props.isSortable, props.isSelectable, props.groupBy]);
 
     React.useEffect(() => {
-        console.log('Group By Data', groupByDs, dataSource)
+        if (groupByDs) setGroupBy(groupByDs);
         setGroupedData(groupByDs && groupByDs !== '' ? groupByData(dataSource, groupByDs) : { '': dataSource } );
-        if (groupByDs !== props.groupBy) setGroupBy(groupByDs);
     }, [groupByDs, groupBy, dataSource]);
 
     return (
@@ -158,7 +157,6 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
                 <tbody>
                     {Object.keys(groupedData).map((groupKey, groupIndex) => (
                         <React.Fragment key={groupKey}>
-                            {console.log('Group Data', props.groupBy, groupByDs)}
                             {groupBy ? (
                                 <tr>
                                     <td colSpan={headers.length + (isSelectable ? 1 : 0)} className="p-0">

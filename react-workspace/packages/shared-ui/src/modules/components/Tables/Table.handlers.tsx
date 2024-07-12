@@ -55,7 +55,6 @@ class TableHandlers {
 
     toggleSelectAll() {
         const action = toggleSelectedAllRows();
-        console.log('actions', action)
         this.dispatch(action);
     }
 }
