@@ -7,7 +7,7 @@ import { groupRowBy } from './group-by.util';
 import { isEqual } from './is-equal.util';
 import { sortRows } from './sort-rows.util';
 
-interface TableState {
+export interface TableState {
     dataSource: any[],
     draggedColIndex: number | null,
     filterDataSource: { column: string, value: string },

@@ -1,5 +1,10 @@
+import { TableState, tableDataSourceSlice } from './table/table-ds-slice';
+
 import { configureStore } from '@reduxjs/toolkit';
-import { tableDataSourceSlice } from './table/table-ds-slice';
+
+export interface StoreSate {
+    tableDataSource: TableState;
+}
 
 // Configure Redux store with the tableDataSource slice reducer
 const store = configureStore({
