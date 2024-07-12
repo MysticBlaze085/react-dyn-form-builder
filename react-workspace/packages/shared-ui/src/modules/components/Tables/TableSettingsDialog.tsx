@@ -49,7 +49,7 @@ const TableSettingsDialog = () => {
     const setForm = (formValue) => {
         form = formValue;
         form.get('column').setValue(filterColumn);
-        form.get('groupBy').setValue(groupBy);
+        form.get('groupBy').setValue(groupBy ?? '');
         handleSub();
     };
 
@@ -153,7 +153,7 @@ const TableSettingsDialog = () => {
                             >
                                 Select the column to filter a search value
                             </Typography>
-                            <FormGeneratorWrapper onMount={setForm} fieldConfig={tableFilterInputControls(selectedItems)} />
+                            {initHeaders.length > 0 && <FormGeneratorWrapper onMount={setForm} fieldConfig={tableFilterInputControls(initHeaders)} />}
                         </CardBody>
                         <CardFooter className="pt-0">
                             <Button variant="filled" color='blue' onClick={handleOpen} fullWidth>

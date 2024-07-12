@@ -30,7 +30,7 @@ export const tableFilterInputControls = (items: string[]) => {
             render: FieldRenderer('Select'),
             meta: {
                 label: 'Group By',
-                items: [...mapItems.map((item) => ({ ...item, value: item.value.toLowerCase() })), { label: 'None', value: '' }]
+                items: [{ label: 'None', value: '' }, ...mapItems.map((item) => ({ ...item, value: item.value.toLowerCase() }))]
             },
         }
     },

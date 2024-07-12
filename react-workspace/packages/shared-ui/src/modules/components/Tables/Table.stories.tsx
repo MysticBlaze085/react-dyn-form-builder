@@ -1,8 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import DefaultTable from './Table';
 import { Provider } from 'react-redux';
-import {store} from '../../../store';
+import {store, StoreSate} from '../../../store';
 import React from 'react';
+import { configureStore } from '@reduxjs/toolkit';
+import { initialState, tableDataSourceSlice } from '../../../store/table/table-ds-slice';
+
+// Function to create a new store instance
+const createNewStore = (initialState: Partial<StoreSate>) => configureStore({
+    reducer: {
+        tableDataSource: tableDataSourceSlice.reducer,
+    } as any,
+    preloadedState: initialState,
+});
 
 const mockData = [
     {
@@ -49,7 +59,6 @@ const meta = {
     parameters: {
         layout: 'fullscreen',
     },
-    decorators: [(story) => <Provider store={store}>{story()}</Provider>],
     args: {},
 } satisfies Meta<typeof DefaultTable>;
 
@@ -57,6 +66,15 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
+    decorators: [
+        (story) => (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <div style={{ width: '80%', margin: '0 auto' }}>
+                <Provider store={createNewStore({tableDataSource: initialState})}>{story()}</Provider>
+                </div>
+            </div>
+        ),
+    ],
     args: {
         headers: ['Name', 'Job', 'Date'],
         rows: mockData,
@@ -67,6 +85,15 @@ export const Primary: Story = {
 };
 
 export const WithGroupBy: Story = {
+    decorators: [
+        (story) => (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <div style={{ width: '80%', margin: '0 auto' }}>
+                <Provider store={createNewStore({tableDataSource: initialState})}>{story()}</Provider>
+                </div>
+            </div>
+        ),
+    ],
     args: {
         headers: ['Name', 'Job', 'Date'],
         rows: mockData,

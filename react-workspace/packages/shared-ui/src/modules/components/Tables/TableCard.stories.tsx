@@ -62,15 +62,6 @@ const meta: Meta<typeof TableCard> = {
     parameters: {
         layout: 'fullscreen',
     },
-    // decorators: [
-    //     (story) => (
-    //         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-    //             <div style={{ width: '80%', margin: '0 auto' }}>
-    //                 <Provider store={store}>{story()}</Provider>
-    //             </div>
-    //         </div>
-    //     ),
-    // ],
     args: {},
 };
 
@@ -83,7 +74,7 @@ export const Primary: Story = {
         (story) => (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
                 <div style={{ width: '80%', margin: '0 auto' }}>
-                <Provider store={createNewStore({tableDataSource: initialState})}>{story()}</Provider>
+                    <Provider store={createNewStore({ tableDataSource: initialState })}>{story()}</Provider>
                 </div>
             </div>
         ),
@@ -109,11 +100,11 @@ export const Primary: Story = {
         ],
         children: (
             <TableDefault
-            isDraggable={true}
-            isSortable={true}
-            isSelectable={true}
-            headers={['Name', 'Job', 'Date']}
-            rows={mockData}
+                isDraggable={true}
+                isSortable={true}
+                isSelectable={true}
+                headers={['Name', 'Job', 'Date']}
+                rows={mockData}
             />
         ),
     },
@@ -124,7 +115,7 @@ export const WithGrouping: Story = {
         (story) => (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
                 <div style={{ width: '80%', margin: '0 auto' }}>
-                <Provider store={createNewStore({tableDataSource: initialState})}>{story()}</Provider>
+                    <Provider store={createNewStore({ tableDataSource: initialState })}>{story()}</Provider>
 
                 </div>
             </div>
@@ -151,12 +142,12 @@ export const WithGrouping: Story = {
         ],
         children: (
             <TableDefault
-            isDraggable={true}
-            isSortable={true}
-            isSelectable={true}
-            headers={['Name', 'Job', 'Date']}
-            rows={mockData}
-            groupBy='job'
+                isDraggable={true}
+                isSortable={true}
+                isSelectable={true}
+                headers={['Name', 'Job', 'Date']}
+                rows={mockData}
+                groupBy='job'
             />
         ),
     },
@@ -167,7 +158,7 @@ export const WithoutHeader: Story = {
         (story) => (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
                 <div style={{ width: '80%', margin: '0 auto' }}>
-                <Provider store={createNewStore({tableDataSource: initialState})}>{story()}</Provider>
+                    <Provider store={createNewStore({ tableDataSource: initialState })}>{story()}</Provider>
 
                 </div>
             </div>
@@ -184,7 +175,7 @@ export const WithoutFooter: Story = {
         (story) => (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
                 <div style={{ width: '80%', margin: '0 auto' }}>
-                <Provider store={createNewStore({tableDataSource: initialState})}>{story()}</Provider>
+                    <Provider store={createNewStore({ tableDataSource: initialState })}>{story()}</Provider>
 
                 </div>
             </div>
@@ -201,7 +192,7 @@ export const WithoutHeaderAndFooter: Story = {
         (story) => (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
                 <div style={{ width: '80%', margin: '0 auto' }}>
-                <Provider store={createNewStore({tableDataSource: initialState})}>{story()}</Provider>
+                    <Provider store={createNewStore({ tableDataSource: initialState })}>{story()}</Provider>
 
                 </div>
             </div>
@@ -213,11 +204,11 @@ export const WithoutHeaderAndFooter: Story = {
         pageSizes: ['5', '10', '20', '100'],
         children: (
             <TableDefault
-            isDraggable={true}
-            isSortable={true}
-            isSelectable={true}
-            headers={['Name', 'Job', 'Date']}
-            rows={mockData}
+                isDraggable={true}
+                isSortable={true}
+                isSelectable={true}
+                headers={['Name', 'Job', 'Date']}
+                rows={mockData}
             />
         ),
     },
