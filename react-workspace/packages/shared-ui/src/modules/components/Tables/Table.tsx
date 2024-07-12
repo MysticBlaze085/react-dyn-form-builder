@@ -1,7 +1,9 @@
-// @ts-nocheck
-import React, { Suspense, useRef } from 'react';
+//@ts-nocheck
+import { IconButton, Tooltip } from '@material-tailwind/react';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import ButtonDefault from '../Button';
 import TableHandlers from './Table.handlers';
 
 const Checkbox = React.lazy(() => import('@material-tailwind/react/components/Checkbox'));
@@ -10,6 +12,8 @@ const Accordion = React.lazy(() => import('@material-tailwind/react/components/A
 const AccordionHeader = React.lazy(() => import('@material-tailwind/react/components/Accordion/AccordionHeader'));
 const AccordionBody = React.lazy(() => import('@material-tailwind/react/components/Accordion/AccordionBody'));
 const ChevronUpDownIcon = React.lazy(() => import('@heroicons/react/24/outline/ChevronUpDownIcon'));
+const ChevronDownIcon = React.lazy(() => import('@heroicons/react/24/outline/ChevronDownIcon'));
+const ChevronUpIcon = React.lazy(() => import('@heroicons/react/24/outline/ChevronUpIcon'));
 
 export interface TableRow {
     [key: string]: any;
@@ -33,24 +37,34 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
     const selectedRows = useSelector((state) => state['tableDataSource']['selectedRows']);
     const groupByDs = useSelector((state) => state['tableDataSource']['preferences']['groupBy']);
 
-    const [isDraggable, setIsDraggable] = React.useState(props.isDraggable);
-    const [isSortable, setIsSortable] = React.useState(props.isSortable);
-    const [isSelectable, setIsSelectable] = React.useState(props.isSelectable);
-    const [selectedRow, setSelectedRow] = React.useState(null);
-    const [groupBy, setGroupBy] = React.useState(props.groupBy ?? '');
-    const [groupedData, setGroupedData] = React.useState({'': dataSource});
-    const [openGroup, setOpenGroup] = React.useState(null);
+    const [isDraggable, setIsDraggable] = useState(props.isDraggable);
+    const [isSortable, setIsSortable] = useState(props.isSortable);
+    const [isSelectable, setIsSelectable] = useState(props.isSelectable);
+    const [selectedRow, setSelectedRow] = useState(null);
+    const [groupBy, setGroupBy] = useState(props.groupBy ?? '');
+    const [groupedData, setGroupedData] = useState({ '': dataSource });
+    const [openGroups, setOpenGroups] = useState([]);
     const selectAllRef = useRef<HTMLInputElement>(null);
 
     const handlers = new TableHandlers(dispatch, sortConfig);
-    
+
     const onRowClick = (identifier) => {
         setSelectedRow(identifier);
     };
 
- const groupByData = (array, key) => {
+    // Handler to expand all groups
+    const expandAll = () => {
+        setOpenGroups(Object.keys(groupedData));
+    };
+
+    // Handler to collapse all groups
+    const collapseAll = () => {
+        setOpenGroups([]);
+    };
+
+    const groupByData = (array, key) => {
         const gKey = key.toLowerCase();
-    
+
         return array.reduce((result, currentValue) => {
             const normalizedCurrentValue = {};
             for (const k in currentValue) {
@@ -58,7 +72,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
                     normalizedCurrentValue[k.toLowerCase()] = currentValue[k];
                 }
             }
-    
+
             const groupKey = normalizedCurrentValue[gKey];
             if (!result[groupKey]) {
                 result[groupKey] = [];
@@ -67,7 +81,6 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
             return result;
         }, {});
     };
-    
 
     const renderRow = (rowData, rowIndex) => {
         const rowIdentifier = rowData;
@@ -97,7 +110,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
     };
 
     // Effect to update component state based on props changes
-    React.useEffect(() => {
+    useEffect(() => {
         setGroupBy(props.groupBy);
         handlers.handleHeaders(props.headers);
         handlers.handleDataSource(props.rows);
@@ -107,13 +120,28 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
         setIsSelectable(props.isSelectable);
     }, [props.isDraggable, props.isSortable, props.isSelectable, props.groupBy]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (groupByDs) setGroupBy(groupByDs);
-        setGroupedData(groupByDs && groupByDs !== '' ? groupByData(dataSource, groupByDs) : { '': dataSource } );
+        setGroupedData(groupByDs && groupByDs !== '' ? groupByData(dataSource, groupByDs) : { '': dataSource });
     }, [groupByDs, groupBy, dataSource]);
 
     return (
         <Suspense fallback={<div>Loading...</div>}>
+            {groupBy ? (
+                <div className="flex justify-end gap-2">
+                    <Tooltip content="Expand All">
+                        <IconButton size="sm" variant="text" className="rounded-full">
+                            <ChevronDownIcon onClick={expandAll} className="w-6 h-6 cursor-pointer" />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip content="Collapse All">
+                        <IconButton size="sm" variant="text" className="rounded-full">
+                            <ChevronUpIcon onClick={collapseAll} className="w-6 h-6 cursor-pointer" />
+                        </IconButton>
+                    </Tooltip>
+                </div>
+            ) : null}
+
             <table className="w-full min-w-max table-auto text-left">
                 <thead>
                     <tr>
@@ -155,13 +183,13 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {Object.keys(groupedData).map((groupKey, groupIndex) => (
+                    {Object.keys(groupedData).map((groupKey) => (
                         <React.Fragment key={groupKey}>
                             {groupBy ? (
                                 <tr>
                                     <td colSpan={headers.length + (isSelectable ? 1 : 0)} className="p-0">
-                                        <Accordion open={openGroup === groupKey} icon={<ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />}>
-                                            <AccordionHeader className="pl-2 text-base"  onClick={() => setOpenGroup(openGroup === groupKey ? null : groupKey)}>
+                                        <Accordion open={openGroups.includes(groupKey)} icon={<ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />}>
+                                            <AccordionHeader className="pl-2 text-base" onClick={() => setOpenGroups(openGroups.includes(groupKey) ? openGroups.filter(key => key !== groupKey) : [...openGroups, groupKey])}>
                                                 {groupKey}
                                             </AccordionHeader>
                                             <AccordionBody className="p-0">
