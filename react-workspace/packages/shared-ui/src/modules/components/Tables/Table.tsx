@@ -25,17 +25,20 @@ export interface DefaultTableProps {
     [key: string]: any;
 }
 
-const DefaultTable: React.FC<DefaultTableProps> = ({ groupBy, ...props }) => {
+const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
     const dispatch = useDispatch();
     const dataSource = useSelector((state) => state['tableDataSource']['dataSource']);
     const sortConfig = useSelector((state) => state['tableDataSource']['sortDataSource']);
     const headers = useSelector((state) => state['tableDataSource']['headers']);
     const selectedRows = useSelector((state) => state['tableDataSource']['selectedRows']);
+    const groupByDs = useSelector((state) => state['tableDataSource']['preferences']['groupBy']);
 
     const [isDraggable, setIsDraggable] = React.useState(props.isDraggable);
     const [isSortable, setIsSortable] = React.useState(props.isSortable);
     const [isSelectable, setIsSelectable] = React.useState(props.isSelectable);
     const [selectedRow, setSelectedRow] = React.useState(null);
+    const [groupBy, setGroupBy] = React.useState(props.groupBy ?? '');
+    const [groupedData, setGroupedData] = React.useState({'': dataSource});
     const [openGroup, setOpenGroup] = React.useState(null);
     const selectAllRef = useRef<HTMLInputElement>(null);
 
@@ -45,9 +48,18 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ groupBy, ...props }) => {
         setSelectedRow(identifier);
     };
 
-    const groupByData = (array, key) => {
+ const groupByData = (array, key) => {
+        const gKey = key.toLowerCase();
+    
         return array.reduce((result, currentValue) => {
-            const groupKey = currentValue[key];
+            const normalizedCurrentValue = {};
+            for (const k in currentValue) {
+                if (currentValue.hasOwnProperty(k)) {
+                    normalizedCurrentValue[k.toLowerCase()] = currentValue[k];
+                }
+            }
+    
+            const groupKey = normalizedCurrentValue[gKey];
             if (!result[groupKey]) {
                 result[groupKey] = [];
             }
@@ -55,8 +67,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ groupBy, ...props }) => {
             return result;
         }, {});
     };
-
-    const groupedData = groupBy ? groupByData(dataSource, groupBy) : { '': dataSource };
+    
 
     const renderRow = (rowData, rowIndex) => {
         const rowIdentifier = rowData;
@@ -89,10 +100,18 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ groupBy, ...props }) => {
     React.useEffect(() => {
         handlers.handleHeaders(props.headers);
         handlers.handleDataSource(props.rows);
+        handlers.handleGroupBy(props.groupBy);
         setIsDraggable(props.isDraggable);
         setIsSortable(props.isSortable);
         setIsSelectable(props.isSelectable);
+        setGroupBy(props.groupBy);
     }, [props.isDraggable, props.isSortable, props.isSelectable]);
+
+    React.useEffect(() => {
+        console.log('Group By Data', groupByDs, dataSource)
+        setGroupedData(groupByDs && groupByDs !== '' ? groupByData(dataSource, groupByDs) : { '': dataSource } );
+        if (groupByDs !== props.groupBy) setGroupBy(groupByDs);
+    }, [groupByDs, groupBy, dataSource]);
 
     return (
         <Suspense fallback={<div>Loading...</div>}>
@@ -139,6 +158,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ groupBy, ...props }) => {
                 <tbody>
                     {Object.keys(groupedData).map((groupKey, groupIndex) => (
                         <React.Fragment key={groupKey}>
+                            {console.log('Group Data', props.groupBy, groupByDs)}
                             {groupBy ? (
                                 <tr>
                                     <td colSpan={headers.length + (isSelectable ? 1 : 0)} className="p-0">

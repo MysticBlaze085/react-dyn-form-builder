@@ -18,6 +18,7 @@ const TableFooter: React.FC<TableFooterProps> = ({ ...props }) => {
   const currentPage = useSelector((state) => state['tableDataSource']['pagination']['currentPage']);
   const totalPages = useSelector((state) => state['tableDataSource']['pagination']['totalPages']);
   const pageSize = useSelector((state) => state['tableDataSource']['pagination']['pageSize']);
+  const groupByDs = useSelector((state) => state['tableDataSource']['preferences']['groupBy']);
 
   const handleNextClick = () => {
     const action = setCurrentPage(currentPage + 1);
@@ -43,7 +44,7 @@ const TableFooter: React.FC<TableFooterProps> = ({ ...props }) => {
   React.useEffect(() => {
     handleInitialPagination();
     setPageSizes(props.pageSizes ?? ['5', '10', '15', '20', '25']);
-  }, [props.pageSizes]);
+  }, [props.pageSizes, groupByDs]);
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
