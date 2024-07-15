@@ -39,7 +39,7 @@ To start the lib storybook, run:
 ## TODO
 - [x] sidenav
 - [x] pagination controls
-- [ ] click action within table like a button
+- [x] click action within table like a button
 - [ ] table should allow props max-height to be set and overflow auto
 - [x] nested table accordions actions
 - [x] preference groupBy selector

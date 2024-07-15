@@ -104,7 +104,6 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ actionButton, ...props }) =
                         </Typography>
                     </td>
                 ))}
-                {/* Add td for the action button */}
                 {actionButton && (
                     <td className="border-b border-blue-gray-50 p-2 max-h-[40px] min-w-[60px] max-w-[60px]">
                         {actionButton(rowData)}
@@ -125,7 +124,7 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ actionButton, ...props }) =
     }, [props.isDraggable, props.isSortable, props.isSelectable, props.groupBy]);
 
     useEffect(() => {
-        if (groupByDs) setGroupBy(groupByDs);
+        if (groupByDs || groupByDs === undefined) setGroupBy(groupByDs);
         setGroupedData(groupByDs && groupByDs !== '' ? groupByData(dataSource, groupByDs) : { '': dataSource });
     }, [groupByDs, groupBy, dataSource]);
 

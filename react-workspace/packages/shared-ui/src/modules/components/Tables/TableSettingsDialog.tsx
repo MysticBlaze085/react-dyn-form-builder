@@ -59,8 +59,9 @@ const TableSettingsDialog = () => {
                 const action = filter(value);
                 dispatch(action);
             };
-            if (value['groupBy']) {
-                const action = setGroupBy(value['groupBy']);
+            if (value['groupBy'] || value['groupBy'] === undefined || value['groupBy'] === '') {
+                const val = value['groupBy'] === '' ? undefined : value['groupBy'];
+                const action = setGroupBy(val);
                 dispatch(action);
             }
         });
