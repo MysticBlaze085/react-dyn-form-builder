@@ -3,7 +3,6 @@ import { IconButton, Tooltip } from '@material-tailwind/react';
 import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import ButtonDefault from '../Button';
 import TableHandlers from './Table.handlers';
 
 const Checkbox = React.lazy(() => import('@material-tailwind/react/components/Checkbox'));
@@ -25,11 +24,13 @@ export interface DefaultTableProps {
     isDraggable?: boolean;
     isSortable?: boolean;
     isSelectable?: boolean;
-    groupBy?: string; // Add groupBy property
+    groupBy?: string;
+    actionColName?: string; // Add actionColName property
+    actionButton?: (rowData: TableRow) => React.ReactNode; // Add actionButton property
     [key: string]: any;
 }
 
-const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
+const DefaultTable: React.FC<DefaultTableProps> = ({ actionButton, ...props }) => {
     const dispatch = useDispatch();
     const dataSource = useSelector((state) => state['tableDataSource']['dataSource']);
     const sortConfig = useSelector((state) => state['tableDataSource']['sortDataSource']);
@@ -52,12 +53,10 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
         setSelectedRow(identifier);
     };
 
-    // Handler to expand all groups
     const expandAll = () => {
         setOpenGroups(Object.keys(groupedData));
     };
 
-    // Handler to collapse all groups
     const collapseAll = () => {
         setOpenGroups([]);
     };
@@ -105,11 +104,16 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
                         </Typography>
                     </td>
                 ))}
+                {/* Add td for the action button */}
+                {actionButton && (
+                    <td className="border-b border-blue-gray-50 p-2 max-h-[40px] min-w-[60px] max-w-[60px]">
+                        {actionButton(rowData)}
+                    </td>
+                )}
             </tr>
         );
     };
 
-    // Effect to update component state based on props changes
     useEffect(() => {
         setGroupBy(props.groupBy);
         handlers.handleHeaders(props.headers);
@@ -145,12 +149,12 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
             <table className="w-full min-w-max table-auto text-left">
                 <thead>
                     <tr>
-                        {isSelectable && ( // Render checkbox for select all if selectable
+                        {isSelectable && (
                             <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-1 max-w-[10px]">
                                 <Checkbox
                                     ref={selectAllRef}
-                                    checked={selectedRows.length === dataSource.length} // Check if all rows are selected
-                                    onChange={handlers.toggleSelectAll} // Toggle select all handler
+                                    checked={selectedRows.length === dataSource.length}
+                                    onChange={handlers.toggleSelectAll}
                                     className='w-4 h-4'
                                 />
                             </th>
@@ -159,11 +163,11 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
                             <th
                                 key={head}
                                 className={`border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer`}
-                                onClick={() => (isSortable ? handlers.sortRows(head) : null)} // Sort rows handler if sortable
-                                draggable={isDraggable} // Draggable attribute based on flag
-                                onDragStart={handlers.handleDragStart(index)} // Drag start handler
-                                onDragOver={handlers.handleDragOver} // Drag over handler
-                                onDrop={handlers.handleDrop(index)} // Drop handler
+                                onClick={() => (isSortable ? handlers.sortRows(head) : null)}
+                                draggable={isDraggable}
+                                onDragStart={handlers.handleDragStart(index)}
+                                onDragOver={handlers.handleDragOver}
+                                onDrop={handlers.handleDrop(index)}
                             >
                                 <Typography
                                     variant="small"
@@ -171,15 +175,22 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
                                     className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 max-w-[15px]"
                                 >
                                     {head}{' '}
-                                    {index !== headers.length - 1 && isSortable && ( // Render sort icon if sortable
+                                    {index !== headers.length - 1 && isSortable && (
                                         <ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
                                     )}
-                                    {sortConfig?.key === head && isSortable && ( // Render sort direction indicator
+                                    {sortConfig?.key === head && isSortable && (
                                         <span>{sortConfig.direction === 'ascending' ? '🔼' : '🔽'}</span>
                                     )}
                                 </Typography>
                             </th>
                         ))}
+                        {actionButton && (
+                            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-3">
+                                <Typography variant="small" color="blue-gray" className="font-normal">
+                                    {props.actionColName ?? 'Actions'}
+                                </Typography>
+                            </th>
+                        )}
                     </tr>
                 </thead>
                 <tbody>
@@ -187,9 +198,9 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ ...props }) => {
                         <React.Fragment key={groupKey}>
                             {groupBy ? (
                                 <tr>
-                                    <td colSpan={headers.length + (isSelectable ? 1 : 0)} className="p-0">
+                                    <td colSpan={headers.length + (isSelectable ? 1 : 0) + (actionButton ? 1 : 0)} className="p-0">
                                         <Accordion open={openGroups.includes(groupKey)} icon={<ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />}>
-                                            <AccordionHeader className="pl-2 text-base" onClick={() => setOpenGroups(openGroups.includes(groupKey) ? openGroups.filter(key => key !== groupKey) : [...openGroups, groupKey])}>
+                                            <AccordionHeader className="pl-2 text-base" onClick={() => setOpenGroups(openGroups.includes(groupKey) ? openGroups.filter(g => g !== groupKey) : [...openGroups, groupKey])}>
                                                 {groupKey}
                                             </AccordionHeader>
                                             <AccordionBody className="p-0">

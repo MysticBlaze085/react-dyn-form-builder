@@ -5,6 +5,7 @@ import {store, StoreSate} from '../../../store';
 import React from 'react';
 import { configureStore } from '@reduxjs/toolkit';
 import { initialState, tableDataSourceSlice } from '../../../store/table/table-ds-slice';
+import ButtonDefault from '../Button';
 
 // Function to create a new store instance
 const createNewStore = (initialState: Partial<StoreSate>) => configureStore({
@@ -83,6 +84,38 @@ export const Primary: Story = {
         isSelectable: true,
     },
 };
+
+const handleActionClick = (rowData) => {
+    alert(`Selected Details: \n\n ${JSON.stringify(rowData, null, 2)}`);
+};
+
+const renderActionButton = (rowData) => (
+    <ButtonDefault onClick={() => handleActionClick(rowData)}>
+        View Details
+    </ButtonDefault>
+);
+
+
+export const WithActionButton: Story = {
+    decorators: [
+        (story) => (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <div style={{ width: '80%', margin: '0 auto' }}>
+                    <Provider store={createNewStore({tableDataSource: initialState})}>{story()}</Provider>
+                </div>
+            </div>
+        ),
+    ],
+    args: {
+        headers: ['Name', 'Job', 'Date'],
+        rows: mockData,
+        isSortable: true,
+        isDraggable: true,
+        isSelectable: true,
+        actionButton: renderActionButton,
+    },
+};
+
 
 export const WithGroupBy: Story = {
     decorators: [
