@@ -18,7 +18,7 @@ This template ships with the main Angular and Storybook configuration files you'
 
     ```shell
     # Clone the template
-    npx degit chromaui/intro-storybook-angular-template angular-react-ui
+    npx degit chromaui/intro-storybook-angular-template angular-ui
     ```
 
 1.  **Install the dependencies.**
@@ -27,7 +27,7 @@ This template ships with the main Angular and Storybook configuration files you'
 
     ```shell
     # Navigate to the directory
-    cd angular-react-ui/
+    cd angular-ui/
 
     # Install the dependencies
     npm install
@@ -35,7 +35,7 @@ This template ships with the main Angular and Storybook configuration files you'
 
 1.  **Open the source code and start editing!**
 
-    Open the `angular-react-ui` directory in your code editor of choice and building your first component!
+    Open the `angular-ui` directory in your code editor of choice and building your first component!
 
 1.  **Browse your stories!**
 

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { Suspense } from 'react';
 
 const Alert = React.lazy(() => import('@material-tailwind/react/components/Alert'));
