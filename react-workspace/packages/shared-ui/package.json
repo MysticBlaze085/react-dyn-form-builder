@@ -7,8 +7,11 @@
     "build": "rm -rf dist && npx tsc",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "pack": "npm run build && pnpm pack dist"
+    "pack": "npm run build && pnpm pack"
   },
+  "files": [
+    "dist/"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",

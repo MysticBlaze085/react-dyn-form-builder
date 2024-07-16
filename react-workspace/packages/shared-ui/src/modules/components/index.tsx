@@ -1,3 +1,3 @@
-import ButtonDefault from './Button';
-
-export { ButtonDefault };
+export * from './Button';
+export * from './Sidebar';
+export * from './Tables';
