@@ -23,7 +23,7 @@
     "components": [
         {
             "name": "AppComponent",
-            "id": "component-AppComponent-d68608d8b26abf8ee892678b13d3f3fad388b8ed25e6510720354677fdc608c0a617ac19ba8cac9b7f59a76270d9da07ca862a43ca3c875eae5f81564cbc4b12",
+            "id": "component-AppComponent-c76bfe1dfe0659f259797475b121cf0bd6348dfad9e5c451bd04dc94895035ca960102c4f8ad2a92b40d12db59da1ebe7c9b6261126e7042e095742511cc88c7",
             "file": "src/app/app.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -45,7 +45,7 @@
             "propertiesClass": [
                 {
                     "name": "title",
-                    "defaultValue": "'taskbox'",
+                    "defaultValue": "'ng-ui'",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "string",
@@ -64,7 +64,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\n\n@Component({\n  selector: 'app-root',\n  templateUrl: './app.component.html',\n  styleUrls: ['./app.component.css'],\n})\nexport class AppComponent {\n  title = 'taskbox';\n}\n",
+            "sourceCode": "import { Component } from '@angular/core';\n\n@Component({\n  selector: 'app-root',\n  templateUrl: './app.component.html',\n  styleUrls: ['./app.component.css'],\n})\nexport class AppComponent {\n  title = 'ng-ui';\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
