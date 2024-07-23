@@ -1,41 +1,27 @@
 {
-    "compilerOptions": {
-        "outDir": "./dist",
-        "allowJs": true,
-        "allowSyntheticDefaultImports": true,
-        "esModuleInterop": true,
-        "module": "commonjs",
-        "jsx": "react-jsx",
-        "skipLibCheck": true,
-        "typeRoots": [
-            "./node_modules/@types",
-            "./@types"
-        ],
-        "lib": [
-            "dom",
-            "esnext"
-        ],
-        "paths": {
-            "@material-tailwind/react/*": [
-                "./node_modules/@material-tailwind/react/*"
-            ]
-        },
-        "types": [
-            "node",
-            "react",
-            "react-dom"
-        ]
-    },
-    "include": [
-        "src/**/*",
-        "index.tsx",
-        "node_modules/@material-tailwind/react"
-    ],
-    "exclude": [
-        "stories",
-        "node_modules",
-        "**/*.spec.ts",
-        "**/*.stories.ts",
-        "**/*.stories.tsx"
-    ]
+  "compilerOptions": {
+    "target": "esnext",
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "allowJs": false,
+    "maxNodeModuleJsDepth": 1,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "sourceMap": true,
+    "declarationDir": "./types",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitReturns": false,
+    "noFallthroughCasesInSwitch": false,
+    "noUncheckedIndexedAccess": false,
+    "allowUnreachableCode": false,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

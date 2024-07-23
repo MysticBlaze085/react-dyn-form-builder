@@ -41,9 +41,9 @@ export const useTableFilter = () => {
   return context;
 };
 
-const filterRows = (rows, filter) => {
+const filterRows = (rows: any[], filter: { column: any; value: any; }) => {
   if (!filter.column || !filter.value) return rows;
-  return rows.filter(row => {
+  return rows.filter((row) => {
     const column = filter.column.toLowerCase();
     return row[column]?.toLowerCase().includes(filter.value.toLowerCase());
   });

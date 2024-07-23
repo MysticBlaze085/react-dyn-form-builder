@@ -124,7 +124,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sections, hrSections, alert }) => {
                         <List>
                             {filteredSections.map((section, index) => (
                                 <Accordion
-                                    key={index}
+                                    key={`section-${index}`}
                                     open={open === index + 1}
                                     icon={
                                         <ChevronDownIcon
@@ -151,7 +151,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sections, hrSections, alert }) => {
                                         <List className="p-0">
                                             {section.items.map((item, itemIndex) => (
                                                 <ListItem
-                                                    key={itemIndex}
+                                                    key={`item-${index}-${itemIndex}`}
                                                     onClick={() => handleNavigation(item.route)}
                                                     className={searchQuery && item.title.toLowerCase().includes(searchQuery.toLowerCase()) ? "bg-blue-100" : ""}
                                                 >

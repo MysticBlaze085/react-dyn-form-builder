@@ -10,7 +10,7 @@ export interface AdkHttpClientProps {
 }
 
 const AdkHttpClient: React.FC<AdkHttpClientProps> = ({ adkUrl, adkPage = 1, adkLimit = 10 }) => {
-  const { state, fetch, post, reset } = useHttpClient<any>();
+  const { state, fetch, reset } = useHttpClient<any>();
 
   useEffect(() => {
     fetch(adkUrl, adkPage, adkLimit);

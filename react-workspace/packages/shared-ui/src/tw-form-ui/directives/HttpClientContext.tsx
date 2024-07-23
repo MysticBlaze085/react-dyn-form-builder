@@ -1,4 +1,4 @@
-import React, { ReactNode, createContext, useCallback, useContext, useMemo, useReducer, useRef } from 'react';
+import React, { ReactNode, createContext, useCallback, useContext, useMemo, useReducer } from 'react';
 
 import axios from 'axios';
 
@@ -10,13 +10,13 @@ interface HttpResponse<T> {
 interface HttpClientState<T> {
   data: HttpResponse<T>;
   loading: boolean;
-  error: Error | null;
+  error: Error | null | undefined;
 }
 
 interface HttpClientAction<T> {
   type: 'FETCH_INIT' | 'FETCH_SUCCESS' | 'FETCH_FAILURE' | 'RESET' | 'POST_INIT' | 'POST_SUCCESS' | 'POST_FAILURE';
   payload?: HttpResponse<T>;
-  error?: Error;
+  error?: Error | undefined;
 }
 
 interface HttpClientContextType<T> {
@@ -45,9 +45,9 @@ const httpClientReducer = <T,>(state: HttpClientState<T>, action: HttpClientActi
     case 'POST_INIT':
       return { ...state, loading: true };
     case 'POST_SUCCESS':
-      return { ...state, loading: false, data: action.payload };
+      return { ...state, loading: false, data: action.payload || state.data };
     case 'POST_FAILURE':
-      return { ...state, loading: false, error: action.error };
+      return { ...state, loading: false, error: action.error as Error };
     case 'RESET':
       return initialState;
     default:
@@ -56,8 +56,6 @@ const httpClientReducer = <T,>(state: HttpClientState<T>, action: HttpClientActi
 };
 
 export const HttpClientProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const initialStateRef = useRef(initialState);
-
   const [state, dispatch] = useReducer(httpClientReducer, initialState);
 
   const fetch = useCallback(async (url: string, page: number = 1, limit: number = 5) => {
@@ -70,7 +68,7 @@ export const HttpClientProvider: React.FC<{ children: ReactNode }> = ({ children
       const items = response.data;
       dispatch({ type: 'FETCH_SUCCESS', payload: { total, items } });
     } catch (error) {
-      dispatch({ type: 'FETCH_FAILURE', error });
+      dispatch({ type: 'FETCH_FAILURE', error: error as Error });
     }
   }, []);
 
@@ -80,7 +78,7 @@ export const HttpClientProvider: React.FC<{ children: ReactNode }> = ({ children
       const response = await axios.post(url, data);
       dispatch({ type: 'POST_SUCCESS', payload: response.data });
     } catch (error) {
-      dispatch({ type: 'POST_FAILURE', error });
+      dispatch({ type: 'POST_FAILURE', error: error as Error });
     }
   }, []);
 

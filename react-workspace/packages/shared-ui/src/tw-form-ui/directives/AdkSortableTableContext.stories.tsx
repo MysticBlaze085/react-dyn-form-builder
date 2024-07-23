@@ -7,7 +7,7 @@ import React from 'react';
 
 
 // Mock component to demonstrate context usage
-const MockSortableTable = () => {
+const MockSortableTable: React.FC = () => {
   const { rowData, sortRows } = useSortableTable();
   return (
     <table>

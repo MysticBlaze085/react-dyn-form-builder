@@ -36,8 +36,6 @@ export type Table = {
 };
 
 export class TableBuilder {
-  private static idCounter = 0;
-
   static createTable(type: TABLE_TYPE, headers: string[], rows: Observable<RowData[]>, props?: TableProps): Table {
     const table = {
       type,

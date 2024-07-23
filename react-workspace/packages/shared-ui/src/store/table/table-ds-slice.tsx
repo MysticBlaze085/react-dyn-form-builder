@@ -1,6 +1,6 @@
+import { Slice, createSlice } from '@reduxjs/toolkit';
 import { setDataSourcePagination, setPaginationState, updateChangedCurrentPage } from './pagination.util';
 
-import { createSlice } from '@reduxjs/toolkit';
 import { dragRows } from './drag.util';
 import { filterRows } from './filter-table.util';
 import { isEqual } from './is-equal.util';
@@ -46,7 +46,7 @@ export const initialState: TableState = {
     sortDataSource: { key: '', direction: 'ascending' },
 };
 
-export const tableDataSourceSlice = createSlice({
+export const tableDataSourceSlice: Slice<TableState> = createSlice({
     name: 'tableDataSource',
     initialState: initialState,
     reducers: {
@@ -134,7 +134,8 @@ export const tableDataSourceSlice = createSlice({
             }
         },
         // Reducer to toggle selection of all rows
-        toggleSelectedAllRows(state) {
+        toggleSelectedAllRows(state, action) {
+            console.log('toggleSelectedAllRows', action.payload);
             if (state.selectedRows.length === state.dataSource.length) state.selectedRows = []; // Deselect all if all are selected
             else state.selectedRows = [...state.dataSource]; // Select all rows if none or some are selected
         },

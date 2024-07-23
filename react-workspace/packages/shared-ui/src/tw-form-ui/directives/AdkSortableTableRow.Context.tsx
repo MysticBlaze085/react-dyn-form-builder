@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, useReducer, useRef } from 'react';
+import React, { createContext, useContext, useMemo, useReducer } from 'react';
 
 // Define types for sorting
 type SortDirection = 'ascending' | 'descending';
@@ -42,10 +42,10 @@ export const useSortableTable = () => {
 
 // Provider component
 export const SortableTableProvider: React.FC<{ children: React.ReactNode; initialRows: any[] }> = ({ children, initialRows }) => {
-  const initialState: SortConfig = { key: '', direction: null };
+  const initialState: SortConfig = { key: '', direction: null } as any;
   const [sortConfig, dispatch] = useReducer(sortReducer, initialState);
 
-  const isDate = (value) => {
+  const isDate = (value: string | number | Date) => {
     const date = new Date(value);
     return !isNaN(date.getTime());
   };

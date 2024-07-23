@@ -1,16 +1,6 @@
 {
   "name": "ng-ui",
-  "version": "0.2.0",
-  "description": "Starter template to get up and running quickly with Angular and Storybook",
-  "author": "Chromatic <https://chromatic.com/>",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/chromaui/intro-storybook-angular-template"
-  },
-  "bugs": {
-    "url": "https://github.com/chromaui/intro-storybook-angular-template/issues"
-  },
-  "license": "MIT",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -27,10 +17,12 @@
     "@angular/common": "^17.0.0",
     "@angular/compiler": "^17.0.0",
     "@angular/core": "^17.0.0",
+    "@angular/elements": "17.0.0",
     "@angular/forms": "^17.0.0",
     "@angular/platform-browser": "^17.0.0",
     "@angular/platform-browser-dynamic": "^17.0.0",
     "@angular/router": "^17.0.0",
+    "@material-tailwind/html": "^2.2.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.0"
@@ -50,6 +42,8 @@
     "@types/jasmine": "~4.3.0",
     "@types/jest": "^29.5.1",
     "@types/node": "^20.14.9",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
     "jasmine-core": "~4.5.0",
     "jest": "^29.5.0",
     "jest-preset-angular": "^13.0.1",
@@ -61,8 +55,8 @@
     "msw": "^1.2.1",
     "msw-storybook-addon": "^1.10.0",
     "ng-packagr": "^17.3.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "storybook": "^7.6.6",
     "typescript": "~5.2.2"
   }

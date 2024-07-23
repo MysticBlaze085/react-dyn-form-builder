@@ -3,8 +3,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": []
+    "types": [],
   },
   "files": ["src/main.ts"],
-  "include": ["src/**/*.d.ts"]
+  "include": ["src/**/*", "src/**/*.d.ts"],
+  "exclude": ["src/test-setup.ts", "src/**/*.spec.ts", "**/*.stories.tsx", "src/**/*.stories.ts", "src/stories/**"],
 }

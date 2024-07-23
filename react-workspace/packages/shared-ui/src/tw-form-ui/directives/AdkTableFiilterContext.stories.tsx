@@ -2,8 +2,8 @@ import { AdkTableFilterProvider, useTableFilter } from './AdkTableFilterContext'
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 
-const SampleTableComponent = () => {
-  const { filter, filteredRows, addFilter, updateFilter, clearFilters } = useTableFilter();
+const SampleTableComponent: React.FC = () => {
+  const { filteredRows, addFilter, clearFilters } = useTableFilter();
   const [column, setColumn] = useState('');
   const [value, setValue] = useState('');
 
