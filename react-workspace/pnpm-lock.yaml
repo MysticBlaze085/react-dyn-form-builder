@@ -315,9 +315,18 @@ importers:
       '@material-tailwind/html':
         specifier: ^2.2.2
         version: 2.2.2
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
       rxjs:
         specifier: ~7.8.0
         version: 7.8.1
+      tailwindcss:
+        specifier: ^3.4.6
+        version: 3.4.6
       tslib:
         specifier: ^2.3.0
         version: 2.6.3
@@ -367,12 +376,9 @@ importers:
       '@types/node':
         specifier: ^20.14.9
         version: 20.14.11
-      '@types/react':
-        specifier: ^18.3.3
-        version: 18.3.3
-      '@types/react-dom':
-        specifier: ^18.3.0
-        version: 18.3.0
+      css-loader:
+        specifier: ^7.1.2
+        version: 7.1.2(webpack@5.93.0(@swc/core@1.7.0(@swc/helpers@0.5.5))(esbuild@0.18.20))
       jasmine-core:
         specifier: ~4.5.0
         version: 4.5.0
@@ -406,15 +412,15 @@ importers:
       ng-packagr:
         specifier: ^17.3.0
         version: 17.3.0(@angular/compiler-cli@17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.8)))(typescript@5.2.2))(tailwindcss@3.4.6)(tslib@2.6.3)(typescript@5.2.2)
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
+      postcss-loader:
+        specifier: ^8.1.1
+        version: 8.1.1(postcss@8.4.39)(typescript@5.2.2)(webpack@5.93.0(@swc/core@1.7.0(@swc/helpers@0.5.5))(esbuild@0.18.20))
       storybook:
         specifier: ^7.6.6
         version: 7.6.20(encoding@0.1.13)
+      style-loader:
+        specifier: ^4.0.0
+        version: 4.0.0(webpack@5.93.0(@swc/core@1.7.0(@swc/helpers@0.5.5))(esbuild@0.18.20))
       typescript:
         specifier: ~5.2.2
         version: 5.2.2
@@ -16452,7 +16458,7 @@ snapshots:
       json-parse-even-better-errors: 3.0.2
       normalize-package-data: 6.0.2
       proc-log: 4.2.0
-      semver: 7.6.0
+      semver: 7.6.3
     transitivePeerDependencies:
       - bluebird
 
@@ -20731,6 +20737,19 @@ snapshots:
       semver: 7.6.3
     optionalDependencies:
       webpack: 5.93.0(esbuild@0.21.5)
+
+  css-loader@7.1.2(webpack@5.93.0(@swc/core@1.7.0(@swc/helpers@0.5.5))(esbuild@0.18.20)):
+    dependencies:
+      icss-utils: 5.1.0(postcss@8.4.39)
+      postcss: 8.4.39
+      postcss-modules-extract-imports: 3.1.0(postcss@8.4.39)
+      postcss-modules-local-by-default: 4.0.5(postcss@8.4.39)
+      postcss-modules-scope: 3.2.0(postcss@8.4.39)
+      postcss-modules-values: 4.0.0(postcss@8.4.39)
+      postcss-value-parser: 4.2.0
+      semver: 7.6.3
+    optionalDependencies:
+      webpack: 5.93.0(@swc/core@1.7.0(@swc/helpers@0.5.5))(esbuild@0.18.20)
 
   css-loader@7.1.2(webpack@5.93.0(webpack-cli@5.1.4)):
     dependencies:
@@ -25402,7 +25421,7 @@ snapshots:
       make-fetch-happen: 13.0.1
       nopt: 7.2.1
       proc-log: 4.2.0
-      semver: 7.6.0
+      semver: 7.6.3
       tar: 6.2.1
       which: 4.0.0
     transitivePeerDependencies:
@@ -25433,7 +25452,7 @@ snapshots:
   normalize-package-data@6.0.2:
     dependencies:
       hosted-git-info: 7.0.2
-      semver: 7.6.0
+      semver: 7.6.3
       validate-npm-package-license: 3.0.4
 
   normalize-path@3.0.0: {}
@@ -26155,9 +26174,20 @@ snapshots:
       cosmiconfig: 9.0.0(typescript@5.2.2)
       jiti: 1.21.6
       postcss: 8.4.35
-      semver: 7.6.0
+      semver: 7.6.3
     optionalDependencies:
       webpack: 5.90.3(@swc/core@1.7.0(@swc/helpers@0.5.5))(esbuild@0.20.1)
+    transitivePeerDependencies:
+      - typescript
+
+  postcss-loader@8.1.1(postcss@8.4.39)(typescript@5.2.2)(webpack@5.93.0(@swc/core@1.7.0(@swc/helpers@0.5.5))(esbuild@0.18.20)):
+    dependencies:
+      cosmiconfig: 9.0.0(typescript@5.2.2)
+      jiti: 1.21.6
+      postcss: 8.4.39
+      semver: 7.6.3
+    optionalDependencies:
+      webpack: 5.93.0(@swc/core@1.7.0(@swc/helpers@0.5.5))(esbuild@0.18.20)
     transitivePeerDependencies:
       - typescript
 
@@ -27891,6 +27921,10 @@ snapshots:
   style-loader@3.3.4(webpack@5.93.0(esbuild@0.21.5)):
     dependencies:
       webpack: 5.93.0(esbuild@0.21.5)
+
+  style-loader@4.0.0(webpack@5.93.0(@swc/core@1.7.0(@swc/helpers@0.5.5))(esbuild@0.18.20)):
+    dependencies:
+      webpack: 5.93.0(@swc/core@1.7.0(@swc/helpers@0.5.5))(esbuild@0.18.20)
 
   style-loader@4.0.0(webpack@5.93.0(webpack-cli@5.1.4)):
     dependencies:

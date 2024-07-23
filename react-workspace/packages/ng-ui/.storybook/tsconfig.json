@@ -5,7 +5,7 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true
   },
-  "exclude": ["../src/test.ts", "../src/**/*.spec.ts"],
-  "include": ["../src/**/*", "./preview.ts"],
+  "exclude": ["../src/test.ts", "../src/**/*.spec.ts", "../projects/ng-lib/src/test.ts", "../projects/ng-lib/src/**/*.spec.ts"],
+  "include": ["../src/**/*", "../projects/ng-lib/src/**/*", "./preview.ts"],
   "files": ["./typings.d.ts"]
 }
