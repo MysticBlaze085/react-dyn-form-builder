@@ -1,4 +1,4 @@
 #!/bin/bash
 
 #Install PNPM Packages UI Shared LIB
-npx pnpm install
+npx pnpm install --ignore-scripts

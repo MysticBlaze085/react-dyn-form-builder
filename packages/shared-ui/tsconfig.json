@@ -20,8 +20,8 @@
     "noFallthroughCasesInSwitch": false,
     "noUncheckedIndexedAccess": false,
     "allowUnreachableCode": false,
-    "skipLibCheck": true
+    "skipLibCheck": true,
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/**/*", "src/postinstall.js"],
+  "exclude": ["node_modules", "dist", "stories", "src/**/*.stories.tsx", "src/**/*.stories.ts"]
 }

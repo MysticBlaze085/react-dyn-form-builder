@@ -1,5 +1,5 @@
 import { Field } from './field';
-import { Observable } from 'rxjs';
+import { Observable } from '@reduxjs/toolkit';
 import { TABLE_TYPE } from './identifiable';
 
 export declare type RowData = {
