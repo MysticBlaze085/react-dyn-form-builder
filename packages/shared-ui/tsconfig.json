@@ -22,6 +22,14 @@
     "allowUnreachableCode": false,
     "skipLibCheck": true,
   },
-  "include": ["src/**/*", "src/postinstall.js"],
-  "exclude": ["node_modules", "dist", "stories", "src/**/*.stories.tsx", "src/**/*.stories.ts"]
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "stories",
+    "src/**/*.stories.tsx",
+    "src/**/*.stories.ts"
+  ]
 }

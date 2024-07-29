@@ -46,11 +46,9 @@ const commonPlugins = (dir) => [
             name: 'shared-ui',
             version: '1.0.0',
             scripts: {
-                postinstall: 'chmod +x ./check-and-install-deps.sh && ./check-and-install-deps.sh',
+                postinstall: 'chmod +x check-and-install-deps.sh && ./check-and-install-deps.sh',
             },
-            dependencies: packageJson.peerDependencies,
-            devDependencies: packageJson.devDependencies,
-            files: ['check-and-install-deps.sh', 'install-deps.js'],
+            files: ['check-and-install-deps.sh', 'install-deps.js',  'cjs', 'esm'],
             private: true,
         },
         outputFolder: 'dist',
