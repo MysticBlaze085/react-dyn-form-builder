@@ -1,11 +1,21 @@
 {
-  "extends": "../tsconfig.app.json",
-  "compilerOptions": {
-    "types": ["node"],
-    "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true
-  },
-  "exclude": ["../src/test.ts", "../src/**/*.spec.ts", "../projects/ng-lib/src/test.ts", "../projects/ng-lib/src/**/*.spec.ts"],
-  "include": ["../src/**/*", "../projects/ng-lib/src/**/*", "./preview.ts"],
-  "files": ["./typings.d.ts"]
+    "extends": "../tsconfig.app.json",
+    "compilerOptions": {
+        "types": ["node"],
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true
+    },
+    "exclude": ["../src/test.ts", "../src/**/*.spec.ts", "../projects/ng-lib/src/test.ts", "../projects/ng-lib/src/**/*.spec.ts"],
+    "include": [
+        "../projects/ng-lib/src/**/*",
+        "./preview.ts",
+        "../src/**/*.stories.ts",
+        "../src/**/*.stories.js",
+        "../src/**/*.stories.jsx",
+        "../src/**/*.stories.tsx",
+        "../src/**/*.stories.mdx",
+        "*.js",
+        "*.ts"
+    ],
+    "files": ["./typings.d.ts"]
 }

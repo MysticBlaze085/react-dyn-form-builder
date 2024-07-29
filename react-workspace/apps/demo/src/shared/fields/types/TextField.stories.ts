@@ -3,18 +3,18 @@ import type { Meta, StoryObj } from '@storybook/react';
 import TextFieldControl from './TextField';
 
 const meta: Meta<typeof TextFieldControl> = {
-  title: 'Field/Fields/TextFieldControl',
-  component: TextFieldControl,
-  tags: ['autodocs'],
-  parameters: {
-    // layout: 'fullscreen',
-  },
-  args: {
-    handler: () => {}, // Provide default props
-    meta: {
-      label: 'Label', // Provide default props
+    title: 'Field/Types/TextFieldControl',
+    component: TextFieldControl,
+    tags: ['autodocs'],
+    parameters: {
+        // layout: 'fullscreen',
     },
-  },
+    args: {
+        handler: () => {}, // Provide default props
+        meta: {
+            label: 'Label', // Provide default props
+        },
+    },
 };
 
 export default meta;

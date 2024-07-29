@@ -3,10 +3,10 @@ import RadioGroup from './RadioGroup';
 
 
 const meta = {
-  title: 'Field/Fields/RadioGroup',
-  component: RadioGroup,
-  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
-  tags: ['autodocs'],
+    title: 'Field/Types/RadioGroup',
+    component: RadioGroup,
+    // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
+    tags: ['autodocs'],
 } satisfies Meta<typeof RadioGroup>;
 
 export default meta;

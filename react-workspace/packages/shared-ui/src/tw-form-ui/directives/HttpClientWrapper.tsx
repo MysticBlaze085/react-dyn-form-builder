@@ -1,7 +1,7 @@
 import { HttpClientProvider, useHttpClient } from './HttpClientContext';
 import React, { useEffect } from 'react';
 
-import { Value } from '../../modules/types';
+import { Value } from '../../material-tw/modules/types';
 
 export interface AdkHttpClientProps {
   adkUrl: string;
