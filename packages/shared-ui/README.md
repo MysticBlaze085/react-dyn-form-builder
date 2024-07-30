@@ -2,17 +2,6 @@
 
 Shared ui is a react component lib using ui tailwindcss and material-tailwind package library dynamically built components.
 
-## Table of Contents
-
-- [React shared-ui lib](#react-shared-ui-lib)
-  - [Table of Contents](#table-of-contents)
-  - [Deployment](#deployment)
-  - [Package Requirements](#package-requirements)
-  - [Installation](#installation)
-  - [Running Shared UI Storybook](#running-shared-ui-storybook)
-  - [Dynamic Components](#dynamic-components)
-  - [TODO](#todo)
-
 ## Deployment
 
 -   Deploys to correct sh and environment yml configurations

@@ -9,9 +9,9 @@ Provide a brief overview of the issue you are addressing. This helps others unde
 ## How to Contribute
 
 ### Reporting Bugs
-
-1. **Search for existing issues**: Before creating a new issue, please check if the issue has already been reported.
-2. **Create a new issue**: If your issue is new, please create a new issue and provide detailed information.
+1. **Issue Board**: [Jira Board](https://rhapsodyjira.atlassian.net/browse/EMT-1259)
+2. **Search for existing issues**: Before creating a new issue, please check if the issue has already been reported.
+3. **Create a new issue**: If your issue is new, please create a new issue and provide detailed information.
 
 ### Suggesting Enhancements
 

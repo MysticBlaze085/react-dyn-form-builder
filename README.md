@@ -2,15 +2,6 @@
 
 Welcome to UI SHARED LIB, where components are built to be dynamically re-used throughout your UI application builds. Frameworks and design libraries that will qualify to consume these package libs which are Angular and React. The CSS design library being used is Material Tailwind and UI TailwindCSS. More documentation to come and the build progresses.
 
-## Table of Contents
-- [UI SHARED LIB](#ui-shared-lib)
-  - [Table of Contents](#table-of-contents)
-  - [Deployment](#deployment)
-  - [Installation](#installation)
-  - [Application Requirements](#application-requirements)
-  - [Usage](#usage)
-  - [Contributing](#contributing)
-
 ## Deployment
 
 -   Deploys to correct sh and environment yml configurations
@@ -35,3 +26,7 @@ Building dynamic libraries using TailwindCSS and Material Tailwind that can be u
 
 ## Contributing
 If you'd like to contribute, please follow our contributing [guidelines](CONTRIBUTING.md).
+
+## TODO
+
+-   [ ] Use docker to build the storybook static files that should run and allow display locally and/or within bitbucket to output the static files within.
