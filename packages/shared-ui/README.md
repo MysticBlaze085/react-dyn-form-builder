@@ -103,6 +103,7 @@ To start the lib storybook, run:
 ```bash
 ## _build directory
 .\shared-ui-storybook.sh
+or from parent level of ui-shared-lib run pnpm --filter shared-ui storybook
 ```
 
 ## Dynamic Components
