@@ -9,7 +9,6 @@ Welcome to UI SHARED LIB, where components are build to be dynamically re-used t
   - [Installation](#installation)
   - [Application Requirements](#application-requirements)
   - [Usage](#usage)
-  - [TODO](#todo)
 
 ## Deployment
 
