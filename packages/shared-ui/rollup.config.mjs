@@ -14,14 +14,6 @@ const outputDirESM = path.resolve(process.cwd(), 'dist/esm');
 console.log('Output directory CJS:', outputDirCJS);
 console.log('Output directory ESM:', outputDirESM);
 
-// Run the checkDirectories script
-try {
-    execSync('node scripts/checkDirectories.js', { stdio: 'inherit' });
-} catch (error) {
-    console.error('Error running checkDirectories script:', error);
-    process.exit(1);
-}
-
 const commonPlugins = (dir) => [
     resolve({
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
@@ -34,22 +26,22 @@ const commonPlugins = (dir) => [
         outDir: dir,
         declarationDir: `${dir}`,
     }),
-    copy({
-        targets: [
-            { src: './scripts/check-and-install-deps.sh', dest: 'dist' },
-            { src: './scripts/install-deps.js', dest: 'dist' },
-        ],
-    }),
+    // copy({
+    //     targets: [{ src: './scripts/install-deps.js', dest: 'dist' }],
+    // }),
     postcss({ extensions: ['.css'], inject: true, extract: false }),
     generatePackageJson({
         baseContents: {
             name: 'shared-ui',
             version: '1.0.0',
-            scripts: {
-                postinstall: 'chmod +x check-and-install-deps.sh && ./check-and-install-deps.sh',
-            },
-            files: ['check-and-install-deps.sh', 'install-deps.js',  'cjs', 'esm'],
+            // scripts: {
+            //     postinstall: "chmod +x install-deps.js && timeout 300s node install-deps.js || echo 'Postinstall script timed out'",
+            // },
+            // files: ['install-deps.js', 'cjs', 'esm'],
+            files: ['cjs', 'esm'],
             private: true,
+            dependencies: packageJson.peerDependencies,
+            devDependencies: packageJson.devDependencies,
         },
         outputFolder: 'dist',
     }),

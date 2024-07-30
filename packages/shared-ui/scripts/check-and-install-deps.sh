@@ -1,83 +1,45 @@
 #!/bin/bash
-set -e
 
-# List of dependencies
-dependencies=(
-    'react'
-    'react-dom'
-    # Add other dependencies here
-)
+# Ensure Node.js is installed
+if ! command -v node >/dev/null 2>&1; then
+    echo "Node.js is not installed. Please install Node.js to continue."
+    exit 1
+fi
 
-# List of dev dependencies
-devDependencies=(
-    '@emotion/react'
-    '@emotion/styled'
-    '@reduxjs/toolkit'
-    '@types/react'
-    '@types/react-dom'
-    # Add other dev dependencies here
-)
+# Ensure pnpm or npm is installed
+if ! command -v pnpm >/dev/null 2>&1 && ! command -v npm >/dev/null 2>&1; then
+    echo "Neither pnpm nor npm is installed. Please install one of them to continue."
+    exit 1
+fi
 
-# Function to check if a package is installed
-check_installed() {
-    local pkg="$1"
-    npm ls "$pkg" --depth=0 >/dev/null 2>&1 || pnpm ls "$pkg" --depth=0 >/dev/null 2>&1
-}
+# Change to the directory of your Node.js project
+cd "$(dirname "$0")" || exit
 
-# Install missing dependencies with pnpm or npm
-install_missing_deps() {
-    local deps=("$@")
-    if [ ${#deps[@]} -eq 0 ]; then
-        echo "No dependencies to install."
-        return
-    fi
-    echo "Installing dependencies: ${deps[*]}"
-    
+# Check if package.json exists, create if it doesn't
+if [ ! -f package.json ]; then
+    echo "Creating package.json..."
     if command -v pnpm >/dev/null 2>&1; then
-        pnpm add "${deps[@]}"
-    elif command -v npm >/dev/null 2>&1; then
-        npm install "${deps[@]}"
+        pnpm init -y
     else
-        echo "Neither pnpm nor npm is installed."
-        exit 1
+        npm init -y
     fi
-}
+fi
 
-# Install missing dev dependencies with pnpm or npm
-install_missing_dev_deps() {
-    local dev_deps=("$@")
-    if [ ${#dev_deps[@]} -eq 0 ]; then
-        echo "No dev dependencies to install."
-        return
-    fi
-    echo "Installing dev dependencies: ${dev_deps[*]}"
-    
-    if command -v pnpm >/dev/null 2>&1; then
-        pnpm add --save-dev "${dev_deps[@]}"
-    elif command -v npm >/dev/null 2>&1; then
-        npm install --save-dev "${dev_deps[@]}"
-    else
-        echo "Neither pnpm nor npm is installed."
-        exit 1
-    fi
-}
+# Extract the project name from package.json
+PROJECT_NAME=$(grep -oP '(?<="name": ")[^"]*' package.json)
+echo "Project name: $PROJECT_NAME"
 
-# Check and install dependencies
-echo "Checking dependencies..."
-missing_deps=()
-for dep in "${dependencies[@]}"; do
-    if ! check_installed "$dep"; then
-        missing_deps+=("$dep")
-    fi
-done
-install_missing_deps "${missing_deps[@]}"
+# Determine the package manager to use
+if [ -f pnpm-lock.yaml ]; then
+    PACKAGE_MANAGER="pnpm"
+elif [ -f package-lock.json ]; then
+    PACKAGE_MANAGER="npm"
+else
+    # Default to npm if no lock file is found
+    PACKAGE_MANAGER="npm"
+fi
 
-# Check and install dev dependencies
-echo "Checking dev dependencies..."
-missing_dev_deps=()
-for devDep in "${devDependencies[@]}"; do
-    if ! check_installed "$devDep"; then
-        missing_dev_deps+=("$devDep")
-    fi
-done
-install_missing_dev_deps "${missing_dev_deps[@]}"
+echo "Using $PACKAGE_MANAGER as the package manager."
+
+# Run the Node.js script to install dependencies
+node install-deps.js
