@@ -9,6 +9,7 @@ Welcome to UI SHARED LIB, where components are built to be dynamically re-used t
   - [Installation](#installation)
   - [Application Requirements](#application-requirements)
   - [Usage](#usage)
+  - [Contributing](#contributing)
 
 ## Deployment
 
@@ -30,3 +31,6 @@ Node package requirements to run local development of the ui-shared-lib packages
 ## Usage
 
 Building dynamic libraries using TailwindCSS and Material Tailwind that can be used within Angular or React applications.
+
+## Contributing
+If you'd like to contribute, please follow our contributing [guidelines](CONTRIBUTING.md).
