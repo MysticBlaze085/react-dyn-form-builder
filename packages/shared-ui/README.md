@@ -10,6 +10,7 @@ Shared ui is a react component lib using tailwindcss and material-tailwind packa
   - [Package Requirements](#package-requirements)
   - [Installation](#installation)
   - [Running Shared UI Storybook](#running-shared-ui-storybook)
+  - [Dynamic Components](#dynamic-components)
   - [TODO](#todo)
 
 ## Deployment
@@ -103,6 +104,10 @@ To start the lib storybook, run:
 ## _build directory
 .\shared-ui-storybook.sh
 ```
+
+## Dynamic Components
+- [Material-Tailwind](src/material-tw/MT.md)
+
 
 ## TODO
 
