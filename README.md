@@ -1,6 +1,6 @@
 # UI SHARED LIB
 
-Welcome to UI SHARED LIB, where components are built to be dynamically re-used throughout your UI application builds. Frameworks and design libraries that will qualify to consume this package lib is Angular and React. The CSS design library being used is Material Tailwind and UI TailwindCSS. More documentation to come and the build progresses.
+Welcome to UI SHARED LIB, where components are built to be dynamically re-used throughout your UI application builds. Frameworks and design libraries that will qualify to consume these package libs which are Angular and React. The CSS design library being used is Material Tailwind and UI TailwindCSS. More documentation to come and the build progresses.
 
 ## Table of Contents
 - [UI SHARED LIB](#ui-shared-lib)
