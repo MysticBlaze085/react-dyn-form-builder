@@ -31,6 +31,7 @@ Provide a brief overview of the issue you are addressing. This helps others unde
 To ensure consistency throughout the source code, keep these rules in mind as you are working:
 
 - All features or bug fixes must be tested by one or more specs (unit-tests/storbyook testing).
+- All features are documented using (Storybook) testing also is (spec unit-test and storybook interactive testing)
 - All public API methods must be documented. (Details TBD).
 - We follow [Google's JavaScript Style Guide](https://google.github.io/styleguide/jsguide.html), but wrap all code at 100 characters.
 
