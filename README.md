@@ -14,6 +14,7 @@ Welcome to UI SHARED LIB, where components are built to be dynamically re-used t
 ## Deployment
 
 -   Deploys to correct sh and environment yml configurations
+-   WIP storybook static served up for documentation display https://storybook.js.org/docs/sharing/publish-storybook
 
 ## Installation
 
