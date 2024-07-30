@@ -20,12 +20,12 @@ Shared ui is a react component lib using tailwindcss and material-tailwind packa
 ## Package Requirements
 > **Note:** will add a script for doing this automatically at a later date.
 -   [Node.js](https://nodejs.org/) (v22.2.0 or later)
--   `npm run @material-tailwind/react@^2.1.9`
--   `npm run @mui/base@5.0.0-beta.40`
+-   `if using @material-tailwind npm run @material-tailwind/react@^2.1.9`
 -   `npm run react@>=16`
 -   `npm run react-dom@>=16`
 -   `npm run --save-dev react-redux@^7.2.5`
 -   `npm run --save-dev react-reactive-form@^2.0.1`
+-   `npm run --save-dev @mui/base@5.0.0-beta.40`
 -   `npm run --save-dev tailwindcss@^3.4.7`
 -   `npm run --save-dev postcss@^8.4.40`
 
