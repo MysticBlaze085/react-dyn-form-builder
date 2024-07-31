@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormControl, FormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 import { CommonModule } from '@angular/common';
 import { BaseComponent, FieldItem } from './base.component';
@@ -7,7 +7,7 @@ import { BaseComponent, FieldItem } from './base.component';
 @Component({
     standalone: true,
     selector: 'tw-checkbox',
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, ReactiveFormsModule],
     template: `
         @if (isArray(checkbox)) {
         <fieldset>
