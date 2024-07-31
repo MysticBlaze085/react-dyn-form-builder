@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import ExampleFeature from './ExampleFeature';
 
 const meta = {
-    title: 'Material-TW/Field/Example/ExampleFeature',
+    title: 'Material-TW/Field/ExampleFeature',
     component: ExampleFeature,
     tags: ['autodocs'],
     parameters: {

@@ -108,3 +108,6 @@ or
 -   [ ] Build React Shared UI package to allow developer to install within their react applications
 -   [ ] Build UITailwindCSS dynamic components within ui-tw directory
   -   [ ] form types and table components to be built
+-   [ ] Write documentation on how to use components
+-   [ ] Test install in a standalone application
+-   [ ] Write spec tests and storybook interactive testing
