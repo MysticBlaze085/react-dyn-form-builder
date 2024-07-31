@@ -1,6 +1,8 @@
 import { Meta, StoryObj, componentWrapperDecorator, moduleMetadata } from '@storybook/angular';
-import { RadioItem, TwRadioComponent } from './tw-radio.component';
 import { userEvent, within } from '@storybook/test';
+
+import { FieldItem } from './base.component';
+import { TwRadioComponent } from './tw-radio.component';
 
 const meta: Meta<TwRadioComponent> = {
     title: 'TailwindUI/Field/Types/Radio',
@@ -30,7 +32,7 @@ type Story = StoryObj<TwRadioComponent>;
 
 export const SingleRadio: Story = {
     args: {
-        radio: { id: 'newsletter', name: 'Newsletter', description: 'Get notified when there is a new newsletter.' } as RadioItem,
+        radio: { id: 'newsletter', name: 'Newsletter', description: 'Get notified when there is a new newsletter.' } as FieldItem,
     },
 };
 
@@ -40,7 +42,7 @@ export const RadioGroup: Story = {
             { id: 'comments', name: 'Comments', description: 'Get notified when someone posts a comment on a posting.' },
             { id: 'candidates', name: 'Candidates', description: 'Get notified when a candidate applies for a job.' },
             { id: 'offers', name: 'Offers', description: 'Get notified when a candidate accepts or rejects an offer.' },
-        ] as RadioItem[],
+        ] as FieldItem[],
     },
 };
 

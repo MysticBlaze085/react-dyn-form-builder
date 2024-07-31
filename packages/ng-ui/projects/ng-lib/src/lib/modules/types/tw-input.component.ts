@@ -1,19 +1,8 @@
-import { CommonModule, TitleCasePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
-export interface InputItem {
-    id: string;
-    name: string;
-    placeholder: string;
-    hint?: string;
-    value?: string;
-    ariaInvalid?: boolean;
-    errorMessage?: string;
-    required?: boolean;
-    minLength?: number;
-    maxLength?: number;
-}
+import { BaseComponent, FieldItem } from './base.component';
 
 @Component({
     selector: 'tw-input',
@@ -23,12 +12,12 @@ export interface InputItem {
         <div class="relative flex items-start">
             <div class="flex h-6 items-center">
                 <input
-                    [id]="getInputId(input)"
-                    [name]="getInputName(input)"
-                    [placeholder]="getInputPlaceholder(input)"
-                    [formControl]="formControls[getInputName(input)]"
-                    (blur)="onBlur(getInputName(input))"
-                    (change)="onChange(getInputName(input))"
+                    [id]="getId(input)"
+                    [name]="getName(input)"
+                    [placeholder]="getPlaceholder(input)"
+                    [formControl]="formControls[getName(input)]"
+                    (blur)="onBlur(getName(input))"
+                    (change)="onChange(getName(input))"
                     type="text"
                     [ngClass]="{
                         'border-red-500 ring-red-500 placeholder-red-300': isError(input),
@@ -47,13 +36,16 @@ export interface InputItem {
                 </svg>
             </div>
         </div>
-        <p class="mt-2 text-sm text-red-600" [id]="getInputId(input) + '-error'" *ngIf="isError(input)">
+        <p class="mt-2 text-sm text-red-600" [id]="getId(input) + '-error'" *ngIf="isError(input)">
             {{ getErrorMessage(input) }}
         </p>
     `,
 })
-export class TwInputComponent implements OnInit {
-    @Input() input: InputItem = {
+export class TwInputComponent extends BaseComponent implements OnInit {
+    constructor() {
+        super();
+    }
+    @Input() input: FieldItem = {
         id: 'default',
         name: 'default',
         placeholder: 'Default Example',
@@ -62,76 +54,11 @@ export class TwInputComponent implements OnInit {
         ariaInvalid: true,
         errorMessage: 'This field is required.',
     };
-    formControls: { [key: string]: FormControl } = {};
+
+    override formControls: { [key: string]: FormControl } = {};
 
     ngOnInit(): void {
         const item = this.input;
-        console.log('Item', item);
         this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));
-    }
-
-    getInputId(input: InputItem): string {
-        return input.id;
-    }
-
-    getInputName(input: InputItem): string {
-        return input.name;
-    }
-
-    getInputPlaceholder(input: InputItem): string {
-        return input.placeholder ?? new TitleCasePipe().transform(input.name);
-    }
-
-    getInputValue(input: InputItem): string {
-        return input.value ?? '';
-    }
-
-    getAriaInvalid(input: InputItem): boolean {
-        const control = this.formControls[input.name];
-        return control && control.invalid && (control.dirty || control.touched);
-    }
-
-    getErrorMessage(input: InputItem): string {
-        const control = this.formControls[input.id];
-        if (control) {
-            if (control.errors?.['required']) {
-                return 'This field is required.';
-            } else if (control.errors?.['minlength']) {
-                return `Minimum length is ${control.errors['minlength'].requiredLength} characters.`;
-            } else if (control.errors?.['maxlength']) {
-                return `Maximum length is ${control.errors['maxlength'].requiredLength} characters.`;
-            } else if (control.errors?.['pattern']) {
-                return 'Invalid format.';
-            }
-        }
-        return input.errorMessage ?? '';
-    }
-
-    private getValidators(item: InputItem) {
-        const validators = [];
-        if (item.required) validators.push(Validators.required);
-        if (item.minLength) validators.push(Validators.minLength(item.minLength));
-        if (item.maxLength) validators.push(Validators.maxLength(item.maxLength));
-        // Add pattern or other validators if needed
-        return validators;
-    }
-
-    onBlur(name: string) {
-        const control = this.formControls[name];
-        if (control) {
-            control.markAsTouched();
-        }
-    }
-
-    onChange(name: string) {
-        const control = this.formControls[name];
-        if (control) {
-            control.updateValueAndValidity();
-        }
-    }
-
-    isError(input: InputItem): boolean {
-        const control = this.formControls[input.name];
-        return control ? control.invalid && (control.dirty || control.touched) : false;
     }
 }

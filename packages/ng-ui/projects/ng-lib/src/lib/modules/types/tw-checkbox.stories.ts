@@ -1,6 +1,8 @@
-import { CheckboxItem, TwCheckboxComponent } from './tw-checkbox.component';
 import { Meta, StoryObj, componentWrapperDecorator, moduleMetadata } from '@storybook/angular';
 import { userEvent, within } from '@storybook/test';
+
+import { FieldItem } from './base.component';
+import { TwCheckboxComponent } from './tw-checkbox.component';
 
 const meta: Meta<TwCheckboxComponent> = {
     title: 'TailwindUI/Field/Types/Checkbox',
@@ -30,7 +32,7 @@ type Story = StoryObj<TwCheckboxComponent>;
 
 export const SingleCheckbox: Story = {
     args: {
-        checkbox: { id: 'newsletter', name: 'Newsletter', description: 'Get notified when there is a new newsletter.' } as CheckboxItem,
+        checkbox: { id: 'newsletter', name: 'Newsletter', description: 'Get notified when there is a new newsletter.' } as FieldItem,
     },
 };
 
@@ -40,7 +42,7 @@ export const CheckboxGroup: Story = {
             { id: 'comments', name: 'Comments', description: 'Get notified when someone posts a comment on a posting.' },
             { id: 'candidates', name: 'Candidates', description: 'Get notified when a candidate applies for a job.' },
             { id: 'offers', name: 'Offers', description: 'Get notified when a candidate accepts or rejects an offer.' },
-        ] as CheckboxItem[],
+        ] as FieldItem[],
     },
 };
 

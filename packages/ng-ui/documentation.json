@@ -2,55 +2,13 @@
     "pipes": [],
     "interfaces": [
         {
-            "name": "CheckboxItem",
-            "id": "interface-CheckboxItem-ae7c8cb17ca15ef1dac72b42c170abb5718b740670520ba910cc0e053841981b9ef6366f3aa5753d7cbee152e123f002554f41bc6dc3b65bdb2e6a6fe51ec1c4",
-            "file": "projects/ng-lib/src/lib/modules/types/tw-checkbox.component.ts",
+            "name": "FieldItem",
+            "id": "interface-FieldItem-317ff6c4feea2826b253fe829371b71b8ae30eba2cccfd39288ce2abb34f7af95cfe89fb4d92663a93835701fc4cda135a23e17f9ff4f237cae82efec3f22d87",
+            "file": "projects/ng-lib/src/lib/modules/types/base.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { Component, Input, ViewEncapsulation } from '@angular/core';\r\n\r\nexport interface CheckboxItem {\r\n    id: string;\r\n    name: string;\r\n    description: string;\r\n}\r\n\r\n@Component({\r\n    standalone: true,\r\n    selector: 'tw-checkbox',\r\n    template: `\r\n        @if (isArray(checkbox)) {\r\n        <fieldset>\r\n            <legend class=\"sr-only\">Notifications</legend>\r\n            <div class=\"space-y-5\">\r\n                @for (cb of checkbox; track $index) {\r\n                <div class=\"relative flex items-start\">\r\n                    <div class=\"flex h-6 items-center\">\r\n                        <input\r\n                            [id]=\"getCheckboxId(cb)\"\r\n                            [attr.describedby]=\"getCheckboxId(cb) + '-description'\"\r\n                            [name]=\"getCheckboxName(cb)\"\r\n                            type=\"checkbox\"\r\n                            class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\r\n                        />\r\n                    </div>\r\n                    <div class=\"ml-3 text-sm leading-6\">\r\n                        <label [for]=\"getCheckboxId(cb)\" class=\"font-medium text-gray-900\">{{ getCheckboxName(cb) }}</label>\r\n                        <p [id]=\"getCheckboxId(cb) + '-description'\" class=\"text-gray-500\">{{ getCheckboxDescription(cb) }}</p>\r\n                    </div>\r\n                </div>\r\n                }\r\n            </div>\r\n        </fieldset>\r\n        } @else {\r\n        <div class=\"relative flex items-start\">\r\n            <div class=\"flex h-6 items-center\">\r\n                <input\r\n                    [id]=\"getCheckboxId(checkbox)\"\r\n                    [attr.describedby]=\"getCheckboxId(checkbox) + '-description'\"\r\n                    [name]=\"getCheckboxName(checkbox)\"\r\n                    type=\"checkbox\"\r\n                    class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\r\n                />\r\n            </div>\r\n            <div class=\"ml-3 text-sm leading-6\">\r\n                <label [for]=\"getCheckboxId(checkbox)\" class=\"font-medium text-gray-900\">{{ getCheckboxName(checkbox) }}</label>\r\n                <p [id]=\"getCheckboxId(checkbox) + '-description'\" class=\"text-gray-500\">{{ getCheckboxDescription(checkbox) }}</p>\r\n            </div>\r\n        </div>\r\n        }\r\n    `,\r\n    styles: [],\r\n})\r\nexport class TwCheckboxComponent {\r\n    @Input() checkbox: CheckboxItem | CheckboxItem[] = [];\r\n\r\n    isArray(checkbox: CheckboxItem | CheckboxItem[]): checkbox is CheckboxItem[] {\r\n        return Array.isArray(checkbox);\r\n    }\r\n\r\n    getCheckboxId(checkbox: CheckboxItem): string {\r\n        return checkbox.id;\r\n    }\r\n\r\n    getCheckboxName(checkbox: CheckboxItem): string {\r\n        return checkbox.name;\r\n    }\r\n\r\n    getCheckboxDescription(checkbox: CheckboxItem): string {\r\n        return checkbox.description;\r\n    }\r\n}\r\n",
-            "properties": [
-                {
-                    "name": "description",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "string",
-                    "optional": false,
-                    "description": "",
-                    "line": 6
-                },
-                {
-                    "name": "id",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "string",
-                    "optional": false,
-                    "description": "",
-                    "line": 4
-                },
-                {
-                    "name": "name",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "string",
-                    "optional": false,
-                    "description": "",
-                    "line": 5
-                }
-            ],
-            "indexSignatures": [],
-            "kind": 171,
-            "methods": [],
-            "extends": []
-        },
-        {
-            "name": "InputItem",
-            "id": "interface-InputItem-882c724dece592a475f346264cb1118ae13e649396335dda0f6569a2c54812c394b872d85f6131e86291f5703c2b93c35b2b58101bf34f90efabf0c1c7a0c574",
-            "file": "projects/ng-lib/src/lib/modules/types/tw-input.component.ts",
-            "deprecated": false,
-            "deprecationMessage": "",
-            "type": "interface",
-            "sourceCode": "import { Component, Input } from '@angular/core';\r\n\r\nexport interface InputItem {\r\n    id: string;\r\n    name: string;\r\n    placeholder: string;\r\n    hint?: string;\r\n    value?: string;\r\n    ariaInvalid?: boolean;\r\n    errorMessage?: string;\r\n}\r\n\r\n@Component({\r\n    selector: 'tw-input',\r\n    standalone: true,\r\n    template: `\r\n        <div *ngIf=\"isArray(input); else singleInput\">\r\n            @for(inp of input; track $index) {\r\n            <fieldset>\r\n                <legend class=\"sr-only\">Input Fields</legend>\r\n                <div class=\"space-y-5\">\r\n                    <div class=\"relative flex items-start\">\r\n                        <div class=\"flex h-6 items-center\">\r\n                            <input\r\n                                [id]=\"getInputId(inp)\"\r\n                                [name]=\"getInputName(inp)\"\r\n                                [placeholder]=\"getInputPlaceholder(inp)\"\r\n                                [value]=\"getInputValue(inp)\"\r\n                                [attr.aria-invalid]=\"getAriaInvalid(inp)\"\r\n                                [attr.aria-describedby]=\"getInputId(inp) + '-error'\"\r\n                                type=\"text\"\r\n                                class=\"block w-full rounded-md border-0 py-1.5 pr-10 text-red-900 ring-1 ring-inset ring-red-300 placeholder:text-red-300 focus:ring-2 focus:ring-inset focus:ring-red-500 sm:text-sm sm:leading-6\"\r\n                            />\r\n                        </div>\r\n                        <div class=\"absolute inset-y-0 right-0 flex items-center pr-3\">\r\n                            <svg class=\"h-5 w-5 text-red-500\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\">\r\n                                <path\r\n                                    fill-rule=\"evenodd\"\r\n                                    d=\"M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z\"\r\n                                    clip-rule=\"evenodd\"\r\n                                />\r\n                            </svg>\r\n                        </div>\r\n                    </div>\r\n                    <p class=\"mt-2 text-sm text-red-600\" [id]=\"getInputId(inp) + '-error'\">{{ getErrorMessage(inp) }}</p>\r\n                </div>\r\n            </fieldset>\r\n            }\r\n        </div>\r\n\r\n        <ng-template #singleInput>\r\n            <div class=\"relative flex items-start\">\r\n                <div class=\"flex h-6 items-center\">\r\n                    <input\r\n                        [id]=\"getInputId(input)\"\r\n                        [name]=\"getInputName(input)\"\r\n                        [placeholder]=\"getInputPlaceholder(input)\"\r\n                        [value]=\"getInputValue(input)\"\r\n                        [attr.aria-invalid]=\"getAriaInvalid(input)\"\r\n                        [attr.aria-describedby]=\"getInputId(input) + '-error'\"\r\n                        type=\"text\"\r\n                        class=\"block w-full rounded-md border-0 py-1.5 pr-10 text-red-900 ring-1 ring-inset ring-red-300 placeholder:text-red-300 focus:ring-2 focus:ring-inset focus:ring-red-500 sm:text-sm sm:leading-6\"\r\n                    />\r\n                </div>\r\n                <div class=\"absolute inset-y-0 right-0 flex items-center pr-3\">\r\n                    <svg class=\"h-5 w-5 text-red-500\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\">\r\n                        <path\r\n                            fill-rule=\"evenodd\"\r\n                            d=\"M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z\"\r\n                            clip-rule=\"evenodd\"\r\n                        />\r\n                    </svg>\r\n                </div>\r\n            </div>\r\n            <p class=\"mt-2 text-sm text-red-600\" [id]=\"getInputId(input) + '-error'\">{{ getErrorMessage(input) }}</p>\r\n        </ng-template>\r\n    `,\r\n})\r\nexport class TwInputComponent {\r\n    @Input() input: InputItem | InputItem[] = [];\r\n\r\n    isArray(input: InputItem | InputItem[]): input is InputItem[] {\r\n        return Array.isArray(input);\r\n    }\r\n\r\n    getInputId(input: InputItem): string {\r\n        return input.id;\r\n    }\r\n\r\n    getInputName(input: InputItem): string {\r\n        return input.name;\r\n    }\r\n\r\n    getInputPlaceholder(input: InputItem): string {\r\n        return input.placeholder;\r\n    }\r\n\r\n    getInputValue(input: InputItem): string {\r\n        return input.value || '';\r\n    }\r\n\r\n    getAriaInvalid(input: InputItem): boolean {\r\n        return input.ariaInvalid || false;\r\n    }\r\n\r\n    getErrorMessage(input: InputItem): string {\r\n        return input.errorMessage || '';\r\n    }\r\n}\r\n",
+            "sourceCode": "import { FormControl, ValidatorFn, Validators } from '@angular/forms';\n\nimport { Component } from '@angular/core';\nimport { TitleCasePipe } from '@angular/common';\n\nexport interface FieldItem {\n    description?: string;\n    id: string;\n    name: string;\n    placeholder: string;\n    hint?: string;\n    value?: string;\n    ariaInvalid?: boolean;\n    errorMessage?: string;\n    required?: boolean;\n    minLength?: number;\n    maxLength?: number;\n}\n\n@Component({\n    selector: 'tw-base',\n    template: ``,\n})\nexport class BaseComponent {\n    formControls: { [key: string]: FormControl } = {};\n\n    getId(input: FieldItem): string {\n        return input.id;\n    }\n\n    getName(input: FieldItem): string {\n        return input.name;\n    }\n\n    getPlaceholder(input: FieldItem): string {\n        return input.placeholder ?? new TitleCasePipe().transform(input.name);\n    }\n\n    getValue(input: FieldItem): string {\n        return input.value ?? '';\n    }\n\n    getAriaInvalid(input: FieldItem): boolean {\n        const control = this.formControls[input.name];\n        return control && control.invalid && (control.dirty || control.touched);\n    }\n\n    getErrorMessage(input: FieldItem): string {\n        const control = this.formControls[input.id];\n        if (control) {\n            if (control.errors?.['required']) {\n                return 'This field is required.';\n            } else if (control.errors?.['minlength']) {\n                return `Minimum length is ${control.errors['minlength'].requiredLength} characters.`;\n            } else if (control.errors?.['maxlength']) {\n                return `Maximum length is ${control.errors['maxlength'].requiredLength} characters.`;\n            } else if (control.errors?.['pattern']) {\n                return 'Invalid format.';\n            }\n        }\n        return input.errorMessage ?? '';\n    }\n\n    public getValidators(item: FieldItem) {\n        const validators: ValidatorFn[] = [];\n        if (item.required) validators.push(Validators.required);\n        if (item.minLength) validators.push(Validators.minLength(item.minLength));\n        if (item.maxLength) validators.push(Validators.maxLength(item.maxLength));\n        // Add pattern or other validators if needed\n        return validators;\n    }\n\n    onBlur(name: string) {\n        const control = this.formControls[name];\n        if (control) {\n            control.markAsTouched();\n        }\n    }\n\n    onChange(name: string) {\n        const control = this.formControls[name];\n        if (control) {\n            control.updateValueAndValidity();\n        }\n    }\n\n    isError(input: FieldItem): boolean {\n        const control = this.formControls[input.name];\n        return control ? control.invalid && (control.dirty || control.touched) : false;\n    }\n}\n",
             "properties": [
                 {
                     "name": "ariaInvalid",
@@ -59,19 +17,10 @@
                     "type": "boolean",
                     "optional": true,
                     "description": "",
-                    "line": 9
+                    "line": 13
                 },
                 {
-                    "name": "errorMessage",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "string",
-                    "optional": true,
-                    "description": "",
-                    "line": 10
-                },
-                {
-                    "name": "hint",
+                    "name": "description",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "string",
@@ -80,13 +29,49 @@
                     "line": 7
                 },
                 {
+                    "name": "errorMessage",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": true,
+                    "description": "",
+                    "line": 14
+                },
+                {
+                    "name": "hint",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": true,
+                    "description": "",
+                    "line": 11
+                },
+                {
                     "name": "id",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 4
+                    "line": 8
+                },
+                {
+                    "name": "maxLength",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": true,
+                    "description": "",
+                    "line": 17
+                },
+                {
+                    "name": "minLength",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": true,
+                    "description": "",
+                    "line": 16
                 },
                 {
                     "name": "name",
@@ -95,7 +80,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 5
+                    "line": 9
                 },
                 {
                     "name": "placeholder",
@@ -104,7 +89,16 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 6
+                    "line": 10
+                },
+                {
+                    "name": "required",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "optional": true,
+                    "description": "",
+                    "line": 15
                 },
                 {
                     "name": "value",
@@ -113,7 +107,7 @@
                     "type": "string",
                     "optional": true,
                     "description": "",
-                    "line": 8
+                    "line": 12
                 }
             ],
             "indexSignatures": [],
@@ -123,12 +117,12 @@
         },
         {
             "name": "RadioItem",
-            "id": "interface-RadioItem-b6ee40d8c70d586a4bac927022dd36c461cfaed7ab9b73bb4e8749c30f432d13cd4e95e433d7583173fabe80d600981f00667fb0ea30e9cef67b828678197a64",
+            "id": "interface-RadioItem-38cd28ff8f98321d95fe75086ef8aebc422327e6d4cf19dedafadb4cfa08d68b53df922774fbaf4f1feac6aad3a5e289544229814ed8dfbeefea34f3e7926f0c",
             "file": "projects/ng-lib/src/lib/modules/types/tw-radio.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';\r\n\r\nexport interface RadioItem {\r\n    id: string;\r\n    name: string;\r\n    description: string;\r\n}\r\n\r\n@Component({\r\n    standalone: true,\r\n    selector: 'tw-radio',\r\n    template: `\r\n        @if (isArray(radio)) {\r\n        <fieldset aria-label=\"Plan\">\r\n            <div class=\"space-y-5\">\r\n                @for (r of radio; track $index) {\r\n                <div class=\"relative flex items-start\">\r\n                    <div class=\"flex h-6 items-center\">\r\n                        <input\r\n                            [id]=\"r.id\"\r\n                            [attr.aria-describedby]=\"r.id + '-description'\"\r\n                            name=\"plan\"\r\n                            type=\"radio\"\r\n                            class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\r\n                        />\r\n                    </div>\r\n                    <div class=\"ml-3 text-sm leading-6\">\r\n                        <label [for]=\"r.id\" class=\"font-medium text-gray-900\">{{ r.name }}</label>\r\n                        <p [id]=\"r.id + '-description'\" class=\"text-gray-500\">{{ r.description }}</p>\r\n                    </div>\r\n                </div>\r\n                }\r\n            </div>\r\n        </fieldset>\r\n        } @else {\r\n        <div class=\"relative flex items-start\">\r\n            <div class=\"flex h-6 items-center\">\r\n                <input\r\n                    [id]=\"radio.id\"\r\n                    [attr.aria-describedby]=\"radio.id + '-description'\"\r\n                    [name]=\"radio.name\"\r\n                    type=\"radio\"\r\n                    class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\r\n                />\r\n            </div>\r\n            <div class=\"ml-3 text-sm leading-6\">\r\n                <label [for]=\"radio.id\" class=\"font-medium text-gray-900\">{{ radio.name }}</label>\r\n                <p [id]=\"radio.id + '-description'\" class=\"text-gray-500\">{{ radio.description }}</p>\r\n            </div>\r\n        </div>\r\n        }\r\n    `,\r\n    styles: [],\r\n})\r\nexport class TwRadioComponent implements OnChanges {\r\n    @Input() radio: RadioItem | RadioItem[] = [];\r\n\r\n    ngOnChanges({ radio }: SimpleChanges): void {\r\n        if (radio) {\r\n            const isString = radio.currentValue;\r\n            if (typeof isString === 'string') {\r\n                try {\r\n                    this.radio = JSON.parse(isString);\r\n                } catch (e) {\r\n                    console.error('Failed to parse radio input:', e, isString);\r\n                    this.radio = [];\r\n                }\r\n            } else {\r\n                this.radio = isString;\r\n            }\r\n        }\r\n    }\r\n\r\n    isArray(radio: RadioItem | RadioItem[]): radio is RadioItem[] {\r\n        return Array.isArray(radio);\r\n    }\r\n}\r\n",
+            "sourceCode": "import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';\n\nimport { BaseComponent, FieldItem } from './base.component';\nimport { FormControl, FormsModule } from '@angular/forms';\nimport { CommonModule } from '@angular/common';\n\nexport interface RadioItem {\n    id: string;\n    name: string;\n    description: string;\n}\n\n@Component({\n    standalone: true,\n    selector: 'tw-radio',\n    imports: [CommonModule, FormsModule],\n    template: `\n        @if (isArray(radio)) {\n        <fieldset aria-label=\"Plan\">\n            <div class=\"space-y-5\">\n                @for (r of radio; track $index) {\n                <div class=\"relative flex items-start\">\n                    <div class=\"flex h-6 items-center\">\n                        <input\n                            [id]=\"r.id\"\n                            [attr.aria-describedby]=\"r.id + '-description'\"\n                            name=\"plan\"\n                            type=\"radio\"\n                            class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                        />\n                    </div>\n                    <div class=\"ml-3 text-sm leading-6\">\n                        <label [for]=\"r.id\" class=\"font-medium text-gray-900\">{{ r.name }}</label>\n                        <p [id]=\"r.id + '-description'\" class=\"text-gray-500\">{{ r.description }}</p>\n                    </div>\n                </div>\n                }\n            </div>\n        </fieldset>\n        } @else {\n        <div class=\"relative flex items-start\">\n            <div class=\"flex h-6 items-center\">\n                <input\n                    [id]=\"radio.id\"\n                    [attr.aria-describedby]=\"radio.id + '-description'\"\n                    [name]=\"radio.name\"\n                    type=\"radio\"\n                    class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                />\n            </div>\n            <div class=\"ml-3 text-sm leading-6\">\n                <label [for]=\"radio.id\" class=\"font-medium text-gray-900\">{{ radio.name }}</label>\n                <p [id]=\"radio.id + '-description'\" class=\"text-gray-500\">{{ radio.description }}</p>\n            </div>\n        </div>\n        }\n    `,\n    styles: [],\n})\nexport class TwRadioComponent extends BaseComponent implements OnChanges {\n    @Input() radio: FieldItem | FieldItem[] = [];\n\n    override formControls: { [key: string]: FormControl } = {};\n\n    ngOnInit(): void {\n        if (this.isArray(this.radio)) {\n            for (const item of this.radio) {\n                this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));\n            }\n        } else {\n            const item = this.radio;\n            this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));\n        }\n    }\n\n    ngOnChanges({ radio }: SimpleChanges): void {\n        if (radio) {\n            const isString = radio.currentValue;\n            if (typeof isString === 'string') {\n                try {\n                    this.radio = JSON.parse(isString);\n                } catch (e) {\n                    console.error('Failed to parse radio input:', e, isString);\n                    this.radio = [];\n                }\n            } else {\n                this.radio = isString;\n            }\n        }\n    }\n\n    isArray(radio: FieldItem | FieldItem[]): radio is FieldItem[] {\n        return Array.isArray(radio);\n    }\n}\n",
             "properties": [
                 {
                     "name": "description",
@@ -137,7 +131,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 6
+                    "line": 10
                 },
                 {
                     "name": "id",
@@ -146,7 +140,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 4
+                    "line": 8
                 },
                 {
                     "name": "name",
@@ -155,7 +149,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 5
+                    "line": 9
                 }
             ],
             "indexSignatures": [],
@@ -167,7 +161,7 @@
     "injectables": [
         {
             "name": "NgLibService",
-            "id": "injectable-NgLibService-5ce8a56c30ee465dda2f8d03d19cab0bddeba786ea2c77a895909536a25bf003674bf21dbc27d2ef00ef2404728acaac2f0aeb7ae3ece49565a41407ba9b373c",
+            "id": "injectable-NgLibService-44733d824fde0ac3560053b7df3f5282ced417575ec446950b8a781facb6da86e8f98ec12aa0dbf7191337fc118dfadcfed7fc52ce58a9b03d6a00196dbcd757",
             "file": "projects/ng-lib/src/lib/ng-lib.service.ts",
             "properties": [],
             "methods": [],
@@ -175,7 +169,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { Injectable } from '@angular/core';\r\n\r\n@Injectable({\r\n  providedIn: 'root'\r\n})\r\nexport class NgLibService {\r\n\r\n  constructor() { }\r\n}\r\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class NgLibService {\n\n  constructor() { }\n}\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -194,8 +188,338 @@
     "directives": [],
     "components": [
         {
+            "name": "BaseComponent",
+            "id": "component-BaseComponent-317ff6c4feea2826b253fe829371b71b8ae30eba2cccfd39288ce2abb34f7af95cfe89fb4d92663a93835701fc4cda135a23e17f9ff4f237cae82efec3f22d87",
+            "file": "projects/ng-lib/src/lib/modules/types/base.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "tw-base",
+            "styleUrls": [],
+            "styles": [],
+            "template": "",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "formControls",
+                    "defaultValue": "{}",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "literal type",
+                    "optional": false,
+                    "description": "",
+                    "line": 25
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "getAriaInvalid",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 43,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getErrorMessage",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 48,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getId",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 27,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getName",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 31,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getPlaceholder",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 35,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getValidators",
+                    "args": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "{}",
+                    "typeParameters": [],
+                    "line": 64,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        125
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getValue",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 39,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "isError",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 87,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "onBlur",
+                    "args": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 73,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "onChange",
+                    "args": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 80,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": false,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { FormControl, ValidatorFn, Validators } from '@angular/forms';\n\nimport { Component } from '@angular/core';\nimport { TitleCasePipe } from '@angular/common';\n\nexport interface FieldItem {\n    description?: string;\n    id: string;\n    name: string;\n    placeholder: string;\n    hint?: string;\n    value?: string;\n    ariaInvalid?: boolean;\n    errorMessage?: string;\n    required?: boolean;\n    minLength?: number;\n    maxLength?: number;\n}\n\n@Component({\n    selector: 'tw-base',\n    template: ``,\n})\nexport class BaseComponent {\n    formControls: { [key: string]: FormControl } = {};\n\n    getId(input: FieldItem): string {\n        return input.id;\n    }\n\n    getName(input: FieldItem): string {\n        return input.name;\n    }\n\n    getPlaceholder(input: FieldItem): string {\n        return input.placeholder ?? new TitleCasePipe().transform(input.name);\n    }\n\n    getValue(input: FieldItem): string {\n        return input.value ?? '';\n    }\n\n    getAriaInvalid(input: FieldItem): boolean {\n        const control = this.formControls[input.name];\n        return control && control.invalid && (control.dirty || control.touched);\n    }\n\n    getErrorMessage(input: FieldItem): string {\n        const control = this.formControls[input.id];\n        if (control) {\n            if (control.errors?.['required']) {\n                return 'This field is required.';\n            } else if (control.errors?.['minlength']) {\n                return `Minimum length is ${control.errors['minlength'].requiredLength} characters.`;\n            } else if (control.errors?.['maxlength']) {\n                return `Maximum length is ${control.errors['maxlength'].requiredLength} characters.`;\n            } else if (control.errors?.['pattern']) {\n                return 'Invalid format.';\n            }\n        }\n        return input.errorMessage ?? '';\n    }\n\n    public getValidators(item: FieldItem) {\n        const validators: ValidatorFn[] = [];\n        if (item.required) validators.push(Validators.required);\n        if (item.minLength) validators.push(Validators.minLength(item.minLength));\n        if (item.maxLength) validators.push(Validators.maxLength(item.maxLength));\n        // Add pattern or other validators if needed\n        return validators;\n    }\n\n    onBlur(name: string) {\n        const control = this.formControls[name];\n        if (control) {\n            control.markAsTouched();\n        }\n    }\n\n    onChange(name: string) {\n        const control = this.formControls[name];\n        if (control) {\n            control.updateValueAndValidity();\n        }\n    }\n\n    isError(input: FieldItem): boolean {\n        const control = this.formControls[input.name];\n        return control ? control.invalid && (control.dirty || control.touched) : false;\n    }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": []
+        },
+        {
             "name": "NgLibComponent",
-            "id": "component-NgLibComponent-520226f02c45100f17163e4cac6d30f8ba214360273e7491e8b5e256f7412d280f8549501483018e7970c7ccb63541ebd6c750abdb5bef3f1580c091bfac48a1",
+            "id": "component-NgLibComponent-caad4203239cebf545fa8893cab193391e972c869311f08f30de4e5284b3d5d1684bdf40d48d02cf70e712b09ea2f8d8f000c7b2792501fd9086a61f781fe2ae",
             "file": "projects/ng-lib/src/lib/ng-lib.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -224,7 +548,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'lib-ng-lib',\r\n  standalone: true,\r\n  imports: [],\r\n  template: `\r\n    <p>\r\n      ng-lib works!\r\n    </p>\r\n  `,\r\n  styles: ``\r\n})\r\nexport class NgLibComponent {\r\n\r\n}\r\n",
+            "sourceCode": "import { Component } from '@angular/core';\n\n@Component({\n  selector: 'lib-ng-lib',\n  standalone: true,\n  imports: [],\n  template: `\n    <p>\n      ng-lib works!\n    </p>\n  `,\n  styles: ``\n})\nexport class NgLibComponent {\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "\n",
@@ -232,7 +556,7 @@
         },
         {
             "name": "TwCheckboxComponent",
-            "id": "component-TwCheckboxComponent-ae7c8cb17ca15ef1dac72b42c170abb5718b740670520ba910cc0e053841981b9ef6366f3aa5753d7cbee152e123f002554f41bc6dc3b65bdb2e6a6fe51ec1c4",
+            "id": "component-TwCheckboxComponent-bc3641a63328633969d96341b29753ae3ceaf4cda7df73d7d2282954b8339f7de8fb042db85080de9452b3a45be504140644f5c4c955012823852359cd9f4e1f",
             "file": "projects/ng-lib/src/lib/modules/types/tw-checkbox.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -242,7 +566,7 @@
             "selector": "tw-checkbox",
             "styleUrls": [],
             "styles": [],
-            "template": "@if (isArray(checkbox)) {\n<fieldset>\n    <legend class=\"sr-only\">Notifications</legend>\n    <div class=\"space-y-5\">\n        @for (cb of checkbox; track $index) {\n        <div class=\"relative flex items-start\">\n            <div class=\"flex h-6 items-center\">\n                <input\n                    [id]=\"getCheckboxId(cb)\"\n                    [attr.describedby]=\"getCheckboxId(cb) + '-description'\"\n                    [name]=\"getCheckboxName(cb)\"\n                    type=\"checkbox\"\n                    class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                />\n            </div>\n            <div class=\"ml-3 text-sm leading-6\">\n                <label [for]=\"getCheckboxId(cb)\" class=\"font-medium text-gray-900\">{{ getCheckboxName(cb) }}</label>\n                <p [id]=\"getCheckboxId(cb) + '-description'\" class=\"text-gray-500\">{{ getCheckboxDescription(cb) }}</p>\n            </div>\n        </div>\n        }\n    </div>\n</fieldset>\n} @else {\n<div class=\"relative flex items-start\">\n    <div class=\"flex h-6 items-center\">\n        <input\n            [id]=\"getCheckboxId(checkbox)\"\n            [attr.describedby]=\"getCheckboxId(checkbox) + '-description'\"\n            [name]=\"getCheckboxName(checkbox)\"\n            type=\"checkbox\"\n            class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n        />\n    </div>\n    <div class=\"ml-3 text-sm leading-6\">\n        <label [for]=\"getCheckboxId(checkbox)\" class=\"font-medium text-gray-900\">{{ getCheckboxName(checkbox) }}</label>\n        <p [id]=\"getCheckboxId(checkbox) + '-description'\" class=\"text-gray-500\">{{ getCheckboxDescription(checkbox) }}</p>\n    </div>\n</div>\n}\n",
+            "template": "@if (isArray(checkbox)) {\n<fieldset>\n    <legend class=\"sr-only\">Notifications</legend>\n    <div class=\"space-y-5\">\n        @for (cb of checkbox; track $index) {\n        <div class=\"relative flex items-start\">\n            <div class=\"flex h-6 items-center\">\n                <input\n                    [id]=\"getId(cb)\"\n                    [attr.describedby]=\"getId(cb) + '-description'\"\n                    [name]=\"getName(cb)\"\n                    type=\"checkbox\"\n                    class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                />\n            </div>\n            <div class=\"ml-3 text-sm leading-6\">\n                <label [for]=\"getId(cb)\" class=\"font-medium text-gray-900\">{{ getName(cb) }}</label>\n                <p [id]=\"getId(cb) + '-description'\" class=\"text-gray-500\">{{ getCheckboxDescription(cb) }}</p>\n            </div>\n        </div>\n        }\n    </div>\n</fieldset>\n} @else {\n<div class=\"relative flex items-start\">\n    <div class=\"flex h-6 items-center\">\n        <input\n            [id]=\"getId(checkbox)\"\n            [attr.describedby]=\"getId(checkbox) + '-description'\"\n            [name]=\"getName(checkbox)\"\n            type=\"checkbox\"\n            class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n        />\n    </div>\n    <div class=\"ml-3 text-sm leading-6\">\n        <label [for]=\"getId(checkbox)\" class=\"font-medium text-gray-900\">{{ getName(checkbox) }}</label>\n        <p [id]=\"getId(checkbox) + '-description'\" class=\"text-gray-500\">{{ getCheckboxDescription(checkbox) }}</p>\n    </div>\n</div>\n}\n",
             "templateUrl": [],
             "viewProviders": [],
             "hostDirectives": [],
@@ -252,20 +576,37 @@
                     "defaultValue": "[]",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 57,
-                    "type": "CheckboxItem | CheckboxItem[]",
+                    "line": 55,
+                    "type": "FieldItem | FieldItem[]",
                     "decorators": []
                 }
             ],
             "outputsClass": [],
-            "propertiesClass": [],
+            "propertiesClass": [
+                {
+                    "name": "formControls",
+                    "defaultValue": "{}",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "literal type",
+                    "optional": false,
+                    "description": "",
+                    "line": 56,
+                    "modifierKind": [
+                        164
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                }
+            ],
             "methodsClass": [
                 {
                     "name": "getCheckboxDescription",
                     "args": [
                         {
                             "name": "checkbox",
-                            "type": "CheckboxItem",
+                            "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
                         }
@@ -273,69 +614,13 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 71,
+                    "line": 73,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
                             "name": "checkbox",
-                            "type": "CheckboxItem",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "getCheckboxId",
-                    "args": [
-                        {
-                            "name": "checkbox",
-                            "type": "CheckboxItem",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        }
-                    ],
-                    "optional": false,
-                    "returnType": "string",
-                    "typeParameters": [],
-                    "line": 63,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "jsdoctags": [
-                        {
-                            "name": "checkbox",
-                            "type": "CheckboxItem",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "getCheckboxName",
-                    "args": [
-                        {
-                            "name": "checkbox",
-                            "type": "CheckboxItem",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        }
-                    ],
-                    "optional": false,
-                    "returnType": "string",
-                    "typeParameters": [],
-                    "line": 67,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "jsdoctags": [
-                        {
-                            "name": "checkbox",
-                            "type": "CheckboxItem",
+                            "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
@@ -349,21 +634,21 @@
                     "args": [
                         {
                             "name": "checkbox",
-                            "type": "CheckboxItem | CheckboxItem[]",
+                            "type": "FieldItem | FieldItem[]",
                             "deprecated": false,
                             "deprecationMessage": ""
                         }
                     ],
                     "optional": false,
-                    "returnType": "CheckboxItem[]",
+                    "returnType": "FieldItem[]",
                     "typeParameters": [],
-                    "line": 59,
+                    "line": 69,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
                             "name": "checkbox",
-                            "type": "CheckboxItem | CheckboxItem[]",
+                            "type": "FieldItem | FieldItem[]",
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
@@ -371,6 +656,329 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 58,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "getAriaInvalid",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 43,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "getErrorMessage",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 48,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "getId",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 27,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "getName",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 31,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "getPlaceholder",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 35,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "getValidators",
+                    "args": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "{}",
+                    "typeParameters": [],
+                    "line": 64,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        125
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "getValue",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 39,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "isError",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 87,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "onBlur",
+                    "args": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 73,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "onChange",
+                    "args": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 80,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
                 }
             ],
             "deprecated": false,
@@ -378,19 +986,30 @@
             "hostBindings": [],
             "hostListeners": [],
             "standalone": true,
-            "imports": [],
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                },
+                {
+                    "name": "FormsModule",
+                    "type": "module"
+                }
+            ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input, ViewEncapsulation } from '@angular/core';\r\n\r\nexport interface CheckboxItem {\r\n    id: string;\r\n    name: string;\r\n    description: string;\r\n}\r\n\r\n@Component({\r\n    standalone: true,\r\n    selector: 'tw-checkbox',\r\n    template: `\r\n        @if (isArray(checkbox)) {\r\n        <fieldset>\r\n            <legend class=\"sr-only\">Notifications</legend>\r\n            <div class=\"space-y-5\">\r\n                @for (cb of checkbox; track $index) {\r\n                <div class=\"relative flex items-start\">\r\n                    <div class=\"flex h-6 items-center\">\r\n                        <input\r\n                            [id]=\"getCheckboxId(cb)\"\r\n                            [attr.describedby]=\"getCheckboxId(cb) + '-description'\"\r\n                            [name]=\"getCheckboxName(cb)\"\r\n                            type=\"checkbox\"\r\n                            class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\r\n                        />\r\n                    </div>\r\n                    <div class=\"ml-3 text-sm leading-6\">\r\n                        <label [for]=\"getCheckboxId(cb)\" class=\"font-medium text-gray-900\">{{ getCheckboxName(cb) }}</label>\r\n                        <p [id]=\"getCheckboxId(cb) + '-description'\" class=\"text-gray-500\">{{ getCheckboxDescription(cb) }}</p>\r\n                    </div>\r\n                </div>\r\n                }\r\n            </div>\r\n        </fieldset>\r\n        } @else {\r\n        <div class=\"relative flex items-start\">\r\n            <div class=\"flex h-6 items-center\">\r\n                <input\r\n                    [id]=\"getCheckboxId(checkbox)\"\r\n                    [attr.describedby]=\"getCheckboxId(checkbox) + '-description'\"\r\n                    [name]=\"getCheckboxName(checkbox)\"\r\n                    type=\"checkbox\"\r\n                    class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\r\n                />\r\n            </div>\r\n            <div class=\"ml-3 text-sm leading-6\">\r\n                <label [for]=\"getCheckboxId(checkbox)\" class=\"font-medium text-gray-900\">{{ getCheckboxName(checkbox) }}</label>\r\n                <p [id]=\"getCheckboxId(checkbox) + '-description'\" class=\"text-gray-500\">{{ getCheckboxDescription(checkbox) }}</p>\r\n            </div>\r\n        </div>\r\n        }\r\n    `,\r\n    styles: [],\r\n})\r\nexport class TwCheckboxComponent {\r\n    @Input() checkbox: CheckboxItem | CheckboxItem[] = [];\r\n\r\n    isArray(checkbox: CheckboxItem | CheckboxItem[]): checkbox is CheckboxItem[] {\r\n        return Array.isArray(checkbox);\r\n    }\r\n\r\n    getCheckboxId(checkbox: CheckboxItem): string {\r\n        return checkbox.id;\r\n    }\r\n\r\n    getCheckboxName(checkbox: CheckboxItem): string {\r\n        return checkbox.name;\r\n    }\r\n\r\n    getCheckboxDescription(checkbox: CheckboxItem): string {\r\n        return checkbox.description;\r\n    }\r\n}\r\n",
+            "sourceCode": "import { Component, Input } from '@angular/core';\nimport { FormControl, FormsModule } from '@angular/forms';\n\nimport { CommonModule } from '@angular/common';\nimport { BaseComponent, FieldItem } from './base.component';\n\n@Component({\n    standalone: true,\n    selector: 'tw-checkbox',\n    imports: [CommonModule, FormsModule],\n    template: `\n        @if (isArray(checkbox)) {\n        <fieldset>\n            <legend class=\"sr-only\">Notifications</legend>\n            <div class=\"space-y-5\">\n                @for (cb of checkbox; track $index) {\n                <div class=\"relative flex items-start\">\n                    <div class=\"flex h-6 items-center\">\n                        <input\n                            [id]=\"getId(cb)\"\n                            [attr.describedby]=\"getId(cb) + '-description'\"\n                            [name]=\"getName(cb)\"\n                            type=\"checkbox\"\n                            class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                        />\n                    </div>\n                    <div class=\"ml-3 text-sm leading-6\">\n                        <label [for]=\"getId(cb)\" class=\"font-medium text-gray-900\">{{ getName(cb) }}</label>\n                        <p [id]=\"getId(cb) + '-description'\" class=\"text-gray-500\">{{ getCheckboxDescription(cb) }}</p>\n                    </div>\n                </div>\n                }\n            </div>\n        </fieldset>\n        } @else {\n        <div class=\"relative flex items-start\">\n            <div class=\"flex h-6 items-center\">\n                <input\n                    [id]=\"getId(checkbox)\"\n                    [attr.describedby]=\"getId(checkbox) + '-description'\"\n                    [name]=\"getName(checkbox)\"\n                    type=\"checkbox\"\n                    class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                />\n            </div>\n            <div class=\"ml-3 text-sm leading-6\">\n                <label [for]=\"getId(checkbox)\" class=\"font-medium text-gray-900\">{{ getName(checkbox) }}</label>\n                <p [id]=\"getId(checkbox) + '-description'\" class=\"text-gray-500\">{{ getCheckboxDescription(checkbox) }}</p>\n            </div>\n        </div>\n        }\n    `,\n})\nexport class TwCheckboxComponent extends BaseComponent {\n    @Input() checkbox: FieldItem | FieldItem[] = [];\n    override formControls: { [key: string]: FormControl } = {};\n\n    ngOnInit(): void {\n        if (this.isArray(this.checkbox)) {\n            for (const item of this.checkbox) {\n                this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));\n            }\n        } else {\n            const item = this.checkbox;\n            this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));\n        }\n    }\n\n    isArray(checkbox: FieldItem | FieldItem[]): checkbox is FieldItem[] {\n        return Array.isArray(checkbox);\n    }\n\n    getCheckboxDescription(checkbox: FieldItem): string {\n        return checkbox?.description ?? '';\n    }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
-            "extends": []
+            "extends": [
+                "BaseComponent"
+            ]
         },
         {
             "name": "TwInputComponent",
-            "id": "component-TwInputComponent-882c724dece592a475f346264cb1118ae13e649396335dda0f6569a2c54812c394b872d85f6131e86291f5703c2b93c35b2b58101bf34f90efabf0c1c7a0c574",
+            "id": "component-TwInputComponent-c4c4ab7dd0c9e5ec7dda128bde9d00f12418c6f5f2b66bacf02d72354ec0abdc1558c37e2228c85dda6e48ad8c45dcba3fc2bcf46a5310114abb18085426f757",
             "file": "projects/ng-lib/src/lib/modules/types/tw-input.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -400,30 +1019,57 @@
             "selector": "tw-input",
             "styleUrls": [],
             "styles": [],
-            "template": "<div *ngIf=\"isArray(input); else singleInput\">\n    @for(inp of input; track $index) {\n    <fieldset>\n        <legend class=\"sr-only\">Input Fields</legend>\n        <div class=\"space-y-5\">\n            <div class=\"relative flex items-start\">\n                <div class=\"flex h-6 items-center\">\n                    <input\n                        [id]=\"getInputId(inp)\"\n                        [name]=\"getInputName(inp)\"\n                        [placeholder]=\"getInputPlaceholder(inp)\"\n                        [value]=\"getInputValue(inp)\"\n                        [attr.aria-invalid]=\"getAriaInvalid(inp)\"\n                        [attr.aria-describedby]=\"getInputId(inp) + '-error'\"\n                        type=\"text\"\n                        class=\"block w-full rounded-md border-0 py-1.5 pr-10 text-red-900 ring-1 ring-inset ring-red-300 placeholder:text-red-300 focus:ring-2 focus:ring-inset focus:ring-red-500 sm:text-sm sm:leading-6\"\n                    />\n                </div>\n                <div class=\"absolute inset-y-0 right-0 flex items-center pr-3\">\n                    <svg class=\"h-5 w-5 text-red-500\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\">\n                        <path\n                            fill-rule=\"evenodd\"\n                            d=\"M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z\"\n                            clip-rule=\"evenodd\"\n                        />\n                    </svg>\n                </div>\n            </div>\n            <p class=\"mt-2 text-sm text-red-600\" [id]=\"getInputId(inp) + '-error'\">{{ getErrorMessage(inp) }}</p>\n        </div>\n    </fieldset>\n    }\n</div>\n\n<ng-template #singleInput>\n    <div class=\"relative flex items-start\">\n        <div class=\"flex h-6 items-center\">\n            <input\n                [id]=\"getInputId(input)\"\n                [name]=\"getInputName(input)\"\n                [placeholder]=\"getInputPlaceholder(input)\"\n                [value]=\"getInputValue(input)\"\n                [attr.aria-invalid]=\"getAriaInvalid(input)\"\n                [attr.aria-describedby]=\"getInputId(input) + '-error'\"\n                type=\"text\"\n                class=\"block w-full rounded-md border-0 py-1.5 pr-10 text-red-900 ring-1 ring-inset ring-red-300 placeholder:text-red-300 focus:ring-2 focus:ring-inset focus:ring-red-500 sm:text-sm sm:leading-6\"\n            />\n        </div>\n        <div class=\"absolute inset-y-0 right-0 flex items-center pr-3\">\n            <svg class=\"h-5 w-5 text-red-500\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\">\n                <path\n                    fill-rule=\"evenodd\"\n                    d=\"M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z\"\n                    clip-rule=\"evenodd\"\n                />\n            </svg>\n        </div>\n    </div>\n    <p class=\"mt-2 text-sm text-red-600\" [id]=\"getInputId(input) + '-error'\">{{ getErrorMessage(input) }}</p>\n</ng-template>\n",
+            "template": "<div class=\"relative flex items-start\">\n    <div class=\"flex h-6 items-center\">\n        <input\n            [id]=\"getId(input)\"\n            [name]=\"getName(input)\"\n            [placeholder]=\"getPlaceholder(input)\"\n            [formControl]=\"formControls[getName(input)]\"\n            (blur)=\"onBlur(getName(input))\"\n            (change)=\"onChange(getName(input))\"\n            type=\"text\"\n            [ngClass]=\"{\n                'border-red-500 ring-red-500 placeholder-red-300': isError(input),\n                'border-gray-300 ring-gray-300 placeholder-gray-300': !isError(input)\n            }\"\n            class=\"block w-full rounded-md py-1.5 pr-10 ring-1 ring-inset focus:ring-2 sm:text-sm sm:leading-6\"\n        />\n    </div>\n    <div class=\"absolute inset-y-0 right-0 flex items-center pr-3\">\n        <svg *ngIf=\"isError(input)\" class=\"h-5 w-5 text-red-500\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\">\n            <path\n                fill-rule=\"evenodd\"\n                d=\"M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z\"\n                clip-rule=\"evenodd\"\n            />\n        </svg>\n    </div>\n</div>\n<p class=\"mt-2 text-sm text-red-600\" [id]=\"getId(input) + '-error'\" *ngIf=\"isError(input)\">\n    {{ getErrorMessage(input) }}\n</p>\n",
             "templateUrl": [],
             "viewProviders": [],
             "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "input",
-                    "defaultValue": "[]",
+                    "defaultValue": "{\n        id: 'default',\n        name: 'default',\n        placeholder: 'Default Example',\n        hint: 'This is a default hint',\n        value: '',\n        ariaInvalid: true,\n        errorMessage: 'This field is required.',\n    }",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 80,
-                    "type": "InputItem | InputItem[]",
+                    "line": 48,
+                    "type": "FieldItem",
                     "decorators": []
                 }
             ],
             "outputsClass": [],
-            "propertiesClass": [],
+            "propertiesClass": [
+                {
+                    "name": "formControls",
+                    "defaultValue": "{}",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "literal type",
+                    "optional": false,
+                    "description": "",
+                    "line": 58,
+                    "modifierKind": [
+                        164
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                }
+            ],
             "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 60,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
                 {
                     "name": "getAriaInvalid",
                     "args": [
                         {
                             "name": "input",
-                            "type": "InputItem",
+                            "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
                         }
@@ -431,27 +1077,30 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 102,
+                    "line": 43,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
                             "name": "input",
-                            "type": "InputItem",
+                            "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
                                 "text": "param"
                             }
                         }
-                    ]
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
                 },
                 {
                     "name": "getErrorMessage",
                     "args": [
                         {
                             "name": "input",
-                            "type": "InputItem",
+                            "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
                         }
@@ -459,27 +1108,30 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 106,
+                    "line": 48,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
                             "name": "input",
-                            "type": "InputItem",
+                            "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
                                 "text": "param"
                             }
                         }
-                    ]
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
                 },
                 {
-                    "name": "getInputId",
+                    "name": "getId",
                     "args": [
                         {
                             "name": "input",
-                            "type": "InputItem",
+                            "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
                         }
@@ -487,27 +1139,30 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 86,
+                    "line": 27,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
                             "name": "input",
-                            "type": "InputItem",
+                            "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
                                 "text": "param"
                             }
                         }
-                    ]
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
                 },
                 {
-                    "name": "getInputName",
+                    "name": "getName",
                     "args": [
                         {
                             "name": "input",
-                            "type": "InputItem",
+                            "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
                         }
@@ -515,27 +1170,30 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 90,
+                    "line": 31,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
                             "name": "input",
-                            "type": "InputItem",
+                            "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
                                 "text": "param"
                             }
                         }
-                    ]
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
                 },
                 {
-                    "name": "getInputPlaceholder",
+                    "name": "getPlaceholder",
                     "args": [
                         {
                             "name": "input",
-                            "type": "InputItem",
+                            "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
                         }
@@ -543,27 +1201,64 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 94,
+                    "line": 35,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
                             "name": "input",
-                            "type": "InputItem",
+                            "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
                                 "text": "param"
                             }
                         }
-                    ]
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
                 },
                 {
-                    "name": "getInputValue",
+                    "name": "getValidators",
+                    "args": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "{}",
+                    "typeParameters": [],
+                    "line": 64,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        125
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "getValue",
                     "args": [
                         {
                             "name": "input",
-                            "type": "InputItem",
+                            "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
                         }
@@ -571,48 +1266,116 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 98,
+                    "line": 39,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
                             "name": "input",
-                            "type": "InputItem",
+                            "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
                                 "text": "param"
                             }
                         }
-                    ]
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
                 },
                 {
-                    "name": "isArray",
+                    "name": "isError",
                     "args": [
                         {
                             "name": "input",
-                            "type": "InputItem | InputItem[]",
+                            "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
                         }
                     ],
                     "optional": false,
-                    "returnType": "InputItem[]",
+                    "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 82,
+                    "line": 87,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
                             "name": "input",
-                            "type": "InputItem | InputItem[]",
+                            "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
                                 "text": "param"
                             }
                         }
-                    ]
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "onBlur",
+                    "args": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 73,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "onChange",
+                    "args": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 80,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
                 }
             ],
             "deprecated": false,
@@ -620,19 +1383,41 @@
             "hostBindings": [],
             "hostListeners": [],
             "standalone": true,
-            "imports": [],
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                },
+                {
+                    "name": "ReactiveFormsModule",
+                    "type": "module"
+                }
+            ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input } from '@angular/core';\r\n\r\nexport interface InputItem {\r\n    id: string;\r\n    name: string;\r\n    placeholder: string;\r\n    hint?: string;\r\n    value?: string;\r\n    ariaInvalid?: boolean;\r\n    errorMessage?: string;\r\n}\r\n\r\n@Component({\r\n    selector: 'tw-input',\r\n    standalone: true,\r\n    template: `\r\n        <div *ngIf=\"isArray(input); else singleInput\">\r\n            @for(inp of input; track $index) {\r\n            <fieldset>\r\n                <legend class=\"sr-only\">Input Fields</legend>\r\n                <div class=\"space-y-5\">\r\n                    <div class=\"relative flex items-start\">\r\n                        <div class=\"flex h-6 items-center\">\r\n                            <input\r\n                                [id]=\"getInputId(inp)\"\r\n                                [name]=\"getInputName(inp)\"\r\n                                [placeholder]=\"getInputPlaceholder(inp)\"\r\n                                [value]=\"getInputValue(inp)\"\r\n                                [attr.aria-invalid]=\"getAriaInvalid(inp)\"\r\n                                [attr.aria-describedby]=\"getInputId(inp) + '-error'\"\r\n                                type=\"text\"\r\n                                class=\"block w-full rounded-md border-0 py-1.5 pr-10 text-red-900 ring-1 ring-inset ring-red-300 placeholder:text-red-300 focus:ring-2 focus:ring-inset focus:ring-red-500 sm:text-sm sm:leading-6\"\r\n                            />\r\n                        </div>\r\n                        <div class=\"absolute inset-y-0 right-0 flex items-center pr-3\">\r\n                            <svg class=\"h-5 w-5 text-red-500\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\">\r\n                                <path\r\n                                    fill-rule=\"evenodd\"\r\n                                    d=\"M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z\"\r\n                                    clip-rule=\"evenodd\"\r\n                                />\r\n                            </svg>\r\n                        </div>\r\n                    </div>\r\n                    <p class=\"mt-2 text-sm text-red-600\" [id]=\"getInputId(inp) + '-error'\">{{ getErrorMessage(inp) }}</p>\r\n                </div>\r\n            </fieldset>\r\n            }\r\n        </div>\r\n\r\n        <ng-template #singleInput>\r\n            <div class=\"relative flex items-start\">\r\n                <div class=\"flex h-6 items-center\">\r\n                    <input\r\n                        [id]=\"getInputId(input)\"\r\n                        [name]=\"getInputName(input)\"\r\n                        [placeholder]=\"getInputPlaceholder(input)\"\r\n                        [value]=\"getInputValue(input)\"\r\n                        [attr.aria-invalid]=\"getAriaInvalid(input)\"\r\n                        [attr.aria-describedby]=\"getInputId(input) + '-error'\"\r\n                        type=\"text\"\r\n                        class=\"block w-full rounded-md border-0 py-1.5 pr-10 text-red-900 ring-1 ring-inset ring-red-300 placeholder:text-red-300 focus:ring-2 focus:ring-inset focus:ring-red-500 sm:text-sm sm:leading-6\"\r\n                    />\r\n                </div>\r\n                <div class=\"absolute inset-y-0 right-0 flex items-center pr-3\">\r\n                    <svg class=\"h-5 w-5 text-red-500\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\">\r\n                        <path\r\n                            fill-rule=\"evenodd\"\r\n                            d=\"M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z\"\r\n                            clip-rule=\"evenodd\"\r\n                        />\r\n                    </svg>\r\n                </div>\r\n            </div>\r\n            <p class=\"mt-2 text-sm text-red-600\" [id]=\"getInputId(input) + '-error'\">{{ getErrorMessage(input) }}</p>\r\n        </ng-template>\r\n    `,\r\n})\r\nexport class TwInputComponent {\r\n    @Input() input: InputItem | InputItem[] = [];\r\n\r\n    isArray(input: InputItem | InputItem[]): input is InputItem[] {\r\n        return Array.isArray(input);\r\n    }\r\n\r\n    getInputId(input: InputItem): string {\r\n        return input.id;\r\n    }\r\n\r\n    getInputName(input: InputItem): string {\r\n        return input.name;\r\n    }\r\n\r\n    getInputPlaceholder(input: InputItem): string {\r\n        return input.placeholder;\r\n    }\r\n\r\n    getInputValue(input: InputItem): string {\r\n        return input.value || '';\r\n    }\r\n\r\n    getAriaInvalid(input: InputItem): boolean {\r\n        return input.ariaInvalid || false;\r\n    }\r\n\r\n    getErrorMessage(input: InputItem): string {\r\n        return input.errorMessage || '';\r\n    }\r\n}\r\n",
+            "sourceCode": "import { CommonModule } from '@angular/common';\nimport { Component, Input, OnInit } from '@angular/core';\nimport { FormControl, ReactiveFormsModule } from '@angular/forms';\n\nimport { BaseComponent, FieldItem } from './base.component';\n\n@Component({\n    selector: 'tw-input',\n    standalone: true,\n    imports: [CommonModule, ReactiveFormsModule],\n    template: `\n        <div class=\"relative flex items-start\">\n            <div class=\"flex h-6 items-center\">\n                <input\n                    [id]=\"getId(input)\"\n                    [name]=\"getName(input)\"\n                    [placeholder]=\"getPlaceholder(input)\"\n                    [formControl]=\"formControls[getName(input)]\"\n                    (blur)=\"onBlur(getName(input))\"\n                    (change)=\"onChange(getName(input))\"\n                    type=\"text\"\n                    [ngClass]=\"{\n                        'border-red-500 ring-red-500 placeholder-red-300': isError(input),\n                        'border-gray-300 ring-gray-300 placeholder-gray-300': !isError(input)\n                    }\"\n                    class=\"block w-full rounded-md py-1.5 pr-10 ring-1 ring-inset focus:ring-2 sm:text-sm sm:leading-6\"\n                />\n            </div>\n            <div class=\"absolute inset-y-0 right-0 flex items-center pr-3\">\n                <svg *ngIf=\"isError(input)\" class=\"h-5 w-5 text-red-500\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\">\n                    <path\n                        fill-rule=\"evenodd\"\n                        d=\"M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z\"\n                        clip-rule=\"evenodd\"\n                    />\n                </svg>\n            </div>\n        </div>\n        <p class=\"mt-2 text-sm text-red-600\" [id]=\"getId(input) + '-error'\" *ngIf=\"isError(input)\">\n            {{ getErrorMessage(input) }}\n        </p>\n    `,\n})\nexport class TwInputComponent extends BaseComponent implements OnInit {\n    constructor() {\n        super();\n    }\n    @Input() input: FieldItem = {\n        id: 'default',\n        name: 'default',\n        placeholder: 'Default Example',\n        hint: 'This is a default hint',\n        value: '',\n        ariaInvalid: true,\n        errorMessage: 'This field is required.',\n    };\n\n    override formControls: { [key: string]: FormControl } = {};\n\n    ngOnInit(): void {\n        const item = this.input;\n        this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));\n    }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
-            "extends": []
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 44
+            },
+            "extends": [
+                "BaseComponent"
+            ],
+            "implements": [
+                "OnInit"
+            ]
         },
         {
             "name": "TwRadioComponent",
-            "id": "component-TwRadioComponent-b6ee40d8c70d586a4bac927022dd36c461cfaed7ab9b73bb4e8749c30f432d13cd4e95e433d7583173fabe80d600981f00667fb0ea30e9cef67b828678197a64",
+            "id": "component-TwRadioComponent-38cd28ff8f98321d95fe75086ef8aebc422327e6d4cf19dedafadb4cfa08d68b53df922774fbaf4f1feac6aad3a5e289544229814ed8dfbeefea34f3e7926f0c",
             "file": "projects/ng-lib/src/lib/modules/types/tw-radio.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -652,34 +1437,51 @@
                     "defaultValue": "[]",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 56,
-                    "type": "RadioItem | RadioItem[]",
+                    "line": 61,
+                    "type": "FieldItem | FieldItem[]",
                     "decorators": []
                 }
             ],
             "outputsClass": [],
-            "propertiesClass": [],
+            "propertiesClass": [
+                {
+                    "name": "formControls",
+                    "defaultValue": "{}",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "literal type",
+                    "optional": false,
+                    "description": "",
+                    "line": 63,
+                    "modifierKind": [
+                        164
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                }
+            ],
             "methodsClass": [
                 {
                     "name": "isArray",
                     "args": [
                         {
                             "name": "radio",
-                            "type": "RadioItem | RadioItem[]",
+                            "type": "FieldItem | FieldItem[]",
                             "deprecated": false,
                             "deprecationMessage": ""
                         }
                     ],
                     "optional": false,
-                    "returnType": "RadioItem[]",
+                    "returnType": "FieldItem[]",
                     "typeParameters": [],
-                    "line": 74,
+                    "line": 92,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
                             "name": "radio",
-                            "type": "RadioItem | RadioItem[]",
+                            "type": "FieldItem | FieldItem[]",
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
@@ -700,7 +1502,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 58,
+                    "line": 76,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -713,6 +1515,329 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 65,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "getAriaInvalid",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 43,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "getErrorMessage",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 48,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "getId",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 27,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "getName",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 31,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "getPlaceholder",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 35,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "getValidators",
+                    "args": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "{}",
+                    "typeParameters": [],
+                    "line": 64,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        125
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "getValue",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 39,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "isError",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 87,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "onBlur",
+                    "args": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 73,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "onChange",
+                    "args": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 80,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
                 }
             ],
             "deprecated": false,
@@ -720,15 +1845,26 @@
             "hostBindings": [],
             "hostListeners": [],
             "standalone": true,
-            "imports": [],
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                },
+                {
+                    "name": "FormsModule",
+                    "type": "module"
+                }
+            ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';\r\n\r\nexport interface RadioItem {\r\n    id: string;\r\n    name: string;\r\n    description: string;\r\n}\r\n\r\n@Component({\r\n    standalone: true,\r\n    selector: 'tw-radio',\r\n    template: `\r\n        @if (isArray(radio)) {\r\n        <fieldset aria-label=\"Plan\">\r\n            <div class=\"space-y-5\">\r\n                @for (r of radio; track $index) {\r\n                <div class=\"relative flex items-start\">\r\n                    <div class=\"flex h-6 items-center\">\r\n                        <input\r\n                            [id]=\"r.id\"\r\n                            [attr.aria-describedby]=\"r.id + '-description'\"\r\n                            name=\"plan\"\r\n                            type=\"radio\"\r\n                            class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\r\n                        />\r\n                    </div>\r\n                    <div class=\"ml-3 text-sm leading-6\">\r\n                        <label [for]=\"r.id\" class=\"font-medium text-gray-900\">{{ r.name }}</label>\r\n                        <p [id]=\"r.id + '-description'\" class=\"text-gray-500\">{{ r.description }}</p>\r\n                    </div>\r\n                </div>\r\n                }\r\n            </div>\r\n        </fieldset>\r\n        } @else {\r\n        <div class=\"relative flex items-start\">\r\n            <div class=\"flex h-6 items-center\">\r\n                <input\r\n                    [id]=\"radio.id\"\r\n                    [attr.aria-describedby]=\"radio.id + '-description'\"\r\n                    [name]=\"radio.name\"\r\n                    type=\"radio\"\r\n                    class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\r\n                />\r\n            </div>\r\n            <div class=\"ml-3 text-sm leading-6\">\r\n                <label [for]=\"radio.id\" class=\"font-medium text-gray-900\">{{ radio.name }}</label>\r\n                <p [id]=\"radio.id + '-description'\" class=\"text-gray-500\">{{ radio.description }}</p>\r\n            </div>\r\n        </div>\r\n        }\r\n    `,\r\n    styles: [],\r\n})\r\nexport class TwRadioComponent implements OnChanges {\r\n    @Input() radio: RadioItem | RadioItem[] = [];\r\n\r\n    ngOnChanges({ radio }: SimpleChanges): void {\r\n        if (radio) {\r\n            const isString = radio.currentValue;\r\n            if (typeof isString === 'string') {\r\n                try {\r\n                    this.radio = JSON.parse(isString);\r\n                } catch (e) {\r\n                    console.error('Failed to parse radio input:', e, isString);\r\n                    this.radio = [];\r\n                }\r\n            } else {\r\n                this.radio = isString;\r\n            }\r\n        }\r\n    }\r\n\r\n    isArray(radio: RadioItem | RadioItem[]): radio is RadioItem[] {\r\n        return Array.isArray(radio);\r\n    }\r\n}\r\n",
+            "sourceCode": "import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';\n\nimport { BaseComponent, FieldItem } from './base.component';\nimport { FormControl, FormsModule } from '@angular/forms';\nimport { CommonModule } from '@angular/common';\n\nexport interface RadioItem {\n    id: string;\n    name: string;\n    description: string;\n}\n\n@Component({\n    standalone: true,\n    selector: 'tw-radio',\n    imports: [CommonModule, FormsModule],\n    template: `\n        @if (isArray(radio)) {\n        <fieldset aria-label=\"Plan\">\n            <div class=\"space-y-5\">\n                @for (r of radio; track $index) {\n                <div class=\"relative flex items-start\">\n                    <div class=\"flex h-6 items-center\">\n                        <input\n                            [id]=\"r.id\"\n                            [attr.aria-describedby]=\"r.id + '-description'\"\n                            name=\"plan\"\n                            type=\"radio\"\n                            class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                        />\n                    </div>\n                    <div class=\"ml-3 text-sm leading-6\">\n                        <label [for]=\"r.id\" class=\"font-medium text-gray-900\">{{ r.name }}</label>\n                        <p [id]=\"r.id + '-description'\" class=\"text-gray-500\">{{ r.description }}</p>\n                    </div>\n                </div>\n                }\n            </div>\n        </fieldset>\n        } @else {\n        <div class=\"relative flex items-start\">\n            <div class=\"flex h-6 items-center\">\n                <input\n                    [id]=\"radio.id\"\n                    [attr.aria-describedby]=\"radio.id + '-description'\"\n                    [name]=\"radio.name\"\n                    type=\"radio\"\n                    class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                />\n            </div>\n            <div class=\"ml-3 text-sm leading-6\">\n                <label [for]=\"radio.id\" class=\"font-medium text-gray-900\">{{ radio.name }}</label>\n                <p [id]=\"radio.id + '-description'\" class=\"text-gray-500\">{{ radio.description }}</p>\n            </div>\n        </div>\n        }\n    `,\n    styles: [],\n})\nexport class TwRadioComponent extends BaseComponent implements OnChanges {\n    @Input() radio: FieldItem | FieldItem[] = [];\n\n    override formControls: { [key: string]: FormControl } = {};\n\n    ngOnInit(): void {\n        if (this.isArray(this.radio)) {\n            for (const item of this.radio) {\n                this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));\n            }\n        } else {\n            const item = this.radio;\n            this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));\n        }\n    }\n\n    ngOnChanges({ radio }: SimpleChanges): void {\n        if (radio) {\n            const isString = radio.currentValue;\n            if (typeof isString === 'string') {\n                try {\n                    this.radio = JSON.parse(isString);\n                } catch (e) {\n                    console.error('Failed to parse radio input:', e, isString);\n                    this.radio = [];\n                }\n            } else {\n                this.radio = isString;\n            }\n        }\n    }\n\n    isArray(radio: FieldItem | FieldItem[]): radio is FieldItem[] {\n        return Array.isArray(radio);\n    }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
-            "extends": [],
+            "extends": [
+                "BaseComponent"
+            ],
             "implements": [
                 "OnChanges"
             ]
@@ -745,17 +1881,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\r\n    args: {\r\n        checkbox: [\r\n            { id: 'comments', name: 'Comments', description: 'Get notified when someone posts a comment on a posting.' },\r\n            { id: 'candidates', name: 'Candidates', description: 'Get notified when a candidate applies for a job.' },\r\n            { id: 'offers', name: 'Offers', description: 'Get notified when a candidate accepts or rejects an offer.' },\r\n        ] as CheckboxItem[],\r\n    },\r\n}"
-            },
-            {
-                "name": "CheckboxGroup",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story",
-                "defaultValue": "{\r\n    args: {\r\n        input: [\r\n            {\r\n                id: 'comments',\r\n                name: 'Comments',\r\n                placeholder: 'Comments Placeholder',\r\n                hint: 'Get notified when someone posts a comment on a posting.',\r\n            },\r\n            { id: 'candidates', name: 'Candidates', hint: 'Get notified when a candidate applies for a job.' },\r\n            { id: 'offers', name: 'Offers', hint: 'Get notified when a candidate accepts or rejects an offer.' },\r\n        ] as InputItem[],\r\n    },\r\n}"
+                "defaultValue": "{\n    args: {\n        checkbox: [\n            { id: 'comments', name: 'Comments', description: 'Get notified when someone posts a comment on a posting.' },\n            { id: 'candidates', name: 'Candidates', description: 'Get notified when a candidate applies for a job.' },\n            { id: 'offers', name: 'Offers', description: 'Get notified when a candidate accepts or rejects an offer.' },\n        ] as FieldItem[],\n    },\n}"
             },
             {
                 "name": "config",
@@ -765,7 +1891,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "StorybookConfig",
-                "defaultValue": "{\r\n    stories: [\r\n        '../src/**/*.mdx',\r\n        '../src/**/*.stories.@(js|jsx|ts|tsx)',\r\n        '../projects/ng-lib/src/**/*.mdx',\r\n        '../projects/ng-lib/src/**/*.stories.@(js|jsx|ts|tsx)',\r\n    ],\r\n    addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-interactions'],\r\n    framework: {\r\n        name: '@storybook/angular',\r\n        options: {},\r\n    },\r\n    docs: {\r\n        autodocs: 'tag',\r\n    },\r\n}"
+                "defaultValue": "{\n    stories: [\n        '../src/**/*.mdx',\n        '../src/**/*.stories.@(js|jsx|ts|tsx)',\n        '../projects/ng-lib/src/**/*.mdx',\n        '../projects/ng-lib/src/**/*.stories.@(js|jsx|ts|tsx)',\n    ],\n    addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-interactions'],\n    framework: {\n        name: '@storybook/angular',\n        options: {},\n    },\n    docs: {\n        autodocs: 'tag',\n    },\n}"
             },
             {
                 "name": "customViewport",
@@ -775,7 +1901,27 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\r\n    large: {\r\n        name: 'Large Screen',\r\n        styles: {\r\n            width: '1920px',\r\n            height: '1080px',\r\n        },\r\n    },\r\n    small: {\r\n        name: 'Small Screen',\r\n        styles: {\r\n            width: '800px',\r\n            height: '963px',\r\n        },\r\n    },\r\n}"
+                "defaultValue": "{\n    large: {\n        name: 'Large Screen',\n        styles: {\n            width: '1920px',\n            height: '1080px',\n        },\n    },\n    small: {\n        name: 'Small Screen',\n        styles: {\n            width: '800px',\n            height: '963px',\n        },\n    },\n}"
+            },
+            {
+                "name": "Input",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n    args: {\n        input: {\n            id: 'newsletter',\n            name: 'Newsletter',\n            placeholder: 'Newsletter Placeholder',\n            hint: 'Get notified when there is a new newsletter.',\n            value: '',\n            ariaInvalid: false,\n            errorMessage: '',\n        } as FieldItem,\n    },\n}"
+            },
+            {
+                "name": "InputWithError",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n    args: {\n        input: {\n            id: 'newsletter',\n            name: 'Newsletter',\n            placeholder: 'Newsletter Placeholder',\n            hint: 'Get notified when there is a new newsletter.',\n            value: '',\n            required: true,\n            errorMessage: 'This field is required.',\n        } as FieldItem,\n    },\n}"
             },
             {
                 "name": "Large",
@@ -785,7 +1931,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\r\n  args: {\r\n    size: 'large',\r\n    label: 'Button',\r\n  },\r\n}"
+                "defaultValue": "{\n  args: {\n    size: 'large',\n    label: 'Button',\n  },\n}"
             },
             {
                 "name": "LoggedIn",
@@ -795,7 +1941,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\r\n  args: {\r\n    user: {\r\n      name: 'Jane Doe',\r\n    },\r\n  },\r\n}"
+                "defaultValue": "{\n  args: {\n    user: {\n      name: 'Jane Doe',\n    },\n  },\n}"
             },
             {
                 "name": "LoggedIn",
@@ -805,7 +1951,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\r\n  render: (args: Page) => ({\r\n    props: args,\r\n  }),\r\n  play: async ({ canvasElement }) => {\r\n    const canvas = within(canvasElement);\r\n    const loginButton = canvas.getByRole('button', { name: /Log in/i });\r\n    await expect(loginButton).toBeInTheDocument();\r\n    await userEvent.click(loginButton);\r\n    await expect(loginButton).not.toBeInTheDocument();\r\n\r\n    const logoutButton = canvas.getByRole('button', { name: /Log out/i });\r\n    await expect(logoutButton).toBeInTheDocument();\r\n  },\r\n}"
+                "defaultValue": "{\n  render: (args: Page) => ({\n    props: args,\n  }),\n  play: async ({ canvasElement }) => {\n    const canvas = within(canvasElement);\n    const loginButton = canvas.getByRole('button', { name: /Log in/i });\n    await expect(loginButton).toBeInTheDocument();\n    await userEvent.click(loginButton);\n    await expect(loginButton).not.toBeInTheDocument();\n\n    const logoutButton = canvas.getByRole('button', { name: /Log out/i });\n    await expect(logoutButton).toBeInTheDocument();\n  },\n}"
             },
             {
                 "name": "LoggedOut",
@@ -825,7 +1971,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\r\n  render: (args: Page) => ({\r\n    props: args,\r\n  }),\r\n}"
+                "defaultValue": "{\n  render: (args: Page) => ({\n    props: args,\n  }),\n}"
             },
             {
                 "name": "meta",
@@ -835,7 +1981,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<Button>",
-                "defaultValue": "{\r\n  title: 'Example/Button',\r\n  component: Button,\r\n  tags: ['autodocs'],\r\n  render: (args: Button) => ({\r\n    props: {\r\n      backgroundColor: null,\r\n      ...args,\r\n    },\r\n  }),\r\n  argTypes: {\r\n    backgroundColor: {\r\n      control: 'color',\r\n    },\r\n  },\r\n}"
+                "defaultValue": "{\n  title: 'Example/Button',\n  component: Button,\n  tags: ['autodocs'],\n  render: (args: Button) => ({\n    props: {\n      backgroundColor: null,\n      ...args,\n    },\n  }),\n  argTypes: {\n    backgroundColor: {\n      control: 'color',\n    },\n  },\n}"
             },
             {
                 "name": "meta",
@@ -845,7 +1991,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<Header>",
-                "defaultValue": "{\r\n  title: 'Example/Header',\r\n  component: Header,\r\n  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/angular/writing-docs/autodocs\r\n  tags: ['autodocs'],\r\n  render: (args) => ({ props: args }),\r\n  decorators: [\r\n    moduleMetadata({\r\n      declarations: [Button],\r\n      imports: [CommonModule],\r\n    }),\r\n  ],\r\n  parameters: {\r\n    // More on how to position stories at: https://storybook.js.org/docs/angular/configure/story-layout\r\n    layout: 'fullscreen',\r\n  },\r\n}"
+                "defaultValue": "{\n  title: 'Example/Header',\n  component: Header,\n  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/angular/writing-docs/autodocs\n  tags: ['autodocs'],\n  render: (args) => ({ props: args }),\n  decorators: [\n    moduleMetadata({\n      declarations: [Button],\n      imports: [CommonModule],\n    }),\n  ],\n  parameters: {\n    // More on how to position stories at: https://storybook.js.org/docs/angular/configure/story-layout\n    layout: 'fullscreen',\n  },\n}"
             },
             {
                 "name": "meta",
@@ -855,7 +2001,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<Page>",
-                "defaultValue": "{\r\n  title: 'Example/Page',\r\n  component: Page,\r\n  parameters: {\r\n    // More on how to position stories at: https://storybook.js.org/docs/angular/configure/story-layout\r\n    layout: 'fullscreen',\r\n  },\r\n  decorators: [\r\n    moduleMetadata({\r\n      declarations: [Button, Header],\r\n      imports: [CommonModule],\r\n    }),\r\n  ],\r\n}"
+                "defaultValue": "{\n  title: 'Example/Page',\n  component: Page,\n  parameters: {\n    // More on how to position stories at: https://storybook.js.org/docs/angular/configure/story-layout\n    layout: 'fullscreen',\n  },\n  decorators: [\n    moduleMetadata({\n      declarations: [Button, Header],\n      imports: [CommonModule],\n    }),\n  ],\n}"
             },
             {
                 "name": "meta",
@@ -865,7 +2011,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<TwCheckboxComponent>",
-                "defaultValue": "{\r\n    title: 'TailwindUI/Field/Types/Checkbox',\r\n    component: TwCheckboxComponent,\r\n    tags: ['autodocs'],\r\n    parameters: {\r\n        layout: 'fullscreen',\r\n    },\r\n    decorators: [\r\n        moduleMetadata({\r\n            imports: [TwCheckboxComponent],\r\n        }),\r\n        componentWrapperDecorator(\r\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\r\n              <div style=\"width: '80%'; margin: '0 auto'\">\r\n              ${story}\r\n              </div>\r\n            </div>`\r\n        ),\r\n    ],\r\n    args: {},\r\n}"
+                "defaultValue": "{\n    title: 'TailwindUI/Field/Types/Checkbox',\n    component: TwCheckboxComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TwCheckboxComponent],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\n              <div style=\"width: '80%'; margin: '0 auto'\">\n              ${story}\n              </div>\n            </div>`\n        ),\n    ],\n    args: {},\n}"
             },
             {
                 "name": "meta",
@@ -875,7 +2021,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<TwInputComponent>",
-                "defaultValue": "{\r\n    title: 'TailwindUI/Field/Types/Input',\r\n    component: TwInputComponent,\r\n    tags: ['autodocs'],\r\n    parameters: {\r\n        layout: 'fullscreen',\r\n    },\r\n    decorators: [\r\n        moduleMetadata({\r\n            imports: [TwInputComponent],\r\n        }),\r\n        componentWrapperDecorator(\r\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\r\n              <div style=\"width: '80%'; margin: '0 auto'\">\r\n              ${story}\r\n              </div>\r\n            </div>`\r\n        ),\r\n    ],\r\n    args: {},\r\n}"
+                "defaultValue": "{\n    title: 'TailwindUI/Field/Types/Input',\n    component: TwInputComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TwInputComponent, ReactiveFormsModule],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"width:80%; margin: 3em; display: flex; justify-content: center; align-items: center\">\n              ${story}\n            </div>`\n        ),\n    ],\n    args: {},\n}"
             },
             {
                 "name": "meta",
@@ -885,7 +2031,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<TwRadioComponent>",
-                "defaultValue": "{\r\n    title: 'TailwindUI/Field/Types/Radio',\r\n    component: TwRadioComponent,\r\n    tags: ['autodocs'],\r\n    parameters: {\r\n        layout: 'fullscreen',\r\n    },\r\n    decorators: [\r\n        moduleMetadata({\r\n            imports: [TwRadioComponent],\r\n        }),\r\n        componentWrapperDecorator(\r\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\r\n              <div style=\"width: '80%'; margin: '0 auto'\">\r\n              ${story}\r\n              </div>\r\n            </div>`\r\n        ),\r\n    ],\r\n    args: {},\r\n}"
+                "defaultValue": "{\n    title: 'TailwindUI/Field/Types/Radio',\n    component: TwRadioComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TwRadioComponent],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\n              <div style=\"width: '80%'; margin: '0 auto'\">\n              ${story}\n              </div>\n            </div>`\n        ),\n    ],\n    args: {},\n}"
             },
             {
                 "name": "preview",
@@ -895,7 +2041,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Preview",
-                "defaultValue": "{\r\n    parameters: {\r\n        viewport: { viewport: customViewport },\r\n        actions: { argTypesRegex: '^on[A-Z].*' },\r\n        controls: {\r\n            matchers: {\r\n                color: /(background|color)$/i,\r\n                date: /Date$/,\r\n            },\r\n        },\r\n    },\r\n    decorators: [\r\n        withThemeByDataAttribute({\r\n            themes: {\r\n                light: 'light',\r\n                dark: 'dark',\r\n            },\r\n            defaultTheme: 'light',\r\n            attributeName: 'data-mode',\r\n        }),\r\n    ],\r\n}"
+                "defaultValue": "{\n    parameters: {\n        viewport: { viewport: customViewport },\n        actions: { argTypesRegex: '^on[A-Z].*' },\n        controls: {\n            matchers: {\n                color: /(background|color)$/i,\n                date: /Date$/,\n            },\n        },\n    },\n    decorators: [\n        withThemeByDataAttribute({\n            themes: {\n                light: 'light',\n                dark: 'dark',\n            },\n            defaultTheme: 'light',\n            attributeName: 'data-mode',\n        }),\n    ],\n}"
             },
             {
                 "name": "Primary",
@@ -905,7 +2051,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\r\n  args: {\r\n    primary: true,\r\n    label: 'Button',\r\n  },\r\n}"
+                "defaultValue": "{\n  args: {\n    primary: true,\n    label: 'Button',\n  },\n}"
             },
             {
                 "name": "RadioGroup",
@@ -915,7 +2061,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\r\n    args: {\r\n        radio: [\r\n            { id: 'comments', name: 'Comments', description: 'Get notified when someone posts a comment on a posting.' },\r\n            { id: 'candidates', name: 'Candidates', description: 'Get notified when a candidate applies for a job.' },\r\n            { id: 'offers', name: 'Offers', description: 'Get notified when a candidate accepts or rejects an offer.' },\r\n        ] as RadioItem[],\r\n    },\r\n}"
+                "defaultValue": "{\n    args: {\n        radio: [\n            { id: 'comments', name: 'Comments', description: 'Get notified when someone posts a comment on a posting.' },\n            { id: 'candidates', name: 'Candidates', description: 'Get notified when a candidate applies for a job.' },\n            { id: 'offers', name: 'Offers', description: 'Get notified when a candidate accepts or rejects an offer.' },\n        ] as FieldItem[],\n    },\n}"
             },
             {
                 "name": "Secondary",
@@ -925,7 +2071,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\r\n  args: {\r\n    label: 'Button',\r\n  },\r\n}"
+                "defaultValue": "{\n  args: {\n    label: 'Button',\n  },\n}"
             },
             {
                 "name": "SingleCheckbox",
@@ -935,17 +2081,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\r\n    args: {\r\n        checkbox: { id: 'newsletter', name: 'Newsletter', description: 'Get notified when there is a new newsletter.' } as CheckboxItem,\r\n    },\r\n}"
-            },
-            {
-                "name": "SingleCheckbox",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story",
-                "defaultValue": "{\r\n    args: {\r\n        input: {\r\n            id: 'newsletter',\r\n            name: 'Newsletter',\r\n            placeholder: 'Newsletter Placeholder',\r\n            hint: 'Get notified when there is a new newsletter.',\r\n        } as InputItem,\r\n    },\r\n}"
+                "defaultValue": "{\n    args: {\n        checkbox: { id: 'newsletter', name: 'Newsletter', description: 'Get notified when there is a new newsletter.' } as FieldItem,\n    },\n}"
             },
             {
                 "name": "SingleRadio",
@@ -955,7 +2091,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\r\n    args: {\r\n        radio: { id: 'newsletter', name: 'Newsletter', description: 'Get notified when there is a new newsletter.' } as RadioItem,\r\n    },\r\n}"
+                "defaultValue": "{\n    args: {\n        radio: { id: 'newsletter', name: 'Newsletter', description: 'Get notified when there is a new newsletter.' } as FieldItem,\n    },\n}"
             },
             {
                 "name": "Small",
@@ -965,7 +2101,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\r\n  args: {\r\n    size: 'small',\r\n    label: 'Button',\r\n  },\r\n}"
+                "defaultValue": "{\n  args: {\n    size: 'small',\n    label: 'Button',\n  },\n}"
             }
         ],
         "functions": [],
@@ -1048,7 +2184,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\r\n    args: {\r\n        checkbox: [\r\n            { id: 'comments', name: 'Comments', description: 'Get notified when someone posts a comment on a posting.' },\r\n            { id: 'candidates', name: 'Candidates', description: 'Get notified when a candidate applies for a job.' },\r\n            { id: 'offers', name: 'Offers', description: 'Get notified when a candidate accepts or rejects an offer.' },\r\n        ] as CheckboxItem[],\r\n    },\r\n}"
+                    "defaultValue": "{\n    args: {\n        checkbox: [\n            { id: 'comments', name: 'Comments', description: 'Get notified when someone posts a comment on a posting.' },\n            { id: 'candidates', name: 'Candidates', description: 'Get notified when a candidate applies for a job.' },\n            { id: 'offers', name: 'Offers', description: 'Get notified when a candidate accepts or rejects an offer.' },\n        ] as FieldItem[],\n    },\n}"
                 },
                 {
                     "name": "meta",
@@ -1058,7 +2194,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<TwCheckboxComponent>",
-                    "defaultValue": "{\r\n    title: 'TailwindUI/Field/Types/Checkbox',\r\n    component: TwCheckboxComponent,\r\n    tags: ['autodocs'],\r\n    parameters: {\r\n        layout: 'fullscreen',\r\n    },\r\n    decorators: [\r\n        moduleMetadata({\r\n            imports: [TwCheckboxComponent],\r\n        }),\r\n        componentWrapperDecorator(\r\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\r\n              <div style=\"width: '80%'; margin: '0 auto'\">\r\n              ${story}\r\n              </div>\r\n            </div>`\r\n        ),\r\n    ],\r\n    args: {},\r\n}"
+                    "defaultValue": "{\n    title: 'TailwindUI/Field/Types/Checkbox',\n    component: TwCheckboxComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TwCheckboxComponent],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\n              <div style=\"width: '80%'; margin: '0 auto'\">\n              ${story}\n              </div>\n            </div>`\n        ),\n    ],\n    args: {},\n}"
                 },
                 {
                     "name": "SingleCheckbox",
@@ -1068,39 +2204,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\r\n    args: {\r\n        checkbox: { id: 'newsletter', name: 'Newsletter', description: 'Get notified when there is a new newsletter.' } as CheckboxItem,\r\n    },\r\n}"
-                }
-            ],
-            "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts": [
-                {
-                    "name": "CheckboxGroup",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story",
-                    "defaultValue": "{\r\n    args: {\r\n        input: [\r\n            {\r\n                id: 'comments',\r\n                name: 'Comments',\r\n                placeholder: 'Comments Placeholder',\r\n                hint: 'Get notified when someone posts a comment on a posting.',\r\n            },\r\n            { id: 'candidates', name: 'Candidates', hint: 'Get notified when a candidate applies for a job.' },\r\n            { id: 'offers', name: 'Offers', hint: 'Get notified when a candidate accepts or rejects an offer.' },\r\n        ] as InputItem[],\r\n    },\r\n}"
-                },
-                {
-                    "name": "meta",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Meta<TwInputComponent>",
-                    "defaultValue": "{\r\n    title: 'TailwindUI/Field/Types/Input',\r\n    component: TwInputComponent,\r\n    tags: ['autodocs'],\r\n    parameters: {\r\n        layout: 'fullscreen',\r\n    },\r\n    decorators: [\r\n        moduleMetadata({\r\n            imports: [TwInputComponent],\r\n        }),\r\n        componentWrapperDecorator(\r\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\r\n              <div style=\"width: '80%'; margin: '0 auto'\">\r\n              ${story}\r\n              </div>\r\n            </div>`\r\n        ),\r\n    ],\r\n    args: {},\r\n}"
-                },
-                {
-                    "name": "SingleCheckbox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story",
-                    "defaultValue": "{\r\n    args: {\r\n        input: {\r\n            id: 'newsletter',\r\n            name: 'Newsletter',\r\n            placeholder: 'Newsletter Placeholder',\r\n            hint: 'Get notified when there is a new newsletter.',\r\n        } as InputItem,\r\n    },\r\n}"
+                    "defaultValue": "{\n    args: {\n        checkbox: { id: 'newsletter', name: 'Newsletter', description: 'Get notified when there is a new newsletter.' } as FieldItem,\n    },\n}"
                 }
             ],
             ".storybook/main.ts": [
@@ -1112,7 +2216,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "StorybookConfig",
-                    "defaultValue": "{\r\n    stories: [\r\n        '../src/**/*.mdx',\r\n        '../src/**/*.stories.@(js|jsx|ts|tsx)',\r\n        '../projects/ng-lib/src/**/*.mdx',\r\n        '../projects/ng-lib/src/**/*.stories.@(js|jsx|ts|tsx)',\r\n    ],\r\n    addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-interactions'],\r\n    framework: {\r\n        name: '@storybook/angular',\r\n        options: {},\r\n    },\r\n    docs: {\r\n        autodocs: 'tag',\r\n    },\r\n}"
+                    "defaultValue": "{\n    stories: [\n        '../src/**/*.mdx',\n        '../src/**/*.stories.@(js|jsx|ts|tsx)',\n        '../projects/ng-lib/src/**/*.mdx',\n        '../projects/ng-lib/src/**/*.stories.@(js|jsx|ts|tsx)',\n    ],\n    addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-interactions'],\n    framework: {\n        name: '@storybook/angular',\n        options: {},\n    },\n    docs: {\n        autodocs: 'tag',\n    },\n}"
                 }
             ],
             ".storybook/preview.ts": [
@@ -1124,7 +2228,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\r\n    large: {\r\n        name: 'Large Screen',\r\n        styles: {\r\n            width: '1920px',\r\n            height: '1080px',\r\n        },\r\n    },\r\n    small: {\r\n        name: 'Small Screen',\r\n        styles: {\r\n            width: '800px',\r\n            height: '963px',\r\n        },\r\n    },\r\n}"
+                    "defaultValue": "{\n    large: {\n        name: 'Large Screen',\n        styles: {\n            width: '1920px',\n            height: '1080px',\n        },\n    },\n    small: {\n        name: 'Small Screen',\n        styles: {\n            width: '800px',\n            height: '963px',\n        },\n    },\n}"
                 },
                 {
                     "name": "preview",
@@ -1134,7 +2238,39 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Preview",
-                    "defaultValue": "{\r\n    parameters: {\r\n        viewport: { viewport: customViewport },\r\n        actions: { argTypesRegex: '^on[A-Z].*' },\r\n        controls: {\r\n            matchers: {\r\n                color: /(background|color)$/i,\r\n                date: /Date$/,\r\n            },\r\n        },\r\n    },\r\n    decorators: [\r\n        withThemeByDataAttribute({\r\n            themes: {\r\n                light: 'light',\r\n                dark: 'dark',\r\n            },\r\n            defaultTheme: 'light',\r\n            attributeName: 'data-mode',\r\n        }),\r\n    ],\r\n}"
+                    "defaultValue": "{\n    parameters: {\n        viewport: { viewport: customViewport },\n        actions: { argTypesRegex: '^on[A-Z].*' },\n        controls: {\n            matchers: {\n                color: /(background|color)$/i,\n                date: /Date$/,\n            },\n        },\n    },\n    decorators: [\n        withThemeByDataAttribute({\n            themes: {\n                light: 'light',\n                dark: 'dark',\n            },\n            defaultTheme: 'light',\n            attributeName: 'data-mode',\n        }),\n    ],\n}"
+                }
+            ],
+            "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts": [
+                {
+                    "name": "Input",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n    args: {\n        input: {\n            id: 'newsletter',\n            name: 'Newsletter',\n            placeholder: 'Newsletter Placeholder',\n            hint: 'Get notified when there is a new newsletter.',\n            value: '',\n            ariaInvalid: false,\n            errorMessage: '',\n        } as FieldItem,\n    },\n}"
+                },
+                {
+                    "name": "InputWithError",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n    args: {\n        input: {\n            id: 'newsletter',\n            name: 'Newsletter',\n            placeholder: 'Newsletter Placeholder',\n            hint: 'Get notified when there is a new newsletter.',\n            value: '',\n            required: true,\n            errorMessage: 'This field is required.',\n        } as FieldItem,\n    },\n}"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<TwInputComponent>",
+                    "defaultValue": "{\n    title: 'TailwindUI/Field/Types/Input',\n    component: TwInputComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TwInputComponent, ReactiveFormsModule],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"width:80%; margin: 3em; display: flex; justify-content: center; align-items: center\">\n              ${story}\n            </div>`\n        ),\n    ],\n    args: {},\n}"
                 }
             ],
             "src/stories/Button.stories.ts": [
@@ -1146,7 +2282,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\r\n  args: {\r\n    size: 'large',\r\n    label: 'Button',\r\n  },\r\n}"
+                    "defaultValue": "{\n  args: {\n    size: 'large',\n    label: 'Button',\n  },\n}"
                 },
                 {
                     "name": "meta",
@@ -1156,7 +2292,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<Button>",
-                    "defaultValue": "{\r\n  title: 'Example/Button',\r\n  component: Button,\r\n  tags: ['autodocs'],\r\n  render: (args: Button) => ({\r\n    props: {\r\n      backgroundColor: null,\r\n      ...args,\r\n    },\r\n  }),\r\n  argTypes: {\r\n    backgroundColor: {\r\n      control: 'color',\r\n    },\r\n  },\r\n}"
+                    "defaultValue": "{\n  title: 'Example/Button',\n  component: Button,\n  tags: ['autodocs'],\n  render: (args: Button) => ({\n    props: {\n      backgroundColor: null,\n      ...args,\n    },\n  }),\n  argTypes: {\n    backgroundColor: {\n      control: 'color',\n    },\n  },\n}"
                 },
                 {
                     "name": "Primary",
@@ -1166,7 +2302,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\r\n  args: {\r\n    primary: true,\r\n    label: 'Button',\r\n  },\r\n}"
+                    "defaultValue": "{\n  args: {\n    primary: true,\n    label: 'Button',\n  },\n}"
                 },
                 {
                     "name": "Secondary",
@@ -1176,7 +2312,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\r\n  args: {\r\n    label: 'Button',\r\n  },\r\n}"
+                    "defaultValue": "{\n  args: {\n    label: 'Button',\n  },\n}"
                 },
                 {
                     "name": "Small",
@@ -1186,7 +2322,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\r\n  args: {\r\n    size: 'small',\r\n    label: 'Button',\r\n  },\r\n}"
+                    "defaultValue": "{\n  args: {\n    size: 'small',\n    label: 'Button',\n  },\n}"
                 }
             ],
             "src/stories/Header.stories.ts": [
@@ -1198,7 +2334,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\r\n  args: {\r\n    user: {\r\n      name: 'Jane Doe',\r\n    },\r\n  },\r\n}"
+                    "defaultValue": "{\n  args: {\n    user: {\n      name: 'Jane Doe',\n    },\n  },\n}"
                 },
                 {
                     "name": "LoggedOut",
@@ -1218,7 +2354,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<Header>",
-                    "defaultValue": "{\r\n  title: 'Example/Header',\r\n  component: Header,\r\n  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/angular/writing-docs/autodocs\r\n  tags: ['autodocs'],\r\n  render: (args) => ({ props: args }),\r\n  decorators: [\r\n    moduleMetadata({\r\n      declarations: [Button],\r\n      imports: [CommonModule],\r\n    }),\r\n  ],\r\n  parameters: {\r\n    // More on how to position stories at: https://storybook.js.org/docs/angular/configure/story-layout\r\n    layout: 'fullscreen',\r\n  },\r\n}"
+                    "defaultValue": "{\n  title: 'Example/Header',\n  component: Header,\n  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/angular/writing-docs/autodocs\n  tags: ['autodocs'],\n  render: (args) => ({ props: args }),\n  decorators: [\n    moduleMetadata({\n      declarations: [Button],\n      imports: [CommonModule],\n    }),\n  ],\n  parameters: {\n    // More on how to position stories at: https://storybook.js.org/docs/angular/configure/story-layout\n    layout: 'fullscreen',\n  },\n}"
                 }
             ],
             "src/stories/Page.stories.ts": [
@@ -1230,7 +2366,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\r\n  render: (args: Page) => ({\r\n    props: args,\r\n  }),\r\n  play: async ({ canvasElement }) => {\r\n    const canvas = within(canvasElement);\r\n    const loginButton = canvas.getByRole('button', { name: /Log in/i });\r\n    await expect(loginButton).toBeInTheDocument();\r\n    await userEvent.click(loginButton);\r\n    await expect(loginButton).not.toBeInTheDocument();\r\n\r\n    const logoutButton = canvas.getByRole('button', { name: /Log out/i });\r\n    await expect(logoutButton).toBeInTheDocument();\r\n  },\r\n}"
+                    "defaultValue": "{\n  render: (args: Page) => ({\n    props: args,\n  }),\n  play: async ({ canvasElement }) => {\n    const canvas = within(canvasElement);\n    const loginButton = canvas.getByRole('button', { name: /Log in/i });\n    await expect(loginButton).toBeInTheDocument();\n    await userEvent.click(loginButton);\n    await expect(loginButton).not.toBeInTheDocument();\n\n    const logoutButton = canvas.getByRole('button', { name: /Log out/i });\n    await expect(logoutButton).toBeInTheDocument();\n  },\n}"
                 },
                 {
                     "name": "LoggedOut",
@@ -1240,7 +2376,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\r\n  render: (args: Page) => ({\r\n    props: args,\r\n  }),\r\n}"
+                    "defaultValue": "{\n  render: (args: Page) => ({\n    props: args,\n  }),\n}"
                 },
                 {
                     "name": "meta",
@@ -1250,7 +2386,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<Page>",
-                    "defaultValue": "{\r\n  title: 'Example/Page',\r\n  component: Page,\r\n  parameters: {\r\n    // More on how to position stories at: https://storybook.js.org/docs/angular/configure/story-layout\r\n    layout: 'fullscreen',\r\n  },\r\n  decorators: [\r\n    moduleMetadata({\r\n      declarations: [Button, Header],\r\n      imports: [CommonModule],\r\n    }),\r\n  ],\r\n}"
+                    "defaultValue": "{\n  title: 'Example/Page',\n  component: Page,\n  parameters: {\n    // More on how to position stories at: https://storybook.js.org/docs/angular/configure/story-layout\n    layout: 'fullscreen',\n  },\n  decorators: [\n    moduleMetadata({\n      declarations: [Button, Header],\n      imports: [CommonModule],\n    }),\n  ],\n}"
                 }
             ],
             "projects/ng-lib/src/lib/modules/types/tw-radio.stories.ts": [
@@ -1262,7 +2398,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<TwRadioComponent>",
-                    "defaultValue": "{\r\n    title: 'TailwindUI/Field/Types/Radio',\r\n    component: TwRadioComponent,\r\n    tags: ['autodocs'],\r\n    parameters: {\r\n        layout: 'fullscreen',\r\n    },\r\n    decorators: [\r\n        moduleMetadata({\r\n            imports: [TwRadioComponent],\r\n        }),\r\n        componentWrapperDecorator(\r\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\r\n              <div style=\"width: '80%'; margin: '0 auto'\">\r\n              ${story}\r\n              </div>\r\n            </div>`\r\n        ),\r\n    ],\r\n    args: {},\r\n}"
+                    "defaultValue": "{\n    title: 'TailwindUI/Field/Types/Radio',\n    component: TwRadioComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TwRadioComponent],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\n              <div style=\"width: '80%'; margin: '0 auto'\">\n              ${story}\n              </div>\n            </div>`\n        ),\n    ],\n    args: {},\n}"
                 },
                 {
                     "name": "RadioGroup",
@@ -1272,7 +2408,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\r\n    args: {\r\n        radio: [\r\n            { id: 'comments', name: 'Comments', description: 'Get notified when someone posts a comment on a posting.' },\r\n            { id: 'candidates', name: 'Candidates', description: 'Get notified when a candidate applies for a job.' },\r\n            { id: 'offers', name: 'Offers', description: 'Get notified when a candidate accepts or rejects an offer.' },\r\n        ] as RadioItem[],\r\n    },\r\n}"
+                    "defaultValue": "{\n    args: {\n        radio: [\n            { id: 'comments', name: 'Comments', description: 'Get notified when someone posts a comment on a posting.' },\n            { id: 'candidates', name: 'Candidates', description: 'Get notified when a candidate applies for a job.' },\n            { id: 'offers', name: 'Offers', description: 'Get notified when a candidate accepts or rejects an offer.' },\n        ] as FieldItem[],\n    },\n}"
                 },
                 {
                     "name": "SingleRadio",
@@ -1282,7 +2418,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\r\n    args: {\r\n        radio: { id: 'newsletter', name: 'Newsletter', description: 'Get notified when there is a new newsletter.' } as RadioItem,\r\n    },\r\n}"
+                    "defaultValue": "{\n    args: {\n        radio: { id: 'newsletter', name: 'Newsletter', description: 'Get notified when there is a new newsletter.' } as FieldItem,\n    },\n}"
                 }
             ]
         },
@@ -1405,21 +2541,30 @@
                 "status": "low"
             },
             {
+                "filePath": "projects/ng-lib/src/lib/modules/types/base.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "BaseComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/12",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/modules/types/base.component.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "FieldItem",
+                "coveragePercent": 0,
+                "coverageCount": "0/12",
+                "status": "low"
+            },
+            {
                 "filePath": "projects/ng-lib/src/lib/modules/types/tw-checkbox.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "TwCheckboxComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/6",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/ng-lib/src/lib/modules/types/tw-checkbox.component.ts",
-                "type": "interface",
-                "linktype": "interface",
-                "name": "CheckboxItem",
-                "coveragePercent": 0,
-                "coverageCount": "0/4",
+                "coverageCount": "0/16",
                 "status": "low"
             },
             {
@@ -1458,16 +2603,7 @@
                 "linktype": "component",
                 "name": "TwInputComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/9",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/ng-lib/src/lib/modules/types/tw-input.component.ts",
-                "type": "interface",
-                "linktype": "interface",
-                "name": "InputItem",
-                "coveragePercent": 0,
-                "coverageCount": "0/8",
+                "coverageCount": "0/15",
                 "status": "low"
             },
             {
@@ -1475,7 +2611,17 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "CheckboxGroup",
+                "name": "Input",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "InputWithError",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -1491,22 +2637,12 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "SingleCheckbox",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
                 "filePath": "projects/ng-lib/src/lib/modules/types/tw-radio.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "TwRadioComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/4",
+                "coverageCount": "0/16",
                 "status": "low"
             },
             {

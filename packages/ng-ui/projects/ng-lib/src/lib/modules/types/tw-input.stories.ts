@@ -1,8 +1,9 @@
-import { InputItem, TwInputComponent } from './tw-input.component';
 import { Meta, StoryObj, componentWrapperDecorator, moduleMetadata } from '@storybook/angular';
 import { userEvent, within } from '@storybook/test';
 
+import { FieldItem } from './base.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TwInputComponent } from './tw-input.component';
 
 const meta: Meta<TwInputComponent> = {
     title: 'TailwindUI/Field/Types/Input',
@@ -38,7 +39,7 @@ export const Input: Story = {
             value: '',
             ariaInvalid: false,
             errorMessage: '',
-        } as InputItem,
+        } as FieldItem,
     },
 };
 
@@ -52,17 +53,14 @@ export const InputWithError: Story = {
             value: '',
             required: true,
             errorMessage: 'This field is required.',
-        } as InputItem,
+        } as FieldItem,
     },
 };
 
-export const InputWithErrorPlay: Story = {
-    play: async ({ canvasElement }) => {
-        const canvas = within(canvasElement);
-        const input = await canvas.getByPlaceholderText('Newsletter Placeholder');
-        await userEvent.type(input, ''); // Leave input empty to trigger error
-        await userEvent.tab(); // Trigger blur event
-        const errorText = await canvas.getByText('This field is required.');
-        expect(errorText).toBeVisible();
-    },
+InputWithError.play = async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input = await canvas.getByPlaceholderText('Newsletter Placeholder');
+    await userEvent.click(input); // Focus on the input
+    await userEvent.tab(); // Move focus away to trigger blur event
+    await canvas.getByText('This field is required.'); // Check for error text presence
 };

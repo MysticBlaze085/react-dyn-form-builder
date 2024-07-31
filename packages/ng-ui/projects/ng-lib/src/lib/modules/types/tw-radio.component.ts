@@ -1,4 +1,8 @@
+import { BaseComponent, FieldItem } from './base.component';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+
+import { CommonModule } from '@angular/common';
 
 export interface RadioItem {
     id: string;
@@ -9,51 +13,71 @@ export interface RadioItem {
 @Component({
     standalone: true,
     selector: 'tw-radio',
+    imports: [CommonModule, ReactiveFormsModule],
     template: `
-        @if (isArray(radio)) {
         <fieldset aria-label="Plan">
             <div class="space-y-5">
-                @for (r of radio; track $index) {
+                @if (isArray(radio)) { @for (r of radio; track $index) {
                 <div class="relative flex items-start">
                     <div class="flex h-6 items-center">
                         <input
-                            [id]="r.id"
-                            [attr.aria-describedby]="r.id + '-description'"
-                            name="plan"
+                            [id]="getId(r)"
+                            [name]="groupName"
+                            [value]="getName(r)"
+                            [placeholder]="getPlaceholder(r)"
+                            [formControl]="formControls[getName(r)]"
+                            (blur)="onBlur(r.name)"
+                            (change)="onChange(r.name)"
                             type="radio"
                             class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                         />
                     </div>
                     <div class="ml-3 text-sm leading-6">
-                        <label [for]="r.id" class="font-medium text-gray-900">{{ r.name }}</label>
-                        <p [id]="r.id + '-description'" class="text-gray-500">{{ r.description }}</p>
+                        <label [for]="getId(r)" class="font-medium text-gray-900">{{ r.name }}</label>
+                        <p [id]="getId(r) + '-description'" class="text-gray-500">{{ r.description }}</p>
+                    </div>
+                </div>
+                } } @else {
+                <div class="relative flex items-start">
+                    <div class="flex h-6 items-center">
+                        <input
+                            [id]="getId(radio)"
+                            [name]="groupName"
+                            [value]="radio.name"
+                            [placeholder]="getPlaceholder(radio)"
+                            [formControl]="formControl"
+                            (blur)="onBlur(radio.name)"
+                            (change)="onChange(radio.name)"
+                            type="radio"
+                            class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                        />
+                    </div>
+                    <div class="ml-3 text-sm leading-6">
+                        <label [for]="getId(radio)" class="font-medium text-gray-900">{{ radio.name }}</label>
+                        <p [id]="getId(radio) + '-description'" class="text-gray-500">{{ radio.description }}</p>
                     </div>
                 </div>
                 }
             </div>
         </fieldset>
-        } @else {
-        <div class="relative flex items-start">
-            <div class="flex h-6 items-center">
-                <input
-                    [id]="radio.id"
-                    [attr.aria-describedby]="radio.id + '-description'"
-                    [name]="radio.name"
-                    type="radio"
-                    class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                />
-            </div>
-            <div class="ml-3 text-sm leading-6">
-                <label [for]="radio.id" class="font-medium text-gray-900">{{ radio.name }}</label>
-                <p [id]="radio.id + '-description'" class="text-gray-500">{{ radio.description }}</p>
-            </div>
-        </div>
-        }
     `,
     styles: [],
 })
-export class TwRadioComponent implements OnChanges {
-    @Input() radio: RadioItem | RadioItem[] = [];
+export class TwRadioComponent extends BaseComponent implements OnChanges {
+    @Input() radio: FieldItem | FieldItem[] = [];
+    @Input() groupName = 'radioGroup';
+    override formControls: { [key: string]: FormControl } = {};
+
+    ngOnInit(): void {
+        if (Array.isArray(this.radio)) {
+            for (const item of this.radio) {
+                this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));
+            }
+        } else {
+            const item = this.radio as FieldItem;
+            this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));
+        }
+    }
 
     ngOnChanges({ radio }: SimpleChanges): void {
         if (radio) {
@@ -71,7 +95,7 @@ export class TwRadioComponent implements OnChanges {
         }
     }
 
-    isArray(radio: RadioItem | RadioItem[]): radio is RadioItem[] {
+    isArray(radio: FieldItem | FieldItem[]): radio is FieldItem[] {
         return Array.isArray(radio);
     }
 }

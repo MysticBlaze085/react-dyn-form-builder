@@ -1,14 +1,13 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { FormControl, FormsModule } from '@angular/forms';
 
-export interface CheckboxItem {
-    id: string;
-    name: string;
-    description: string;
-}
+import { CommonModule } from '@angular/common';
+import { BaseComponent, FieldItem } from './base.component';
 
 @Component({
     standalone: true,
     selector: 'tw-checkbox',
+    imports: [CommonModule, FormsModule],
     template: `
         @if (isArray(checkbox)) {
         <fieldset>
@@ -18,16 +17,16 @@ export interface CheckboxItem {
                 <div class="relative flex items-start">
                     <div class="flex h-6 items-center">
                         <input
-                            [id]="getCheckboxId(cb)"
-                            [attr.describedby]="getCheckboxId(cb) + '-description'"
-                            [name]="getCheckboxName(cb)"
+                            [id]="getId(cb)"
+                            [attr.describedby]="getId(cb) + '-description'"
+                            [name]="getName(cb)"
                             type="checkbox"
                             class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                         />
                     </div>
                     <div class="ml-3 text-sm leading-6">
-                        <label [for]="getCheckboxId(cb)" class="font-medium text-gray-900">{{ getCheckboxName(cb) }}</label>
-                        <p [id]="getCheckboxId(cb) + '-description'" class="text-gray-500">{{ getCheckboxDescription(cb) }}</p>
+                        <label [for]="getId(cb)" class="font-medium text-gray-900">{{ getName(cb) }}</label>
+                        <p [id]="getId(cb) + '-description'" class="text-gray-500">{{ getDescription(cb) }}</p>
                     </div>
                 </div>
                 }
@@ -37,38 +36,37 @@ export interface CheckboxItem {
         <div class="relative flex items-start">
             <div class="flex h-6 items-center">
                 <input
-                    [id]="getCheckboxId(checkbox)"
-                    [attr.describedby]="getCheckboxId(checkbox) + '-description'"
-                    [name]="getCheckboxName(checkbox)"
+                    [id]="getId(checkbox)"
+                    [attr.describedby]="getId(checkbox) + '-description'"
+                    [name]="getName(checkbox)"
                     type="checkbox"
                     class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                 />
             </div>
             <div class="ml-3 text-sm leading-6">
-                <label [for]="getCheckboxId(checkbox)" class="font-medium text-gray-900">{{ getCheckboxName(checkbox) }}</label>
-                <p [id]="getCheckboxId(checkbox) + '-description'" class="text-gray-500">{{ getCheckboxDescription(checkbox) }}</p>
+                <label [for]="getId(checkbox)" class="font-medium text-gray-900">{{ getName(checkbox) }}</label>
+                <p [id]="getId(checkbox) + '-description'" class="text-gray-500">{{ getDescription(checkbox) }}</p>
             </div>
         </div>
         }
     `,
-    styles: [],
 })
-export class TwCheckboxComponent {
-    @Input() checkbox: CheckboxItem | CheckboxItem[] = [];
+export class TwCheckboxComponent extends BaseComponent {
+    @Input() checkbox: FieldItem | FieldItem[] = [];
+    override formControls: { [key: string]: FormControl } = {};
 
-    isArray(checkbox: CheckboxItem | CheckboxItem[]): checkbox is CheckboxItem[] {
+    ngOnInit(): void {
+        if (this.isArray(this.checkbox)) {
+            for (const item of this.checkbox) {
+                this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));
+            }
+        } else {
+            const item = this.checkbox;
+            this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));
+        }
+    }
+
+    isArray(checkbox: FieldItem | FieldItem[]): checkbox is FieldItem[] {
         return Array.isArray(checkbox);
-    }
-
-    getCheckboxId(checkbox: CheckboxItem): string {
-        return checkbox.id;
-    }
-
-    getCheckboxName(checkbox: CheckboxItem): string {
-        return checkbox.name;
-    }
-
-    getCheckboxDescription(checkbox: CheckboxItem): string {
-        return checkbox.description;
     }
 }
