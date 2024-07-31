@@ -32,10 +32,10 @@ type Story = StoryObj<TwTextareaComponent>;
 export const Textarea: Story = {
     args: {
         input: {
-            id: 'newsletter',
-            name: 'Newsletter',
-            placeholder: 'Newsletter Placeholder',
-            hint: 'Get notified when there is a new newsletter.',
+            id: 'comment',
+            name: 'comment',
+            placeholder: 'Comment Placeholder',
+            hint: 'Comment hint message.',
             value: '',
             ariaInvalid: false,
             errorMessage: '',
@@ -46,10 +46,10 @@ export const Textarea: Story = {
 export const TextareaWithError: Story = {
     args: {
         input: {
-            id: 'newsletter',
-            name: 'Newsletter',
-            placeholder: 'Newsletter Placeholder',
-            hint: 'Get notified when there is a new newsletter.',
+            id: 'comment',
+            name: 'comment',
+            placeholder: 'Comment Placeholder',
+            hint: 'Comment hint message.',
             value: '',
             required: true,
             errorMessage: 'This field is required.',
@@ -59,7 +59,7 @@ export const TextareaWithError: Story = {
 
 TextareaWithError.play = async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = await canvas.getByPlaceholderText('Newsletter Placeholder');
+    const input = await canvas.getByPlaceholderText('Comment Placeholder');
     await userEvent.click(input); // Focus on the input
     await userEvent.tab(); // Move focus away to trigger blur event
     await canvas.getByText('This field is required.'); // Check for error text presence
