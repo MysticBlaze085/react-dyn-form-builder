@@ -3,12 +3,12 @@
     "interfaces": [
         {
             "name": "CheckboxItem",
-            "id": "interface-CheckboxItem-78ef7c0bdfddae874837ee1c0aa99f6e675b0cfc8af359ee33a42c2ab90c2f0e46a34818c80e6d37b3862765d62a96e1e1ee88d65d4d4308c5a124ce196b99d5",
+            "id": "interface-CheckboxItem-ae7c8cb17ca15ef1dac72b42c170abb5718b740670520ba910cc0e053841981b9ef6366f3aa5753d7cbee152e123f002554f41bc6dc3b65bdb2e6a6fe51ec1c4",
             "file": "projects/ng-lib/src/lib/modules/types/tw-checkbox.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { Component, Input } from '@angular/core';\r\n\r\nexport interface CheckboxItem {\r\n    id: string;\r\n    name: string;\r\n    description: string;\r\n}\r\n\r\n@Component({\r\n    standalone: true,\r\n    selector: 'tw-checkbox',\r\n    template: `\r\n        @if (isArray(checkbox)) {\r\n        <fieldset>\r\n            <legend class=\"sr-only\">Notifications</legend>\r\n            <div class=\"space-y-5\">\r\n                @for (cb of checkbox; track $index) {\r\n                <div class=\"relative flex items-start\">\r\n                    <div class=\"flex h-6 items-center\">\r\n                        <input\r\n                            [id]=\"getCheckboxId(cb)\"\r\n                            [attr.describedby]=\"getCheckboxId(cb) + '-description'\"\r\n                            [name]=\"getCheckboxName(cb)\"\r\n                            type=\"checkbox\"\r\n                            class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\r\n                        />\r\n                    </div>\r\n                    <div class=\"ml-3 text-sm leading-6\">\r\n                        <label [for]=\"getCheckboxId(cb)\" class=\"font-medium text-gray-900\">{{ getCheckboxName(cb) }}</label>\r\n                        <p [id]=\"getCheckboxId(cb) + '-description'\" class=\"text-gray-500\">{{ getCheckboxDescription(cb) }}</p>\r\n                    </div>\r\n                </div>\r\n                }\r\n            </div>\r\n        </fieldset>\r\n        } @else {\r\n        <div class=\"relative flex items-start\">\r\n            <div class=\"flex h-6 items-center\">\r\n                <input\r\n                    [id]=\"getCheckboxId(checkbox)\"\r\n                    [attr.describedby]=\"getCheckboxId(checkbox) + '-description'\"\r\n                    [name]=\"getCheckboxName(checkbox)\"\r\n                    type=\"checkbox\"\r\n                    class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\r\n                />\r\n            </div>\r\n            <div class=\"ml-3 text-sm leading-6\">\r\n                <label [for]=\"getCheckboxId(checkbox)\" class=\"font-medium text-gray-900\">{{ getCheckboxName(checkbox) }}</label>\r\n                <p [id]=\"getCheckboxId(checkbox) + '-description'\" class=\"text-gray-500\">{{ getCheckboxDescription(checkbox) }}</p>\r\n            </div>\r\n        </div>\r\n        }\r\n    `,\r\n    styles: [],\r\n})\r\nexport class TwCheckboxComponent {\r\n    @Input() checkbox: CheckboxItem | CheckboxItem[] = [];\r\n\r\n    isArray(checkbox: CheckboxItem | CheckboxItem[]): checkbox is CheckboxItem[] {\r\n        return Array.isArray(checkbox);\r\n    }\r\n\r\n    getCheckboxId(checkbox: CheckboxItem): string {\r\n        return checkbox.id;\r\n    }\r\n\r\n    getCheckboxName(checkbox: CheckboxItem): string {\r\n        return checkbox.name;\r\n    }\r\n\r\n    getCheckboxDescription(checkbox: CheckboxItem): string {\r\n        return checkbox.description;\r\n    }\r\n}\r\n",
+            "sourceCode": "import { Component, Input, ViewEncapsulation } from '@angular/core';\r\n\r\nexport interface CheckboxItem {\r\n    id: string;\r\n    name: string;\r\n    description: string;\r\n}\r\n\r\n@Component({\r\n    standalone: true,\r\n    selector: 'tw-checkbox',\r\n    template: `\r\n        @if (isArray(checkbox)) {\r\n        <fieldset>\r\n            <legend class=\"sr-only\">Notifications</legend>\r\n            <div class=\"space-y-5\">\r\n                @for (cb of checkbox; track $index) {\r\n                <div class=\"relative flex items-start\">\r\n                    <div class=\"flex h-6 items-center\">\r\n                        <input\r\n                            [id]=\"getCheckboxId(cb)\"\r\n                            [attr.describedby]=\"getCheckboxId(cb) + '-description'\"\r\n                            [name]=\"getCheckboxName(cb)\"\r\n                            type=\"checkbox\"\r\n                            class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\r\n                        />\r\n                    </div>\r\n                    <div class=\"ml-3 text-sm leading-6\">\r\n                        <label [for]=\"getCheckboxId(cb)\" class=\"font-medium text-gray-900\">{{ getCheckboxName(cb) }}</label>\r\n                        <p [id]=\"getCheckboxId(cb) + '-description'\" class=\"text-gray-500\">{{ getCheckboxDescription(cb) }}</p>\r\n                    </div>\r\n                </div>\r\n                }\r\n            </div>\r\n        </fieldset>\r\n        } @else {\r\n        <div class=\"relative flex items-start\">\r\n            <div class=\"flex h-6 items-center\">\r\n                <input\r\n                    [id]=\"getCheckboxId(checkbox)\"\r\n                    [attr.describedby]=\"getCheckboxId(checkbox) + '-description'\"\r\n                    [name]=\"getCheckboxName(checkbox)\"\r\n                    type=\"checkbox\"\r\n                    class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\r\n                />\r\n            </div>\r\n            <div class=\"ml-3 text-sm leading-6\">\r\n                <label [for]=\"getCheckboxId(checkbox)\" class=\"font-medium text-gray-900\">{{ getCheckboxName(checkbox) }}</label>\r\n                <p [id]=\"getCheckboxId(checkbox) + '-description'\" class=\"text-gray-500\">{{ getCheckboxDescription(checkbox) }}</p>\r\n            </div>\r\n        </div>\r\n        }\r\n    `,\r\n    styles: [],\r\n})\r\nexport class TwCheckboxComponent {\r\n    @Input() checkbox: CheckboxItem | CheckboxItem[] = [];\r\n\r\n    isArray(checkbox: CheckboxItem | CheckboxItem[]): checkbox is CheckboxItem[] {\r\n        return Array.isArray(checkbox);\r\n    }\r\n\r\n    getCheckboxId(checkbox: CheckboxItem): string {\r\n        return checkbox.id;\r\n    }\r\n\r\n    getCheckboxName(checkbox: CheckboxItem): string {\r\n        return checkbox.name;\r\n    }\r\n\r\n    getCheckboxDescription(checkbox: CheckboxItem): string {\r\n        return checkbox.description;\r\n    }\r\n}\r\n",
             "properties": [
                 {
                     "name": "description",
@@ -44,13 +44,91 @@
             "extends": []
         },
         {
+            "name": "InputItem",
+            "id": "interface-InputItem-882c724dece592a475f346264cb1118ae13e649396335dda0f6569a2c54812c394b872d85f6131e86291f5703c2b93c35b2b58101bf34f90efabf0c1c7a0c574",
+            "file": "projects/ng-lib/src/lib/modules/types/tw-input.component.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { Component, Input } from '@angular/core';\r\n\r\nexport interface InputItem {\r\n    id: string;\r\n    name: string;\r\n    placeholder: string;\r\n    hint?: string;\r\n    value?: string;\r\n    ariaInvalid?: boolean;\r\n    errorMessage?: string;\r\n}\r\n\r\n@Component({\r\n    selector: 'tw-input',\r\n    standalone: true,\r\n    template: `\r\n        <div *ngIf=\"isArray(input); else singleInput\">\r\n            @for(inp of input; track $index) {\r\n            <fieldset>\r\n                <legend class=\"sr-only\">Input Fields</legend>\r\n                <div class=\"space-y-5\">\r\n                    <div class=\"relative flex items-start\">\r\n                        <div class=\"flex h-6 items-center\">\r\n                            <input\r\n                                [id]=\"getInputId(inp)\"\r\n                                [name]=\"getInputName(inp)\"\r\n                                [placeholder]=\"getInputPlaceholder(inp)\"\r\n                                [value]=\"getInputValue(inp)\"\r\n                                [attr.aria-invalid]=\"getAriaInvalid(inp)\"\r\n                                [attr.aria-describedby]=\"getInputId(inp) + '-error'\"\r\n                                type=\"text\"\r\n                                class=\"block w-full rounded-md border-0 py-1.5 pr-10 text-red-900 ring-1 ring-inset ring-red-300 placeholder:text-red-300 focus:ring-2 focus:ring-inset focus:ring-red-500 sm:text-sm sm:leading-6\"\r\n                            />\r\n                        </div>\r\n                        <div class=\"absolute inset-y-0 right-0 flex items-center pr-3\">\r\n                            <svg class=\"h-5 w-5 text-red-500\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\">\r\n                                <path\r\n                                    fill-rule=\"evenodd\"\r\n                                    d=\"M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z\"\r\n                                    clip-rule=\"evenodd\"\r\n                                />\r\n                            </svg>\r\n                        </div>\r\n                    </div>\r\n                    <p class=\"mt-2 text-sm text-red-600\" [id]=\"getInputId(inp) + '-error'\">{{ getErrorMessage(inp) }}</p>\r\n                </div>\r\n            </fieldset>\r\n            }\r\n        </div>\r\n\r\n        <ng-template #singleInput>\r\n            <div class=\"relative flex items-start\">\r\n                <div class=\"flex h-6 items-center\">\r\n                    <input\r\n                        [id]=\"getInputId(input)\"\r\n                        [name]=\"getInputName(input)\"\r\n                        [placeholder]=\"getInputPlaceholder(input)\"\r\n                        [value]=\"getInputValue(input)\"\r\n                        [attr.aria-invalid]=\"getAriaInvalid(input)\"\r\n                        [attr.aria-describedby]=\"getInputId(input) + '-error'\"\r\n                        type=\"text\"\r\n                        class=\"block w-full rounded-md border-0 py-1.5 pr-10 text-red-900 ring-1 ring-inset ring-red-300 placeholder:text-red-300 focus:ring-2 focus:ring-inset focus:ring-red-500 sm:text-sm sm:leading-6\"\r\n                    />\r\n                </div>\r\n                <div class=\"absolute inset-y-0 right-0 flex items-center pr-3\">\r\n                    <svg class=\"h-5 w-5 text-red-500\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\">\r\n                        <path\r\n                            fill-rule=\"evenodd\"\r\n                            d=\"M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z\"\r\n                            clip-rule=\"evenodd\"\r\n                        />\r\n                    </svg>\r\n                </div>\r\n            </div>\r\n            <p class=\"mt-2 text-sm text-red-600\" [id]=\"getInputId(input) + '-error'\">{{ getErrorMessage(input) }}</p>\r\n        </ng-template>\r\n    `,\r\n})\r\nexport class TwInputComponent {\r\n    @Input() input: InputItem | InputItem[] = [];\r\n\r\n    isArray(input: InputItem | InputItem[]): input is InputItem[] {\r\n        return Array.isArray(input);\r\n    }\r\n\r\n    getInputId(input: InputItem): string {\r\n        return input.id;\r\n    }\r\n\r\n    getInputName(input: InputItem): string {\r\n        return input.name;\r\n    }\r\n\r\n    getInputPlaceholder(input: InputItem): string {\r\n        return input.placeholder;\r\n    }\r\n\r\n    getInputValue(input: InputItem): string {\r\n        return input.value || '';\r\n    }\r\n\r\n    getAriaInvalid(input: InputItem): boolean {\r\n        return input.ariaInvalid || false;\r\n    }\r\n\r\n    getErrorMessage(input: InputItem): string {\r\n        return input.errorMessage || '';\r\n    }\r\n}\r\n",
+            "properties": [
+                {
+                    "name": "ariaInvalid",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "optional": true,
+                    "description": "",
+                    "line": 9
+                },
+                {
+                    "name": "errorMessage",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": true,
+                    "description": "",
+                    "line": 10
+                },
+                {
+                    "name": "hint",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": true,
+                    "description": "",
+                    "line": 7
+                },
+                {
+                    "name": "id",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 4
+                },
+                {
+                    "name": "name",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 5
+                },
+                {
+                    "name": "placeholder",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 6
+                },
+                {
+                    "name": "value",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": true,
+                    "description": "",
+                    "line": 8
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 171,
+            "methods": [],
+            "extends": []
+        },
+        {
             "name": "RadioItem",
-            "id": "interface-RadioItem-e475bb8645187d2277dc9363cd0b9e26402fc5d772efd50c0b00c280da3a57ab19f770eadb56113a0ce0242f1d1277298da387e8c2c30c8c9ea0f223c683ec27",
+            "id": "interface-RadioItem-b6ee40d8c70d586a4bac927022dd36c461cfaed7ab9b73bb4e8749c30f432d13cd4e95e433d7583173fabe80d600981f00667fb0ea30e9cef67b828678197a64",
             "file": "projects/ng-lib/src/lib/modules/types/tw-radio.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { Component, Input } from '@angular/core';\r\n\r\nexport interface RadioItem {\r\n    id: string;\r\n    name: string;\r\n    description: string;\r\n}\r\n\r\n@Component({\r\n    standalone: true,\r\n    selector: 'tw-radio',\r\n    template: `\r\n        @if (isArray(radio)) {\r\n        <fieldset aria-label=\"Plan\">\r\n            <div class=\"space-y-5\">\r\n                @for (r of radio; track $index) {\r\n                <div class=\"relative flex items-start\">\r\n                    <div class=\"flex h-6 items-center\">\r\n                        <input\r\n                            [id]=\"r.id\"\r\n                            [attr.aria-describedby]=\"r.id + '-description'\"\r\n                            name=\"plan\"\r\n                            type=\"radio\"\r\n                            class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\r\n                        />\r\n                    </div>\r\n                    <div class=\"ml-3 text-sm leading-6\">\r\n                        <label [for]=\"r.id\" class=\"font-medium text-gray-900\">{{ r.name }}</label>\r\n                        <p [id]=\"r.id + '-description'\" class=\"text-gray-500\">{{ r.description }}</p>\r\n                    </div>\r\n                </div>\r\n                }\r\n            </div>\r\n        </fieldset>\r\n        } @else {\r\n        <div class=\"relative flex items-start\">\r\n            <div class=\"flex h-6 items-center\">\r\n                <input\r\n                    [id]=\"radio.id\"\r\n                    [attr.aria-describedby]=\"radio.id + '-description'\"\r\n                    [name]=\"radio.name\"\r\n                    type=\"radio\"\r\n                    class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\r\n                />\r\n            </div>\r\n            <div class=\"ml-3 text-sm leading-6\">\r\n                <label [for]=\"radio.id\" class=\"font-medium text-gray-900\">{{ radio.name }}</label>\r\n                <p [id]=\"radio.id + '-description'\" class=\"text-gray-500\">{{ radio.description }}</p>\r\n            </div>\r\n        </div>\r\n        }\r\n    `,\r\n    styles: [],\r\n})\r\nexport class TwRadioComponent {\r\n    @Input() radio: RadioItem | RadioItem[] = [];\r\n\r\n    isArray(radio: RadioItem | RadioItem[]): radio is RadioItem[] {\r\n        return Array.isArray(radio);\r\n    }\r\n}\r\n",
+            "sourceCode": "import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';\r\n\r\nexport interface RadioItem {\r\n    id: string;\r\n    name: string;\r\n    description: string;\r\n}\r\n\r\n@Component({\r\n    standalone: true,\r\n    selector: 'tw-radio',\r\n    template: `\r\n        @if (isArray(radio)) {\r\n        <fieldset aria-label=\"Plan\">\r\n            <div class=\"space-y-5\">\r\n                @for (r of radio; track $index) {\r\n                <div class=\"relative flex items-start\">\r\n                    <div class=\"flex h-6 items-center\">\r\n                        <input\r\n                            [id]=\"r.id\"\r\n                            [attr.aria-describedby]=\"r.id + '-description'\"\r\n                            name=\"plan\"\r\n                            type=\"radio\"\r\n                            class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\r\n                        />\r\n                    </div>\r\n                    <div class=\"ml-3 text-sm leading-6\">\r\n                        <label [for]=\"r.id\" class=\"font-medium text-gray-900\">{{ r.name }}</label>\r\n                        <p [id]=\"r.id + '-description'\" class=\"text-gray-500\">{{ r.description }}</p>\r\n                    </div>\r\n                </div>\r\n                }\r\n            </div>\r\n        </fieldset>\r\n        } @else {\r\n        <div class=\"relative flex items-start\">\r\n            <div class=\"flex h-6 items-center\">\r\n                <input\r\n                    [id]=\"radio.id\"\r\n                    [attr.aria-describedby]=\"radio.id + '-description'\"\r\n                    [name]=\"radio.name\"\r\n                    type=\"radio\"\r\n                    class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\r\n                />\r\n            </div>\r\n            <div class=\"ml-3 text-sm leading-6\">\r\n                <label [for]=\"radio.id\" class=\"font-medium text-gray-900\">{{ radio.name }}</label>\r\n                <p [id]=\"radio.id + '-description'\" class=\"text-gray-500\">{{ radio.description }}</p>\r\n            </div>\r\n        </div>\r\n        }\r\n    `,\r\n    styles: [],\r\n})\r\nexport class TwRadioComponent implements OnChanges {\r\n    @Input() radio: RadioItem | RadioItem[] = [];\r\n\r\n    ngOnChanges({ radio }: SimpleChanges): void {\r\n        if (radio) {\r\n            const isString = radio.currentValue;\r\n            if (typeof isString === 'string') {\r\n                try {\r\n                    this.radio = JSON.parse(isString);\r\n                } catch (e) {\r\n                    console.error('Failed to parse radio input:', e, isString);\r\n                    this.radio = [];\r\n                }\r\n            } else {\r\n                this.radio = isString;\r\n            }\r\n        }\r\n    }\r\n\r\n    isArray(radio: RadioItem | RadioItem[]): radio is RadioItem[] {\r\n        return Array.isArray(radio);\r\n    }\r\n}\r\n",
             "properties": [
                 {
                     "name": "description",
@@ -154,7 +232,7 @@
         },
         {
             "name": "TwCheckboxComponent",
-            "id": "component-TwCheckboxComponent-78ef7c0bdfddae874837ee1c0aa99f6e675b0cfc8af359ee33a42c2ab90c2f0e46a34818c80e6d37b3862765d62a96e1e1ee88d65d4d4308c5a124ce196b99d5",
+            "id": "component-TwCheckboxComponent-ae7c8cb17ca15ef1dac72b42c170abb5718b740670520ba910cc0e053841981b9ef6366f3aa5753d7cbee152e123f002554f41bc6dc3b65bdb2e6a6fe51ec1c4",
             "file": "projects/ng-lib/src/lib/modules/types/tw-checkbox.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -304,7 +382,249 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input } from '@angular/core';\r\n\r\nexport interface CheckboxItem {\r\n    id: string;\r\n    name: string;\r\n    description: string;\r\n}\r\n\r\n@Component({\r\n    standalone: true,\r\n    selector: 'tw-checkbox',\r\n    template: `\r\n        @if (isArray(checkbox)) {\r\n        <fieldset>\r\n            <legend class=\"sr-only\">Notifications</legend>\r\n            <div class=\"space-y-5\">\r\n                @for (cb of checkbox; track $index) {\r\n                <div class=\"relative flex items-start\">\r\n                    <div class=\"flex h-6 items-center\">\r\n                        <input\r\n                            [id]=\"getCheckboxId(cb)\"\r\n                            [attr.describedby]=\"getCheckboxId(cb) + '-description'\"\r\n                            [name]=\"getCheckboxName(cb)\"\r\n                            type=\"checkbox\"\r\n                            class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\r\n                        />\r\n                    </div>\r\n                    <div class=\"ml-3 text-sm leading-6\">\r\n                        <label [for]=\"getCheckboxId(cb)\" class=\"font-medium text-gray-900\">{{ getCheckboxName(cb) }}</label>\r\n                        <p [id]=\"getCheckboxId(cb) + '-description'\" class=\"text-gray-500\">{{ getCheckboxDescription(cb) }}</p>\r\n                    </div>\r\n                </div>\r\n                }\r\n            </div>\r\n        </fieldset>\r\n        } @else {\r\n        <div class=\"relative flex items-start\">\r\n            <div class=\"flex h-6 items-center\">\r\n                <input\r\n                    [id]=\"getCheckboxId(checkbox)\"\r\n                    [attr.describedby]=\"getCheckboxId(checkbox) + '-description'\"\r\n                    [name]=\"getCheckboxName(checkbox)\"\r\n                    type=\"checkbox\"\r\n                    class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\r\n                />\r\n            </div>\r\n            <div class=\"ml-3 text-sm leading-6\">\r\n                <label [for]=\"getCheckboxId(checkbox)\" class=\"font-medium text-gray-900\">{{ getCheckboxName(checkbox) }}</label>\r\n                <p [id]=\"getCheckboxId(checkbox) + '-description'\" class=\"text-gray-500\">{{ getCheckboxDescription(checkbox) }}</p>\r\n            </div>\r\n        </div>\r\n        }\r\n    `,\r\n    styles: [],\r\n})\r\nexport class TwCheckboxComponent {\r\n    @Input() checkbox: CheckboxItem | CheckboxItem[] = [];\r\n\r\n    isArray(checkbox: CheckboxItem | CheckboxItem[]): checkbox is CheckboxItem[] {\r\n        return Array.isArray(checkbox);\r\n    }\r\n\r\n    getCheckboxId(checkbox: CheckboxItem): string {\r\n        return checkbox.id;\r\n    }\r\n\r\n    getCheckboxName(checkbox: CheckboxItem): string {\r\n        return checkbox.name;\r\n    }\r\n\r\n    getCheckboxDescription(checkbox: CheckboxItem): string {\r\n        return checkbox.description;\r\n    }\r\n}\r\n",
+            "sourceCode": "import { Component, Input, ViewEncapsulation } from '@angular/core';\r\n\r\nexport interface CheckboxItem {\r\n    id: string;\r\n    name: string;\r\n    description: string;\r\n}\r\n\r\n@Component({\r\n    standalone: true,\r\n    selector: 'tw-checkbox',\r\n    template: `\r\n        @if (isArray(checkbox)) {\r\n        <fieldset>\r\n            <legend class=\"sr-only\">Notifications</legend>\r\n            <div class=\"space-y-5\">\r\n                @for (cb of checkbox; track $index) {\r\n                <div class=\"relative flex items-start\">\r\n                    <div class=\"flex h-6 items-center\">\r\n                        <input\r\n                            [id]=\"getCheckboxId(cb)\"\r\n                            [attr.describedby]=\"getCheckboxId(cb) + '-description'\"\r\n                            [name]=\"getCheckboxName(cb)\"\r\n                            type=\"checkbox\"\r\n                            class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\r\n                        />\r\n                    </div>\r\n                    <div class=\"ml-3 text-sm leading-6\">\r\n                        <label [for]=\"getCheckboxId(cb)\" class=\"font-medium text-gray-900\">{{ getCheckboxName(cb) }}</label>\r\n                        <p [id]=\"getCheckboxId(cb) + '-description'\" class=\"text-gray-500\">{{ getCheckboxDescription(cb) }}</p>\r\n                    </div>\r\n                </div>\r\n                }\r\n            </div>\r\n        </fieldset>\r\n        } @else {\r\n        <div class=\"relative flex items-start\">\r\n            <div class=\"flex h-6 items-center\">\r\n                <input\r\n                    [id]=\"getCheckboxId(checkbox)\"\r\n                    [attr.describedby]=\"getCheckboxId(checkbox) + '-description'\"\r\n                    [name]=\"getCheckboxName(checkbox)\"\r\n                    type=\"checkbox\"\r\n                    class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\r\n                />\r\n            </div>\r\n            <div class=\"ml-3 text-sm leading-6\">\r\n                <label [for]=\"getCheckboxId(checkbox)\" class=\"font-medium text-gray-900\">{{ getCheckboxName(checkbox) }}</label>\r\n                <p [id]=\"getCheckboxId(checkbox) + '-description'\" class=\"text-gray-500\">{{ getCheckboxDescription(checkbox) }}</p>\r\n            </div>\r\n        </div>\r\n        }\r\n    `,\r\n    styles: [],\r\n})\r\nexport class TwCheckboxComponent {\r\n    @Input() checkbox: CheckboxItem | CheckboxItem[] = [];\r\n\r\n    isArray(checkbox: CheckboxItem | CheckboxItem[]): checkbox is CheckboxItem[] {\r\n        return Array.isArray(checkbox);\r\n    }\r\n\r\n    getCheckboxId(checkbox: CheckboxItem): string {\r\n        return checkbox.id;\r\n    }\r\n\r\n    getCheckboxName(checkbox: CheckboxItem): string {\r\n        return checkbox.name;\r\n    }\r\n\r\n    getCheckboxDescription(checkbox: CheckboxItem): string {\r\n        return checkbox.description;\r\n    }\r\n}\r\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": []
+        },
+        {
+            "name": "TwInputComponent",
+            "id": "component-TwInputComponent-882c724dece592a475f346264cb1118ae13e649396335dda0f6569a2c54812c394b872d85f6131e86291f5703c2b93c35b2b58101bf34f90efabf0c1c7a0c574",
+            "file": "projects/ng-lib/src/lib/modules/types/tw-input.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "tw-input",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<div *ngIf=\"isArray(input); else singleInput\">\n    @for(inp of input; track $index) {\n    <fieldset>\n        <legend class=\"sr-only\">Input Fields</legend>\n        <div class=\"space-y-5\">\n            <div class=\"relative flex items-start\">\n                <div class=\"flex h-6 items-center\">\n                    <input\n                        [id]=\"getInputId(inp)\"\n                        [name]=\"getInputName(inp)\"\n                        [placeholder]=\"getInputPlaceholder(inp)\"\n                        [value]=\"getInputValue(inp)\"\n                        [attr.aria-invalid]=\"getAriaInvalid(inp)\"\n                        [attr.aria-describedby]=\"getInputId(inp) + '-error'\"\n                        type=\"text\"\n                        class=\"block w-full rounded-md border-0 py-1.5 pr-10 text-red-900 ring-1 ring-inset ring-red-300 placeholder:text-red-300 focus:ring-2 focus:ring-inset focus:ring-red-500 sm:text-sm sm:leading-6\"\n                    />\n                </div>\n                <div class=\"absolute inset-y-0 right-0 flex items-center pr-3\">\n                    <svg class=\"h-5 w-5 text-red-500\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\">\n                        <path\n                            fill-rule=\"evenodd\"\n                            d=\"M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z\"\n                            clip-rule=\"evenodd\"\n                        />\n                    </svg>\n                </div>\n            </div>\n            <p class=\"mt-2 text-sm text-red-600\" [id]=\"getInputId(inp) + '-error'\">{{ getErrorMessage(inp) }}</p>\n        </div>\n    </fieldset>\n    }\n</div>\n\n<ng-template #singleInput>\n    <div class=\"relative flex items-start\">\n        <div class=\"flex h-6 items-center\">\n            <input\n                [id]=\"getInputId(input)\"\n                [name]=\"getInputName(input)\"\n                [placeholder]=\"getInputPlaceholder(input)\"\n                [value]=\"getInputValue(input)\"\n                [attr.aria-invalid]=\"getAriaInvalid(input)\"\n                [attr.aria-describedby]=\"getInputId(input) + '-error'\"\n                type=\"text\"\n                class=\"block w-full rounded-md border-0 py-1.5 pr-10 text-red-900 ring-1 ring-inset ring-red-300 placeholder:text-red-300 focus:ring-2 focus:ring-inset focus:ring-red-500 sm:text-sm sm:leading-6\"\n            />\n        </div>\n        <div class=\"absolute inset-y-0 right-0 flex items-center pr-3\">\n            <svg class=\"h-5 w-5 text-red-500\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\">\n                <path\n                    fill-rule=\"evenodd\"\n                    d=\"M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z\"\n                    clip-rule=\"evenodd\"\n                />\n            </svg>\n        </div>\n    </div>\n    <p class=\"mt-2 text-sm text-red-600\" [id]=\"getInputId(input) + '-error'\">{{ getErrorMessage(input) }}</p>\n</ng-template>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "input",
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 80,
+                    "type": "InputItem | InputItem[]",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "getAriaInvalid",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "InputItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 102,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "InputItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getErrorMessage",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "InputItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 106,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "InputItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getInputId",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "InputItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 86,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "InputItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getInputName",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "InputItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 90,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "InputItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getInputPlaceholder",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "InputItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 94,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "InputItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getInputValue",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "InputItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 98,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "InputItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "isArray",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "InputItem | InputItem[]",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "InputItem[]",
+                    "typeParameters": [],
+                    "line": 82,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "InputItem | InputItem[]",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, Input } from '@angular/core';\r\n\r\nexport interface InputItem {\r\n    id: string;\r\n    name: string;\r\n    placeholder: string;\r\n    hint?: string;\r\n    value?: string;\r\n    ariaInvalid?: boolean;\r\n    errorMessage?: string;\r\n}\r\n\r\n@Component({\r\n    selector: 'tw-input',\r\n    standalone: true,\r\n    template: `\r\n        <div *ngIf=\"isArray(input); else singleInput\">\r\n            @for(inp of input; track $index) {\r\n            <fieldset>\r\n                <legend class=\"sr-only\">Input Fields</legend>\r\n                <div class=\"space-y-5\">\r\n                    <div class=\"relative flex items-start\">\r\n                        <div class=\"flex h-6 items-center\">\r\n                            <input\r\n                                [id]=\"getInputId(inp)\"\r\n                                [name]=\"getInputName(inp)\"\r\n                                [placeholder]=\"getInputPlaceholder(inp)\"\r\n                                [value]=\"getInputValue(inp)\"\r\n                                [attr.aria-invalid]=\"getAriaInvalid(inp)\"\r\n                                [attr.aria-describedby]=\"getInputId(inp) + '-error'\"\r\n                                type=\"text\"\r\n                                class=\"block w-full rounded-md border-0 py-1.5 pr-10 text-red-900 ring-1 ring-inset ring-red-300 placeholder:text-red-300 focus:ring-2 focus:ring-inset focus:ring-red-500 sm:text-sm sm:leading-6\"\r\n                            />\r\n                        </div>\r\n                        <div class=\"absolute inset-y-0 right-0 flex items-center pr-3\">\r\n                            <svg class=\"h-5 w-5 text-red-500\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\">\r\n                                <path\r\n                                    fill-rule=\"evenodd\"\r\n                                    d=\"M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z\"\r\n                                    clip-rule=\"evenodd\"\r\n                                />\r\n                            </svg>\r\n                        </div>\r\n                    </div>\r\n                    <p class=\"mt-2 text-sm text-red-600\" [id]=\"getInputId(inp) + '-error'\">{{ getErrorMessage(inp) }}</p>\r\n                </div>\r\n            </fieldset>\r\n            }\r\n        </div>\r\n\r\n        <ng-template #singleInput>\r\n            <div class=\"relative flex items-start\">\r\n                <div class=\"flex h-6 items-center\">\r\n                    <input\r\n                        [id]=\"getInputId(input)\"\r\n                        [name]=\"getInputName(input)\"\r\n                        [placeholder]=\"getInputPlaceholder(input)\"\r\n                        [value]=\"getInputValue(input)\"\r\n                        [attr.aria-invalid]=\"getAriaInvalid(input)\"\r\n                        [attr.aria-describedby]=\"getInputId(input) + '-error'\"\r\n                        type=\"text\"\r\n                        class=\"block w-full rounded-md border-0 py-1.5 pr-10 text-red-900 ring-1 ring-inset ring-red-300 placeholder:text-red-300 focus:ring-2 focus:ring-inset focus:ring-red-500 sm:text-sm sm:leading-6\"\r\n                    />\r\n                </div>\r\n                <div class=\"absolute inset-y-0 right-0 flex items-center pr-3\">\r\n                    <svg class=\"h-5 w-5 text-red-500\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\">\r\n                        <path\r\n                            fill-rule=\"evenodd\"\r\n                            d=\"M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z\"\r\n                            clip-rule=\"evenodd\"\r\n                        />\r\n                    </svg>\r\n                </div>\r\n            </div>\r\n            <p class=\"mt-2 text-sm text-red-600\" [id]=\"getInputId(input) + '-error'\">{{ getErrorMessage(input) }}</p>\r\n        </ng-template>\r\n    `,\r\n})\r\nexport class TwInputComponent {\r\n    @Input() input: InputItem | InputItem[] = [];\r\n\r\n    isArray(input: InputItem | InputItem[]): input is InputItem[] {\r\n        return Array.isArray(input);\r\n    }\r\n\r\n    getInputId(input: InputItem): string {\r\n        return input.id;\r\n    }\r\n\r\n    getInputName(input: InputItem): string {\r\n        return input.name;\r\n    }\r\n\r\n    getInputPlaceholder(input: InputItem): string {\r\n        return input.placeholder;\r\n    }\r\n\r\n    getInputValue(input: InputItem): string {\r\n        return input.value || '';\r\n    }\r\n\r\n    getAriaInvalid(input: InputItem): boolean {\r\n        return input.ariaInvalid || false;\r\n    }\r\n\r\n    getErrorMessage(input: InputItem): string {\r\n        return input.errorMessage || '';\r\n    }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -312,7 +632,7 @@
         },
         {
             "name": "TwRadioComponent",
-            "id": "component-TwRadioComponent-e475bb8645187d2277dc9363cd0b9e26402fc5d772efd50c0b00c280da3a57ab19f770eadb56113a0ce0242f1d1277298da387e8c2c30c8c9ea0f223c683ec27",
+            "id": "component-TwRadioComponent-b6ee40d8c70d586a4bac927022dd36c461cfaed7ab9b73bb4e8749c30f432d13cd4e95e433d7583173fabe80d600981f00667fb0ea30e9cef67b828678197a64",
             "file": "projects/ng-lib/src/lib/modules/types/tw-radio.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -353,13 +673,39 @@
                     "optional": false,
                     "returnType": "RadioItem[]",
                     "typeParameters": [],
-                    "line": 58,
+                    "line": 74,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
                             "name": "radio",
                             "type": "RadioItem | RadioItem[]",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "ngOnChanges",
+                    "args": [
+                        {
+                            "type": "SimpleChanges",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 58,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "type": "SimpleChanges",
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
@@ -378,11 +724,14 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input } from '@angular/core';\r\n\r\nexport interface RadioItem {\r\n    id: string;\r\n    name: string;\r\n    description: string;\r\n}\r\n\r\n@Component({\r\n    standalone: true,\r\n    selector: 'tw-radio',\r\n    template: `\r\n        @if (isArray(radio)) {\r\n        <fieldset aria-label=\"Plan\">\r\n            <div class=\"space-y-5\">\r\n                @for (r of radio; track $index) {\r\n                <div class=\"relative flex items-start\">\r\n                    <div class=\"flex h-6 items-center\">\r\n                        <input\r\n                            [id]=\"r.id\"\r\n                            [attr.aria-describedby]=\"r.id + '-description'\"\r\n                            name=\"plan\"\r\n                            type=\"radio\"\r\n                            class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\r\n                        />\r\n                    </div>\r\n                    <div class=\"ml-3 text-sm leading-6\">\r\n                        <label [for]=\"r.id\" class=\"font-medium text-gray-900\">{{ r.name }}</label>\r\n                        <p [id]=\"r.id + '-description'\" class=\"text-gray-500\">{{ r.description }}</p>\r\n                    </div>\r\n                </div>\r\n                }\r\n            </div>\r\n        </fieldset>\r\n        } @else {\r\n        <div class=\"relative flex items-start\">\r\n            <div class=\"flex h-6 items-center\">\r\n                <input\r\n                    [id]=\"radio.id\"\r\n                    [attr.aria-describedby]=\"radio.id + '-description'\"\r\n                    [name]=\"radio.name\"\r\n                    type=\"radio\"\r\n                    class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\r\n                />\r\n            </div>\r\n            <div class=\"ml-3 text-sm leading-6\">\r\n                <label [for]=\"radio.id\" class=\"font-medium text-gray-900\">{{ radio.name }}</label>\r\n                <p [id]=\"radio.id + '-description'\" class=\"text-gray-500\">{{ radio.description }}</p>\r\n            </div>\r\n        </div>\r\n        }\r\n    `,\r\n    styles: [],\r\n})\r\nexport class TwRadioComponent {\r\n    @Input() radio: RadioItem | RadioItem[] = [];\r\n\r\n    isArray(radio: RadioItem | RadioItem[]): radio is RadioItem[] {\r\n        return Array.isArray(radio);\r\n    }\r\n}\r\n",
+            "sourceCode": "import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';\r\n\r\nexport interface RadioItem {\r\n    id: string;\r\n    name: string;\r\n    description: string;\r\n}\r\n\r\n@Component({\r\n    standalone: true,\r\n    selector: 'tw-radio',\r\n    template: `\r\n        @if (isArray(radio)) {\r\n        <fieldset aria-label=\"Plan\">\r\n            <div class=\"space-y-5\">\r\n                @for (r of radio; track $index) {\r\n                <div class=\"relative flex items-start\">\r\n                    <div class=\"flex h-6 items-center\">\r\n                        <input\r\n                            [id]=\"r.id\"\r\n                            [attr.aria-describedby]=\"r.id + '-description'\"\r\n                            name=\"plan\"\r\n                            type=\"radio\"\r\n                            class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\r\n                        />\r\n                    </div>\r\n                    <div class=\"ml-3 text-sm leading-6\">\r\n                        <label [for]=\"r.id\" class=\"font-medium text-gray-900\">{{ r.name }}</label>\r\n                        <p [id]=\"r.id + '-description'\" class=\"text-gray-500\">{{ r.description }}</p>\r\n                    </div>\r\n                </div>\r\n                }\r\n            </div>\r\n        </fieldset>\r\n        } @else {\r\n        <div class=\"relative flex items-start\">\r\n            <div class=\"flex h-6 items-center\">\r\n                <input\r\n                    [id]=\"radio.id\"\r\n                    [attr.aria-describedby]=\"radio.id + '-description'\"\r\n                    [name]=\"radio.name\"\r\n                    type=\"radio\"\r\n                    class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\r\n                />\r\n            </div>\r\n            <div class=\"ml-3 text-sm leading-6\">\r\n                <label [for]=\"radio.id\" class=\"font-medium text-gray-900\">{{ radio.name }}</label>\r\n                <p [id]=\"radio.id + '-description'\" class=\"text-gray-500\">{{ radio.description }}</p>\r\n            </div>\r\n        </div>\r\n        }\r\n    `,\r\n    styles: [],\r\n})\r\nexport class TwRadioComponent implements OnChanges {\r\n    @Input() radio: RadioItem | RadioItem[] = [];\r\n\r\n    ngOnChanges({ radio }: SimpleChanges): void {\r\n        if (radio) {\r\n            const isString = radio.currentValue;\r\n            if (typeof isString === 'string') {\r\n                try {\r\n                    this.radio = JSON.parse(isString);\r\n                } catch (e) {\r\n                    console.error('Failed to parse radio input:', e, isString);\r\n                    this.radio = [];\r\n                }\r\n            } else {\r\n                this.radio = isString;\r\n            }\r\n        }\r\n    }\r\n\r\n    isArray(radio: RadioItem | RadioItem[]): radio is RadioItem[] {\r\n        return Array.isArray(radio);\r\n    }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
-            "extends": []
+            "extends": [],
+            "implements": [
+                "OnChanges"
+            ]
         }
     ],
     "modules": [],
@@ -397,6 +746,16 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "{\r\n    args: {\r\n        checkbox: [\r\n            { id: 'comments', name: 'Comments', description: 'Get notified when someone posts a comment on a posting.' },\r\n            { id: 'candidates', name: 'Candidates', description: 'Get notified when a candidate applies for a job.' },\r\n            { id: 'offers', name: 'Offers', description: 'Get notified when a candidate accepts or rejects an offer.' },\r\n        ] as CheckboxItem[],\r\n    },\r\n}"
+            },
+            {
+                "name": "CheckboxGroup",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n    args: {\r\n        input: [\r\n            {\r\n                id: 'comments',\r\n                name: 'Comments',\r\n                placeholder: 'Comments Placeholder',\r\n                hint: 'Get notified when someone posts a comment on a posting.',\r\n            },\r\n            { id: 'candidates', name: 'Candidates', hint: 'Get notified when a candidate applies for a job.' },\r\n            { id: 'offers', name: 'Offers', hint: 'Get notified when a candidate accepts or rejects an offer.' },\r\n        ] as InputItem[],\r\n    },\r\n}"
             },
             {
                 "name": "config",
@@ -506,7 +865,17 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<TwCheckboxComponent>",
-                "defaultValue": "{\r\n    title: 'TailwindUI/Field/Types/TwCheckboxComponent',\r\n    component: TwCheckboxComponent,\r\n    tags: ['autodocs'],\r\n    parameters: {\r\n        layout: 'fullscreen',\r\n    },\r\n    decorators: [\r\n        moduleMetadata({\r\n            imports: [TwCheckboxComponent],\r\n        }),\r\n        componentWrapperDecorator(\r\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\r\n              <div style=\"width: '80%'; margin: '0 auto'\">\r\n              ${story}\r\n              </div>\r\n            </div>`\r\n        ),\r\n    ],\r\n    args: {},\r\n}"
+                "defaultValue": "{\r\n    title: 'TailwindUI/Field/Types/Checkbox',\r\n    component: TwCheckboxComponent,\r\n    tags: ['autodocs'],\r\n    parameters: {\r\n        layout: 'fullscreen',\r\n    },\r\n    decorators: [\r\n        moduleMetadata({\r\n            imports: [TwCheckboxComponent],\r\n        }),\r\n        componentWrapperDecorator(\r\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\r\n              <div style=\"width: '80%'; margin: '0 auto'\">\r\n              ${story}\r\n              </div>\r\n            </div>`\r\n        ),\r\n    ],\r\n    args: {},\r\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<TwInputComponent>",
+                "defaultValue": "{\r\n    title: 'TailwindUI/Field/Types/Input',\r\n    component: TwInputComponent,\r\n    tags: ['autodocs'],\r\n    parameters: {\r\n        layout: 'fullscreen',\r\n    },\r\n    decorators: [\r\n        moduleMetadata({\r\n            imports: [TwInputComponent],\r\n        }),\r\n        componentWrapperDecorator(\r\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\r\n              <div style=\"width: '80%'; margin: '0 auto'\">\r\n              ${story}\r\n              </div>\r\n            </div>`\r\n        ),\r\n    ],\r\n    args: {},\r\n}"
             },
             {
                 "name": "meta",
@@ -516,7 +885,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<TwRadioComponent>",
-                "defaultValue": "{\r\n    title: 'TailwindUI/Field/Types/TwRadioComponent',\r\n    component: TwRadioComponent,\r\n    tags: ['autodocs'],\r\n    parameters: {\r\n        layout: 'fullscreen',\r\n    },\r\n    decorators: [\r\n        moduleMetadata({\r\n            imports: [TwRadioComponent],\r\n        }),\r\n        componentWrapperDecorator(\r\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\r\n              <div style=\"width: '80%'; margin: '0 auto'\">\r\n              ${story}\r\n              </div>\r\n            </div>`\r\n        ),\r\n    ],\r\n    args: {},\r\n}"
+                "defaultValue": "{\r\n    title: 'TailwindUI/Field/Types/Radio',\r\n    component: TwRadioComponent,\r\n    tags: ['autodocs'],\r\n    parameters: {\r\n        layout: 'fullscreen',\r\n    },\r\n    decorators: [\r\n        moduleMetadata({\r\n            imports: [TwRadioComponent],\r\n        }),\r\n        componentWrapperDecorator(\r\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\r\n              <div style=\"width: '80%'; margin: '0 auto'\">\r\n              ${story}\r\n              </div>\r\n            </div>`\r\n        ),\r\n    ],\r\n    args: {},\r\n}"
             },
             {
                 "name": "preview",
@@ -567,6 +936,16 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "{\r\n    args: {\r\n        checkbox: { id: 'newsletter', name: 'Newsletter', description: 'Get notified when there is a new newsletter.' } as CheckboxItem,\r\n    },\r\n}"
+            },
+            {
+                "name": "SingleCheckbox",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n    args: {\r\n        input: {\r\n            id: 'newsletter',\r\n            name: 'Newsletter',\r\n            placeholder: 'Newsletter Placeholder',\r\n            hint: 'Get notified when there is a new newsletter.',\r\n        } as InputItem,\r\n    },\r\n}"
             },
             {
                 "name": "SingleRadio",
@@ -639,6 +1018,17 @@
                 "name": "Story",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
+                "rawtype": "StoryObj<TwInputComponent>",
+                "file": "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 183
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
                 "rawtype": "StoryObj<TwRadioComponent>",
                 "file": "projects/ng-lib/src/lib/modules/types/tw-radio.stories.ts",
                 "deprecated": false,
@@ -668,7 +1058,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<TwCheckboxComponent>",
-                    "defaultValue": "{\r\n    title: 'TailwindUI/Field/Types/TwCheckboxComponent',\r\n    component: TwCheckboxComponent,\r\n    tags: ['autodocs'],\r\n    parameters: {\r\n        layout: 'fullscreen',\r\n    },\r\n    decorators: [\r\n        moduleMetadata({\r\n            imports: [TwCheckboxComponent],\r\n        }),\r\n        componentWrapperDecorator(\r\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\r\n              <div style=\"width: '80%'; margin: '0 auto'\">\r\n              ${story}\r\n              </div>\r\n            </div>`\r\n        ),\r\n    ],\r\n    args: {},\r\n}"
+                    "defaultValue": "{\r\n    title: 'TailwindUI/Field/Types/Checkbox',\r\n    component: TwCheckboxComponent,\r\n    tags: ['autodocs'],\r\n    parameters: {\r\n        layout: 'fullscreen',\r\n    },\r\n    decorators: [\r\n        moduleMetadata({\r\n            imports: [TwCheckboxComponent],\r\n        }),\r\n        componentWrapperDecorator(\r\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\r\n              <div style=\"width: '80%'; margin: '0 auto'\">\r\n              ${story}\r\n              </div>\r\n            </div>`\r\n        ),\r\n    ],\r\n    args: {},\r\n}"
                 },
                 {
                     "name": "SingleCheckbox",
@@ -679,6 +1069,38 @@
                     "deprecationMessage": "",
                     "type": "Story",
                     "defaultValue": "{\r\n    args: {\r\n        checkbox: { id: 'newsletter', name: 'Newsletter', description: 'Get notified when there is a new newsletter.' } as CheckboxItem,\r\n    },\r\n}"
+                }
+            ],
+            "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts": [
+                {
+                    "name": "CheckboxGroup",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n    args: {\r\n        input: [\r\n            {\r\n                id: 'comments',\r\n                name: 'Comments',\r\n                placeholder: 'Comments Placeholder',\r\n                hint: 'Get notified when someone posts a comment on a posting.',\r\n            },\r\n            { id: 'candidates', name: 'Candidates', hint: 'Get notified when a candidate applies for a job.' },\r\n            { id: 'offers', name: 'Offers', hint: 'Get notified when a candidate accepts or rejects an offer.' },\r\n        ] as InputItem[],\r\n    },\r\n}"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<TwInputComponent>",
+                    "defaultValue": "{\r\n    title: 'TailwindUI/Field/Types/Input',\r\n    component: TwInputComponent,\r\n    tags: ['autodocs'],\r\n    parameters: {\r\n        layout: 'fullscreen',\r\n    },\r\n    decorators: [\r\n        moduleMetadata({\r\n            imports: [TwInputComponent],\r\n        }),\r\n        componentWrapperDecorator(\r\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\r\n              <div style=\"width: '80%'; margin: '0 auto'\">\r\n              ${story}\r\n              </div>\r\n            </div>`\r\n        ),\r\n    ],\r\n    args: {},\r\n}"
+                },
+                {
+                    "name": "SingleCheckbox",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n    args: {\r\n        input: {\r\n            id: 'newsletter',\r\n            name: 'Newsletter',\r\n            placeholder: 'Newsletter Placeholder',\r\n            hint: 'Get notified when there is a new newsletter.',\r\n        } as InputItem,\r\n    },\r\n}"
                 }
             ],
             ".storybook/main.ts": [
@@ -840,7 +1262,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<TwRadioComponent>",
-                    "defaultValue": "{\r\n    title: 'TailwindUI/Field/Types/TwRadioComponent',\r\n    component: TwRadioComponent,\r\n    tags: ['autodocs'],\r\n    parameters: {\r\n        layout: 'fullscreen',\r\n    },\r\n    decorators: [\r\n        moduleMetadata({\r\n            imports: [TwRadioComponent],\r\n        }),\r\n        componentWrapperDecorator(\r\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\r\n              <div style=\"width: '80%'; margin: '0 auto'\">\r\n              ${story}\r\n              </div>\r\n            </div>`\r\n        ),\r\n    ],\r\n    args: {},\r\n}"
+                    "defaultValue": "{\r\n    title: 'TailwindUI/Field/Types/Radio',\r\n    component: TwRadioComponent,\r\n    tags: ['autodocs'],\r\n    parameters: {\r\n        layout: 'fullscreen',\r\n    },\r\n    decorators: [\r\n        moduleMetadata({\r\n            imports: [TwRadioComponent],\r\n        }),\r\n        componentWrapperDecorator(\r\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\r\n              <div style=\"width: '80%'; margin: '0 auto'\">\r\n              ${story}\r\n              </div>\r\n            </div>`\r\n        ),\r\n    ],\r\n    args: {},\r\n}"
                 },
                 {
                     "name": "RadioGroup",
@@ -913,6 +1335,19 @@
                     "subtype": "typealias",
                     "rawtype": "StoryObj<TwCheckboxComponent>",
                     "file": "projects/ng-lib/src/lib/modules/types/tw-checkbox.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 183
+                }
+            ],
+            "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "StoryObj<TwInputComponent>",
+                    "file": "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "description": "",
@@ -1018,12 +1453,60 @@
                 "status": "low"
             },
             {
+                "filePath": "projects/ng-lib/src/lib/modules/types/tw-input.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "TwInputComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/9",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/modules/types/tw-input.component.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "InputItem",
+                "coveragePercent": 0,
+                "coverageCount": "0/8",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "CheckboxGroup",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/modules/types/tw-input.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "SingleCheckbox",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "projects/ng-lib/src/lib/modules/types/tw-radio.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "TwRadioComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/4",
                 "status": "low"
             },
             {
