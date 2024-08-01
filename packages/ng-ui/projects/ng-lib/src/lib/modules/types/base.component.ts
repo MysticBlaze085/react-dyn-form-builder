@@ -3,6 +3,11 @@ import { FormControl, ValidatorFn, Validators } from '@angular/forms';
 import { Component } from '@angular/core';
 import { TitleCasePipe } from '@angular/common';
 
+export interface OptionItem {
+    label: string;
+    value: string;
+}
+
 export interface FieldItem {
     description?: string;
     id: string;
@@ -10,6 +15,7 @@ export interface FieldItem {
     placeholder: string;
     hint?: string;
     value?: string;
+    options?: OptionItem[];
     ariaInvalid?: boolean;
     errorMessage?: string;
     required?: boolean;
@@ -38,6 +44,10 @@ export class BaseComponent {
 
     getValue(item: FieldItem): string {
         return item.value ?? '';
+    }
+
+    getOptions(item: FieldItem): OptionItem[] {
+        return item.options ?? [];
     }
 
     getAriaInvalid(item: FieldItem): boolean {

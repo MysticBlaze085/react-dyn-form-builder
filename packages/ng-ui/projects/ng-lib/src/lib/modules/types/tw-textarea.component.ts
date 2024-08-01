@@ -9,8 +9,9 @@ import { BaseComponent, FieldItem } from './base.component';
     standalone: true,
     imports: [CommonModule, ReactiveFormsModule],
     template: `
-        <div class="relative flex items-start">
-            <div class="flex h-100 items-center">
+        <div class="relative flex flex-col">
+            <label for="textarea" class="block text-sm font-medium leading-6 text-gray-900 mb-1">{{ getName(input) | titlecase }}</label>
+            <div class="relative">
                 <textarea
                     [id]="getId(input)"
                     [name]="getName(input)"
@@ -24,20 +25,20 @@ import { BaseComponent, FieldItem } from './base.component';
                     }"
                     class="block w-full rounded-md py-1.5 pr-10 ring-1 ring-inset focus:ring-2 sm:text-sm sm:leading-6"
                 ></textarea>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                    <svg *ngIf="isError(input)" class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path
+                            fill-rule="evenodd"
+                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z"
+                            clip-rule="evenodd"
+                        />
+                    </svg>
+                </div>
             </div>
-            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                <svg *ngIf="isError(input)" class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path
-                        fill-rule="evenodd"
-                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z"
-                        clip-rule="evenodd"
-                    />
-                </svg>
-            </div>
+            <p class="mt-2 text-sm text-red-600" [id]="getId(input) + '-error'" *ngIf="isError(input)">
+                {{ getErrorMessage(input) }}
+            </p>
         </div>
-        <p class="mt-2 text-sm text-red-600" [id]="getId(input) + '-error'" *ngIf="isError(input)">
-            {{ getErrorMessage(input) }}
-        </p>
     `,
 })
 export class TwTextareaComponent extends BaseComponent implements OnInit {

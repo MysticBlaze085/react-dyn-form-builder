@@ -3,13 +3,6 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 import { CommonModule } from '@angular/common';
-
-export interface RadioItem {
-    id: string;
-    name: string;
-    description: string;
-}
-
 @Component({
     standalone: true,
     selector: 'tw-radio',
