@@ -1,8 +1,8 @@
 import { Meta, StoryObj, componentWrapperDecorator, moduleMetadata } from '@storybook/angular';
 import { expect, userEvent, within } from '@storybook/test';
 
-import { FieldItem } from './base.component';
-import { TwSelectComponent } from './tw-select.component';
+import { FieldItem } from '../base.component';
+import { TwSelectComponent } from '../tw-select.component';
 
 const meta: Meta<TwSelectComponent> = {
     title: 'TailwindUI/Field/Types/Select',

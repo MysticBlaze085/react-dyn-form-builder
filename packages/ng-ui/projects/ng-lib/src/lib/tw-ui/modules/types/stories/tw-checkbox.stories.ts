@@ -1,8 +1,8 @@
 import { Meta, StoryObj, componentWrapperDecorator, moduleMetadata } from '@storybook/angular';
 import { userEvent, within } from '@storybook/test';
 
-import { FieldItem } from './base.component';
-import { TwCheckboxComponent } from './tw-checkbox.component';
+import { FieldItem } from '../base.component';
+import { TwCheckboxComponent } from '../tw-checkbox.component';
 
 const meta: Meta<TwCheckboxComponent> = {
     title: 'TailwindUI/Field/Types/Checkbox',

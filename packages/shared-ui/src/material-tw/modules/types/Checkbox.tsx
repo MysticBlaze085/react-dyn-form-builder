@@ -30,9 +30,6 @@ export const CheckboxDefault: React.FC<CheckboxProps> = ({ ...props }) => {
 
     const itemHandler = item ? item : { id: '1', value: 'Example' };
 
-    //FIXME: issue where clicking on the checkbox does not update the value it get a boolean value and not the item value
-    //FIXME: this only happens in a group
-
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <Checkbox

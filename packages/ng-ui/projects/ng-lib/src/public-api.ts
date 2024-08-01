@@ -4,5 +4,9 @@
 
 // export * from './lib/ng-lib.service';
 // export * from './lib/ng-lib.component';
-export * from './lib/modules/types/tw-checkbox.component';
-export * from './lib/modules/types/tw-radio.component';
+export * from './lib/tw-ui/modules/types/base.component';
+export * from './lib/tw-ui/modules/types/tw-checkbox.component';
+export * from './lib/tw-ui/modules/types/tw-input.component';
+export * from './lib/tw-ui/modules/types/tw-textarea.component';
+export * from './lib/tw-ui/modules/types/tw-radio.component';
+export * from './lib/tw-ui/modules/types/tw-select.component';

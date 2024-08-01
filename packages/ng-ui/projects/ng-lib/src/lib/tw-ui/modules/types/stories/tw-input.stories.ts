@@ -1,9 +1,9 @@
 import { Meta, StoryObj, componentWrapperDecorator, moduleMetadata } from '@storybook/angular';
 import { userEvent, within } from '@storybook/test';
 
-import { FieldItem } from './base.component';
+import { FieldItem } from '../base.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TwInputComponent } from './tw-input.component';
+import { TwInputComponent } from '../tw-input.component';
 
 const meta: Meta<TwInputComponent> = {
     title: 'TailwindUI/Field/Types/Input',

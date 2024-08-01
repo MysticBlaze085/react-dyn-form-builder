@@ -1,8 +1,8 @@
 import { Meta, StoryObj, componentWrapperDecorator, moduleMetadata } from '@storybook/angular';
 import { userEvent, within } from '@storybook/test';
 
-import { FieldItem } from './base.component';
-import { TwRadioComponent } from './tw-radio.component';
+import { FieldItem } from '../base.component';
+import { TwRadioComponent } from '../tw-radio.component';
 
 const meta: Meta<TwRadioComponent> = {
     title: 'TailwindUI/Field/Types/Radio',

@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
     standalone: true,
     imports: [CommonModule, ReactiveFormsModule],
     template: `
-        <div class="min-w-[{{ width }}]">
+        <div [ngClass]="width">
             <label id="listbox-label" class="block text-sm font-medium leading-6 text-gray-900">{{ getName(select) }}</label>
             <div class="relative mt-2">
                 <button
@@ -84,7 +84,7 @@ export class TwSelectComponent extends BaseComponent implements OnInit {
         name: 'select',
         placeholder: 'select',
     };
-    @Input() width: string = '200px';
+    @Input() width: string = 'min-w-[200px]';
     override formControls: { [key: string]: FormControl } = {};
 
     selectedOption: any;
