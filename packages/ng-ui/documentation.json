@@ -3,12 +3,12 @@
     "interfaces": [
         {
             "name": "FieldItem",
-            "id": "interface-FieldItem-317ff6c4feea2826b253fe829371b71b8ae30eba2cccfd39288ce2abb34f7af95cfe89fb4d92663a93835701fc4cda135a23e17f9ff4f237cae82efec3f22d87",
+            "id": "interface-FieldItem-18b0126d12bd9901508f895040dfce764b0c37a18e87a5d08ed493e510457fd37e2fea342d07b663bd0b88bc755148f246ee4c19692fa2643f6d4f71e3b6c739",
             "file": "projects/ng-lib/src/lib/modules/types/base.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { FormControl, ValidatorFn, Validators } from '@angular/forms';\n\nimport { Component } from '@angular/core';\nimport { TitleCasePipe } from '@angular/common';\n\nexport interface FieldItem {\n    description?: string;\n    id: string;\n    name: string;\n    placeholder: string;\n    hint?: string;\n    value?: string;\n    ariaInvalid?: boolean;\n    errorMessage?: string;\n    required?: boolean;\n    minLength?: number;\n    maxLength?: number;\n}\n\n@Component({\n    selector: 'tw-base',\n    template: ``,\n})\nexport class BaseComponent {\n    formControls: { [key: string]: FormControl } = {};\n\n    getId(input: FieldItem): string {\n        return input.id;\n    }\n\n    getName(input: FieldItem): string {\n        return input.name;\n    }\n\n    getPlaceholder(input: FieldItem): string {\n        return input.placeholder ?? new TitleCasePipe().transform(input.name);\n    }\n\n    getValue(input: FieldItem): string {\n        return input.value ?? '';\n    }\n\n    getAriaInvalid(input: FieldItem): boolean {\n        const control = this.formControls[input.name];\n        return control && control.invalid && (control.dirty || control.touched);\n    }\n\n    getErrorMessage(input: FieldItem): string {\n        const control = this.formControls[input.id];\n        if (control) {\n            if (control.errors?.['required']) {\n                return 'This field is required.';\n            } else if (control.errors?.['minlength']) {\n                return `Minimum length is ${control.errors['minlength'].requiredLength} characters.`;\n            } else if (control.errors?.['maxlength']) {\n                return `Maximum length is ${control.errors['maxlength'].requiredLength} characters.`;\n            } else if (control.errors?.['pattern']) {\n                return 'Invalid format.';\n            }\n        }\n        return input.errorMessage ?? '';\n    }\n\n    public getValidators(item: FieldItem) {\n        const validators: ValidatorFn[] = [];\n        if (item.required) validators.push(Validators.required);\n        if (item.minLength) validators.push(Validators.minLength(item.minLength));\n        if (item.maxLength) validators.push(Validators.maxLength(item.maxLength));\n        // Add pattern or other validators if needed\n        return validators;\n    }\n\n    onBlur(name: string) {\n        const control = this.formControls[name];\n        if (control) {\n            control.markAsTouched();\n        }\n    }\n\n    onChange(name: string) {\n        const control = this.formControls[name];\n        if (control) {\n            control.updateValueAndValidity();\n        }\n    }\n\n    isError(input: FieldItem): boolean {\n        const control = this.formControls[input.name];\n        return control ? control.invalid && (control.dirty || control.touched) : false;\n    }\n}\n",
+            "sourceCode": "import { FormControl, ValidatorFn, Validators } from '@angular/forms';\n\nimport { Component } from '@angular/core';\nimport { TitleCasePipe } from '@angular/common';\n\nexport interface FieldItem {\n    description?: string;\n    id: string;\n    name: string;\n    placeholder: string;\n    hint?: string;\n    value?: string;\n    ariaInvalid?: boolean;\n    errorMessage?: string;\n    required?: boolean;\n    minLength?: number;\n    maxLength?: number;\n}\n\n@Component({\n    selector: 'tw-base',\n    template: ``,\n})\nexport class BaseComponent {\n    formControls: { [key: string]: FormControl } = {};\n\n    getId(item: FieldItem): string {\n        return item.id;\n    }\n\n    getName(item: FieldItem): string {\n        return item.name;\n    }\n\n    getPlaceholder(item: FieldItem): string {\n        return item.placeholder ?? new TitleCasePipe().transform(item.name);\n    }\n\n    getValue(item: FieldItem): string {\n        return item.value ?? '';\n    }\n\n    getAriaInvalid(item: FieldItem): boolean {\n        const control = this.formControls[item.name];\n        return control && control.invalid && (control.dirty || control.touched);\n    }\n\n    getErrorMessage(item: FieldItem): string {\n        const control = this.formControls[item.id];\n        if (control) {\n            if (control.errors?.['required']) {\n                return 'This field is required.';\n            } else if (control.errors?.['minlength']) {\n                return `Minimum length is ${control.errors['minlength'].requiredLength} characters.`;\n            } else if (control.errors?.['maxlength']) {\n                return `Maximum length is ${control.errors['maxlength'].requiredLength} characters.`;\n            } else if (control.errors?.['pattern']) {\n                return 'Invalid format.';\n            }\n        }\n        return item.errorMessage ?? '';\n    }\n\n    public getValidators(item: FieldItem) {\n        const validators: ValidatorFn[] = [];\n        if (item.required) validators.push(Validators.required);\n        if (item.minLength) validators.push(Validators.minLength(item.minLength));\n        if (item.maxLength) validators.push(Validators.maxLength(item.maxLength));\n        // Add pattern or other validators if needed\n        return validators;\n    }\n\n    getDescription(item: FieldItem): string {\n        return item?.description ?? '';\n    }\n\n    onBlur(name: string) {\n        const control = this.formControls[name];\n        if (control) {\n            control.markAsTouched();\n        }\n    }\n\n    onChange(name: string) {\n        const control = this.formControls[name];\n        if (control) {\n            control.updateValueAndValidity();\n        }\n    }\n\n    isError(item: FieldItem): boolean {\n        const control = this.formControls[item.name];\n        return control ? control.invalid && (control.dirty || control.touched) : false;\n    }\n}\n",
             "properties": [
                 {
                     "name": "ariaInvalid",
@@ -117,12 +117,12 @@
         },
         {
             "name": "RadioItem",
-            "id": "interface-RadioItem-38cd28ff8f98321d95fe75086ef8aebc422327e6d4cf19dedafadb4cfa08d68b53df922774fbaf4f1feac6aad3a5e289544229814ed8dfbeefea34f3e7926f0c",
+            "id": "interface-RadioItem-f5d89810464cccf5b20ce7647289c43bd6c761380bc013da81b9225cff3c9f34159994981055532c825dc707388ec31ced8c1de9e20683b5eb19f240de3cab95",
             "file": "projects/ng-lib/src/lib/modules/types/tw-radio.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';\n\nimport { BaseComponent, FieldItem } from './base.component';\nimport { FormControl, FormsModule } from '@angular/forms';\nimport { CommonModule } from '@angular/common';\n\nexport interface RadioItem {\n    id: string;\n    name: string;\n    description: string;\n}\n\n@Component({\n    standalone: true,\n    selector: 'tw-radio',\n    imports: [CommonModule, FormsModule],\n    template: `\n        @if (isArray(radio)) {\n        <fieldset aria-label=\"Plan\">\n            <div class=\"space-y-5\">\n                @for (r of radio; track $index) {\n                <div class=\"relative flex items-start\">\n                    <div class=\"flex h-6 items-center\">\n                        <input\n                            [id]=\"r.id\"\n                            [attr.aria-describedby]=\"r.id + '-description'\"\n                            name=\"plan\"\n                            type=\"radio\"\n                            class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                        />\n                    </div>\n                    <div class=\"ml-3 text-sm leading-6\">\n                        <label [for]=\"r.id\" class=\"font-medium text-gray-900\">{{ r.name }}</label>\n                        <p [id]=\"r.id + '-description'\" class=\"text-gray-500\">{{ r.description }}</p>\n                    </div>\n                </div>\n                }\n            </div>\n        </fieldset>\n        } @else {\n        <div class=\"relative flex items-start\">\n            <div class=\"flex h-6 items-center\">\n                <input\n                    [id]=\"radio.id\"\n                    [attr.aria-describedby]=\"radio.id + '-description'\"\n                    [name]=\"radio.name\"\n                    type=\"radio\"\n                    class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                />\n            </div>\n            <div class=\"ml-3 text-sm leading-6\">\n                <label [for]=\"radio.id\" class=\"font-medium text-gray-900\">{{ radio.name }}</label>\n                <p [id]=\"radio.id + '-description'\" class=\"text-gray-500\">{{ radio.description }}</p>\n            </div>\n        </div>\n        }\n    `,\n    styles: [],\n})\nexport class TwRadioComponent extends BaseComponent implements OnChanges {\n    @Input() radio: FieldItem | FieldItem[] = [];\n\n    override formControls: { [key: string]: FormControl } = {};\n\n    ngOnInit(): void {\n        if (this.isArray(this.radio)) {\n            for (const item of this.radio) {\n                this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));\n            }\n        } else {\n            const item = this.radio;\n            this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));\n        }\n    }\n\n    ngOnChanges({ radio }: SimpleChanges): void {\n        if (radio) {\n            const isString = radio.currentValue;\n            if (typeof isString === 'string') {\n                try {\n                    this.radio = JSON.parse(isString);\n                } catch (e) {\n                    console.error('Failed to parse radio input:', e, isString);\n                    this.radio = [];\n                }\n            } else {\n                this.radio = isString;\n            }\n        }\n    }\n\n    isArray(radio: FieldItem | FieldItem[]): radio is FieldItem[] {\n        return Array.isArray(radio);\n    }\n}\n",
+            "sourceCode": "import { BaseComponent, FieldItem } from './base.component';\nimport { Component, Input, OnChanges, SimpleChanges } from '@angular/core';\nimport { FormControl, ReactiveFormsModule } from '@angular/forms';\n\nimport { CommonModule } from '@angular/common';\n\nexport interface RadioItem {\n    id: string;\n    name: string;\n    description: string;\n}\n\n@Component({\n    standalone: true,\n    selector: 'tw-radio',\n    imports: [CommonModule, ReactiveFormsModule],\n    template: `\n        <fieldset aria-label=\"Plan\">\n            <div class=\"space-y-5\">\n                @if (isArray(radio)) { @for (r of radio; track $index) {\n                <div class=\"relative flex items-start\">\n                    <div class=\"flex h-6 items-center\">\n                        <input\n                            [id]=\"getId(r)\"\n                            [name]=\"groupName\"\n                            [value]=\"getName(r)\"\n                            [placeholder]=\"getPlaceholder(r)\"\n                            [formControl]=\"formControls[getName(r)]\"\n                            (blur)=\"onBlur(r.name)\"\n                            (change)=\"onChange(r.name)\"\n                            type=\"radio\"\n                            class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                        />\n                    </div>\n                    <div class=\"ml-3 text-sm leading-6\">\n                        <label [for]=\"getId(r)\" class=\"font-medium text-gray-900\">{{ r.name }}</label>\n                        <p [id]=\"getId(r) + '-description'\" class=\"text-gray-500\">{{ r.description }}</p>\n                    </div>\n                </div>\n                } } @else {\n                <div class=\"relative flex items-start\">\n                    <div class=\"flex h-6 items-center\">\n                        <input\n                            [id]=\"getId(radio)\"\n                            [name]=\"groupName\"\n                            [value]=\"radio.name\"\n                            [placeholder]=\"getPlaceholder(radio)\"\n                            [formControl]=\"formControl\"\n                            (blur)=\"onBlur(radio.name)\"\n                            (change)=\"onChange(radio.name)\"\n                            type=\"radio\"\n                            class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                        />\n                    </div>\n                    <div class=\"ml-3 text-sm leading-6\">\n                        <label [for]=\"getId(radio)\" class=\"font-medium text-gray-900\">{{ radio.name }}</label>\n                        <p [id]=\"getId(radio) + '-description'\" class=\"text-gray-500\">{{ radio.description }}</p>\n                    </div>\n                </div>\n                }\n            </div>\n        </fieldset>\n    `,\n    styles: [],\n})\nexport class TwRadioComponent extends BaseComponent implements OnChanges {\n    @Input() radio: FieldItem | FieldItem[] = [];\n    @Input() groupName = 'radioGroup';\n    override formControls: { [key: string]: FormControl } = {};\n\n    ngOnInit(): void {\n        if (Array.isArray(this.radio)) {\n            for (const item of this.radio) {\n                this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));\n            }\n        } else {\n            const item = this.radio as FieldItem;\n            this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));\n        }\n    }\n\n    ngOnChanges({ radio }: SimpleChanges): void {\n        if (radio) {\n            const isString = radio.currentValue;\n            if (typeof isString === 'string') {\n                try {\n                    this.radio = JSON.parse(isString);\n                } catch (e) {\n                    console.error('Failed to parse radio input:', e, isString);\n                    this.radio = [];\n                }\n            } else {\n                this.radio = isString;\n            }\n        }\n    }\n\n    isArray(radio: FieldItem | FieldItem[]): radio is FieldItem[] {\n        return Array.isArray(radio);\n    }\n}\n",
             "properties": [
                 {
                     "name": "description",
@@ -189,7 +189,7 @@
     "components": [
         {
             "name": "BaseComponent",
-            "id": "component-BaseComponent-317ff6c4feea2826b253fe829371b71b8ae30eba2cccfd39288ce2abb34f7af95cfe89fb4d92663a93835701fc4cda135a23e17f9ff4f237cae82efec3f22d87",
+            "id": "component-BaseComponent-18b0126d12bd9901508f895040dfce764b0c37a18e87a5d08ed493e510457fd37e2fea342d07b663bd0b88bc755148f246ee4c19692fa2643f6d4f71e3b6c739",
             "file": "projects/ng-lib/src/lib/modules/types/base.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -222,7 +222,7 @@
                     "name": "getAriaInvalid",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -236,7 +236,35 @@
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getDescription",
+                    "args": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 73,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -250,7 +278,7 @@
                     "name": "getErrorMessage",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -264,7 +292,7 @@
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -278,7 +306,7 @@
                     "name": "getId",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -292,7 +320,7 @@
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -306,7 +334,7 @@
                     "name": "getName",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -320,7 +348,7 @@
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -334,7 +362,7 @@
                     "name": "getPlaceholder",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -348,7 +376,7 @@
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -393,7 +421,7 @@
                     "name": "getValue",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -407,7 +435,7 @@
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -421,7 +449,7 @@
                     "name": "isError",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -430,12 +458,12 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 87,
+                    "line": 91,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -458,7 +486,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 73,
+                    "line": 77,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -486,7 +514,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 80,
+                    "line": 84,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -511,7 +539,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { FormControl, ValidatorFn, Validators } from '@angular/forms';\n\nimport { Component } from '@angular/core';\nimport { TitleCasePipe } from '@angular/common';\n\nexport interface FieldItem {\n    description?: string;\n    id: string;\n    name: string;\n    placeholder: string;\n    hint?: string;\n    value?: string;\n    ariaInvalid?: boolean;\n    errorMessage?: string;\n    required?: boolean;\n    minLength?: number;\n    maxLength?: number;\n}\n\n@Component({\n    selector: 'tw-base',\n    template: ``,\n})\nexport class BaseComponent {\n    formControls: { [key: string]: FormControl } = {};\n\n    getId(input: FieldItem): string {\n        return input.id;\n    }\n\n    getName(input: FieldItem): string {\n        return input.name;\n    }\n\n    getPlaceholder(input: FieldItem): string {\n        return input.placeholder ?? new TitleCasePipe().transform(input.name);\n    }\n\n    getValue(input: FieldItem): string {\n        return input.value ?? '';\n    }\n\n    getAriaInvalid(input: FieldItem): boolean {\n        const control = this.formControls[input.name];\n        return control && control.invalid && (control.dirty || control.touched);\n    }\n\n    getErrorMessage(input: FieldItem): string {\n        const control = this.formControls[input.id];\n        if (control) {\n            if (control.errors?.['required']) {\n                return 'This field is required.';\n            } else if (control.errors?.['minlength']) {\n                return `Minimum length is ${control.errors['minlength'].requiredLength} characters.`;\n            } else if (control.errors?.['maxlength']) {\n                return `Maximum length is ${control.errors['maxlength'].requiredLength} characters.`;\n            } else if (control.errors?.['pattern']) {\n                return 'Invalid format.';\n            }\n        }\n        return input.errorMessage ?? '';\n    }\n\n    public getValidators(item: FieldItem) {\n        const validators: ValidatorFn[] = [];\n        if (item.required) validators.push(Validators.required);\n        if (item.minLength) validators.push(Validators.minLength(item.minLength));\n        if (item.maxLength) validators.push(Validators.maxLength(item.maxLength));\n        // Add pattern or other validators if needed\n        return validators;\n    }\n\n    onBlur(name: string) {\n        const control = this.formControls[name];\n        if (control) {\n            control.markAsTouched();\n        }\n    }\n\n    onChange(name: string) {\n        const control = this.formControls[name];\n        if (control) {\n            control.updateValueAndValidity();\n        }\n    }\n\n    isError(input: FieldItem): boolean {\n        const control = this.formControls[input.name];\n        return control ? control.invalid && (control.dirty || control.touched) : false;\n    }\n}\n",
+            "sourceCode": "import { FormControl, ValidatorFn, Validators } from '@angular/forms';\n\nimport { Component } from '@angular/core';\nimport { TitleCasePipe } from '@angular/common';\n\nexport interface FieldItem {\n    description?: string;\n    id: string;\n    name: string;\n    placeholder: string;\n    hint?: string;\n    value?: string;\n    ariaInvalid?: boolean;\n    errorMessage?: string;\n    required?: boolean;\n    minLength?: number;\n    maxLength?: number;\n}\n\n@Component({\n    selector: 'tw-base',\n    template: ``,\n})\nexport class BaseComponent {\n    formControls: { [key: string]: FormControl } = {};\n\n    getId(item: FieldItem): string {\n        return item.id;\n    }\n\n    getName(item: FieldItem): string {\n        return item.name;\n    }\n\n    getPlaceholder(item: FieldItem): string {\n        return item.placeholder ?? new TitleCasePipe().transform(item.name);\n    }\n\n    getValue(item: FieldItem): string {\n        return item.value ?? '';\n    }\n\n    getAriaInvalid(item: FieldItem): boolean {\n        const control = this.formControls[item.name];\n        return control && control.invalid && (control.dirty || control.touched);\n    }\n\n    getErrorMessage(item: FieldItem): string {\n        const control = this.formControls[item.id];\n        if (control) {\n            if (control.errors?.['required']) {\n                return 'This field is required.';\n            } else if (control.errors?.['minlength']) {\n                return `Minimum length is ${control.errors['minlength'].requiredLength} characters.`;\n            } else if (control.errors?.['maxlength']) {\n                return `Maximum length is ${control.errors['maxlength'].requiredLength} characters.`;\n            } else if (control.errors?.['pattern']) {\n                return 'Invalid format.';\n            }\n        }\n        return item.errorMessage ?? '';\n    }\n\n    public getValidators(item: FieldItem) {\n        const validators: ValidatorFn[] = [];\n        if (item.required) validators.push(Validators.required);\n        if (item.minLength) validators.push(Validators.minLength(item.minLength));\n        if (item.maxLength) validators.push(Validators.maxLength(item.maxLength));\n        // Add pattern or other validators if needed\n        return validators;\n    }\n\n    getDescription(item: FieldItem): string {\n        return item?.description ?? '';\n    }\n\n    onBlur(name: string) {\n        const control = this.formControls[name];\n        if (control) {\n            control.markAsTouched();\n        }\n    }\n\n    onChange(name: string) {\n        const control = this.formControls[name];\n        if (control) {\n            control.updateValueAndValidity();\n        }\n    }\n\n    isError(item: FieldItem): boolean {\n        const control = this.formControls[item.name];\n        return control ? control.invalid && (control.dirty || control.touched) : false;\n    }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -556,7 +584,7 @@
         },
         {
             "name": "TwCheckboxComponent",
-            "id": "component-TwCheckboxComponent-bc3641a63328633969d96341b29753ae3ceaf4cda7df73d7d2282954b8339f7de8fb042db85080de9452b3a45be504140644f5c4c955012823852359cd9f4e1f",
+            "id": "component-TwCheckboxComponent-d1a1ddfbd32c6174cd10a9e5e0770ec58be0c24838ec7387df928b307bc2cfac81d03f51e8cfce520d65386f05f2ef56e1f57eb9c7c792d105ea9160b816634b",
             "file": "projects/ng-lib/src/lib/modules/types/tw-checkbox.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -566,7 +594,7 @@
             "selector": "tw-checkbox",
             "styleUrls": [],
             "styles": [],
-            "template": "@if (isArray(checkbox)) {\n<fieldset>\n    <legend class=\"sr-only\">Notifications</legend>\n    <div class=\"space-y-5\">\n        @for (cb of checkbox; track $index) {\n        <div class=\"relative flex items-start\">\n            <div class=\"flex h-6 items-center\">\n                <input\n                    [id]=\"getId(cb)\"\n                    [attr.describedby]=\"getId(cb) + '-description'\"\n                    [name]=\"getName(cb)\"\n                    type=\"checkbox\"\n                    class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                />\n            </div>\n            <div class=\"ml-3 text-sm leading-6\">\n                <label [for]=\"getId(cb)\" class=\"font-medium text-gray-900\">{{ getName(cb) }}</label>\n                <p [id]=\"getId(cb) + '-description'\" class=\"text-gray-500\">{{ getCheckboxDescription(cb) }}</p>\n            </div>\n        </div>\n        }\n    </div>\n</fieldset>\n} @else {\n<div class=\"relative flex items-start\">\n    <div class=\"flex h-6 items-center\">\n        <input\n            [id]=\"getId(checkbox)\"\n            [attr.describedby]=\"getId(checkbox) + '-description'\"\n            [name]=\"getName(checkbox)\"\n            type=\"checkbox\"\n            class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n        />\n    </div>\n    <div class=\"ml-3 text-sm leading-6\">\n        <label [for]=\"getId(checkbox)\" class=\"font-medium text-gray-900\">{{ getName(checkbox) }}</label>\n        <p [id]=\"getId(checkbox) + '-description'\" class=\"text-gray-500\">{{ getCheckboxDescription(checkbox) }}</p>\n    </div>\n</div>\n}\n",
+            "template": "@if (isArray(checkbox)) {\n<fieldset>\n    <legend class=\"sr-only\">Notifications</legend>\n    <div class=\"space-y-5\">\n        @for (cb of checkbox; track $index) {\n        <div class=\"relative flex items-start\">\n            <div class=\"flex h-6 items-center\">\n                <input\n                    [id]=\"getId(cb)\"\n                    [attr.describedby]=\"getId(cb) + '-description'\"\n                    [name]=\"getName(cb)\"\n                    type=\"checkbox\"\n                    class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                />\n            </div>\n            <div class=\"ml-3 text-sm leading-6\">\n                <label [for]=\"getId(cb)\" class=\"font-medium text-gray-900\">{{ getName(cb) }}</label>\n                <p [id]=\"getId(cb) + '-description'\" class=\"text-gray-500\">{{ getDescription(cb) }}</p>\n            </div>\n        </div>\n        }\n    </div>\n</fieldset>\n} @else {\n<div class=\"relative flex items-start\">\n    <div class=\"flex h-6 items-center\">\n        <input\n            [id]=\"getId(checkbox)\"\n            [attr.describedby]=\"getId(checkbox) + '-description'\"\n            [name]=\"getName(checkbox)\"\n            type=\"checkbox\"\n            class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n        />\n    </div>\n    <div class=\"ml-3 text-sm leading-6\">\n        <label [for]=\"getId(checkbox)\" class=\"font-medium text-gray-900\">{{ getName(checkbox) }}</label>\n        <p [id]=\"getId(checkbox) + '-description'\" class=\"text-gray-500\">{{ getDescription(checkbox) }}</p>\n    </div>\n</div>\n}\n",
             "templateUrl": [],
             "viewProviders": [],
             "hostDirectives": [],
@@ -601,34 +629,6 @@
                 }
             ],
             "methodsClass": [
-                {
-                    "name": "getCheckboxDescription",
-                    "args": [
-                        {
-                            "name": "checkbox",
-                            "type": "FieldItem",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        }
-                    ],
-                    "optional": false,
-                    "returnType": "string",
-                    "typeParameters": [],
-                    "line": 73,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "jsdoctags": [
-                        {
-                            "name": "checkbox",
-                            "type": "FieldItem",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        }
-                    ]
-                },
                 {
                     "name": "isArray",
                     "args": [
@@ -671,7 +671,7 @@
                     "name": "getAriaInvalid",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -685,7 +685,38 @@
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "getDescription",
+                    "args": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 73,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -702,7 +733,7 @@
                     "name": "getErrorMessage",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -716,7 +747,7 @@
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -733,7 +764,7 @@
                     "name": "getId",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -747,7 +778,7 @@
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -764,7 +795,7 @@
                     "name": "getName",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -778,7 +809,7 @@
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -795,7 +826,7 @@
                     "name": "getPlaceholder",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -809,7 +840,7 @@
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -860,7 +891,7 @@
                     "name": "getValue",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -874,7 +905,7 @@
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -891,7 +922,7 @@
                     "name": "isError",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -900,12 +931,12 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 87,
+                    "line": 91,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -931,7 +962,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 73,
+                    "line": 77,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -962,7 +993,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 80,
+                    "line": 84,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -992,14 +1023,14 @@
                     "type": "module"
                 },
                 {
-                    "name": "FormsModule",
+                    "name": "ReactiveFormsModule",
                     "type": "module"
                 }
             ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input } from '@angular/core';\nimport { FormControl, FormsModule } from '@angular/forms';\n\nimport { CommonModule } from '@angular/common';\nimport { BaseComponent, FieldItem } from './base.component';\n\n@Component({\n    standalone: true,\n    selector: 'tw-checkbox',\n    imports: [CommonModule, FormsModule],\n    template: `\n        @if (isArray(checkbox)) {\n        <fieldset>\n            <legend class=\"sr-only\">Notifications</legend>\n            <div class=\"space-y-5\">\n                @for (cb of checkbox; track $index) {\n                <div class=\"relative flex items-start\">\n                    <div class=\"flex h-6 items-center\">\n                        <input\n                            [id]=\"getId(cb)\"\n                            [attr.describedby]=\"getId(cb) + '-description'\"\n                            [name]=\"getName(cb)\"\n                            type=\"checkbox\"\n                            class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                        />\n                    </div>\n                    <div class=\"ml-3 text-sm leading-6\">\n                        <label [for]=\"getId(cb)\" class=\"font-medium text-gray-900\">{{ getName(cb) }}</label>\n                        <p [id]=\"getId(cb) + '-description'\" class=\"text-gray-500\">{{ getCheckboxDescription(cb) }}</p>\n                    </div>\n                </div>\n                }\n            </div>\n        </fieldset>\n        } @else {\n        <div class=\"relative flex items-start\">\n            <div class=\"flex h-6 items-center\">\n                <input\n                    [id]=\"getId(checkbox)\"\n                    [attr.describedby]=\"getId(checkbox) + '-description'\"\n                    [name]=\"getName(checkbox)\"\n                    type=\"checkbox\"\n                    class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                />\n            </div>\n            <div class=\"ml-3 text-sm leading-6\">\n                <label [for]=\"getId(checkbox)\" class=\"font-medium text-gray-900\">{{ getName(checkbox) }}</label>\n                <p [id]=\"getId(checkbox) + '-description'\" class=\"text-gray-500\">{{ getCheckboxDescription(checkbox) }}</p>\n            </div>\n        </div>\n        }\n    `,\n})\nexport class TwCheckboxComponent extends BaseComponent {\n    @Input() checkbox: FieldItem | FieldItem[] = [];\n    override formControls: { [key: string]: FormControl } = {};\n\n    ngOnInit(): void {\n        if (this.isArray(this.checkbox)) {\n            for (const item of this.checkbox) {\n                this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));\n            }\n        } else {\n            const item = this.checkbox;\n            this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));\n        }\n    }\n\n    isArray(checkbox: FieldItem | FieldItem[]): checkbox is FieldItem[] {\n        return Array.isArray(checkbox);\n    }\n\n    getCheckboxDescription(checkbox: FieldItem): string {\n        return checkbox?.description ?? '';\n    }\n}\n",
+            "sourceCode": "import { Component, Input } from '@angular/core';\nimport { FormControl, ReactiveFormsModule } from '@angular/forms';\n\nimport { CommonModule } from '@angular/common';\nimport { BaseComponent, FieldItem } from './base.component';\n\n@Component({\n    standalone: true,\n    selector: 'tw-checkbox',\n    imports: [CommonModule, ReactiveFormsModule],\n    template: `\n        @if (isArray(checkbox)) {\n        <fieldset>\n            <legend class=\"sr-only\">Notifications</legend>\n            <div class=\"space-y-5\">\n                @for (cb of checkbox; track $index) {\n                <div class=\"relative flex items-start\">\n                    <div class=\"flex h-6 items-center\">\n                        <input\n                            [id]=\"getId(cb)\"\n                            [attr.describedby]=\"getId(cb) + '-description'\"\n                            [name]=\"getName(cb)\"\n                            type=\"checkbox\"\n                            class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                        />\n                    </div>\n                    <div class=\"ml-3 text-sm leading-6\">\n                        <label [for]=\"getId(cb)\" class=\"font-medium text-gray-900\">{{ getName(cb) }}</label>\n                        <p [id]=\"getId(cb) + '-description'\" class=\"text-gray-500\">{{ getDescription(cb) }}</p>\n                    </div>\n                </div>\n                }\n            </div>\n        </fieldset>\n        } @else {\n        <div class=\"relative flex items-start\">\n            <div class=\"flex h-6 items-center\">\n                <input\n                    [id]=\"getId(checkbox)\"\n                    [attr.describedby]=\"getId(checkbox) + '-description'\"\n                    [name]=\"getName(checkbox)\"\n                    type=\"checkbox\"\n                    class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                />\n            </div>\n            <div class=\"ml-3 text-sm leading-6\">\n                <label [for]=\"getId(checkbox)\" class=\"font-medium text-gray-900\">{{ getName(checkbox) }}</label>\n                <p [id]=\"getId(checkbox) + '-description'\" class=\"text-gray-500\">{{ getDescription(checkbox) }}</p>\n            </div>\n        </div>\n        }\n    `,\n})\nexport class TwCheckboxComponent extends BaseComponent {\n    @Input() checkbox: FieldItem | FieldItem[] = [];\n    override formControls: { [key: string]: FormControl } = {};\n\n    ngOnInit(): void {\n        if (this.isArray(this.checkbox)) {\n            for (const item of this.checkbox) {\n                this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));\n            }\n        } else {\n            const item = this.checkbox;\n            this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));\n        }\n    }\n\n    isArray(checkbox: FieldItem | FieldItem[]): checkbox is FieldItem[] {\n        return Array.isArray(checkbox);\n    }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -1068,7 +1099,7 @@
                     "name": "getAriaInvalid",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -1082,7 +1113,38 @@
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "getDescription",
+                    "args": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 73,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -1099,7 +1161,7 @@
                     "name": "getErrorMessage",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -1113,7 +1175,7 @@
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -1130,7 +1192,7 @@
                     "name": "getId",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -1144,7 +1206,7 @@
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -1161,7 +1223,7 @@
                     "name": "getName",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -1175,7 +1237,7 @@
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -1192,7 +1254,7 @@
                     "name": "getPlaceholder",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -1206,7 +1268,7 @@
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -1257,7 +1319,7 @@
                     "name": "getValue",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -1271,7 +1333,7 @@
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -1288,7 +1350,7 @@
                     "name": "isError",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -1297,12 +1359,12 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 87,
+                    "line": 91,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -1328,7 +1390,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 73,
+                    "line": 77,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1359,7 +1421,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 80,
+                    "line": 84,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1417,7 +1479,7 @@
         },
         {
             "name": "TwRadioComponent",
-            "id": "component-TwRadioComponent-38cd28ff8f98321d95fe75086ef8aebc422327e6d4cf19dedafadb4cfa08d68b53df922774fbaf4f1feac6aad3a5e289544229814ed8dfbeefea34f3e7926f0c",
+            "id": "component-TwRadioComponent-f5d89810464cccf5b20ce7647289c43bd6c761380bc013da81b9225cff3c9f34159994981055532c825dc707388ec31ced8c1de9e20683b5eb19f240de3cab95",
             "file": "projects/ng-lib/src/lib/modules/types/tw-radio.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1427,17 +1489,26 @@
             "selector": "tw-radio",
             "styleUrls": [],
             "styles": [],
-            "template": "@if (isArray(radio)) {\n<fieldset aria-label=\"Plan\">\n    <div class=\"space-y-5\">\n        @for (r of radio; track $index) {\n        <div class=\"relative flex items-start\">\n            <div class=\"flex h-6 items-center\">\n                <input\n                    [id]=\"r.id\"\n                    [attr.aria-describedby]=\"r.id + '-description'\"\n                    name=\"plan\"\n                    type=\"radio\"\n                    class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                />\n            </div>\n            <div class=\"ml-3 text-sm leading-6\">\n                <label [for]=\"r.id\" class=\"font-medium text-gray-900\">{{ r.name }}</label>\n                <p [id]=\"r.id + '-description'\" class=\"text-gray-500\">{{ r.description }}</p>\n            </div>\n        </div>\n        }\n    </div>\n</fieldset>\n} @else {\n<div class=\"relative flex items-start\">\n    <div class=\"flex h-6 items-center\">\n        <input\n            [id]=\"radio.id\"\n            [attr.aria-describedby]=\"radio.id + '-description'\"\n            [name]=\"radio.name\"\n            type=\"radio\"\n            class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n        />\n    </div>\n    <div class=\"ml-3 text-sm leading-6\">\n        <label [for]=\"radio.id\" class=\"font-medium text-gray-900\">{{ radio.name }}</label>\n        <p [id]=\"radio.id + '-description'\" class=\"text-gray-500\">{{ radio.description }}</p>\n    </div>\n</div>\n}\n",
+            "template": "<fieldset aria-label=\"Plan\">\n    <div class=\"space-y-5\">\n        @if (isArray(radio)) { @for (r of radio; track $index) {\n        <div class=\"relative flex items-start\">\n            <div class=\"flex h-6 items-center\">\n                <input\n                    [id]=\"getId(r)\"\n                    [name]=\"groupName\"\n                    [value]=\"getName(r)\"\n                    [placeholder]=\"getPlaceholder(r)\"\n                    [formControl]=\"formControls[getName(r)]\"\n                    (blur)=\"onBlur(r.name)\"\n                    (change)=\"onChange(r.name)\"\n                    type=\"radio\"\n                    class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                />\n            </div>\n            <div class=\"ml-3 text-sm leading-6\">\n                <label [for]=\"getId(r)\" class=\"font-medium text-gray-900\">{{ r.name }}</label>\n                <p [id]=\"getId(r) + '-description'\" class=\"text-gray-500\">{{ r.description }}</p>\n            </div>\n        </div>\n        } } @else {\n        <div class=\"relative flex items-start\">\n            <div class=\"flex h-6 items-center\">\n                <input\n                    [id]=\"getId(radio)\"\n                    [name]=\"groupName\"\n                    [value]=\"radio.name\"\n                    [placeholder]=\"getPlaceholder(radio)\"\n                    [formControl]=\"formControl\"\n                    (blur)=\"onBlur(radio.name)\"\n                    (change)=\"onChange(radio.name)\"\n                    type=\"radio\"\n                    class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                />\n            </div>\n            <div class=\"ml-3 text-sm leading-6\">\n                <label [for]=\"getId(radio)\" class=\"font-medium text-gray-900\">{{ radio.name }}</label>\n                <p [id]=\"getId(radio) + '-description'\" class=\"text-gray-500\">{{ radio.description }}</p>\n            </div>\n        </div>\n        }\n    </div>\n</fieldset>\n",
             "templateUrl": [],
             "viewProviders": [],
             "hostDirectives": [],
             "inputsClass": [
                 {
+                    "name": "groupName",
+                    "defaultValue": "'radioGroup'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 68,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
                     "name": "radio",
                     "defaultValue": "[]",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 61,
+                    "line": 67,
                     "type": "FieldItem | FieldItem[]",
                     "decorators": []
                 }
@@ -1452,7 +1523,7 @@
                     "type": "literal type",
                     "optional": false,
                     "description": "",
-                    "line": 63,
+                    "line": 69,
                     "modifierKind": [
                         164
                     ],
@@ -1475,7 +1546,7 @@
                     "optional": false,
                     "returnType": "FieldItem[]",
                     "typeParameters": [],
-                    "line": 92,
+                    "line": 98,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1502,7 +1573,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 76,
+                    "line": 82,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1522,7 +1593,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 65,
+                    "line": 71,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -1530,7 +1601,7 @@
                     "name": "getAriaInvalid",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -1544,7 +1615,38 @@
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "getDescription",
+                    "args": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 73,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -1561,7 +1663,7 @@
                     "name": "getErrorMessage",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -1575,7 +1677,7 @@
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -1592,7 +1694,7 @@
                     "name": "getId",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -1606,7 +1708,7 @@
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -1623,7 +1725,7 @@
                     "name": "getName",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -1637,7 +1739,7 @@
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -1654,7 +1756,7 @@
                     "name": "getPlaceholder",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -1668,7 +1770,7 @@
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -1719,7 +1821,7 @@
                     "name": "getValue",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -1733,7 +1835,7 @@
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -1750,7 +1852,7 @@
                     "name": "isError",
                     "args": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": ""
@@ -1759,12 +1861,12 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 87,
+                    "line": 91,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
-                            "name": "input",
+                            "name": "item",
                             "type": "FieldItem",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -1790,7 +1892,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 73,
+                    "line": 77,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1821,7 +1923,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 80,
+                    "line": 84,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1851,14 +1953,14 @@
                     "type": "module"
                 },
                 {
-                    "name": "FormsModule",
+                    "name": "ReactiveFormsModule",
                     "type": "module"
                 }
             ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';\n\nimport { BaseComponent, FieldItem } from './base.component';\nimport { FormControl, FormsModule } from '@angular/forms';\nimport { CommonModule } from '@angular/common';\n\nexport interface RadioItem {\n    id: string;\n    name: string;\n    description: string;\n}\n\n@Component({\n    standalone: true,\n    selector: 'tw-radio',\n    imports: [CommonModule, FormsModule],\n    template: `\n        @if (isArray(radio)) {\n        <fieldset aria-label=\"Plan\">\n            <div class=\"space-y-5\">\n                @for (r of radio; track $index) {\n                <div class=\"relative flex items-start\">\n                    <div class=\"flex h-6 items-center\">\n                        <input\n                            [id]=\"r.id\"\n                            [attr.aria-describedby]=\"r.id + '-description'\"\n                            name=\"plan\"\n                            type=\"radio\"\n                            class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                        />\n                    </div>\n                    <div class=\"ml-3 text-sm leading-6\">\n                        <label [for]=\"r.id\" class=\"font-medium text-gray-900\">{{ r.name }}</label>\n                        <p [id]=\"r.id + '-description'\" class=\"text-gray-500\">{{ r.description }}</p>\n                    </div>\n                </div>\n                }\n            </div>\n        </fieldset>\n        } @else {\n        <div class=\"relative flex items-start\">\n            <div class=\"flex h-6 items-center\">\n                <input\n                    [id]=\"radio.id\"\n                    [attr.aria-describedby]=\"radio.id + '-description'\"\n                    [name]=\"radio.name\"\n                    type=\"radio\"\n                    class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                />\n            </div>\n            <div class=\"ml-3 text-sm leading-6\">\n                <label [for]=\"radio.id\" class=\"font-medium text-gray-900\">{{ radio.name }}</label>\n                <p [id]=\"radio.id + '-description'\" class=\"text-gray-500\">{{ radio.description }}</p>\n            </div>\n        </div>\n        }\n    `,\n    styles: [],\n})\nexport class TwRadioComponent extends BaseComponent implements OnChanges {\n    @Input() radio: FieldItem | FieldItem[] = [];\n\n    override formControls: { [key: string]: FormControl } = {};\n\n    ngOnInit(): void {\n        if (this.isArray(this.radio)) {\n            for (const item of this.radio) {\n                this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));\n            }\n        } else {\n            const item = this.radio;\n            this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));\n        }\n    }\n\n    ngOnChanges({ radio }: SimpleChanges): void {\n        if (radio) {\n            const isString = radio.currentValue;\n            if (typeof isString === 'string') {\n                try {\n                    this.radio = JSON.parse(isString);\n                } catch (e) {\n                    console.error('Failed to parse radio input:', e, isString);\n                    this.radio = [];\n                }\n            } else {\n                this.radio = isString;\n            }\n        }\n    }\n\n    isArray(radio: FieldItem | FieldItem[]): radio is FieldItem[] {\n        return Array.isArray(radio);\n    }\n}\n",
+            "sourceCode": "import { BaseComponent, FieldItem } from './base.component';\nimport { Component, Input, OnChanges, SimpleChanges } from '@angular/core';\nimport { FormControl, ReactiveFormsModule } from '@angular/forms';\n\nimport { CommonModule } from '@angular/common';\n\nexport interface RadioItem {\n    id: string;\n    name: string;\n    description: string;\n}\n\n@Component({\n    standalone: true,\n    selector: 'tw-radio',\n    imports: [CommonModule, ReactiveFormsModule],\n    template: `\n        <fieldset aria-label=\"Plan\">\n            <div class=\"space-y-5\">\n                @if (isArray(radio)) { @for (r of radio; track $index) {\n                <div class=\"relative flex items-start\">\n                    <div class=\"flex h-6 items-center\">\n                        <input\n                            [id]=\"getId(r)\"\n                            [name]=\"groupName\"\n                            [value]=\"getName(r)\"\n                            [placeholder]=\"getPlaceholder(r)\"\n                            [formControl]=\"formControls[getName(r)]\"\n                            (blur)=\"onBlur(r.name)\"\n                            (change)=\"onChange(r.name)\"\n                            type=\"radio\"\n                            class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                        />\n                    </div>\n                    <div class=\"ml-3 text-sm leading-6\">\n                        <label [for]=\"getId(r)\" class=\"font-medium text-gray-900\">{{ r.name }}</label>\n                        <p [id]=\"getId(r) + '-description'\" class=\"text-gray-500\">{{ r.description }}</p>\n                    </div>\n                </div>\n                } } @else {\n                <div class=\"relative flex items-start\">\n                    <div class=\"flex h-6 items-center\">\n                        <input\n                            [id]=\"getId(radio)\"\n                            [name]=\"groupName\"\n                            [value]=\"radio.name\"\n                            [placeholder]=\"getPlaceholder(radio)\"\n                            [formControl]=\"formControl\"\n                            (blur)=\"onBlur(radio.name)\"\n                            (change)=\"onChange(radio.name)\"\n                            type=\"radio\"\n                            class=\"h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                        />\n                    </div>\n                    <div class=\"ml-3 text-sm leading-6\">\n                        <label [for]=\"getId(radio)\" class=\"font-medium text-gray-900\">{{ radio.name }}</label>\n                        <p [id]=\"getId(radio) + '-description'\" class=\"text-gray-500\">{{ radio.description }}</p>\n                    </div>\n                </div>\n                }\n            </div>\n        </fieldset>\n    `,\n    styles: [],\n})\nexport class TwRadioComponent extends BaseComponent implements OnChanges {\n    @Input() radio: FieldItem | FieldItem[] = [];\n    @Input() groupName = 'radioGroup';\n    override formControls: { [key: string]: FormControl } = {};\n\n    ngOnInit(): void {\n        if (Array.isArray(this.radio)) {\n            for (const item of this.radio) {\n                this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));\n            }\n        } else {\n            const item = this.radio as FieldItem;\n            this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));\n        }\n    }\n\n    ngOnChanges({ radio }: SimpleChanges): void {\n        if (radio) {\n            const isString = radio.currentValue;\n            if (typeof isString === 'string') {\n                try {\n                    this.radio = JSON.parse(isString);\n                } catch (e) {\n                    console.error('Failed to parse radio input:', e, isString);\n                    this.radio = [];\n                }\n            } else {\n                this.radio = isString;\n            }\n        }\n    }\n\n    isArray(radio: FieldItem | FieldItem[]): radio is FieldItem[] {\n        return Array.isArray(radio);\n    }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -1867,6 +1969,445 @@
             ],
             "implements": [
                 "OnChanges"
+            ]
+        },
+        {
+            "name": "TwTextareaComponent",
+            "id": "component-TwTextareaComponent-55c4d8110dc3f0e7e229e790e6fd0cbef1ec55d4e74067644a7fb8b5c3b6f89f5e3f75f16937d6f7c697a541fbffebccc0ea4c6b52fa45607b8c8afcaa7adaa4",
+            "file": "projects/ng-lib/src/lib/modules/types/tw-textarea.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "tw-textarea",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<div class=\"relative flex items-start\">\n    <div class=\"flex h-100 items-center\">\n        <textarea\n            [id]=\"getId(input)\"\n            [name]=\"getName(input)\"\n            [placeholder]=\"getPlaceholder(input)\"\n            [formControl]=\"formControls[getName(input)]\"\n            (blur)=\"onBlur(getName(input))\"\n            (change)=\"onChange(getName(input))\"\n            [ngClass]=\"{\n                'border-red-500 ring-red-500 placeholder-red-300': isError(input),\n                'border-gray-300 ring-gray-300 placeholder-gray-300': !isError(input)\n            }\"\n            class=\"block w-full rounded-md py-1.5 pr-10 ring-1 ring-inset focus:ring-2 sm:text-sm sm:leading-6\"\n        ></textarea>\n    </div>\n    <div class=\"absolute inset-y-0 right-0 flex items-center pr-3\">\n        <svg *ngIf=\"isError(input)\" class=\"h-5 w-5 text-red-500\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\">\n            <path\n                fill-rule=\"evenodd\"\n                d=\"M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z\"\n                clip-rule=\"evenodd\"\n            />\n        </svg>\n    </div>\n</div>\n<p class=\"mt-2 text-sm text-red-600\" [id]=\"getId(input) + '-error'\" *ngIf=\"isError(input)\">\n    {{ getErrorMessage(input) }}\n</p>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "input",
+                    "defaultValue": "{\n        id: 'default',\n        name: 'default',\n        placeholder: 'Default Example',\n        hint: 'This is a default hint',\n        value: '',\n        ariaInvalid: true,\n        errorMessage: 'This field is required.',\n    }",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 47,
+                    "type": "FieldItem",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "formControls",
+                    "defaultValue": "{}",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "literal type",
+                    "optional": false,
+                    "description": "",
+                    "line": 57,
+                    "modifierKind": [
+                        164
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 59,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "getAriaInvalid",
+                    "args": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 43,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "getDescription",
+                    "args": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 73,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "getErrorMessage",
+                    "args": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 48,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "getId",
+                    "args": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 27,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "getName",
+                    "args": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 31,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "getPlaceholder",
+                    "args": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 35,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "getValidators",
+                    "args": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "{}",
+                    "typeParameters": [],
+                    "line": 64,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        125
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "getValue",
+                    "args": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 39,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "isError",
+                    "args": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 91,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "item",
+                            "type": "FieldItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "onBlur",
+                    "args": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 77,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                },
+                {
+                    "name": "onChange",
+                    "args": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 84,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "BaseComponent"
+                    }
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                },
+                {
+                    "name": "ReactiveFormsModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { CommonModule } from '@angular/common';\nimport { Component, Input, OnInit } from '@angular/core';\nimport { FormControl, ReactiveFormsModule } from '@angular/forms';\n\nimport { BaseComponent, FieldItem } from './base.component';\n\n@Component({\n    selector: 'tw-textarea',\n    standalone: true,\n    imports: [CommonModule, ReactiveFormsModule],\n    template: `\n        <div class=\"relative flex items-start\">\n            <div class=\"flex h-100 items-center\">\n                <textarea\n                    [id]=\"getId(input)\"\n                    [name]=\"getName(input)\"\n                    [placeholder]=\"getPlaceholder(input)\"\n                    [formControl]=\"formControls[getName(input)]\"\n                    (blur)=\"onBlur(getName(input))\"\n                    (change)=\"onChange(getName(input))\"\n                    [ngClass]=\"{\n                        'border-red-500 ring-red-500 placeholder-red-300': isError(input),\n                        'border-gray-300 ring-gray-300 placeholder-gray-300': !isError(input)\n                    }\"\n                    class=\"block w-full rounded-md py-1.5 pr-10 ring-1 ring-inset focus:ring-2 sm:text-sm sm:leading-6\"\n                ></textarea>\n            </div>\n            <div class=\"absolute inset-y-0 right-0 flex items-center pr-3\">\n                <svg *ngIf=\"isError(input)\" class=\"h-5 w-5 text-red-500\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\">\n                    <path\n                        fill-rule=\"evenodd\"\n                        d=\"M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z\"\n                        clip-rule=\"evenodd\"\n                    />\n                </svg>\n            </div>\n        </div>\n        <p class=\"mt-2 text-sm text-red-600\" [id]=\"getId(input) + '-error'\" *ngIf=\"isError(input)\">\n            {{ getErrorMessage(input) }}\n        </p>\n    `,\n})\nexport class TwTextareaComponent extends BaseComponent implements OnInit {\n    constructor() {\n        super();\n    }\n    @Input() input: FieldItem = {\n        id: 'default',\n        name: 'default',\n        placeholder: 'Default Example',\n        hint: 'This is a default hint',\n        value: '',\n        ariaInvalid: true,\n        errorMessage: 'This field is required.',\n    };\n\n    override formControls: { [key: string]: FormControl } = {};\n\n    ngOnInit(): void {\n        const item = this.input;\n        this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));\n    }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 43
+            },
+            "extends": [
+                "BaseComponent"
+            ],
+            "implements": [
+                "OnInit"
             ]
         }
     ],
@@ -2034,6 +2575,16 @@
                 "defaultValue": "{\n    title: 'TailwindUI/Field/Types/Radio',\n    component: TwRadioComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TwRadioComponent],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\n              <div style=\"width: '80%'; margin: '0 auto'\">\n              ${story}\n              </div>\n            </div>`\n        ),\n    ],\n    args: {},\n}"
             },
             {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/modules/types/tw-textarea.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<TwTextareaComponent>",
+                "defaultValue": "{\n    title: 'TailwindUI/Field/Types/Textarea',\n    component: TwTextareaComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TwTextareaComponent, ReactiveFormsModule],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"width:80%; margin: 3em; display: flex; justify-content: center; align-items: center\">\n              ${story}\n            </div>`\n        ),\n    ],\n    args: {},\n}"
+            },
+            {
                 "name": "preview",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -2102,6 +2653,26 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "{\n  args: {\n    size: 'small',\n    label: 'Button',\n  },\n}"
+            },
+            {
+                "name": "Textarea",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/modules/types/tw-textarea.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n    args: {\n        input: {\n            id: 'comment',\n            name: 'comment',\n            placeholder: 'Comment Placeholder',\n            hint: 'Comment hint message.',\n            value: '',\n            ariaInvalid: false,\n            errorMessage: '',\n        } as FieldItem,\n    },\n}"
+            },
+            {
+                "name": "TextareaWithError",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/modules/types/tw-textarea.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n    args: {\n        input: {\n            id: 'comment',\n            name: 'comment',\n            placeholder: 'Comment Placeholder',\n            hint: 'Comment hint message.',\n            value: '',\n            required: true,\n            errorMessage: 'This field is required.',\n        } as FieldItem,\n    },\n}"
             }
         ],
         "functions": [],
@@ -2167,6 +2738,17 @@
                 "subtype": "typealias",
                 "rawtype": "StoryObj<TwRadioComponent>",
                 "file": "projects/ng-lib/src/lib/modules/types/tw-radio.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 183
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "StoryObj<TwTextareaComponent>",
+                "file": "projects/ng-lib/src/lib/modules/types/tw-textarea.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "description": "",
@@ -2420,6 +3002,38 @@
                     "type": "Story",
                     "defaultValue": "{\n    args: {\n        radio: { id: 'newsletter', name: 'Newsletter', description: 'Get notified when there is a new newsletter.' } as FieldItem,\n    },\n}"
                 }
+            ],
+            "projects/ng-lib/src/lib/modules/types/tw-textarea.stories.ts": [
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/modules/types/tw-textarea.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<TwTextareaComponent>",
+                    "defaultValue": "{\n    title: 'TailwindUI/Field/Types/Textarea',\n    component: TwTextareaComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TwTextareaComponent, ReactiveFormsModule],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"width:80%; margin: 3em; display: flex; justify-content: center; align-items: center\">\n              ${story}\n            </div>`\n        ),\n    ],\n    args: {},\n}"
+                },
+                {
+                    "name": "Textarea",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/modules/types/tw-textarea.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n    args: {\n        input: {\n            id: 'comment',\n            name: 'comment',\n            placeholder: 'Comment Placeholder',\n            hint: 'Comment hint message.',\n            value: '',\n            ariaInvalid: false,\n            errorMessage: '',\n        } as FieldItem,\n    },\n}"
+                },
+                {
+                    "name": "TextareaWithError",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/modules/types/tw-textarea.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n    args: {\n        input: {\n            id: 'comment',\n            name: 'comment',\n            placeholder: 'Comment Placeholder',\n            hint: 'Comment hint message.',\n            value: '',\n            required: true,\n            errorMessage: 'This field is required.',\n        } as FieldItem,\n    },\n}"
+                }
             ]
         },
         "groupedFunctions": {},
@@ -2502,6 +3116,19 @@
                     "description": "",
                     "kind": 183
                 }
+            ],
+            "projects/ng-lib/src/lib/modules/types/tw-textarea.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "StoryObj<TwTextareaComponent>",
+                    "file": "projects/ng-lib/src/lib/modules/types/tw-textarea.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 183
+                }
             ]
         }
     },
@@ -2546,7 +3173,7 @@
                 "linktype": "component",
                 "name": "BaseComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/12",
+                "coverageCount": "0/13",
                 "status": "low"
             },
             {
@@ -2603,7 +3230,7 @@
                 "linktype": "component",
                 "name": "TwInputComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/15",
+                "coverageCount": "0/16",
                 "status": "low"
             },
             {
@@ -2642,7 +3269,7 @@
                 "linktype": "component",
                 "name": "TwRadioComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/16",
+                "coverageCount": "0/18",
                 "status": "low"
             },
             {
@@ -2680,6 +3307,45 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "SingleRadio",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/modules/types/tw-textarea.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "TwTextareaComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/16",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/modules/types/tw-textarea.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/modules/types/tw-textarea.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Textarea",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/modules/types/tw-textarea.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "TextareaWithError",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
