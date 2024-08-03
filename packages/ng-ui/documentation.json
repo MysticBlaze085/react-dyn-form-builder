@@ -7115,6 +7115,48 @@
             ]
         },
         {
+            "name": "TwDefaultTableComponent",
+            "id": "component-TwDefaultTableComponent-32229d853ccab0ce96abc9590869544b432489e38a1a7a95ece4f9eef6be8a86466b3a03db9ec1e5111d6da859d1dd31d88a16b32a665c5aee7b89c00cd7c1cc",
+            "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/tw-table.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "tw-default-table",
+            "styleUrls": [],
+            "styles": [
+                "\n            :host {\n                display: block;\n                width: 100%;\n            }\n        "
+            ],
+            "template": "<table class=\"w-full text-left table-auto min-w-max\"></table>",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { CommonModule } from '@angular/common';\nimport { Component } from '@angular/core';\n\n@Component({\n    selector: 'tw-default-table',\n    standalone: true,\n    imports: [CommonModule],\n    template: ` <table class=\"w-full text-left table-auto min-w-max\"></table> `,\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n        `,\n    ],\n})\nexport class TwDefaultTableComponent {}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "\n            :host {\n                display: block;\n                width: 100%;\n            }\n        \n",
+            "extends": []
+        },
+        {
             "name": "TwInputComponent",
             "id": "component-TwInputComponent-393aed72b870f02fed35c095fe985755fa9e7cee1b870e647907906d4bb53155c4694bcd9b94a263bbec2d1b6d968fda94560ab6144e493f619fbd42bd25b229",
             "file": "projects/ng-lib/src/lib/new-tw-ui/modules/types/tw-input.component.ts",
@@ -8676,6 +8718,46 @@
             ]
         },
         {
+            "name": "TwTdComponent",
+            "id": "component-TwTdComponent-d7806cabf9efe14c6b21fc5e352dccbdeb10cf8648eaa85d73852edd5f9d027c71a4efe6de8f127159d0fcbb042679f5df9cd3533d8d201b96c947e5f83182d1",
+            "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/tw-td.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "tw-td",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<td class=\"p-4 border-b border-blue-gray-50\">\n    <ng-content></ng-content>\n</td>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { CommonModule } from '@angular/common';\nimport { Component } from '@angular/core';\n\n@Component({\n    selector: 'tw-td',\n    standalone: true,\n    imports: [CommonModule],\n    template: `\n        <td class=\"p-4 border-b border-blue-gray-50\">\n            <ng-content></ng-content>\n        </td>\n    `,\n})\nexport class TwTdComponent {}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": []
+        },
+        {
             "name": "TwTextareaComponent",
             "id": "component-TwTextareaComponent-21c53bca55f377b6fbcdaa58ffc3c3f7d354d8c4df16147359d7de1178cef2125e7b8e558c1c039ce7e2ac0039bf140b08b0354e5993c8f719f79a8b521da8ef",
             "file": "projects/ng-lib/src/lib/new-tw-ui/modules/types/tw-textarea.component.ts",
@@ -9144,6 +9226,120 @@
             "implements": [
                 "OnInit"
             ]
+        },
+        {
+            "name": "TwThComponent",
+            "id": "component-TwThComponent-a82382f17958fa28a81caad25a7523f46880ba939096f4ecba41f38ff18aae492c9e7b78b951b9ee1d28b4a9ed49e44bd78034e287793de66f280b71b90ad470",
+            "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/tw-th.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "tw-th",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<th class=\"p-4 border-b border-blue-gray-100 bg-blue-gray-50\">\n    <ng-content></ng-content>\n</th>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": false,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\n\n@Component({\n    selector: 'tw-th',\n    template: `\n        <th class=\"p-4 border-b border-blue-gray-100 bg-blue-gray-50\">\n            <ng-content></ng-content>\n        </th>\n    `,\n})\nexport class TwThComponent {}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": []
+        },
+        {
+            "name": "TwTypographyComponent",
+            "id": "component-TwTypographyComponent-2ae76dd71912194bf4a60fb2e63a97fbef623866af5e8f7ef94d05665d23119c5f3cbe6e2e43009a57be9078c88fd71a2236922500347c66277493199304e605",
+            "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/utils/typography.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "tw-typography",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<p [ngClass]=\"[variantClass, colorClass, 'block', 'antialiased', 'font-sans', 'ml-2']\">\n    <ng-content></ng-content>\n</p>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "color",
+                    "defaultValue": "'blue-gray'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 43,
+                    "type": "Color",
+                    "decorators": []
+                },
+                {
+                    "name": "variant",
+                    "defaultValue": "'paragraph'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 42,
+                    "type": "Variant",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, Input } from '@angular/core';\n\nimport { CommonModule } from '@angular/common';\n\ntype Variant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'lead' | 'paragraph' | 'small';\ntype Color =\n    | 'inherit'\n    | 'current'\n    | 'black'\n    | 'white'\n    | 'blue-gray'\n    | 'gray'\n    | 'brown'\n    | 'deep-orange'\n    | 'orange'\n    | 'amber'\n    | 'yellow'\n    | 'lime'\n    | 'light-green'\n    | 'green'\n    | 'teal'\n    | 'cyan'\n    | 'light-blue'\n    | 'blue'\n    | 'indigo'\n    | 'deep-purple'\n    | 'purple'\n    | 'pink'\n    | 'red';\n\n@Component({\n    selector: 'tw-typography',\n    standalone: true,\n    imports: [CommonModule],\n    template: `\n        <p [ngClass]=\"[variantClass, colorClass, 'block', 'antialiased', 'font-sans', 'ml-2']\">\n            <ng-content></ng-content>\n        </p>\n    `,\n})\nexport class TwTypographyComponent {\n    @Input() variant: Variant = 'paragraph';\n    @Input() color: Color = 'blue-gray';\n\n    get variantClass(): string {\n        switch (this.variant) {\n            case 'h1':\n                return 'text-4xl';\n            case 'h2':\n                return 'text-3xl';\n            case 'h3':\n                return 'text-2xl';\n            case 'h4':\n                return 'text-xl';\n            case 'h5':\n                return 'text-lg';\n            case 'h6':\n                return 'text-base';\n            case 'lead':\n                return 'text-lg leading-relaxed';\n            case 'paragraph':\n                return 'text-base';\n            case 'small':\n                return 'text-sm';\n            default:\n                return 'text-base';\n        }\n    }\n\n    get colorClass(): string {\n        return `text-${this.color}`;\n    }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "accessors": {
+                "variantClass": {
+                    "name": "variantClass",
+                    "getSignature": {
+                        "name": "variantClass",
+                        "type": "string",
+                        "returnType": "string",
+                        "line": 45
+                    }
+                },
+                "colorClass": {
+                    "name": "colorClass",
+                    "getSignature": {
+                        "name": "colorClass",
+                        "type": "string",
+                        "returnType": "string",
+                        "line": 70
+                    }
+                }
+            }
         }
     ],
     "modules": [],
@@ -9178,6 +9374,16 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "{\n    args: {\n        checkbox: [\n            { id: 'comments', name: 'Comments', description: 'Get notified when someone posts a comment on a posting.' },\n            { id: 'candidates', name: 'Candidates', description: 'Get notified when a candidate applies for a job.' },\n            { id: 'offers', name: 'Offers', description: 'Get notified when a candidate accepts or rejects an offer.' },\n        ] as FieldItem[],\n    },\n}"
+            },
+            {
+                "name": "CheckboxGroup",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n    args: {},\n}"
             },
             {
                 "name": "components",
@@ -9690,6 +9896,16 @@
                 "defaultValue": "{\n    title: 'TailwindUI/Field/Types/Textarea',\n    component: TwTextareaComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TwTextareaComponent, ReactiveFormsModule],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"width:80%; margin: 3em; display: flex; justify-content: center; align-items: center\">\n              ${story}\n            </div>`\n        ),\n    ],\n    args: {},\n}"
             },
             {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<TwDefaultTableComponent>",
+                "defaultValue": "{\n    title: 'TailwindUI/Components/Tables/Default Table',\n    component: TwDefaultTableComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TwDefaultTableComponent],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\n              ${story}\n            </div>`\n        ),\n    ],\n    args: {},\n}"
+            },
+            {
                 "name": "MultiSelect",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -10000,6 +10216,16 @@
                 "defaultValue": "{\n    args: {\n        checkbox: { id: 'newsletter', name: 'Newsletter', description: 'Get notified when there is a new newsletter.' } as FieldItem,\n    },\n}"
             },
             {
+                "name": "SingleCheckbox",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n    args: {},\n}"
+            },
+            {
                 "name": "SingleRadio",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -10082,6 +10308,17 @@
                 "deprecationMessage": "",
                 "description": "",
                 "kind": 184
+            },
+            {
+                "name": "Color",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "\"inherit\" | \"current\" | \"black\" | \"white\" | \"blue-gray\" | \"gray\" | \"brown\" | \"deep-orange\" | \"orange\" | \"amber\" | \"yellow\" | \"lime\" | \"light-green\" | \"green\" | \"teal\" | \"cyan\" | \"light-blue\" | \"blue\" | \"indigo\" | \"deep-purple\" | \"purple\" | \"pink\" | \"red\"",
+                "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/utils/typography.component.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 192
             },
             {
                 "name": "Field",
@@ -10502,6 +10739,17 @@
                 "kind": 183
             },
             {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "StoryObj<TwDefaultTableComponent>",
+                "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 183
+            },
+            {
                 "name": "Table",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
@@ -10551,6 +10799,17 @@
                 "subtype": "typealias",
                 "rawtype": "string | string[] | boolean | null",
                 "file": "projects/ng-lib/src/lib/tw-form-ui/models/identifiable.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 192
+            },
+            {
+                "name": "Variant",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "\"h1\" | \"h2\" | \"h3\" | \"h4\" | \"h5\" | \"h6\" | \"lead\" | \"paragraph\" | \"small\"",
+                "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/utils/typography.component.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "description": "",
@@ -10693,6 +10952,38 @@
                     "deprecationMessage": "",
                     "type": "Story",
                     "defaultValue": "{\n    args: {\n        checkbox: { id: 'newsletter', name: 'Newsletter', description: 'Get notified when there is a new newsletter.' } as FieldItem,\n    },\n}"
+                }
+            ],
+            "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts": [
+                {
+                    "name": "CheckboxGroup",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n    args: {},\n}"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<TwDefaultTableComponent>",
+                    "defaultValue": "{\n    title: 'TailwindUI/Components/Tables/Default Table',\n    component: TwDefaultTableComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TwDefaultTableComponent],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\n              ${story}\n            </div>`\n        ),\n    ],\n    args: {},\n}"
+                },
+                {
+                    "name": "SingleCheckbox",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n    args: {},\n}"
                 }
             ],
             "projects/ng-lib/src/lib/tw-form-ui/components/field.component.ts": [
@@ -11610,6 +11901,30 @@
                     "kind": 193
                 }
             ],
+            "projects/ng-lib/src/lib/new-tw-ui/modules/components/utils/typography.component.ts": [
+                {
+                    "name": "Color",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "\"inherit\" | \"current\" | \"black\" | \"white\" | \"blue-gray\" | \"gray\" | \"brown\" | \"deep-orange\" | \"orange\" | \"amber\" | \"yellow\" | \"lime\" | \"light-green\" | \"green\" | \"teal\" | \"cyan\" | \"light-blue\" | \"blue\" | \"indigo\" | \"deep-purple\" | \"purple\" | \"pink\" | \"red\"",
+                    "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/utils/typography.component.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 192
+                },
+                {
+                    "name": "Variant",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "\"h1\" | \"h2\" | \"h3\" | \"h4\" | \"h5\" | \"h6\" | \"lead\" | \"paragraph\" | \"small\"",
+                    "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/utils/typography.component.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 192
+                }
+            ],
             "projects/ng-lib/src/lib/tw-form-ui/models/identifiable.ts": [
                 {
                     "name": "ID",
@@ -12104,6 +12419,19 @@
                     "description": "",
                     "kind": 183
                 }
+            ],
+            "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "StoryObj<TwDefaultTableComponent>",
+                    "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 183
+                }
             ]
         }
     },
@@ -12353,6 +12681,72 @@
                 "name": "SidebarComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "CheckboxGroup",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "SingleCheckbox",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/new-tw-ui/modules/components/tw-table.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "TwDefaultTableComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/new-tw-ui/modules/components/tw-td.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "TwTdComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/new-tw-ui/modules/components/tw-th.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "TwThComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/new-tw-ui/modules/components/utils/typography.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "TwTypographyComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
                 "status": "low"
             },
             {

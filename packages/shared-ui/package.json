@@ -69,7 +69,7 @@
         "build-storybook": "storybook build",
         "build:rollup": "pnpx rollup -c",
         "pack": "cd ./dist && pnpm pack",
-        "storybook": "storybook dev -p 6006"
+        "storybook": "storybook dev -p 7007"
     },
     "types": "dist/index.d.ts",
     "version": "1.0.0",
