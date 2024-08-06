@@ -7,9 +7,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AdkDatasource } from '../data-source';
 import { AdkFormGroup } from '../../directives';
-import { ButtonComponent } from '../../../new-tw-ui';
+import { ButtonComponent } from '../../../tw-ui';
 import { FieldComponent } from '../field.component';
-import { PillComponent } from '../../../new-tw-ui/components/pill.component';
+import { PillComponent } from '../../../tw-ui/components/pill.component';
 
 @Component({
     selector: 'adk-default-table',
