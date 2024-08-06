@@ -58,7 +58,7 @@ import { BaseComponent, FieldItem } from './base.component';
                     type="checkbox"
                     class="peer relative appearance-none border rounded-md border-blue-gray-200 cursor-pointer transition-all before:content[''] before:block before:bg-blue-gray-500 before:w-12 before:h-12 before:rounded-full before:absolute before:top-2/4 before:left-2/4 before:-translate-y-2/4 before:-translate-x-2/4 before:opacity-0 hover:before:opacity-10 before:transition-opacity checked:bg-gray-900 checked:border-gray-900 checked:before:bg-gray-900 w-4 h-4"
                     id=":r7o:"
-                    checked="" /><span
+                    [checked]="checked" /><span
                     class="text-white absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity"
                     ><svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -80,6 +80,8 @@ import { BaseComponent, FieldItem } from './base.component';
 })
 export class TwCheckboxComponent extends BaseComponent {
     @Input() checkbox: FieldItem | FieldItem[] | undefined = undefined;
+    @Input() checked = false;
+
     override formControls: { [key: string]: FormControl } = {};
 
     ngOnInit(): void {

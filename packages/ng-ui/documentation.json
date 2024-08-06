@@ -156,12 +156,526 @@
             "kind": 171,
             "methods": [],
             "extends": []
+        },
+        {
+            "name": "Pagination",
+            "id": "interface-Pagination-085dcdfe7db512039b765867eb6e980f2d83faa8debae33781a1a0dfc6f9b502c5ea8241ddb258d628e7127548e9c3714d567be0d15c0fa274455a65073227f1",
+            "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/models/pagination.interface.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface Pagination {\n    currentPage: number;\n    totalPages: number;\n    pageSize: number;\n}\n",
+            "properties": [
+                {
+                    "name": "currentPage",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 2
+                },
+                {
+                    "name": "pageSize",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 4
+                },
+                {
+                    "name": "totalPages",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 3
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 171,
+            "methods": [],
+            "extends": []
+        },
+        {
+            "name": "TableState",
+            "id": "interface-TableState-fac85e20d17b96ee7c0a9a69a4289b2077b454c3dae2d60c6092fb9e4f867db13235658c6b03b926edea38cac63c44b6ac8bda2f40e5f0369eac6a930c7ed845",
+            "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/models/table.interface.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface TableState {\n    dataSource: any[];\n    draggedColIndex: number | null;\n    filterDataSource: { column: string; value: string };\n    headers: string[];\n    initialDataSource: any[];\n    initialHeaders: string[];\n    pagination: {\n        currentPage: number;\n        totalPages: number;\n        pageSize: number;\n    };\n    preferences: {\n        visibleColumns: string[];\n        groupBy: string | undefined;\n    };\n    selectedRows: any[];\n    sortDataSource: { key: string; direction: 'ascending' | 'descending' };\n    [key: string]: any;\n}\n",
+            "properties": [
+                {
+                    "name": "dataSource",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 2
+                },
+                {
+                    "name": "draggedColIndex",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number | null",
+                    "optional": false,
+                    "description": "",
+                    "line": 3
+                },
+                {
+                    "name": "filterDataSource",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "literal type",
+                    "optional": false,
+                    "description": "",
+                    "line": 4
+                },
+                {
+                    "name": "headers",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 5
+                },
+                {
+                    "name": "initialDataSource",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 6
+                },
+                {
+                    "name": "initialHeaders",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 7
+                },
+                {
+                    "name": "pagination",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "literal type",
+                    "optional": false,
+                    "description": "",
+                    "line": 8
+                },
+                {
+                    "name": "preferences",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "literal type",
+                    "optional": false,
+                    "description": "",
+                    "line": 13
+                },
+                {
+                    "name": "selectedRows",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 17
+                },
+                {
+                    "name": "sortDataSource",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "literal type",
+                    "optional": false,
+                    "description": "",
+                    "line": 18
+                }
+            ],
+            "indexSignatures": [
+                {
+                    "id": "index-declaration-fac85e20d17b96ee7c0a9a69a4289b2077b454c3dae2d60c6092fb9e4f867db13235658c6b03b926edea38cac63c44b6ac8bda2f40e5f0369eac6a930c7ed845",
+                    "args": [
+                        {
+                            "name": "key",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "returnType": "any",
+                    "line": 18,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "kind": 181,
+            "methods": [],
+            "extends": []
         }
     ],
-    "injectables": [],
+    "injectables": [
+        {
+            "name": "TableDataSourceService",
+            "id": "injectable-TableDataSourceService-1e12816362c77536016a4e7eca6f32fef248aae749166aaade49a2807a39593edab305f48499e46236bf12665c863e1afeecb1785434338e046e9112759c3a49",
+            "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/services/table-datasource.service.ts",
+            "properties": [
+                {
+                    "name": "#state",
+                    "defaultValue": "signal<TableState>({\n        dataSource: [],\n        draggedColIndex: null,\n        filterDataSource: { column: '', value: '' },\n        headers: [],\n        initialDataSource: [],\n        initialHeaders: [],\n        pagination: {\n            currentPage: 1,\n            totalPages: 1,\n            pageSize: 10,\n        },\n        preferences: {\n            visibleColumns: [],\n            groupBy: undefined,\n        },\n        selectedRows: [],\n        sortDataSource: { key: '', direction: 'ascending' },\n    })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 10,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "state",
+                    "defaultValue": "computed(() => this.#state())",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 30,
+                    "modifierKind": [
+                        148
+                    ]
+                }
+            ],
+            "methods": [
+                {
+                    "name": "get",
+                    "args": [
+                        {
+                            "name": "key",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "any",
+                    "typeParameters": [],
+                    "line": 32,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "key",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getTableState",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "any",
+                    "typeParameters": [],
+                    "line": 96,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "setCurrentPage",
+                    "args": [
+                        {
+                            "name": "currentPage",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 67,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "currentPage",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "setGroupBy",
+                    "args": [
+                        {
+                            "name": "groupBy",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 77,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "groupBy",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "setHeaders",
+                    "args": [
+                        {
+                            "name": "headers",
+                            "type": "string[]",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 36,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "headers",
+                            "type": "string[]",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "setPaginationState",
+                    "args": [
+                        {
+                            "name": "pagination",
+                            "type": "Pagination",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 57,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "pagination",
+                            "type": "Pagination",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "setTableDataSource",
+                    "args": [
+                        {
+                            "name": "dataSource",
+                            "type": "any[]",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 49,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "dataSource",
+                            "type": "any[]",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "sortDataSource",
+                    "args": [
+                        {
+                            "name": "sortDataSource",
+                            "type": "literal type",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 84,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "sortDataSource",
+                            "type": "literal type",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Injectable, computed, signal } from '@angular/core';\nimport { Pagination, TableState } from '../models';\n\nimport { SortRowsUtil } from '../utils/sort-rows.util';\n\n@Injectable({\n    providedIn: 'root',\n})\nexport class TableDataSourceService {\n    #state = signal<TableState>({\n        dataSource: [],\n        draggedColIndex: null,\n        filterDataSource: { column: '', value: '' },\n        headers: [],\n        initialDataSource: [],\n        initialHeaders: [],\n        pagination: {\n            currentPage: 1,\n            totalPages: 1,\n            pageSize: 10,\n        },\n        preferences: {\n            visibleColumns: [],\n            groupBy: undefined,\n        },\n        selectedRows: [],\n        sortDataSource: { key: '', direction: 'ascending' },\n    });\n\n    readonly state = computed(() => this.#state());\n\n    get(key: string) {\n        return this.#state()[key];\n    }\n\n    setHeaders(headers: string[]) {\n        this.#state.update((state) => ({\n            ...state,\n            headers: headers,\n            initialHeaders: headers,\n            preferences: {\n                ...state.preferences,\n                visibleColumns: headers,\n            },\n            filterDataSource: { column: headers[0], value: '' },\n        }));\n    }\n\n    setTableDataSource(dataSource: any[]) {\n        this.#state.update((state) => ({\n            ...state,\n            dataSource: dataSource,\n            initialDataSource: dataSource,\n        }));\n    }\n\n    setPaginationState(pagination: Pagination) {\n        this.#state.update((state) => ({\n            ...state,\n            pagination: {\n                ...state.pagination,\n                ...pagination,\n            },\n        }));\n    }\n\n    setCurrentPage(currentPage: number) {\n        this.#state.update((state) => ({\n            ...state,\n            pagination: {\n                ...state.pagination,\n                currentPage: currentPage,\n            },\n        }));\n    }\n\n    setGroupBy(groupBy: string) {\n        this.#state.update((state) => ({\n            ...state,\n            preferences: { ...state.preferences, groupBy: groupBy },\n        }));\n    }\n\n    sortDataSource(sortDataSource: { key: string; direction: 'ascending' | 'descending' }) {\n        const sort = new SortRowsUtil();\n        if (sortDataSource.key) {\n            this.#state.update((state) => ({\n                ...state,\n                selectedRows: [],\n                sortDataSource: sortDataSource,\n                dataSource: sort.sortRows(state.dataSource, state.sortDataSource),\n            }));\n        }\n    }\n\n    getTableState() {\n        return this.#state();\n    }\n}\n",
+            "extends": [],
+            "type": "injectable"
+        }
+    ],
     "guards": [],
     "interceptors": [],
     "classes": [
+        {
+            "name": "DraggableUtil",
+            "id": "class-DraggableUtil-b04b8e4258363efce693f3e9e0fc95af58de296ddb8c12c81ec85c5f71228290ea0b8bb6604e3e4ea9b1281bf5b7c42e905220cc11419ff7d834ecca82c2107c",
+            "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/utils/draggable.util.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "class",
+            "sourceCode": "export class DraggableUtil {\n    headers: string[] = [];\n    dataSource = [];\n    draggedColIndex = null;\n    selectedRows = [];\n\n    // Function to handle dragging of columns\n    dragRows(state: any, action: any) {\n        const targetIndex = action.payload;\n        const draggedColIndex = state.draggedColIndex;\n        const dataSource = state.dataSource;\n        if (draggedColIndex === null || draggedColIndex === targetIndex) return; // If no valid drag action, exit\n\n        // Update headers array with dragged column\n        const newHeaders = [...state.headers];\n        const draggedHeader = newHeaders.splice(draggedColIndex, 1)[0];\n        newHeaders.splice(targetIndex, 0, draggedHeader);\n\n        // Update rows in dataSource array with dragged column\n        const newRows = dataSource.map((row: any) => {\n            const entries = Object.entries(row);\n            const draggedEntry = entries.splice(draggedColIndex, 1)[0];\n            entries.splice(targetIndex, 0, draggedEntry);\n            return Object.fromEntries(entries); // Convert back to object\n        });\n\n        // Update state with new headers, rows, and reset draggedColIndex\n        this.headers = newHeaders;\n        this.dataSource = newRows;\n        this.draggedColIndex = null;\n        this.selectedRows = [];\n    }\n}\n",
+            "inputsClass": [],
+            "outputsClass": [],
+            "properties": [
+                {
+                    "name": "dataSource",
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 3
+                },
+                {
+                    "name": "draggedColIndex",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "null",
+                    "optional": false,
+                    "description": "",
+                    "line": 4
+                },
+                {
+                    "name": "headers",
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 2
+                },
+                {
+                    "name": "selectedRows",
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 5
+                }
+            ],
+            "methods": [
+                {
+                    "name": "dragRows",
+                    "args": [
+                        {
+                            "name": "state",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "action",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 8,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "state",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "action",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "extends": [],
+            "hostBindings": [],
+            "hostListeners": []
+        },
         {
             "name": "FieldBuilder",
             "id": "class-FieldBuilder-7f450771fbd9d5e66ae94b606858cc29866e0951f7d0ee592828813f34859f4e7044316919259cb4b18600284496339369b8ddd959e84e1d6e19e841d0cc32ab",
@@ -516,6 +1030,178 @@
                     "modifierKind": [
                         123,
                         126
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "extends": [],
+            "hostBindings": [],
+            "hostListeners": []
+        },
+        {
+            "name": "PaginationUtil",
+            "id": "class-PaginationUtil-258ee803e93737d29c29f4784e64b746fdde1ce9c719be2df7e898ccf07a994d8678086fbcd38ada63e369bef426781d1472b6f832624c2ceb4b4804f149bd13",
+            "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/utils/pagination.util.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "class",
+            "sourceCode": "import { Pagination, TableState } from '../models';\n\nexport class PaginationUtil {\n    initialState: TableState;\n\n    constructor(initialState: TableState) {\n        this.initialState = initialState;\n        this.initialState.pagination.currentPage = 1;\n        this.initialState.pagination.totalPages = 0;\n        this.initialState.pagination.pageSize = 10;\n    }\n\n    setDataSourcePagination = (action: any) => {\n        // Calculate totalPages based on the full dataset (initialDataSource)\n        const length = this.initialState.initialDataSource.length;\n        const pageSize = this.initialState.pagination.pageSize;\n        this.initialState.pagination.totalPages = Math.ceil(length / pageSize);\n\n        // Check if there's data in the initialDataSource to paginate\n        if (this.initialState.initialDataSource.length > 0) {\n            // Use initialDataSource to slice the data for current page\n            this.initialState.dataSource = this.initialState.initialDataSource.slice(\n                (this.initialState.pagination.currentPage - 1) * this.initialState.pagination.pageSize,\n                this.initialState.pagination.currentPage * this.initialState.pagination.pageSize\n            );\n        }\n    };\n\n    updateChangedCurrentPage = (action: any) => {\n        // Update currentPage in pagination\n        this.initialState.pagination.currentPage = action.payload;\n\n        // Update dataSource based on currentPage\n        this.setDataSourcePagination(action);\n    };\n\n    setPaginationState = (pageSize: number, currentPage: number) => {\n        // Set pageSize and currentPage in pagination state\n        this.initialState.pagination.pageSize = pageSize;\n        this.initialState.pagination.currentPage = currentPage;\n\n        // Recalculate totalPages based on the new pageSize\n        this.initialState.pagination.totalPages = Math.ceil(this.initialState.initialDataSource.length / pageSize);\n\n        // Update dataSource based on the new currentPage and pageSize\n        this.setDataSourcePagination({});\n    };\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "initialState",
+                        "type": "TableState",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 4,
+                "jsdoctags": [
+                    {
+                        "name": "initialState",
+                        "type": "TableState",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "inputsClass": [],
+            "outputsClass": [],
+            "properties": [
+                {
+                    "name": "initialState",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "TableState",
+                    "optional": false,
+                    "description": "",
+                    "line": 4
+                },
+                {
+                    "name": "setDataSourcePagination",
+                    "defaultValue": "() => {...}",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 13
+                },
+                {
+                    "name": "setPaginationState",
+                    "defaultValue": "() => {...}",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 37
+                },
+                {
+                    "name": "updateChangedCurrentPage",
+                    "defaultValue": "() => {...}",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 29
+                }
+            ],
+            "methods": [],
+            "indexSignatures": [],
+            "extends": [],
+            "hostBindings": [],
+            "hostListeners": []
+        },
+        {
+            "name": "SortRowsUtil",
+            "id": "class-SortRowsUtil-0b53f43407bde57e85de362f3009a20690dc474931e3483fc38c4b4d5483e3b27b827529b577b345f7c40b8b38f6fb60ded92be1dc7375478f315894236cb264",
+            "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/utils/sort-rows.util.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "class",
+            "sourceCode": "export class SortRowsUtil {\n    isDate(value: any) {\n        const date = new Date(value);\n        return !isNaN(date.getTime());\n    }\n\n    sortRows(rows: any[], sortConfig: { key: string; direction: string }) {\n        const lowerCaseSortKey = sortConfig.key.toLowerCase();\n        return rows.sort((a, b) => {\n            const aValue = String(a[lowerCaseSortKey]).toLowerCase();\n            const bValue = String(b[lowerCaseSortKey]).toLowerCase();\n\n            // Check if both values are valid dates\n            if (this.isDate(aValue) && this.isDate(bValue)) {\n                const dateA = new Date(aValue) as any;\n                const dateB = new Date(bValue) as any;\n                return sortConfig.direction === 'ascending' ? dateA - dateB : dateB - dateA;\n            } else {\n                // If not dates, compare as strings\n                if (aValue < bValue) return sortConfig.direction === 'ascending' ? -1 : 1;\n                if (aValue > bValue) return sortConfig.direction === 'ascending' ? 1 : -1;\n            }\n            return 0; // Default case\n        });\n    }\n}\n",
+            "inputsClass": [],
+            "outputsClass": [],
+            "properties": [],
+            "methods": [
+                {
+                    "name": "isDate",
+                    "args": [
+                        {
+                            "name": "value",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 2,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "value",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "sortRows",
+                    "args": [
+                        {
+                            "name": "rows",
+                            "type": "any[]",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "sortConfig",
+                            "type": "literal type",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "any",
+                    "typeParameters": [],
+                    "line": 7,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "rows",
+                            "type": "any[]",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "sortConfig",
+                            "type": "literal type",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
                     ]
                 }
             ],
@@ -5817,6 +6503,43 @@
             ]
         },
         {
+            "name": "SortableIconComponent",
+            "id": "component-SortableIconComponent-142e654b18d14a74113357c3ee39c4f935a18f04ca4c928c4d30b00a81b38cf9a43a472c44eca517cfc1c990f96e9c6c7bb8ed8ce2f7bcecda48fb14fb2c476b",
+            "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/utils/sortable-icon.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "tw-sortable-icon",
+            "styleUrls": [],
+            "styles": [
+                "\n            :host {\n                display: inline-block;\n            }\n        "
+            ],
+            "template": "<svg\n    xmlns=\"http://www.w3.org/2000/svg\"\n    fill=\"none\"\n    viewBox=\"0 0 24 24\"\n    stroke-width=\"2\"\n    stroke=\"currentColor\"\n    aria-hidden=\"true\"\n    class=\"w-4 h-4\"\n>\n    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9\"></path>\n</svg>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\n\n@Component({\n    selector: 'tw-sortable-icon',\n    standalone: true,\n    template: `\n        <svg\n            xmlns=\"http://www.w3.org/2000/svg\"\n            fill=\"none\"\n            viewBox=\"0 0 24 24\"\n            stroke-width=\"2\"\n            stroke=\"currentColor\"\n            aria-hidden=\"true\"\n            class=\"w-4 h-4\"\n        >\n            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9\"></path>\n        </svg>\n    `,\n    styles: [\n        `\n            :host {\n                display: inline-block;\n            }\n        `,\n    ],\n})\nexport class SortableIconComponent {}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "\n            :host {\n                display: inline-block;\n            }\n        \n",
+            "extends": []
+        },
+        {
             "name": "TableComponent",
             "id": "component-TableComponent-a9a407b66cdfebd59affd3aa17f2d7bb05f729f9bcf73be939a554e3cdc1bc1bbb303e91c2058b270ebce6ad6d91b8d44c7c8dfe9ff97a780123f67063e426f0",
             "file": "projects/ng-lib/src/lib/tw-form-ui/components/table.component.ts",
@@ -6629,7 +7352,7 @@
         },
         {
             "name": "TwCheckboxComponent",
-            "id": "component-TwCheckboxComponent-d1a1ddfbd32c6174cd10a9e5e0770ec58be0c24838ec7387df928b307bc2cfac81d03f51e8cfce520d65386f05f2ef56e1f57eb9c7c792d105ea9160b816634b",
+            "id": "component-TwCheckboxComponent-f73eafa0ac76e510e7fb8f3ca62dbc619fd5d693ad0f5b5b5a0573fe957d9a339ebe7480d0ac5dec3d29d1a09052d7625692a5352b2d4c76becfdb2f3c16d765",
             "file": "projects/ng-lib/src/lib/new-tw-ui/modules/types/tw-checkbox.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -6639,18 +7362,27 @@
             "selector": "tw-checkbox",
             "styleUrls": [],
             "styles": [],
-            "template": "@if (isArray(checkbox)) {\n<fieldset>\n    <legend class=\"sr-only\">Notifications</legend>\n    <div class=\"space-y-5\">\n        @for (cb of checkbox; track $index) {\n        <div class=\"relative flex items-start\">\n            <div class=\"flex h-6 items-center\">\n                <input\n                    [id]=\"getId(cb)\"\n                    [attr.describedby]=\"getId(cb) + '-description'\"\n                    [name]=\"getName(cb)\"\n                    type=\"checkbox\"\n                    class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                />\n            </div>\n            <div class=\"ml-3 text-sm leading-6\">\n                <label [for]=\"getId(cb)\" class=\"font-medium text-gray-900\">{{ getName(cb) }}</label>\n                <p [id]=\"getId(cb) + '-description'\" class=\"text-gray-500\">{{ getDescription(cb) }}</p>\n            </div>\n        </div>\n        }\n    </div>\n</fieldset>\n} @else {\n<div class=\"relative flex items-start\">\n    <div class=\"flex h-6 items-center\">\n        <input\n            [id]=\"getId(checkbox)\"\n            [attr.describedby]=\"getId(checkbox) + '-description'\"\n            [name]=\"getName(checkbox)\"\n            type=\"checkbox\"\n            class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n        />\n    </div>\n    <div class=\"ml-3 text-sm leading-6\">\n        <label [for]=\"getId(checkbox)\" class=\"font-medium text-gray-900\">{{ getName(checkbox) }}</label>\n        <p [id]=\"getId(checkbox) + '-description'\" class=\"text-gray-500\">{{ getDescription(checkbox) }}</p>\n    </div>\n</div>\n}\n",
+            "template": "@if (checkbox) { @if (isArray(checkbox)) {\n<fieldset>\n    <legend class=\"sr-only\">Notifications</legend>\n    <div class=\"space-y-5\">\n        @for (cb of checkbox; track $index) {\n        <div class=\"relative flex items-start\">\n            <div class=\"flex h-6 items-center\">\n                <input\n                    [id]=\"getId(cb)\"\n                    [attr.describedby]=\"getId(cb) + '-description'\"\n                    [name]=\"getName(cb)\"\n                    type=\"checkbox\"\n                    class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                />\n            </div>\n            <div class=\"ml-3 text-sm leading-6\">\n                <label [for]=\"getId(cb)\" class=\"font-medium text-gray-900\">{{ getName(cb) }}</label>\n                <p [id]=\"getId(cb) + '-description'\" class=\"text-gray-500\">{{ getDescription(cb) }}</p>\n            </div>\n        </div>\n        }\n    </div>\n</fieldset>\n} @else {\n<div class=\"relative flex items-start\">\n    <div class=\"flex h-6 items-center\">\n        <input\n            [id]=\"getId(checkbox)\"\n            [attr.describedby]=\"getId(checkbox) + '-description'\"\n            [name]=\"getName(checkbox)\"\n            type=\"checkbox\"\n            class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n        />\n    </div>\n    <div class=\"ml-3 text-sm leading-6\">\n        <label [for]=\"getId(checkbox)\" class=\"font-medium text-gray-900\">{{ getName(checkbox) }}</label>\n        <p [id]=\"getId(checkbox) + '-description'\" class=\"text-gray-500\">{{ getDescription(checkbox) }}</p>\n    </div>\n</div>\n} } @else {\n<div class=\"inline-flex items-center\">\n    <label\n        class=\"relative flex items-center cursor-pointer p-3 rounded-full\"\n        for=\":r7o:\"\n        style=\"position: relative; overflow: hidden;\"\n        ><input\n            type=\"checkbox\"\n            class=\"peer relative appearance-none border rounded-md border-blue-gray-200 cursor-pointer transition-all before:content[''] before:block before:bg-blue-gray-500 before:w-12 before:h-12 before:rounded-full before:absolute before:top-2/4 before:left-2/4 before:-translate-y-2/4 before:-translate-x-2/4 before:opacity-0 hover:before:opacity-10 before:transition-opacity checked:bg-gray-900 checked:border-gray-900 checked:before:bg-gray-900 w-4 h-4\"\n            id=\":r7o:\"\n            [checked]=\"checked\" /><span\n            class=\"text-white absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity\"\n            ><svg\n                xmlns=\"http://www.w3.org/2000/svg\"\n                class=\"h-3.5 w-3.5\"\n                viewBox=\"0 0 20 20\"\n                fill=\"currentColor\"\n                stroke=\"currentColor\"\n                stroke-width=\"1\"\n            >\n                <path\n                    fill-rule=\"evenodd\"\n                    d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\"\n                    clip-rule=\"evenodd\"\n                ></path></svg></span\n    ></label>\n</div>\n}\n",
             "templateUrl": [],
             "viewProviders": [],
             "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "checkbox",
-                    "defaultValue": "[]",
+                    "defaultValue": "undefined",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 55,
-                    "type": "FieldItem | FieldItem[]",
+                    "line": 82,
+                    "type": "FieldItem | FieldItem[] | undefined",
+                    "decorators": []
+                },
+                {
+                    "name": "checked",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 83,
+                    "type": "boolean",
                     "decorators": []
                 }
             ],
@@ -6664,7 +7396,7 @@
                     "type": "literal type",
                     "optional": false,
                     "description": "",
-                    "line": 56,
+                    "line": 85,
                     "modifierKind": [
                         164
                     ],
@@ -6687,7 +7419,7 @@
                     "optional": false,
                     "returnType": "FieldItem[]",
                     "typeParameters": [],
-                    "line": 69,
+                    "line": 100,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -6708,7 +7440,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 58,
+                    "line": 87,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -7106,7 +7838,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input } from '@angular/core';\nimport { FormControl, ReactiveFormsModule } from '@angular/forms';\n\nimport { CommonModule } from '@angular/common';\nimport { BaseComponent, FieldItem } from './base.component';\n\n@Component({\n    standalone: true,\n    selector: 'tw-checkbox',\n    imports: [CommonModule, ReactiveFormsModule],\n    template: `\n        @if (isArray(checkbox)) {\n        <fieldset>\n            <legend class=\"sr-only\">Notifications</legend>\n            <div class=\"space-y-5\">\n                @for (cb of checkbox; track $index) {\n                <div class=\"relative flex items-start\">\n                    <div class=\"flex h-6 items-center\">\n                        <input\n                            [id]=\"getId(cb)\"\n                            [attr.describedby]=\"getId(cb) + '-description'\"\n                            [name]=\"getName(cb)\"\n                            type=\"checkbox\"\n                            class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                        />\n                    </div>\n                    <div class=\"ml-3 text-sm leading-6\">\n                        <label [for]=\"getId(cb)\" class=\"font-medium text-gray-900\">{{ getName(cb) }}</label>\n                        <p [id]=\"getId(cb) + '-description'\" class=\"text-gray-500\">{{ getDescription(cb) }}</p>\n                    </div>\n                </div>\n                }\n            </div>\n        </fieldset>\n        } @else {\n        <div class=\"relative flex items-start\">\n            <div class=\"flex h-6 items-center\">\n                <input\n                    [id]=\"getId(checkbox)\"\n                    [attr.describedby]=\"getId(checkbox) + '-description'\"\n                    [name]=\"getName(checkbox)\"\n                    type=\"checkbox\"\n                    class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                />\n            </div>\n            <div class=\"ml-3 text-sm leading-6\">\n                <label [for]=\"getId(checkbox)\" class=\"font-medium text-gray-900\">{{ getName(checkbox) }}</label>\n                <p [id]=\"getId(checkbox) + '-description'\" class=\"text-gray-500\">{{ getDescription(checkbox) }}</p>\n            </div>\n        </div>\n        }\n    `,\n})\nexport class TwCheckboxComponent extends BaseComponent {\n    @Input() checkbox: FieldItem | FieldItem[] = [];\n    override formControls: { [key: string]: FormControl } = {};\n\n    ngOnInit(): void {\n        if (this.isArray(this.checkbox)) {\n            for (const item of this.checkbox) {\n                this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));\n            }\n        } else {\n            const item = this.checkbox;\n            this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));\n        }\n    }\n\n    isArray(checkbox: FieldItem | FieldItem[]): checkbox is FieldItem[] {\n        return Array.isArray(checkbox);\n    }\n}\n",
+            "sourceCode": "import { Component, Input } from '@angular/core';\nimport { FormControl, ReactiveFormsModule } from '@angular/forms';\n\nimport { CommonModule } from '@angular/common';\nimport { BaseComponent, FieldItem } from './base.component';\n\n@Component({\n    standalone: true,\n    selector: 'tw-checkbox',\n    imports: [CommonModule, ReactiveFormsModule],\n    template: `\n        @if (checkbox) { @if (isArray(checkbox)) {\n        <fieldset>\n            <legend class=\"sr-only\">Notifications</legend>\n            <div class=\"space-y-5\">\n                @for (cb of checkbox; track $index) {\n                <div class=\"relative flex items-start\">\n                    <div class=\"flex h-6 items-center\">\n                        <input\n                            [id]=\"getId(cb)\"\n                            [attr.describedby]=\"getId(cb) + '-description'\"\n                            [name]=\"getName(cb)\"\n                            type=\"checkbox\"\n                            class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                        />\n                    </div>\n                    <div class=\"ml-3 text-sm leading-6\">\n                        <label [for]=\"getId(cb)\" class=\"font-medium text-gray-900\">{{ getName(cb) }}</label>\n                        <p [id]=\"getId(cb) + '-description'\" class=\"text-gray-500\">{{ getDescription(cb) }}</p>\n                    </div>\n                </div>\n                }\n            </div>\n        </fieldset>\n        } @else {\n        <div class=\"relative flex items-start\">\n            <div class=\"flex h-6 items-center\">\n                <input\n                    [id]=\"getId(checkbox)\"\n                    [attr.describedby]=\"getId(checkbox) + '-description'\"\n                    [name]=\"getName(checkbox)\"\n                    type=\"checkbox\"\n                    class=\"h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600\"\n                />\n            </div>\n            <div class=\"ml-3 text-sm leading-6\">\n                <label [for]=\"getId(checkbox)\" class=\"font-medium text-gray-900\">{{ getName(checkbox) }}</label>\n                <p [id]=\"getId(checkbox) + '-description'\" class=\"text-gray-500\">{{ getDescription(checkbox) }}</p>\n            </div>\n        </div>\n        } } @else {\n        <div class=\"inline-flex items-center\">\n            <label\n                class=\"relative flex items-center cursor-pointer p-3 rounded-full\"\n                for=\":r7o:\"\n                style=\"position: relative; overflow: hidden;\"\n                ><input\n                    type=\"checkbox\"\n                    class=\"peer relative appearance-none border rounded-md border-blue-gray-200 cursor-pointer transition-all before:content[''] before:block before:bg-blue-gray-500 before:w-12 before:h-12 before:rounded-full before:absolute before:top-2/4 before:left-2/4 before:-translate-y-2/4 before:-translate-x-2/4 before:opacity-0 hover:before:opacity-10 before:transition-opacity checked:bg-gray-900 checked:border-gray-900 checked:before:bg-gray-900 w-4 h-4\"\n                    id=\":r7o:\"\n                    [checked]=\"checked\" /><span\n                    class=\"text-white absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity\"\n                    ><svg\n                        xmlns=\"http://www.w3.org/2000/svg\"\n                        class=\"h-3.5 w-3.5\"\n                        viewBox=\"0 0 20 20\"\n                        fill=\"currentColor\"\n                        stroke=\"currentColor\"\n                        stroke-width=\"1\"\n                    >\n                        <path\n                            fill-rule=\"evenodd\"\n                            d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\"\n                            clip-rule=\"evenodd\"\n                        ></path></svg></span\n            ></label>\n        </div>\n        }\n    `,\n})\nexport class TwCheckboxComponent extends BaseComponent {\n    @Input() checkbox: FieldItem | FieldItem[] | undefined = undefined;\n    @Input() checked = false;\n\n    override formControls: { [key: string]: FormControl } = {};\n\n    ngOnInit(): void {\n        if (this.checkbox) {\n            if (this.isArray(this.checkbox)) {\n                for (const item of this.checkbox) {\n                    this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));\n                }\n            } else {\n                const item = this.checkbox;\n                this.formControls[item.name] = new FormControl(item.value ?? '', this.getValidators(item));\n            }\n        }\n    }\n\n    isArray(checkbox: FieldItem | FieldItem[]): checkbox is FieldItem[] {\n        return Array.isArray(checkbox);\n    }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -7116,7 +7848,7 @@
         },
         {
             "name": "TwDefaultTableComponent",
-            "id": "component-TwDefaultTableComponent-32229d853ccab0ce96abc9590869544b432489e38a1a7a95ece4f9eef6be8a86466b3a03db9ec1e5111d6da859d1dd31d88a16b32a665c5aee7b89c00cd7c1cc",
+            "id": "component-TwDefaultTableComponent-e58811d791209a1470490399ab960afdad9347e35701fa43e7d742b31f270a1d974be4ae3679445b7b14eee63fa46ba87d573bd73da6dc25f7fcd3dead1bbf48",
             "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/tw-table.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -7128,14 +7860,365 @@
             "styles": [
                 "\n            :host {\n                display: block;\n                width: 100%;\n            }\n        "
             ],
-            "template": "<table class=\"w-full text-left table-auto min-w-max\"></table>",
+            "template": "<table class=\"w-full text-left table-auto min-w-max\">\n    <thead>\n        <tr>\n            @if (isSelectable) {\n            <th class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-1 max-w-[10px]\">\n                <tw-checkbox></tw-checkbox>\n            </th>\n            } @for(header of headers; track $index) {\n            <th class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer\">\n                <tw-typography\n                    [variant]=\"'small'\"\n                    [color]=\"'blue-gray'\"\n                    [classStyle]=\"'flex items-center justify-between gap-2 font-normal leading-none opacity-70'\"\n                    (click)=\"sortRows(header, groupData)\"\n                >\n                    {{ header ?? ' ' }}\n                    <div class=\"flex flex-row gap-2\">\n                        @if(index !== headers.length -1 && isSortable) {\n                        <tw-sortable-icon></tw-sortable-icon>\n                        } @if(sortConfig.key === header && isSortable) {\n                        <span>{{ sortConfig.direction === 'ascending' ? '🔼' : '🔽' }}</span>\n                        }\n                    </div>\n                </tw-typography>\n            </th>\n            } @if(actionButton) {\n            <th class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-3\">\n                <tw-typography\n                    [variant]=\"'small'\"\n                    [color]=\"'blue-gray'\"\n                    [classStyle]=\"'flex items-center justify-between gap-2 font-normal leading-none opacity-70'\"\n                >\n                    {{ actionColName ?? '' }}\n                </tw-typography>\n            </th>\n            }\n        </tr>\n    </thead>\n    <tbody>\n        @for(groupKey of objectKeysGroupData(groupData); track $index) { @if(groupBy) {\n        <tr>\n            <td [colSpan]=\"colSpanNum\" class=\"p-0\">{{ groupKey }}</td>\n        </tr>\n        } @else { @for(rowData of groupData[groupKey]; track $index) { @if (isSelectable) {\n        <tr>\n            <td [ngClass]=\"isSelectable ? 'p-1' : 'p-2'\" class=\"border-b border-blue-gray-50 p-1 max-h-[38px] max-w-[15px]\">\n                <tw-checkbox\n                    [checked]=\"isRowSelected(rowData)\"\n                    (change)=\"toggleRowSelection(rowData)\"\n                    class=\"w-4 h-4\"\n                ></tw-checkbox>\n            </td>\n            @for(key of headers; track $index) {\n            <td\n                [ngClass]=\"isSelectable ? 'p-1' : 'p-2'\"\n                class=\"border-b border-blue-gray-50 max-h-[40px] min-w-[60px] max-w-[60px]\"\n            >\n                <tw-typography [variant]=\"'small'\" [color]=\"'blue-gray'\" class=\"font-normal ml-2\">\n                    {{ rowData[key.toLowerCase()] }}\n                </tw-typography>\n            </td>\n            <!-- @if (actionButton) {\n            <td class=\"border-b border-blue-gray-50 p-2 max-h-[40px] min-w-[60px] max-w-[60px]\">\n                <ng-container *ngTemplateOutlet=\"actionButton; context: { $implicit: rowData }\"></ng-container>\n            </td>\n            } -->\n            }\n        </tr>\n        } } } }\n    </tbody>\n</table>\n",
             "templateUrl": [],
             "viewProviders": [],
             "hostDirectives": [],
-            "inputsClass": [],
+            "inputsClass": [
+                {
+                    "name": "actionButton",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 100,
+                    "type": "TemplateRef<any> | string",
+                    "decorators": []
+                },
+                {
+                    "name": "actionColName",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 99,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "groupBy",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 102,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "headers",
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 98,
+                    "type": "string[]",
+                    "decorators": []
+                },
+                {
+                    "name": "isDraggable",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 97,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "isSelectable",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 95,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "isSortable",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 96,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "rows",
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 101,
+                    "type": "literal type[]",
+                    "decorators": []
+                }
+            ],
             "outputsClass": [],
-            "propertiesClass": [],
-            "methodsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "dataSource",
+                    "defaultValue": "this.tableDataSourceService.get('dataSource')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 106
+                },
+                {
+                    "name": "groupData",
+                    "defaultValue": "{ '': this.dataSource }",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "optional": false,
+                    "description": "",
+                    "line": 107
+                },
+                {
+                    "name": "selectedRow",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any",
+                    "optional": false,
+                    "description": "",
+                    "line": 109
+                },
+                {
+                    "name": "selectedRows",
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 110
+                },
+                {
+                    "name": "sortConfig",
+                    "defaultValue": "this.tableDataSourceService.get('sortDataSource')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 108
+                },
+                {
+                    "name": "tableDataSourceService",
+                    "defaultValue": "inject(TableDataSourceService)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "TableDataSourceService",
+                    "optional": false,
+                    "description": "",
+                    "line": 104
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "colSpanNum",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "number",
+                    "typeParameters": [],
+                    "line": 129,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "groupByData",
+                    "args": [
+                        {
+                            "name": "array",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "key",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "any",
+                    "typeParameters": [],
+                    "line": 138,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "array",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "key",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "isRowSelected",
+                    "args": [
+                        {
+                            "name": "rowData",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 165,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "rowData",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "ngOnChanges",
+                    "args": [
+                        {
+                            "type": "SimpleChanges",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 112,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "type": "SimpleChanges",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "objectKeysGroupData",
+                    "args": [
+                        {
+                            "name": "obj",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string[]",
+                    "typeParameters": [],
+                    "line": 133,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "obj",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "onRowClick",
+                    "args": [
+                        {
+                            "name": "rowData",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 161,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "rowData",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "sortRows",
+                    "args": [
+                        {
+                            "name": "key",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 178,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "key",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "toggleRowSelection",
+                    "args": [
+                        {
+                            "name": "rowData",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 169,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "rowData",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
             "deprecated": false,
             "deprecationMessage": "",
             "hostBindings": [],
@@ -7145,16 +8228,31 @@
                 {
                     "name": "CommonModule",
                     "type": "module"
+                },
+                {
+                    "name": "TwTypographyComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "TwCheckboxComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "SortableIconComponent",
+                    "type": "component"
                 }
             ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { CommonModule } from '@angular/common';\nimport { Component } from '@angular/core';\n\n@Component({\n    selector: 'tw-default-table',\n    standalone: true,\n    imports: [CommonModule],\n    template: ` <table class=\"w-full text-left table-auto min-w-max\"></table> `,\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n        `,\n    ],\n})\nexport class TwDefaultTableComponent {}\n",
+            "sourceCode": "import { Component, Input, OnChanges, SimpleChanges, TemplateRef, inject, signal } from '@angular/core';\nimport { SortableIconComponent, TwTypographyComponent } from './utils';\n\nimport { CommonModule } from '@angular/common';\nimport { TableDataSourceService } from './services/table-datasource.service';\nimport { TwCheckboxComponent } from '../types/tw-checkbox.component';\n\n@Component({\n    selector: 'tw-default-table',\n    standalone: true,\n    imports: [CommonModule, TwTypographyComponent, TwCheckboxComponent, SortableIconComponent],\n    template: `\n        <table class=\"w-full text-left table-auto min-w-max\">\n            <thead>\n                <tr>\n                    @if (isSelectable) {\n                    <th class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-1 max-w-[10px]\">\n                        <tw-checkbox></tw-checkbox>\n                    </th>\n                    } @for(header of headers; track $index) {\n                    <th class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer\">\n                        <tw-typography\n                            [variant]=\"'small'\"\n                            [color]=\"'blue-gray'\"\n                            [classStyle]=\"'flex items-center justify-between gap-2 font-normal leading-none opacity-70'\"\n                            (click)=\"sortRows(header, groupData)\"\n                        >\n                            {{ header ?? ' ' }}\n                            <div class=\"flex flex-row gap-2\">\n                                @if(index !== headers.length -1 && isSortable) {\n                                <tw-sortable-icon></tw-sortable-icon>\n                                } @if(sortConfig.key === header && isSortable) {\n                                <span>{{ sortConfig.direction === 'ascending' ? '🔼' : '🔽' }}</span>\n                                }\n                            </div>\n                        </tw-typography>\n                    </th>\n                    } @if(actionButton) {\n                    <th class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-3\">\n                        <tw-typography\n                            [variant]=\"'small'\"\n                            [color]=\"'blue-gray'\"\n                            [classStyle]=\"'flex items-center justify-between gap-2 font-normal leading-none opacity-70'\"\n                        >\n                            {{ actionColName ?? '' }}\n                        </tw-typography>\n                    </th>\n                    }\n                </tr>\n            </thead>\n            <tbody>\n                @for(groupKey of objectKeysGroupData(groupData); track $index) { @if(groupBy) {\n                <tr>\n                    <td [colSpan]=\"colSpanNum\" class=\"p-0\">{{ groupKey }}</td>\n                </tr>\n                } @else { @for(rowData of groupData[groupKey]; track $index) { @if (isSelectable) {\n                <tr>\n                    <td [ngClass]=\"isSelectable ? 'p-1' : 'p-2'\" class=\"border-b border-blue-gray-50 p-1 max-h-[38px] max-w-[15px]\">\n                        <tw-checkbox\n                            [checked]=\"isRowSelected(rowData)\"\n                            (change)=\"toggleRowSelection(rowData)\"\n                            class=\"w-4 h-4\"\n                        ></tw-checkbox>\n                    </td>\n                    @for(key of headers; track $index) {\n                    <td\n                        [ngClass]=\"isSelectable ? 'p-1' : 'p-2'\"\n                        class=\"border-b border-blue-gray-50 max-h-[40px] min-w-[60px] max-w-[60px]\"\n                    >\n                        <tw-typography [variant]=\"'small'\" [color]=\"'blue-gray'\" class=\"font-normal ml-2\">\n                            {{ rowData[key.toLowerCase()] }}\n                        </tw-typography>\n                    </td>\n                    <!-- @if (actionButton) {\n                    <td class=\"border-b border-blue-gray-50 p-2 max-h-[40px] min-w-[60px] max-w-[60px]\">\n                        <ng-container *ngTemplateOutlet=\"actionButton; context: { $implicit: rowData }\"></ng-container>\n                    </td>\n                    } -->\n                    }\n                </tr>\n                } } } }\n            </tbody>\n        </table>\n    `,\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n        `,\n    ],\n})\nexport class TwDefaultTableComponent implements OnChanges {\n    @Input() isSelectable = false;\n    @Input() isSortable = false;\n    @Input() isDraggable = false;\n    @Input() headers: string[] = [];\n    @Input() actionColName?: string;\n    @Input() actionButton?: TemplateRef<any> | string;\n    @Input() rows: { [key: string]: any }[] = [];\n    @Input() groupBy = '';\n\n    tableDataSourceService: TableDataSourceService = inject(TableDataSourceService);\n\n    dataSource = this.tableDataSourceService.get('dataSource');\n    groupData = { '': this.dataSource };\n    sortConfig = this.tableDataSourceService.get('sortDataSource');\n    selectedRow: any;\n    selectedRows: any[] = [];\n\n    ngOnChanges({ headers, rows, groupBy, isSelectable, isSortable, isDraggable }: SimpleChanges): void {\n        if (isSelectable) this.isSelectable = isSelectable.currentValue;\n        if (isSortable) this.isSortable = isSortable.currentValue;\n        if (isDraggable) this.isDraggable = isDraggable.currentValue;\n        if (headers) this.tableDataSourceService.setHeaders(this.headers);\n        if (rows) this.tableDataSourceService.setTableDataSource(this.rows);\n        if (groupBy) {\n            this.tableDataSourceService.setGroupBy(this.groupBy);\n        }\n        const groupByVar = this.tableDataSourceService.get('preferences').groupBy;\n        this.groupData =\n            groupByVar && groupByVar !== ''\n                ? this.groupByData(this.tableDataSourceService.get('dataSource'), groupByVar)\n                : { '': this.tableDataSourceService.get('dataSource') };\n        console.log('Table Store', this.tableDataSourceService.state);\n    }\n\n    colSpanNum(): number {\n        return this.headers.length + (this.isSelectable ? 1 : 0) + (this.actionButton ? 1 : 0);\n    }\n\n    objectKeysGroupData(obj: any): string[] {\n        return Object.keys(obj);\n    }\n\n    // @ts-ignore\n    groupByData(array, key) {\n        {\n            const gKey = key.toLowerCase();\n            // @ts-ignore\n            return array.reduce((result, currentValue) => {\n                const normalizedCurrentValue = {};\n                for (const k in currentValue) {\n                    if (currentValue.hasOwnProperty(k)) {\n                        // @ts-ignore\n                        normalizedCurrentValue[k.toLowerCase()] = currentValue[k];\n                    }\n                }\n                // @ts-ignorek\n                const groupKey = normalizedCurrentValue[gKey];\n                if (!result[groupKey]) {\n                    result[groupKey] = [];\n                }\n                result[groupKey].push(currentValue);\n                return result;\n            }, {});\n        }\n    }\n\n    onRowClick(rowData: any) {\n        this.selectedRow = rowData;\n    }\n\n    isRowSelected(rowData: any): boolean {\n        return this.selectedRows.some((selectedRow) => JSON.stringify(selectedRow) === JSON.stringify(rowData));\n    }\n\n    toggleRowSelection(rowData: any) {\n        const index = this.selectedRows.findIndex((selectedRow) => JSON.stringify(selectedRow) === JSON.stringify(rowData));\n        if (index > -1) {\n            this.selectedRows.splice(index, 1);\n        } else {\n            this.selectedRows.push(rowData);\n        }\n    }\n\n    sortRows(key: string) {\n        const keyGroup = this.tableDataSourceService.get('preferences').groupBy ?? '';\n        const direction = this.tableDataSourceService.get('sortDataSource').direction === 'ascending' ? 'descending' : 'ascending';\n        const sortDataSource: { key: string; direction: 'ascending' | 'descending' } = {\n            key,\n            direction,\n        };\n        this.tableDataSourceService.sortDataSource(sortDataSource);\n        this.sortConfig = this.tableDataSourceService.get('sortDataSource');\n        this.groupData =\n            keyGroup && keyGroup !== ''\n                ? this.groupByData(this.tableDataSourceService.get('dataSource'), keyGroup)\n                : { '': this.tableDataSourceService.get('dataSource') };\n    }\n\n    // Figure out how to drag from initial index and drop on target index\n\n    // dragRows(index: number) {\n    //     this.draggableUtil.dragRows(this, index);\n    // }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "\n            :host {\n                display: block;\n                width: 100%;\n            }\n        \n",
-            "extends": []
+            "extends": [],
+            "implements": [
+                "OnChanges"
+            ]
         },
         {
             "name": "TwInputComponent",
@@ -8718,46 +9816,6 @@
             ]
         },
         {
-            "name": "TwTdComponent",
-            "id": "component-TwTdComponent-d7806cabf9efe14c6b21fc5e352dccbdeb10cf8648eaa85d73852edd5f9d027c71a4efe6de8f127159d0fcbb042679f5df9cd3533d8d201b96c947e5f83182d1",
-            "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/tw-td.component.ts",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "tw-td",
-            "styleUrls": [],
-            "styles": [],
-            "template": "<td class=\"p-4 border-b border-blue-gray-50\">\n    <ng-content></ng-content>\n</td>\n",
-            "templateUrl": [],
-            "viewProviders": [],
-            "hostDirectives": [],
-            "inputsClass": [],
-            "outputsClass": [],
-            "propertiesClass": [],
-            "methodsClass": [],
-            "deprecated": false,
-            "deprecationMessage": "",
-            "hostBindings": [],
-            "hostListeners": [],
-            "standalone": true,
-            "imports": [
-                {
-                    "name": "CommonModule",
-                    "type": "module"
-                }
-            ],
-            "description": "",
-            "rawdescription": "\n",
-            "type": "component",
-            "sourceCode": "import { CommonModule } from '@angular/common';\nimport { Component } from '@angular/core';\n\n@Component({\n    selector: 'tw-td',\n    standalone: true,\n    imports: [CommonModule],\n    template: `\n        <td class=\"p-4 border-b border-blue-gray-50\">\n            <ng-content></ng-content>\n        </td>\n    `,\n})\nexport class TwTdComponent {}\n",
-            "assetsDirs": [],
-            "styleUrlsData": "",
-            "stylesData": "",
-            "extends": []
-        },
-        {
             "name": "TwTextareaComponent",
             "id": "component-TwTextareaComponent-21c53bca55f377b6fbcdaa58ffc3c3f7d354d8c4df16147359d7de1178cef2125e7b8e558c1c039ce7e2ac0039bf140b08b0354e5993c8f719f79a8b521da8ef",
             "file": "projects/ng-lib/src/lib/new-tw-ui/modules/types/tw-textarea.component.ts",
@@ -9228,43 +10286,8 @@
             ]
         },
         {
-            "name": "TwThComponent",
-            "id": "component-TwThComponent-a82382f17958fa28a81caad25a7523f46880ba939096f4ecba41f38ff18aae492c9e7b78b951b9ee1d28b4a9ed49e44bd78034e287793de66f280b71b90ad470",
-            "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/tw-th.component.ts",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "tw-th",
-            "styleUrls": [],
-            "styles": [],
-            "template": "<th class=\"p-4 border-b border-blue-gray-100 bg-blue-gray-50\">\n    <ng-content></ng-content>\n</th>\n",
-            "templateUrl": [],
-            "viewProviders": [],
-            "hostDirectives": [],
-            "inputsClass": [],
-            "outputsClass": [],
-            "propertiesClass": [],
-            "methodsClass": [],
-            "deprecated": false,
-            "deprecationMessage": "",
-            "hostBindings": [],
-            "hostListeners": [],
-            "standalone": false,
-            "imports": [],
-            "description": "",
-            "rawdescription": "\n",
-            "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\n\n@Component({\n    selector: 'tw-th',\n    template: `\n        <th class=\"p-4 border-b border-blue-gray-100 bg-blue-gray-50\">\n            <ng-content></ng-content>\n        </th>\n    `,\n})\nexport class TwThComponent {}\n",
-            "assetsDirs": [],
-            "styleUrlsData": "",
-            "stylesData": "",
-            "extends": []
-        },
-        {
             "name": "TwTypographyComponent",
-            "id": "component-TwTypographyComponent-2ae76dd71912194bf4a60fb2e63a97fbef623866af5e8f7ef94d05665d23119c5f3cbe6e2e43009a57be9078c88fd71a2236922500347c66277493199304e605",
+            "id": "component-TwTypographyComponent-e0a869e50896fbbcdaf72aa8849905f01c28b2aab041826ddbe1e36bcbe0c41c8e569ec799c33e110792770bb5624d3f12b62d208f6e64836704b8b1a6346011",
             "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/utils/typography.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -9273,18 +10296,29 @@
             "providers": [],
             "selector": "tw-typography",
             "styleUrls": [],
-            "styles": [],
-            "template": "<p [ngClass]=\"[variantClass, colorClass, 'block', 'antialiased', 'font-sans', 'ml-2']\">\n    <ng-content></ng-content>\n</p>\n",
+            "styles": [
+                "\n            :host {\n                display: block;\n            }\n        "
+            ],
+            "template": "<p [ngClass]=\"[variantClass, colorClass, classStyle, 'block', 'antialiased', 'font-sans', 'ml-2']\">\n    <ng-content></ng-content>\n</p>\n",
             "templateUrl": [],
             "viewProviders": [],
             "hostDirectives": [],
             "inputsClass": [
                 {
+                    "name": "classStyle",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 51,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
                     "name": "color",
                     "defaultValue": "'blue-gray'",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 43,
+                    "line": 50,
                     "type": "Color",
                     "decorators": []
                 },
@@ -9293,7 +10327,7 @@
                     "defaultValue": "'paragraph'",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 42,
+                    "line": 49,
                     "type": "Variant",
                     "decorators": []
                 }
@@ -9315,10 +10349,10 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input } from '@angular/core';\n\nimport { CommonModule } from '@angular/common';\n\ntype Variant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'lead' | 'paragraph' | 'small';\ntype Color =\n    | 'inherit'\n    | 'current'\n    | 'black'\n    | 'white'\n    | 'blue-gray'\n    | 'gray'\n    | 'brown'\n    | 'deep-orange'\n    | 'orange'\n    | 'amber'\n    | 'yellow'\n    | 'lime'\n    | 'light-green'\n    | 'green'\n    | 'teal'\n    | 'cyan'\n    | 'light-blue'\n    | 'blue'\n    | 'indigo'\n    | 'deep-purple'\n    | 'purple'\n    | 'pink'\n    | 'red';\n\n@Component({\n    selector: 'tw-typography',\n    standalone: true,\n    imports: [CommonModule],\n    template: `\n        <p [ngClass]=\"[variantClass, colorClass, 'block', 'antialiased', 'font-sans', 'ml-2']\">\n            <ng-content></ng-content>\n        </p>\n    `,\n})\nexport class TwTypographyComponent {\n    @Input() variant: Variant = 'paragraph';\n    @Input() color: Color = 'blue-gray';\n\n    get variantClass(): string {\n        switch (this.variant) {\n            case 'h1':\n                return 'text-4xl';\n            case 'h2':\n                return 'text-3xl';\n            case 'h3':\n                return 'text-2xl';\n            case 'h4':\n                return 'text-xl';\n            case 'h5':\n                return 'text-lg';\n            case 'h6':\n                return 'text-base';\n            case 'lead':\n                return 'text-lg leading-relaxed';\n            case 'paragraph':\n                return 'text-base';\n            case 'small':\n                return 'text-sm';\n            default:\n                return 'text-base';\n        }\n    }\n\n    get colorClass(): string {\n        return `text-${this.color}`;\n    }\n}\n",
+            "sourceCode": "import { Component, Input } from '@angular/core';\n\nimport { CommonModule } from '@angular/common';\n\ntype Variant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'lead' | 'paragraph' | 'small';\ntype Color =\n    | 'inherit'\n    | 'current'\n    | 'black'\n    | 'white'\n    | 'blue-gray'\n    | 'gray'\n    | 'brown'\n    | 'deep-orange'\n    | 'orange'\n    | 'amber'\n    | 'yellow'\n    | 'lime'\n    | 'light-green'\n    | 'green'\n    | 'teal'\n    | 'cyan'\n    | 'light-blue'\n    | 'blue'\n    | 'indigo'\n    | 'deep-purple'\n    | 'purple'\n    | 'pink'\n    | 'red';\n\n@Component({\n    selector: 'tw-typography',\n    standalone: true,\n    imports: [CommonModule],\n    template: `\n        <p [ngClass]=\"[variantClass, colorClass, classStyle, 'block', 'antialiased', 'font-sans', 'ml-2']\">\n            <ng-content></ng-content>\n        </p>\n    `,\n    styles: [\n        `\n            :host {\n                display: block;\n            }\n        `,\n    ],\n})\nexport class TwTypographyComponent {\n    @Input() variant: Variant = 'paragraph';\n    @Input() color: Color = 'blue-gray';\n    @Input() classStyle = '';\n\n    get variantClass(): string {\n        switch (this.variant) {\n            case 'h1':\n                return 'text-4xl';\n            case 'h2':\n                return 'text-3xl';\n            case 'h3':\n                return 'text-2xl';\n            case 'h4':\n                return 'text-xl';\n            case 'h5':\n                return 'text-lg';\n            case 'h6':\n                return 'text-base';\n            case 'lead':\n                return 'text-lg leading-relaxed';\n            case 'paragraph':\n                return 'text-base';\n            case 'small':\n                return 'text-sm';\n            default:\n                return 'text-base';\n        }\n    }\n\n    get colorClass(): string {\n        return `text-${this.color}`;\n    }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
-            "stylesData": "",
+            "stylesData": "\n            :host {\n                display: block;\n            }\n        \n",
             "extends": [],
             "accessors": {
                 "variantClass": {
@@ -9327,7 +10361,7 @@
                         "name": "variantClass",
                         "type": "string",
                         "returnType": "string",
-                        "line": 45
+                        "line": 53
                     }
                 },
                 "colorClass": {
@@ -9336,7 +10370,7 @@
                         "name": "colorClass",
                         "type": "string",
                         "returnType": "string",
-                        "line": 70
+                        "line": 78
                     }
                 }
             }
@@ -9374,16 +10408,6 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "{\n    args: {\n        checkbox: [\n            { id: 'comments', name: 'Comments', description: 'Get notified when someone posts a comment on a posting.' },\n            { id: 'candidates', name: 'Candidates', description: 'Get notified when a candidate applies for a job.' },\n            { id: 'offers', name: 'Offers', description: 'Get notified when a candidate accepts or rejects an offer.' },\n        ] as FieldItem[],\n    },\n}"
-            },
-            {
-                "name": "CheckboxGroup",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story",
-                "defaultValue": "{\n    args: {},\n}"
             },
             {
                 "name": "components",
@@ -9849,6 +10873,16 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<TwDefaultTableComponent>",
+                "defaultValue": "{\n    title: 'TailwindUI/Components/Tables/Default Table',\n    component: TwDefaultTableComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TwDefaultTableComponent],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\n              ${story}\n            </div>`\n        ),\n    ],\n    args: {},\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/ng-lib/src/lib/new-tw-ui/modules/types/stories/tw-checkbox.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -9894,16 +10928,6 @@
                 "deprecationMessage": "",
                 "type": "Meta<TwTextareaComponent>",
                 "defaultValue": "{\n    title: 'TailwindUI/Field/Types/Textarea',\n    component: TwTextareaComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TwTextareaComponent, ReactiveFormsModule],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"width:80%; margin: 3em; display: flex; justify-content: center; align-items: center\">\n              ${story}\n            </div>`\n        ),\n    ],\n    args: {},\n}"
-            },
-            {
-                "name": "meta",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Meta<TwDefaultTableComponent>",
-                "defaultValue": "{\n    title: 'TailwindUI/Components/Tables/Default Table',\n    component: TwDefaultTableComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TwDefaultTableComponent],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\n              ${story}\n            </div>`\n        ),\n    ],\n    args: {},\n}"
             },
             {
                 "name": "MultiSelect",
@@ -10216,16 +11240,6 @@
                 "defaultValue": "{\n    args: {\n        checkbox: { id: 'newsletter', name: 'Newsletter', description: 'Get notified when there is a new newsletter.' } as FieldItem,\n    },\n}"
             },
             {
-                "name": "SingleCheckbox",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story",
-                "defaultValue": "{\n    args: {},\n}"
-            },
-            {
                 "name": "SingleRadio",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -10254,6 +11268,16 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "{\n  args: {\n    disabled: false,\n    variant: 'filled',\n    color: 'success',\n  },\n}"
+            },
+            {
+                "name": "TableWithAllSettings",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n    args: {\n        isSelectable: true,\n        isSortable: true,\n        headers: ['Comments', 'Candidates', 'Offers'],\n        actionColName: ' ',\n        rows: [\n            { comments: 'Great candidate', candidates: 'John Doe', offers: 'Accepted' },\n            { comments: 'Needs improvement', candidates: 'Jane Smith', offers: 'Pending' },\n            { comments: 'Excellent skills', candidates: 'Alice Johnson', offers: 'Rejected' },\n            { comments: 'Average performance', candidates: 'Bob Brown', offers: 'Accepted' },\n        ],\n    },\n}"
             },
             {
                 "name": "Textarea",
@@ -10687,6 +11711,17 @@
                 "name": "Story",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
+                "rawtype": "StoryObj<TwDefaultTableComponent>",
+                "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 183
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
                 "rawtype": "StoryObj<TwCheckboxComponent>",
                 "file": "projects/ng-lib/src/lib/new-tw-ui/modules/types/stories/tw-checkbox.stories.ts",
                 "deprecated": false,
@@ -10733,17 +11768,6 @@
                 "subtype": "typealias",
                 "rawtype": "StoryObj<TwTextareaComponent>",
                 "file": "projects/ng-lib/src/lib/new-tw-ui/modules/types/stories/tw-textarea.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "description": "",
-                "kind": 183
-            },
-            {
-                "name": "Story",
-                "ctype": "miscellaneous",
-                "subtype": "typealias",
-                "rawtype": "StoryObj<TwDefaultTableComponent>",
-                "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "description": "",
@@ -10952,38 +11976,6 @@
                     "deprecationMessage": "",
                     "type": "Story",
                     "defaultValue": "{\n    args: {\n        checkbox: { id: 'newsletter', name: 'Newsletter', description: 'Get notified when there is a new newsletter.' } as FieldItem,\n    },\n}"
-                }
-            ],
-            "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts": [
-                {
-                    "name": "CheckboxGroup",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story",
-                    "defaultValue": "{\n    args: {},\n}"
-                },
-                {
-                    "name": "meta",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Meta<TwDefaultTableComponent>",
-                    "defaultValue": "{\n    title: 'TailwindUI/Components/Tables/Default Table',\n    component: TwDefaultTableComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TwDefaultTableComponent],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\n              ${story}\n            </div>`\n        ),\n    ],\n    args: {},\n}"
-                },
-                {
-                    "name": "SingleCheckbox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story",
-                    "defaultValue": "{\n    args: {},\n}"
                 }
             ],
             "projects/ng-lib/src/lib/tw-form-ui/components/field.component.ts": [
@@ -11754,6 +12746,28 @@
                     "defaultValue": "{\n  args: {\n    field: FieldBuilder.createField('textarea', 'textarea', 'textarea', 'textarea', 'textarea'),\n  },\n}"
                 }
             ],
+            "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts": [
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<TwDefaultTableComponent>",
+                    "defaultValue": "{\n    title: 'TailwindUI/Components/Tables/Default Table',\n    component: TwDefaultTableComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TwDefaultTableComponent],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\n              ${story}\n            </div>`\n        ),\n    ],\n    args: {},\n}"
+                },
+                {
+                    "name": "TableWithAllSettings",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n    args: {\n        isSelectable: true,\n        isSortable: true,\n        headers: ['Comments', 'Candidates', 'Offers'],\n        actionColName: ' ',\n        rows: [\n            { comments: 'Great candidate', candidates: 'John Doe', offers: 'Accepted' },\n            { comments: 'Needs improvement', candidates: 'Jane Smith', offers: 'Pending' },\n            { comments: 'Excellent skills', candidates: 'Alice Johnson', offers: 'Rejected' },\n            { comments: 'Average performance', candidates: 'Bob Brown', offers: 'Accepted' },\n        ],\n    },\n}"
+                }
+            ],
             "projects/ng-lib/src/lib/new-tw-ui/modules/types/stories/tw-radio.stories.ts": [
                 {
                     "name": "meta",
@@ -12355,6 +13369,19 @@
                     "kind": 183
                 }
             ],
+            "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "StoryObj<TwDefaultTableComponent>",
+                    "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 183
+                }
+            ],
             "projects/ng-lib/src/lib/new-tw-ui/modules/types/stories/tw-checkbox.stories.ts": [
                 {
                     "name": "Story",
@@ -12414,19 +13441,6 @@
                     "subtype": "typealias",
                     "rawtype": "StoryObj<TwTextareaComponent>",
                     "file": "projects/ng-lib/src/lib/new-tw-ui/modules/types/stories/tw-textarea.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "description": "",
-                    "kind": 183
-                }
-            ],
-            "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts": [
-                {
-                    "name": "Story",
-                    "ctype": "miscellaneous",
-                    "subtype": "typealias",
-                    "rawtype": "StoryObj<TwDefaultTableComponent>",
-                    "file": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "description": "",
@@ -12684,13 +13698,30 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/ng-lib/src/lib/new-tw-ui/modules/components/stories/tw-table.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "CheckboxGroup",
+                "filePath": "projects/ng-lib/src/lib/new-tw-ui/modules/components/models/pagination.interface.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "Pagination",
                 "coveragePercent": 0,
-                "coverageCount": "0/1",
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/new-tw-ui/modules/components/models/table.interface.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "TableState",
+                "coveragePercent": 0,
+                "coverageCount": "0/11",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/new-tw-ui/modules/components/services/table-datasource.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "TableDataSourceService",
+                "coveragePercent": 0,
+                "coverageCount": "0/11",
                 "status": "low"
             },
             {
@@ -12708,7 +13739,7 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "SingleCheckbox",
+                "name": "TableWithAllSettings",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -12719,23 +13750,41 @@
                 "linktype": "component",
                 "name": "TwDefaultTableComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/1",
+                "coverageCount": "0/23",
                 "status": "low"
             },
             {
-                "filePath": "projects/ng-lib/src/lib/new-tw-ui/modules/components/tw-td.component.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "TwTdComponent",
+                "filePath": "projects/ng-lib/src/lib/new-tw-ui/modules/components/utils/draggable.util.ts",
+                "type": "class",
+                "linktype": "classe",
+                "name": "DraggableUtil",
                 "coveragePercent": 0,
-                "coverageCount": "0/1",
+                "coverageCount": "0/6",
                 "status": "low"
             },
             {
-                "filePath": "projects/ng-lib/src/lib/new-tw-ui/modules/components/tw-th.component.ts",
+                "filePath": "projects/ng-lib/src/lib/new-tw-ui/modules/components/utils/pagination.util.ts",
+                "type": "class",
+                "linktype": "classe",
+                "name": "PaginationUtil",
+                "coveragePercent": 0,
+                "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/new-tw-ui/modules/components/utils/sort-rows.util.ts",
+                "type": "class",
+                "linktype": "classe",
+                "name": "SortRowsUtil",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/new-tw-ui/modules/components/utils/sortable-icon.component.ts",
                 "type": "component",
                 "linktype": "component",
-                "name": "TwThComponent",
+                "name": "SortableIconComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -12746,7 +13795,7 @@
                 "linktype": "component",
                 "name": "TwTypographyComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/4",
                 "status": "low"
             },
             {
@@ -12922,7 +13971,7 @@
                 "linktype": "component",
                 "name": "TwCheckboxComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/17",
+                "coverageCount": "0/18",
                 "status": "low"
             },
             {

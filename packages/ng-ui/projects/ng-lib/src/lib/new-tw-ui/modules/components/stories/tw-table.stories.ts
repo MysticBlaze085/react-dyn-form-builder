@@ -26,14 +26,19 @@ export default meta;
 
 type Story = StoryObj<TwDefaultTableComponent>;
 
-export const SingleCheckbox: Story = {
+export const TableWithAllSettings: Story = {
     args: {
         isSelectable: true,
+        isSortable: true,
+        headers: ['Comments', 'Candidates', 'Offers'],
+        actionColName: ' ',
+        rows: [
+            { comments: 'Great candidate', candidates: 'John Doe', offers: 'Accepted' },
+            { comments: 'Needs improvement', candidates: 'Jane Smith', offers: 'Pending' },
+            { comments: 'Excellent skills', candidates: 'Alice Johnson', offers: 'Rejected' },
+            { comments: 'Average performance', candidates: 'Bob Brown', offers: 'Accepted' },
+        ],
     },
-};
-
-export const CheckboxGroup: Story = {
-    args: {},
 };
 
 // CheckboxGroup.play = async ({ canvasElement }) => {
