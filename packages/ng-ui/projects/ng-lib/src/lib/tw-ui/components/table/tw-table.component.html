@@ -1,62 +1,97 @@
-<table class="w-full text-left table-auto min-w-max">
-  <thead>
-    <tr>
-      @if (isSelectable) {
-      <th class="border-b border-blue-gray-100 bg-blue-gray-50 p-1 min-h-[48.5px] max-w-[10px]">
-        <!-- <pre>{{this.tdss.get('selectedRows').length === this.tdss.get('dataSource').length}}</pre> -->
-        <adk-checkbox [field]="field" (change)="toggleRowSelection()"></adk-checkbox>
-      </th>
-      } @for(header of this.tdss.get('headers'); track $index) {
-      <th [ngClass]="isSelectable ? 'p-1' : 'p-4'"
-        class="border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer min-h-[48.5px]">
-        <tw-typography [variant]="'small'" [color]="'blue-gray'"
-          [classStyle]="'flex items-center justify-between gap-2 font-normal leading-none opacity-70'">
-          {{ header ?? ' ' }}
-          <div class="flex flex-row gap-2">
-            @if(index !== this.tdss.get('headers').length -1 && isSortable) {
-            <tw-sortable-icon (click)="sortRows(header, groupData)"></tw-sortable-icon>
-            } @if(this.tdss.get('sortDataSource').key === header && isSortable) {
-            <span>{{ this.tdss.get('sortDataSource').direction === 'ascending' ? '🔼' : '🔽' }}</span>
-            }
-          </div>
-        </tw-typography>
-      </th>
-      } @if(actionButton) {
-      <th class="border-b border-blue-gray-100 bg-blue-gray-50 p-3">
-        <tw-typography [variant]="'small'" [color]="'blue-gray'"
-          [classStyle]="'flex items-center justify-between gap-2 font-normal leading-none opacity-70'">
-          {{ actionColName ?? '' }}
-        </tw-typography>
-      </th>
+<div adk-selection #selection="adkSelection">
+  <table *ngIf="(groupData.change$ | async) as groupData" aria-hidden="true"
+    class="w-full text-left table-auto min-w-max">
+    <thead>
+      <ng-container
+        *ngTemplateOutlet="renderThead; context: { groupData, headers, selectedRows: (selectedRows.change$ | async), isSelectable, field: field({id: 'selectAll', value: 'selectAll'}), sortDataSource: tdss.get('sortDataSource')}"></ng-container>
+    </thead>
+    <tbody>
+      @for(groupKey of objectKeysGroupData(groupData); track $index){
+      @if(groupBy && groupKey !== 'key') {
+      <ng-container
+        *ngTemplateOutlet="groupByRender; context: { groupData, headers, isSelectable, groupKey }"></ng-container>
+      } @else {
+      @for(rowData of groupData[groupKey]; track $index) {
+      <ng-container
+        *ngTemplateOutlet="renderRow; context: { headers, rowData, rowIndex: $index, isSelectable, field: field({id: 'field-' + $index, value: rowData}) }"></ng-container>
       }
-    </tr>
-  </thead>
-  <tbody>
-    @for(groupKey of objectKeysGroupData(groupData); track $index) { @if(groupBy) {
-    <tr>
-      <td [colSpan]="colSpanNum" class="p-0">{{ groupKey }}</td>
-    </tr>
-    } @else { @for(rowData of groupData[groupKey]; track $index) {
-    <tr>
-      @if (isSelectable) {
-      <td [ngClass]="isSelectable ? 'p-1' : 'p-4'" class="border-b border-blue-gray-50 max-h-[38px] max-w-[15px]">
-        <adk-checkbox [field]="field" (change)="onRowClick(rowData)" className='w-4 h-4'></adk-checkbox>
-      </td>
       }
-      @for(key of headers; track $index) {
-      <td [ngClass]="isSelectable ? 'p-1' : 'p-4'"
-        class="border-b border-blue-gray-50 min-h-[48.5px] min-w-[60px] max-w-[60px]">
-        <tw-typography [variant]="'small'" [color]="'blue-gray'" class="font-normal ml-2">
-          {{ rowData[key.toLowerCase()] }}
-        </tw-typography>
-      </td>
-      <!-- @if (actionButton) {
-                    <td class="border-b border-blue-gray-50 p-2 max-h-[40px] min-w-[60px] max-w-[60px]">
-                        <ng-container *ngTemplateOutlet="actionButton; context: { $implicit: rowData }"></ng-container>
-                    </td>
-                    } -->
       }
-    </tr>
-    } } }
-  </tbody>
-</table>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #renderThead let-groupData="groupData" let-header="headers" let-isSelectable="isSelectable"
+  let-field="field" let-sortDataSource="sortDataSource" let-selectedRows="selectedRows">
+  <tr>
+    @if(isSelectable) {
+    <th id="checkAll" class="border-b border-blue-gray-100 bg-blue-gray-50 p-1 min-h-[48.5px] max-w-[20px]">
+      <label class="relative flex items-center p-3 rounded-full cursor-pointer" for="checkbox">
+        <input type="checkbox" (change)="toggleSelectAll($event, objectKeysGroupData(groupData))"
+          class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10" />
+      </label>
+    </th>
+    }
+    @for(header of headers; track $index) {
+    <th [id]="header" class="border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer">
+      <tw-typography [variant]="'small'" [color]="'blue-gray'"
+        [classStyle]="'flex items-center justify-between gap-2 font-normal leading-none opacity-70'">
+        {{ header ?? ' ' }}
+        @if($index !== headers.length -1 && isSortable) {
+        <tw-sortable-icon (click)="sortRows(header, groupData)"></tw-sortable-icon>
+        } @if(this.tdss.get('sortDataSource').key === header && isSortable) {
+        <span>{{ sortDataSource.direction === 'ascending' ? '🔼' : '🔽' }}</span>
+        }
+      </tw-typography>
+    </th>
+    }
+  </tr>
+</ng-template>
+
+<!-- Group By Render -->
+<ng-template #groupByRender let-groupData="groupData" let-headers="headers" let-isSelectable="isSelectable"
+  let-groupKey="groupKey">
+  <tr>
+    <td [colSpan]="headers.length + (isSelectable ? 1 : 0) + (actionButton ? 1 : 0)">
+      <adk-expansion-panel>
+        <ng-template #expansionPanelHeader>
+          {{groupKey}}
+        </ng-template>
+        <ng-template #expansionPanelBody>
+          <table aria-hidden="true" class="w-full min-w-max table-auto text-left">
+            <tbody>
+              @for(rowData of groupData[groupKey]; track $index) {
+              <ng-container
+                *ngTemplateOutlet="renderRow; context: { headers, rowData, rowIndex: $index, isSelectable, field: field({id: field-$index, value: rowData}) }">
+              </ng-container>
+              }
+            </tbody>
+          </table>
+        </ng-template>
+      </adk-expansion-panel>
+    </td>
+  </tr>
+</ng-template>
+
+<!-- Render Row Table Cells -->
+<ng-template #renderRow let-header="headers" let-rowData="rowData" let-rowIndex="rowIndex"
+  let-isSelectable="isSelectable" let-field="field">
+  <tr>
+    @if(isSelectable) {
+    <td [ngClass]="isSelectable ? 'p-1' : 'p-4'" class="border-b border-blue-gray-50 min-h-[48.5px] max-w-[15px]">
+      <label class="relative flex items-center p-3 rounded-full cursor-pointer" for="checkbox">
+        <input type="checkbox" [checked]="selection.selected(rowData)" (change)="toggleSelectItem(rowData)"
+          class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10" />
+      </label>
+    </td>
+    }
+    @for (header of headers; track $index) {
+    <td [ngClass]="isSelectable ? 'p-1' : 'p-2'"
+      class="border-b border-blue-gray-50 min-h-[48.5px] min-w-[60px] max-w-[60px]">
+      <tw-typography [variant]="'small'" [color]="'blue-gray'" class="font-normal ml-2">
+        {{ rowData[header.toLowerCase()] }}
+      </tw-typography>
+    </td>
+    }
+  </tr>
+</ng-template>

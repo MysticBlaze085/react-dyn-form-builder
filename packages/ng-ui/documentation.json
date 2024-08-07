@@ -564,12 +564,12 @@
         },
         {
             "name": "FieldBuilder",
-            "id": "class-FieldBuilder-7f450771fbd9d5e66ae94b606858cc29866e0951f7d0ee592828813f34859f4e7044316919259cb4b18600284496339369b8ddd959e84e1d6e19e841d0cc32ab",
+            "id": "class-FieldBuilder-5042d4eab803eb6c120bf739f98a11e4d0994fc218a12ad25d9f11043d77fca4aebdc4a687cf55a7f783412bbac0582085fd8055e9e145db1a82147f5e3658c8",
             "file": "projects/ng-lib/src/lib/tw-form-ui/models/field.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "class",
-            "sourceCode": "import { AbstractControl, FormControl, ValidatorFn, Validators } from '@angular/forms';\nimport { Identifiable, TYPE, VALUE } from './identifiable';\nimport { Observable, map } from 'rxjs';\n\nexport declare type AttributeEvent = (field: Field, event?: any) => void;\n\nexport declare type FieldSteps = Identifiable & {\n  [additionalProperties: string]: any;\n} & {\n  step: number;\n  label: string;\n  active: boolean;\n};\n\nexport declare type FieldOptions = Identifiable & {\n  [additionalProperties: string]: any;\n} & {\n  value: string;\n  label: string;\n  checked?: boolean;\n  description?: string;\n  category?: string;\n};\n\nexport type Field<\n  Props = FieldProps & {\n    [additionalProperties: string]: any;\n  }\n> = Identifiable & {\n  type: TYPE;\n  key: string;\n  value: VALUE;\n  description?: string;\n  errorMessage?: string;\n  hint?: string;\n  label?: string;\n  placeholder?: string;\n  showError?: boolean;\n  validation?: ValidatorFn[] | null;\n  disabled?: boolean;\n  props?: Props;\n  formControl?: AbstractControl | { [key: string]: AbstractControl };\n};\n\nexport type FieldProps = {\n  autocomplete?: string;\n  appearance?: string;\n  class?: string;\n  errorMessage?: string;\n  labelClass?: string;\n  inputClass?: string;\n  options?: FieldOptions[];\n  rows?: number;\n  cols?: number;\n  max?: number;\n  min?: number;\n  minLength?: number;\n  isMultipleTag?: boolean;\n  pattern?: string | RegExp;\n  required?: boolean;\n  tabindex?: number;\n  attributes?: {\n    [key: string]: string | number;\n  };\n  step?: number;\n  focus?: AttributeEvent;\n  blur?: AttributeEvent;\n  keyup?: AttributeEvent;\n  keydown?: AttributeEvent;\n  click?: AttributeEvent;\n  change?: AttributeEvent;\n  keypress?: AttributeEvent;\n};\n\nexport class FieldBuilder {\n  private static idCounter = 0;\n\n  private static generateId(): string {\n    return `field_${this.idCounter++}`;\n  }\n\n  static createField(\n    type: TYPE,\n    key: string,\n    value: any,\n    label?: string,\n    placeholder?: string,\n    props?: FieldProps,\n    description?: string,\n    validation?: ValidatorFn[]\n  ): Field {\n    const id = this.generateId();\n    const field: Field = {\n      id,\n      type,\n      key,\n      value,\n      validation: validation || [],\n      label: label || '',\n      placeholder: placeholder || '',\n      description: description || '',\n      props: props || {},\n    };\n    const addedValidations = validation || [];\n    field.validation = props?.required ? [Validators.required, ...addedValidations] : field.validation;\n    field.formControl = field.type === 'checkbox' ? this.checkboxFormFields(field) : new FormControl(field.value, field.validation);\n    return field;\n  }\n\n  static validators = {\n    required: (required: boolean) => (required ? Validators.required : []),\n    email: (email: boolean) => (email ? Validators.email : []),\n    pattern: (pattern: string | RegExp) => (pattern ? Validators.pattern(pattern) : []),\n  };\n\n  static createOptionsField(\n    type: TYPE,\n    key: string,\n    label: string,\n    placeholder: string,\n    options: FieldOptions[],\n    props?: FieldProps,\n    description?: string\n  ): Field {\n    const id = this.generateId();\n    const field: Field = {\n      id,\n      type,\n      key,\n      value: '', // No initial value for options field\n      label,\n      placeholder,\n      description: description || '',\n      props: {\n        options,\n        ...props,\n      },\n    };\n    const addedValidations = field.validation || [];\n    field.validation = props?.required ? [Validators.required, ...addedValidations] : field.validation;\n    field.formControl = field.type === 'checkbox' ? this.checkboxFormFields(field) : new FormControl(field.value, field.validation);\n    return field;\n  }\n\n  static checkboxFormFields(field: Field): { [key: string]: AbstractControl } {\n    const formControls: { [key: string]: AbstractControl } = {};\n    field.props?.options?.forEach((option) => {\n      formControls[option.id] = new FormControl('');\n    });\n    return formControls;\n  }\n}\n",
+            "sourceCode": "import { AbstractControl, FormControl, ValidatorFn, Validators } from '@angular/forms';\nimport { Identifiable, TYPE, VALUE } from './identifiable';\nimport { Observable, map } from 'rxjs';\n\nexport declare type AttributeEvent = (field: Field, event?: any) => void;\n\nexport declare type FieldSteps = Identifiable & {\n    [additionalProperties: string]: any;\n} & {\n    step: number;\n    label: string;\n    active: boolean;\n};\n\nexport declare type FieldOptions = Identifiable & {\n    [additionalProperties: string]: any;\n} & {\n    value: string;\n    label: string;\n    checked?: boolean;\n    description?: string;\n    category?: string;\n};\n\nexport type Field<\n    Props = FieldProps & {\n        [additionalProperties: string]: any;\n    }\n> = Identifiable & {\n    type: TYPE;\n    key: string;\n    value: VALUE;\n    description?: string;\n    errorMessage?: string;\n    hint?: string;\n    label?: string;\n    placeholder?: string;\n    showError?: boolean;\n    validation?: ValidatorFn[] | null;\n    disabled?: boolean;\n    props?: Props;\n    formControl?: AbstractControl | { [key: string]: AbstractControl };\n};\n\nexport type FieldProps = {\n    autocomplete?: string;\n    appearance?: string;\n    class?: string;\n    checked?: boolean;\n    errorMessage?: string;\n    labelClass?: string;\n    inputClass?: string;\n    options?: FieldOptions[];\n    rows?: number;\n    cols?: number;\n    max?: number;\n    min?: number;\n    minLength?: number;\n    isMultipleTag?: boolean;\n    pattern?: string | RegExp;\n    required?: boolean;\n    tabindex?: number;\n    attributes?: {\n        [key: string]: string | number;\n    };\n    step?: number;\n    focus?: AttributeEvent;\n    blur?: AttributeEvent;\n    keyup?: AttributeEvent;\n    keydown?: AttributeEvent;\n    click?: AttributeEvent;\n    change?: AttributeEvent;\n    keypress?: AttributeEvent;\n};\n\nexport class FieldBuilder {\n    private static idCounter = 0;\n\n    private static generateId(): string {\n        return `field_${this.idCounter++}`;\n    }\n\n    static createField(\n        type: TYPE,\n        key: string,\n        value: any,\n        label?: string,\n        placeholder?: string,\n        props?: FieldProps,\n        description?: string,\n        validation?: ValidatorFn[]\n    ): Field {\n        const id = this.generateId();\n        const field: Field = {\n            id,\n            type,\n            key,\n            value,\n            validation: validation || [],\n            label: label || '',\n            placeholder: placeholder || '',\n            description: description || '',\n            props: props || {},\n        };\n        const addedValidations = validation || [];\n        field.validation = props?.required ? [Validators.required, ...addedValidations] : field.validation;\n        field.formControl = field.type === 'checkbox' ? this.checkboxFormFields(field) : new FormControl(field.value, field.validation);\n        return field;\n    }\n\n    static validators = {\n        required: (required: boolean) => (required ? Validators.required : []),\n        email: (email: boolean) => (email ? Validators.email : []),\n        pattern: (pattern: string | RegExp) => (pattern ? Validators.pattern(pattern) : []),\n    };\n\n    static createOptionsField(\n        type: TYPE,\n        key: string,\n        label: string,\n        placeholder: string,\n        options: FieldOptions[],\n        props?: FieldProps,\n        description?: string\n    ): Field {\n        const id = this.generateId();\n        const field: Field = {\n            id,\n            type,\n            key,\n            value: '', // No initial value for options field\n            label,\n            placeholder,\n            description: description || '',\n            props: {\n                options,\n                ...props,\n            },\n        };\n        const addedValidations = field.validation || [];\n        field.validation = props?.required ? [Validators.required, ...addedValidations] : field.validation;\n        field.formControl = field.type === 'checkbox' ? this.checkboxFormFields(field) : new FormControl(field.value, field.validation);\n        return field;\n    }\n\n    static checkboxFormFields(field: Field): { [key: string]: AbstractControl } {\n        const formControls: { [key: string]: AbstractControl } = {};\n        field.props?.options?.forEach((option) => {\n            formControls[option.id] = new FormControl('');\n        });\n        return formControls;\n    }\n}\n",
             "inputsClass": [],
             "outputsClass": [],
             "properties": [
@@ -581,7 +581,7 @@
                     "type": "number",
                     "optional": false,
                     "description": "",
-                    "line": 76,
+                    "line": 77,
                     "modifierKind": [
                         123,
                         126
@@ -589,13 +589,13 @@
                 },
                 {
                     "name": "validators",
-                    "defaultValue": "{\n    required: (required: boolean) => (required ? Validators.required : []),\n    email: (email: boolean) => (email ? Validators.email : []),\n    pattern: (pattern: string | RegExp) => (pattern ? Validators.pattern(pattern) : []),\n  }",
+                    "defaultValue": "{\n        required: (required: boolean) => (required ? Validators.required : []),\n        email: (email: boolean) => (email ? Validators.email : []),\n        pattern: (pattern: string | RegExp) => (pattern ? Validators.pattern(pattern) : []),\n    }",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
                     "optional": false,
                     "description": "",
-                    "line": 110,
+                    "line": 111,
                     "modifierKind": [
                         126
                     ]
@@ -615,7 +615,7 @@
                     "optional": false,
                     "returnType": "literal type",
                     "typeParameters": [],
-                    "line": 145,
+                    "line": 146,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -693,7 +693,7 @@
                     "optional": false,
                     "returnType": "Field",
                     "typeParameters": [],
-                    "line": 82,
+                    "line": 83,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -830,7 +830,7 @@
                     "optional": false,
                     "returnType": "Field",
                     "typeParameters": [],
-                    "line": 116,
+                    "line": 117,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -910,7 +910,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 78,
+                    "line": 79,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -921,6 +921,121 @@
             ],
             "indexSignatures": [],
             "extends": [],
+            "hostBindings": [],
+            "hostListeners": []
+        },
+        {
+            "name": "ImperativeObservable",
+            "id": "class-ImperativeObservable-2bee6064f2321053861edb96d5c364db736fdd609c51a0e7d113e54300a943e189d153c5486344ba02f73ad732fb2a4798ef5777d8c78e84d96202b211d14f1b",
+            "file": "projects/ng-lib/src/lib/utils/imperative-observable.util.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "class",
+            "sourceCode": "import { BehaviorSubject, Observable } from 'rxjs';\n\nexport class ImperativeObservable<T> {\n  private _subject: BehaviorSubject<T>;\n  private _change$: Observable<T>;\n\n  constructor(initialValue: T) {\n    this._subject = new BehaviorSubject<T>(initialValue);\n    this._change$ = this._subject.asObservable();\n  }\n\n  get value(): T {\n    return this._subject.value;\n  }\n  set value(value: T) {\n    this._subject.next(value);\n  }\n\n  get change$() {\n    return this._change$;\n  }\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "initialValue",
+                        "type": "T",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 5,
+                "jsdoctags": [
+                    {
+                        "name": "initialValue",
+                        "type": "T",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "inputsClass": [],
+            "outputsClass": [],
+            "properties": [
+                {
+                    "name": "_change$",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Observable<T>",
+                    "optional": false,
+                    "description": "",
+                    "line": 5,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "_subject",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "BehaviorSubject<T>",
+                    "optional": false,
+                    "description": "",
+                    "line": 4,
+                    "modifierKind": [
+                        123
+                    ]
+                }
+            ],
+            "methods": [],
+            "indexSignatures": [],
+            "extends": [],
+            "accessors": {
+                "value": {
+                    "name": "value",
+                    "setSignature": {
+                        "name": "value",
+                        "type": "void",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "args": [
+                            {
+                                "name": "value",
+                                "type": "T",
+                                "deprecated": false,
+                                "deprecationMessage": ""
+                            }
+                        ],
+                        "returnType": "void",
+                        "line": 15,
+                        "jsdoctags": [
+                            {
+                                "name": "value",
+                                "type": "T",
+                                "deprecated": false,
+                                "deprecationMessage": "",
+                                "tagName": {
+                                    "text": "param"
+                                }
+                            }
+                        ]
+                    },
+                    "getSignature": {
+                        "name": "value",
+                        "type": "",
+                        "returnType": "T",
+                        "line": 12
+                    }
+                },
+                "change$": {
+                    "name": "change$",
+                    "getSignature": {
+                        "name": "change$",
+                        "type": "",
+                        "returnType": "",
+                        "line": 19
+                    }
+                }
+            },
             "hostBindings": [],
             "hostListeners": []
         },
@@ -1098,30 +1213,15 @@
         },
         {
             "name": "TableBuilder",
-            "id": "class-TableBuilder-dbd4e31332d286849c132905c75daaeb3ce30703f3a42817bb6e8f7004d8bdfac4dd667879a35b94b0cd66f1d272a0818ca61e035dbe4c87a0ad24ae19a96ea8",
+            "id": "class-TableBuilder-de6629ae815809500ef7c604500c3e5a0d8f28ca70583cf0b32687d2fa1a1b40b141b34e8ae7c4720d709c38671925f9e803f3d51cd84d103c1bd32114dce4cc",
             "file": "projects/ng-lib/src/lib/tw-form-ui/models/table.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "class",
-            "sourceCode": "import { Field } from './field';\nimport { Observable } from 'rxjs';\nimport { TABLE_TYPE } from './identifiable';\n\nexport declare type RowData = {\n  [additionalProperties: string]: any;\n} & {\n  [key: string]: any;\n  selected?: boolean;\n  id?: string;\n};\n\nexport type TableProps = {\n  height?: string;\n  title?: string;\n  caption?: string;\n  buttonText?: string;\n  buttonLink?: any[];\n  buttonAction?: any;\n  selectable?: boolean;\n  attributes?: {\n    [key: string]: string | number;\n  };\n  isField?: boolean;\n  field?: Field;\n  fieldCol?: string;\n};\n\nexport type Table = {\n  [additionalProperties: string]: any;\n} & {\n  type: TABLE_TYPE;\n  headers: string[];\n  rows: Observable<RowData[]>;\n  props?: TableProps;\n};\n\nexport class TableBuilder {\n  private static idCounter = 0;\n\n  static createTable(type: TABLE_TYPE, headers: string[], rows: Observable<RowData[]>, props?: TableProps): Table {\n    const table = {\n      type,\n      headers: headers || [],\n      rows: rows,\n      props: props || {},\n    };\n    return table;\n  }\n}\n",
+            "sourceCode": "import { Field } from './field';\nimport { Observable } from 'rxjs';\nimport { TABLE_TYPE } from './identifiable';\n\nexport declare type RowData = {\n    [additionalProperties: string]: any;\n} & {\n    [key: string]: any;\n    selected?: boolean;\n    id?: string;\n};\n\nexport type TableProps = {\n    height?: string;\n    title?: string;\n    caption?: string;\n    buttonText?: string;\n    buttonLink?: any[];\n    buttonAction?: any;\n    selectable?: boolean;\n    attributes?: {\n        [key: string]: string | number;\n    };\n    isField?: boolean;\n    field?: Field;\n    fieldCol?: string;\n};\n\nexport type Table = {\n    [additionalProperties: string]: any;\n} & {\n    type: TABLE_TYPE;\n    headers: string[];\n    rows: Observable<RowData[]>;\n    props?: TableProps;\n};\n\nexport class TableBuilder {\n    static createTable(type: TABLE_TYPE, headers: string[], rows: Observable<RowData[]>, props?: TableProps): Table {\n        const table = {\n            type,\n            headers: headers || [],\n            rows: rows,\n            props: props || {},\n        };\n        return table;\n    }\n}\n",
             "inputsClass": [],
             "outputsClass": [],
-            "properties": [
-                {
-                    "name": "idCounter",
-                    "defaultValue": "0",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "number",
-                    "optional": false,
-                    "description": "",
-                    "line": 39,
-                    "modifierKind": [
-                        123,
-                        126
-                    ]
-                }
-            ],
+            "properties": [],
             "methods": [
                 {
                     "name": "createTable",
@@ -1155,7 +1255,7 @@
                     "optional": false,
                     "returnType": "Table",
                     "typeParameters": [],
-                    "line": 41,
+                    "line": 39,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -2736,6 +2836,104 @@
     ],
     "components": [
         {
+            "name": "AdkExpansionPanelComponent",
+            "id": "component-AdkExpansionPanelComponent-7901702419d175b45cf7ba7d9020e9b3353f30978b2bfed857bd23da354e92cdce2cf88664d7c8fa4b702007c3f96349e59815529fd233d691bf84999ed3c0d1",
+            "file": "projects/ng-lib/src/lib/tw-ui/components/table/utils/expansion-panel.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "adk-expansion-panel",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<div class=\"relative mb-3\">\n    <h6 class=\"mb-0\">\n        <button\n            class=\"relative flex items-center w-full p-4 font-semibold text-left transition-all ease-in border-b border-solid cursor-pointer border-slate-100 text-slate-700 rounded-t-1 group text-dark-500\"\n            (click)=\"togglePanel()\"\n        >\n            <ng-container *ngTemplateOutlet=\"headerTemplate\"></ng-container>\n            <i\n                class=\"absolute right-0 pt-1 text-base transition-transform fa fa-chevron-down\"\n                [ngClass]=\"{ 'rotate-180': isOpen }\"\n            ></i>\n        </button>\n    </h6>\n    <div [@collapseAnimation]=\"isOpen ? 'open' : 'closed'\" class=\"overflow-hidden transition-all duration-300 ease-in-out\">\n        <div class=\"p-4 text-sm leading-normal text-blue-gray-500/80\">\n            <ng-container *ngTemplateOutlet=\"bodyTemplate\"></ng-container>\n        </div>\n    </div>\n</div>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "isOpen",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 40,
+                    "type": "boolean",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "bodyTemplate",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "TemplateRef<any>",
+                    "optional": false,
+                    "description": "",
+                    "line": 42,
+                    "decorators": [
+                        {
+                            "name": "ContentChild",
+                            "stringifiedArguments": "'expansionPanelBody'"
+                        }
+                    ],
+                    "modifierKind": [
+                        170
+                    ]
+                },
+                {
+                    "name": "headerTemplate",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "TemplateRef<any>",
+                    "optional": false,
+                    "description": "",
+                    "line": 41,
+                    "decorators": [
+                        {
+                            "name": "ContentChild",
+                            "stringifiedArguments": "'expansionPanelHeader'"
+                        }
+                    ],
+                    "modifierKind": [
+                        170
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "togglePanel",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 44,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, ContentChild, Input, TemplateRef } from '@angular/core';\nimport { animate, state, style, transition, trigger } from '@angular/animations';\n\nimport { CommonModule } from '@angular/common';\n\n@Component({\n    selector: 'adk-expansion-panel',\n    standalone: true,\n    imports: [CommonModule],\n    template: `\n        <div class=\"relative mb-3\">\n            <h6 class=\"mb-0\">\n                <button\n                    class=\"relative flex items-center w-full p-4 font-semibold text-left transition-all ease-in border-b border-solid cursor-pointer border-slate-100 text-slate-700 rounded-t-1 group text-dark-500\"\n                    (click)=\"togglePanel()\"\n                >\n                    <ng-container *ngTemplateOutlet=\"headerTemplate\"></ng-container>\n                    <i\n                        class=\"absolute right-0 pt-1 text-base transition-transform fa fa-chevron-down\"\n                        [ngClass]=\"{ 'rotate-180': isOpen }\"\n                    ></i>\n                </button>\n            </h6>\n            <div [@collapseAnimation]=\"isOpen ? 'open' : 'closed'\" class=\"overflow-hidden transition-all duration-300 ease-in-out\">\n                <div class=\"p-4 text-sm leading-normal text-blue-gray-500/80\">\n                    <ng-container *ngTemplateOutlet=\"bodyTemplate\"></ng-container>\n                </div>\n            </div>\n        </div>\n    `,\n    animations: [\n        trigger('collapseAnimation', [\n            state('closed', style({ height: '0px', visibility: 'hidden' })),\n            state('open', style({ height: '*', visibility: 'visible' })),\n            transition('closed <=> open', animate('300ms ease-in-out')),\n        ]),\n    ],\n})\nexport class AdkExpansionPanelComponent {\n    @Input() isOpen: boolean = false;\n    @ContentChild('expansionPanelHeader') headerTemplate!: TemplateRef<any>;\n    @ContentChild('expansionPanelBody') bodyTemplate!: TemplateRef<any>;\n\n    togglePanel(): void {\n        this.isOpen = !this.isOpen;\n    }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": []
+        },
+        {
             "name": "ButtonComponent",
             "id": "component-ButtonComponent-30ea7d0b5a5a54720b3690468f16c104ef2614e1285acd84b467e91604c7f18818802629b7f48951bc0424d8b57f5f59c956d82da583a42039cd9b43e6828a7b",
             "file": "projects/ng-lib/src/lib/tw-ui/components/button.component.ts",
@@ -3227,7 +3425,7 @@
         },
         {
             "name": "CheckboxComponent",
-            "id": "component-CheckboxComponent-fd39dd1c816fe3320c21a4a2497178e8631d35704a02f44db3fc1a114468348acf5ed5a19cc6d6f30afdfc448059fbede5e518a94ae0059c508352a6e3e0526b",
+            "id": "component-CheckboxComponent-c2ae04fa9c94d1ccddc3b8b747d5678a1f583471754c2c4c8f23394253dc8b36a4b92f73017de390742401892d63d917aa5972642b6a0530455d8acf85d62a5a",
             "file": "projects/ng-lib/src/lib/tw-form-ui/components/types/checkbox.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -3239,7 +3437,7 @@
             "styles": [
                 "\n            :host {\n                display: block;\n            }\n        "
             ],
-            "template": "@if (options.length > 0) { @for (option of options; track (option.id)) {\n<div [ngClass]=\"class\" class=\"relative flex gap-x-3 mt-2\">\n    <div class=\"flex h-6 items-center\">\n        <input\n            type=\"checkbox\"\n            [checked]=\"formControl[field.key][option.id].value\"\n            [name]=\"option.id\"\n            [id]=\"option.id\"\n            [value]=\"option.value\"\n            [formControl]=\"formControl[field.key][option.id]\"\n            [ngClass]=\"inputClass\"\n            (change)=\"onCheckChange($event, option.id)\"\n        />\n    </div>\n    <div class=\"text-sm leading-6\">\n        <label [for]=\"option.id\" [ngClass]=\"labelClass\">{{ option.label }}</label>\n        <p *ngIf=\"option.description\" class=\"text-gray-500\">{{ option.description }}</p>\n    </div>\n</div>\n}} @else {\n<div class=\"relative flex items-start\">\n    <div class=\"flex h-6 items-center\">\n        <label\n            class=\"relative flex items-center cursor-pointer p-3 rounded-full\"\n            [for]=\"field.key\"\n            style=\"position: relative; overflow: hidden;\"\n        >\n            <input\n                type=\"checkbox\"\n                class=\"peer relative appearance-none border rounded-md border-blue-gray-200 cursor-pointer transition-all before:content[''] before:block before:bg-blue-gray-500 before:w-12 before:h-12 before:rounded-full before:absolute before:top-2/4 before:left-2/4 before:-translate-y-2/4 before:-translate-x-2/4 before:opacity-0 hover:before:opacity-10 before:transition-opacity checked:bg-gray-900 checked:border-gray-900 checked:before:bg-gray-900 w-4 h-4\"\n                [id]=\"field.key\"\n                [name]=\"field.key\"\n                [formControl]=\"formControl[field.key]\"\n            />\n            <span\n                class=\"text-white absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity\"\n            >\n                <svg\n                    xmlns=\"http://www.w3.org/2000/svg\"\n                    class=\"h-3.5 w-3.5\"\n                    viewBox=\"0 0 20 20\"\n                    fill=\"currentColor\"\n                    stroke=\"currentColor\"\n                    stroke-width=\"1\"\n                >\n                    <path\n                        fill-rule=\"evenodd\"\n                        d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\"\n                        clip-rule=\"evenodd\"\n                    ></path>\n                </svg>\n            </span>\n        </label>\n    </div>\n    <div class=\"ml-3 text-sm leading-6\">\n        <label [for]=\"field.key\" [ngClass]=\"labelClass\">{{ label }}</label>\n        <p *ngIf=\"description\" class=\"text-gray-500\">{{ description }}</p>\n    </div>\n</div>\n}\n",
+            "template": "@if (options.length > 0) { @for (option of options; track (option.id)) {\n<div [ngClass]=\"class\" class=\"relative flex gap-x-3 mt-2\">\n    <div class=\"flex h-6 items-center\">\n        <input\n            type=\"checkbox\"\n            [checked]=\"formControl[field.key][option.id]?.value\"\n            [name]=\"option.id\"\n            [id]=\"option.id\"\n            [value]=\"option.value\"\n            [formControl]=\"formControl[field.key][option.id]\"\n            [ngClass]=\"inputClass\"\n            (change)=\"onCheckChange($event, option.id)\"\n        />\n    </div>\n    <div class=\"text-sm leading-6\">\n        <label [for]=\"option.id\" [ngClass]=\"labelClass\">{{ option.label }}</label>\n        <p *ngIf=\"option.description\" class=\"text-gray-500\">{{ option.description }}</p>\n    </div>\n</div>\n} } @else {\n<div class=\"inline-flex items-center\">\n    <label class=\"relative flex items-center p-3 rounded-full cursor-pointer\" for=\"checkbox\">\n        <input\n            type=\"checkbox\"\n            class=\"before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10\"\n            [checked]=\"formControl[field.key].value\"\n            [name]=\"id\"\n            [id]=\"id\"\n            [value]=\"field.value\"\n            [formControl]=\"formControl[field.key]\"\n            [ngClass]=\"inputClass\"\n            (change)=\"onCheckChange($event, id)\"\n        />\n        <span\n            class=\"absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100\"\n        >\n            <svg\n                xmlns=\"http://www.w3.org/2000/svg\"\n                class=\"h-3.5 w-3.5\"\n                viewBox=\"0 0 20 20\"\n                fill=\"currentColor\"\n                stroke=\"currentColor\"\n                stroke-width=\"1\"\n            >\n                <path\n                    fill-rule=\"evenodd\"\n                    d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\"\n                    clip-rule=\"evenodd\"\n                ></path>\n            </svg>\n        </span>\n    </label>\n</div>\n}\n",
             "templateUrl": [],
             "viewProviders": [],
             "hostDirectives": [],
@@ -3248,12 +3446,29 @@
                     "name": "field",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 82,
+                    "line": 76,
                     "type": "Field",
+                    "decorators": []
+                },
+                {
+                    "name": "isChecked",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 77,
+                    "type": "boolean",
                     "decorators": []
                 }
             ],
-            "outputsClass": [],
+            "outputsClass": [
+                {
+                    "name": "valueChange",
+                    "defaultValue": "new EventEmitter<any>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 78,
+                    "type": "EventEmitter<any>"
+                }
+            ],
             "propertiesClass": [
                 {
                     "name": "formControl",
@@ -3263,7 +3478,7 @@
                     "type": "literal type",
                     "optional": false,
                     "description": "",
-                    "line": 83
+                    "line": 79
                 }
             ],
             "methodsClass": [
@@ -3273,12 +3488,22 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 128,
+                    "line": 146,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
                         123
                     ]
+                },
+                {
+                    "name": "ngAfterViewInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 121,
+                    "deprecated": false,
+                    "deprecationMessage": ""
                 },
                 {
                     "name": "ngOnChanges",
@@ -3292,7 +3517,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 121,
+                    "line": 130,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -3325,7 +3550,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 132,
+                    "line": 157,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -3368,15 +3593,25 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { AbstractControl, ReactiveFormsModule } from '@angular/forms';\nimport { Component, Input, OnChanges, SimpleChanges } from '@angular/core';\n\nimport { CommonModule } from '@angular/common';\nimport { Field } from '../../models';\n\n@Component({\n    standalone: true,\n    selector: 'adk-checkbox',\n    imports: [CommonModule, ReactiveFormsModule],\n    template: `\n        @if (options.length > 0) { @for (option of options; track (option.id)) {\n        <div [ngClass]=\"class\" class=\"relative flex gap-x-3 mt-2\">\n            <div class=\"flex h-6 items-center\">\n                <input\n                    type=\"checkbox\"\n                    [checked]=\"formControl[field.key][option.id].value\"\n                    [name]=\"option.id\"\n                    [id]=\"option.id\"\n                    [value]=\"option.value\"\n                    [formControl]=\"formControl[field.key][option.id]\"\n                    [ngClass]=\"inputClass\"\n                    (change)=\"onCheckChange($event, option.id)\"\n                />\n            </div>\n            <div class=\"text-sm leading-6\">\n                <label [for]=\"option.id\" [ngClass]=\"labelClass\">{{ option.label }}</label>\n                <p *ngIf=\"option.description\" class=\"text-gray-500\">{{ option.description }}</p>\n            </div>\n        </div>\n        }} @else {\n        <div class=\"relative flex items-start\">\n            <div class=\"flex h-6 items-center\">\n                <label\n                    class=\"relative flex items-center cursor-pointer p-3 rounded-full\"\n                    [for]=\"field.key\"\n                    style=\"position: relative; overflow: hidden;\"\n                >\n                    <input\n                        type=\"checkbox\"\n                        class=\"peer relative appearance-none border rounded-md border-blue-gray-200 cursor-pointer transition-all before:content[''] before:block before:bg-blue-gray-500 before:w-12 before:h-12 before:rounded-full before:absolute before:top-2/4 before:left-2/4 before:-translate-y-2/4 before:-translate-x-2/4 before:opacity-0 hover:before:opacity-10 before:transition-opacity checked:bg-gray-900 checked:border-gray-900 checked:before:bg-gray-900 w-4 h-4\"\n                        [id]=\"field.key\"\n                        [name]=\"field.key\"\n                        [formControl]=\"formControl[field.key]\"\n                    />\n                    <span\n                        class=\"text-white absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity\"\n                    >\n                        <svg\n                            xmlns=\"http://www.w3.org/2000/svg\"\n                            class=\"h-3.5 w-3.5\"\n                            viewBox=\"0 0 20 20\"\n                            fill=\"currentColor\"\n                            stroke=\"currentColor\"\n                            stroke-width=\"1\"\n                        >\n                            <path\n                                fill-rule=\"evenodd\"\n                                d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\"\n                                clip-rule=\"evenodd\"\n                            ></path>\n                        </svg>\n                    </span>\n                </label>\n            </div>\n            <div class=\"ml-3 text-sm leading-6\">\n                <label [for]=\"field.key\" [ngClass]=\"labelClass\">{{ label }}</label>\n                <p *ngIf=\"description\" class=\"text-gray-500\">{{ description }}</p>\n            </div>\n        </div>\n        }\n    `,\n    styles: [\n        `\n            :host {\n                display: block;\n            }\n        `,\n    ],\n})\nexport class CheckboxComponent implements OnChanges {\n    @Input() field!: Field;\n    formControl: { [key: string]: AbstractControl | any } = {};\n\n    get props() {\n        return this.field?.props;\n    }\n\n    get options() {\n        return this.props?.options ?? [];\n    }\n\n    get autocomplete() {\n        return this.props?.autocomplete ?? 'off';\n    }\n\n    get label() {\n        return this.field.label;\n    }\n\n    get description() {\n        return this.field?.description;\n    }\n\n    get placeholder() {\n        return this.field.placeholder ?? '';\n    }\n\n    get class() {\n        return this.props?.class ?? 'sm:col-span-3';\n    }\n\n    get labelClass() {\n        return this.props?.labelClass ?? 'font-medium text-gray-900';\n    }\n\n    get inputClass() {\n        return this.props?.inputClass ?? 'h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600';\n    }\n\n    ngOnChanges({ field }: SimpleChanges): void {\n        if (field) {\n            this.field = field.currentValue;\n            this.initFormControl();\n        }\n    }\n\n    private initFormControl(): void {\n        this.formControl[this.field.key] = this.field.formControl;\n    }\n\n    onCheckChange(event: any, id: any) {\n        if (!this.formControl[this.field.key][id].value) {\n            this.formControl[this.field.key][id].patchValue('');\n            return;\n        }\n        try {\n            const parseValue = JSON.parse(event.target.value); // Assuming event.target.value contains JSON data\n            this.formControl[this.field.key][id].patchValue(parseValue);\n            // Continue with your logic using the parsed JSON data\n        } catch (error) {\n            console.error('Error parsing JSON:', error);\n            // Handle the parsing error, such as logging or displaying an error message\n        }\n    }\n}\n",
+            "sourceCode": "import { AbstractControl, FormControl, ReactiveFormsModule } from '@angular/forms';\nimport { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';\n\nimport { CommonModule } from '@angular/common';\nimport { Field } from '../../models';\n\n@Component({\n    standalone: true,\n    selector: 'adk-checkbox',\n    imports: [CommonModule, ReactiveFormsModule],\n    template: `\n        @if (options.length > 0) { @for (option of options; track (option.id)) {\n        <div [ngClass]=\"class\" class=\"relative flex gap-x-3 mt-2\">\n            <div class=\"flex h-6 items-center\">\n                <input\n                    type=\"checkbox\"\n                    [checked]=\"formControl[field.key][option.id]?.value\"\n                    [name]=\"option.id\"\n                    [id]=\"option.id\"\n                    [value]=\"option.value\"\n                    [formControl]=\"formControl[field.key][option.id]\"\n                    [ngClass]=\"inputClass\"\n                    (change)=\"onCheckChange($event, option.id)\"\n                />\n            </div>\n            <div class=\"text-sm leading-6\">\n                <label [for]=\"option.id\" [ngClass]=\"labelClass\">{{ option.label }}</label>\n                <p *ngIf=\"option.description\" class=\"text-gray-500\">{{ option.description }}</p>\n            </div>\n        </div>\n        } } @else {\n        <div class=\"inline-flex items-center\">\n            <label class=\"relative flex items-center p-3 rounded-full cursor-pointer\" for=\"checkbox\">\n                <input\n                    type=\"checkbox\"\n                    class=\"before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10\"\n                    [checked]=\"formControl[field.key].value\"\n                    [name]=\"id\"\n                    [id]=\"id\"\n                    [value]=\"field.value\"\n                    [formControl]=\"formControl[field.key]\"\n                    [ngClass]=\"inputClass\"\n                    (change)=\"onCheckChange($event, id)\"\n                />\n                <span\n                    class=\"absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100\"\n                >\n                    <svg\n                        xmlns=\"http://www.w3.org/2000/svg\"\n                        class=\"h-3.5 w-3.5\"\n                        viewBox=\"0 0 20 20\"\n                        fill=\"currentColor\"\n                        stroke=\"currentColor\"\n                        stroke-width=\"1\"\n                    >\n                        <path\n                            fill-rule=\"evenodd\"\n                            d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\"\n                            clip-rule=\"evenodd\"\n                        ></path>\n                    </svg>\n                </span>\n            </label>\n        </div>\n        }\n    `,\n    styles: [\n        `\n            :host {\n                display: block;\n            }\n        `,\n    ],\n})\nexport class CheckboxComponent implements OnChanges, AfterViewInit {\n    @Input() field!: Field;\n    @Input() isChecked?: boolean;\n    @Output() valueChange: EventEmitter<any> = new EventEmitter<any>();\n    formControl: { [key: string]: AbstractControl | any } = {};\n\n    get id() {\n        return `${this.field.id}`;\n    }\n\n    get props() {\n        return this.field?.props;\n    }\n\n    get options() {\n        return this.props?.options ?? [];\n    }\n\n    get autocomplete() {\n        return this.props?.autocomplete ?? 'off';\n    }\n\n    get label() {\n        return this.field.label;\n    }\n\n    get description() {\n        return this.field?.description;\n    }\n\n    get placeholder() {\n        return this.field.placeholder ?? '';\n    }\n\n    get class() {\n        return this.props?.class ?? 'sm:col-span-3';\n    }\n\n    get labelClass() {\n        return this.props?.labelClass ?? 'font-medium text-gray-900';\n    }\n\n    get inputClass() {\n        return this.props?.inputClass ?? 'h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600';\n    }\n\n    ngAfterViewInit(): void {\n        //check if field has already been rendered\n        if (this.formControl[this.field.key]) {\n            return;\n        } else {\n            this.initFormControl();\n        }\n    }\n\n    ngOnChanges({ field, isChecked }: SimpleChanges): void {\n        if (field) {\n            this.field = field.currentValue;\n            if (this.formControl[this.field.key]) {\n                return;\n            } else {\n                this.initFormControl();\n            }\n        }\n        console.log('CheckboxComponent field', this.field);\n        if (isChecked && this.field.key !== 'selectAll') {\n            console.log('CheckboxComponent', isChecked);\n            this.formControl[this.field.key].patchValue(isChecked.currentValue);\n        }\n    }\n\n    private initFormControl(): void {\n        this.formControl[this.field.key] = this.field.formControl;\n        if (this.options.length > 0) {\n            this.options.forEach((option: any) => {\n                this.formControl[this.field.key][option.id] = new FormControl('');\n            });\n        } else {\n            this.formControl[this.field.key] = new FormControl(false);\n        }\n    }\n\n    onCheckChange(event: any, id: any) {\n        let value = event.target.checked;\n        if (this.options.length > 0) {\n            this.formControl[this.field.key][id].patchValue(value);\n        } else {\n            value = this.isChecked !== undefined ? this.isChecked : value;\n            this.formControl[this.field.key].patchValue(value);\n            console.log('CheckboxComponent', value, this.formControl[this.field.key].value);\n        }\n        this.valueChange.emit(this.field.value);\n    }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "\n            :host {\n                display: block;\n            }\n        \n",
             "extends": [],
             "implements": [
-                "OnChanges"
+                "OnChanges",
+                "AfterViewInit"
             ],
             "accessors": {
+                "id": {
+                    "name": "id",
+                    "getSignature": {
+                        "name": "id",
+                        "type": "",
+                        "returnType": "",
+                        "line": 81
+                    }
+                },
                 "props": {
                     "name": "props",
                     "getSignature": {
@@ -6852,7 +7087,7 @@
         },
         {
             "name": "TwDefaultTableComponent",
-            "id": "component-TwDefaultTableComponent-e6ae56c2356786a4042b6a6a19eb8ecc5666e289d68c7ac6147ab2b0bbbd28d692f3e162b4d14f81d1ab71a9005842c9ced797dc8bc3f7c822d06d565d2097bf",
+            "id": "component-TwDefaultTableComponent-16dab6987433cc71100c9a696b55f9217e650cdb0c423bd4dad873ad0a775d4f0b013c5090512b9fd38a8dff432f260fe8dc479acd512d40d4ced1c5d34935c4",
             "file": "projects/ng-lib/src/lib/tw-ui/components/table/tw-table.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -6875,7 +7110,7 @@
                     "name": "actionButton",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 31,
+                    "line": 32,
                     "type": "TemplateRef<any> | string",
                     "decorators": []
                 },
@@ -6883,7 +7118,7 @@
                     "name": "actionColName",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 30,
+                    "line": 31,
                     "type": "string",
                     "decorators": []
                 },
@@ -6892,7 +7127,7 @@
                     "defaultValue": "''",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 33,
+                    "line": 34,
                     "type": "string",
                     "decorators": []
                 },
@@ -6901,7 +7136,7 @@
                     "defaultValue": "[]",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 29,
+                    "line": 30,
                     "type": "string[]",
                     "decorators": []
                 },
@@ -6910,7 +7145,7 @@
                     "defaultValue": "false",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 28,
+                    "line": 29,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -6919,7 +7154,7 @@
                     "defaultValue": "false",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 26,
+                    "line": 27,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -6928,7 +7163,7 @@
                     "defaultValue": "false",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 27,
+                    "line": 28,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -6937,7 +7172,7 @@
                     "defaultValue": "[]",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 32,
+                    "line": 33,
                     "type": "RowData[]",
                     "decorators": []
                 }
@@ -6945,8 +7180,8 @@
             "outputsClass": [],
             "propertiesClass": [
                 {
-                    "name": "field",
-                    "defaultValue": "field",
+                    "name": "datasource",
+                    "defaultValue": "this.tdss.get('dataSource')",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
@@ -6955,14 +7190,34 @@
                     "line": 38
                 },
                 {
-                    "name": "groupData",
-                    "defaultValue": "{ '': this.tdss.get('dataSource') }",
+                    "name": "field",
+                    "defaultValue": "field",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "literal type",
+                    "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 37
+                    "line": 36
+                },
+                {
+                    "name": "groupData",
+                    "defaultValue": "new ImperativeObservable<{ [key: string]: RowData[] }>({ key: this.tdss.get('dataSource') })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 39
+                },
+                {
+                    "name": "selectedRows",
+                    "defaultValue": "new ImperativeObservable<RowData[]>(this.tdss.get('selectedRows'))",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 40
                 },
                 {
                     "name": "tdss",
@@ -6972,7 +7227,7 @@
                     "type": "TableDataSourceService",
                     "optional": false,
                     "description": "",
-                    "line": 35
+                    "line": 37
                 }
             ],
             "methodsClass": [
@@ -6982,7 +7237,7 @@
                     "optional": false,
                     "returnType": "number",
                     "typeParameters": [],
-                    "line": 59,
+                    "line": 65,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -7005,7 +7260,7 @@
                     "optional": false,
                     "returnType": "literal type",
                     "typeParameters": [],
-                    "line": 68,
+                    "line": 74,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -7045,7 +7300,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 97,
+                    "line": 107,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -7073,7 +7328,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 40,
+                    "line": 42,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -7101,7 +7356,7 @@
                     "optional": false,
                     "returnType": "string[]",
                     "typeParameters": [],
-                    "line": 63,
+                    "line": 69,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -7129,12 +7384,40 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 85,
+                    "line": 91,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
                         {
                             "name": "event",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "onRowSelection",
+                    "args": [
+                        {
+                            "name": "rowData",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 97,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "rowData",
                             "type": "any",
                             "deprecated": false,
                             "deprecationMessage": "",
@@ -7157,7 +7440,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 105,
+                    "line": 128,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -7174,11 +7457,39 @@
                 },
                 {
                     "name": "toggleRowSelection",
+                    "args": [
+                        {
+                            "name": "row",
+                            "type": "RowData",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 117,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "row",
+                            "type": "RowData",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "toggleSelectedAllRows",
                     "args": [],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 101,
+                    "line": 122,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -7188,7 +7499,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 51,
+                    "line": 56,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -7207,6 +7518,10 @@
                     "type": "module"
                 },
                 {
+                    "name": "AsyncPipe",
+                    "type": "pipe"
+                },
+                {
                     "name": "TwTypographyComponent",
                     "type": "component"
                 },
@@ -7222,7 +7537,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, TemplateRef, inject } from '@angular/core';\nimport { SortableIconComponent, TwTypographyComponent } from './utils';\n\nimport { CheckboxComponent } from '../../../tw-form-ui/components/types/checkbox.component';\nimport { CommonModule } from '@angular/common';\nimport { RowData } from './models';\nimport { TableDataSourceService } from './table-datasource.service';\nimport { field } from './utils/select.config';\n\n@Component({\n    selector: 'tw-default-table',\n    templateUrl: './tw-table.component.html',\n    standalone: true,\n    imports: [CommonModule, TwTypographyComponent, CheckboxComponent, SortableIconComponent],\n    changeDetection: ChangeDetectionStrategy.OnPush,\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n        `,\n    ],\n})\nexport class TwDefaultTableComponent implements OnChanges {\n    @Input() isSelectable = false;\n    @Input() isSortable = false;\n    @Input() isDraggable = false;\n    @Input() headers: string[] = [];\n    @Input() actionColName?: string;\n    @Input() actionButton?: TemplateRef<any> | string;\n    @Input() rows: RowData[] = [];\n    @Input() groupBy = '';\n\n    tdss: TableDataSourceService = inject(TableDataSourceService);\n\n    groupData: { [key: string]: RowData[] } = { '': this.tdss.get('dataSource') };\n    field = field;\n\n    ngOnChanges(changes: SimpleChanges): void {\n        if (changes['isSelectable']) this.isSelectable = changes['isSelectable'].currentValue;\n        if (changes['isSortable']) this.isSortable = changes['isSortable'].currentValue;\n        if (changes['isDraggable']) this.isDraggable = changes['isDraggable'].currentValue;\n        if (changes['headers']) this.tdss.setHeaders(this.headers);\n        if (changes['rows']) this.tdss.setTableDataSource(this.rows);\n        if (changes['groupBy']) this.tdss.setGroupBy(this.groupBy);\n\n        this.updateGroupData();\n    }\n\n    private updateGroupData(): void {\n        const groupByVar = this.tdss.get('preferences').groupBy;\n        this.groupData =\n            groupByVar && groupByVar !== ''\n                ? this.groupByData(this.tdss.get('dataSource'), groupByVar)\n                : ({ '': this.tdss.get('dataSource') } as { [key: string]: RowData[] });\n    }\n\n    colSpanNum(): number {\n        return this.tdss.get('headers').length + (this.isSelectable ? 1 : 0) + (this.actionButton ? 1 : 0);\n    }\n\n    objectKeysGroupData(obj: any): string[] {\n        return Object.keys(obj);\n    }\n\n    // @ts-ignore\n    private groupByData(array: RowData[], key: string): { [key: string]: RowData[] } {\n        const gKey = key.toLowerCase();\n        return array.reduce((result, currentValue) => {\n            const normalizedCurrentValue: RowData = Object.keys(currentValue).reduce((acc, k) => {\n                acc[k.toLowerCase()] = currentValue[k];\n                return acc;\n            }, {} as RowData);\n\n            const groupKey = normalizedCurrentValue[gKey] as string;\n            if (!result[groupKey]) {\n                result[groupKey] = [];\n            }\n            result[groupKey].push(currentValue);\n            return result;\n        }, {} as { [key: string]: RowData[] });\n    }\n\n    onRowClick(event: any): void {\n        // Handle the checkbox change here\n        console.log('Checkbox changed:', event);\n        // Update your data or perform actions based on the checkbox state\n    }\n\n    get allRowsSelected(): boolean {\n        const dataSource = this.tdss.get('dataSource');\n        const selectedRows = this.tdss.get('selectedRows');\n        return dataSource.length > 0 && selectedRows.length === dataSource.length;\n    }\n\n    isRowSelected(rowData: any): boolean {\n        return this.tdss.get('selectedRows').some((selectedRow: any) => JSON.stringify(selectedRow) === JSON.stringify(rowData));\n    }\n\n    toggleRowSelection() {\n        this.tdss.toggleSelectedAllRows();\n    }\n\n    sortRows(key: string): void {\n        const groupByKey = this.tdss.get('preferences').groupBy ?? '';\n        const currentDirection = this.tdss.get('sortDataSource').direction;\n        const newDirection: 'ascending' | 'descending' = currentDirection === 'ascending' ? 'descending' : 'ascending';\n\n        this.tdss.sortDataSource({ key, direction: newDirection });\n        this.updateGroupData();\n    }\n\n    // Figure out how to drag from initial index and drop on target index\n\n    // dragRows(index: number) {\n    //     this.draggableUtil.dragRows(this, index);\n    // }\n}\n",
+            "sourceCode": "import { AsyncPipe, CommonModule } from '@angular/common';\nimport { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, TemplateRef, computed, inject, signal } from '@angular/core';\nimport { SortableIconComponent, TwTypographyComponent } from './utils';\n\nimport { CheckboxComponent } from '../../../tw-form-ui/components/types/checkbox.component';\nimport { ImperativeObservable } from '../../../utils';\nimport { RowData } from './models';\nimport { TableDataSourceService } from './table-datasource.service';\nimport { field } from './utils/select.config';\n\n@Component({\n    selector: 'tw-default-table',\n    templateUrl: './tw-table.component.html',\n    standalone: true,\n    imports: [CommonModule, AsyncPipe, TwTypographyComponent, CheckboxComponent, SortableIconComponent],\n    changeDetection: ChangeDetectionStrategy.OnPush,\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n        `,\n    ],\n})\nexport class TwDefaultTableComponent implements OnChanges {\n    @Input() isSelectable = false;\n    @Input() isSortable = false;\n    @Input() isDraggable = false;\n    @Input() headers: string[] = [];\n    @Input() actionColName?: string;\n    @Input() actionButton?: TemplateRef<any> | string;\n    @Input() rows: RowData[] = [];\n    @Input() groupBy = '';\n\n    field = field;\n    tdss: TableDataSourceService = inject(TableDataSourceService);\n    datasource = this.tdss.get('dataSource');\n    groupData = new ImperativeObservable<{ [key: string]: RowData[] }>({ key: this.tdss.get('dataSource') });\n    selectedRows = new ImperativeObservable<RowData[]>(this.tdss.get('selectedRows'));\n\n    ngOnChanges(changes: SimpleChanges): void {\n        if (changes['headers']) this.tdss.setHeaders(changes['headers'].currentValue);\n        if (changes['rows']) this.tdss.setTableDataSource(changes['rows'].currentValue);\n        if (changes['groupBy']) this.tdss.setGroupBy(changes['groupBy'].currentValue);\n        if (changes['isSelectable']) this.isSelectable = changes['isSelectable'].currentValue;\n        if (changes['isSortable']) this.isSortable = changes['isSortable'].currentValue;\n        if (changes['isDraggable']) this.isDraggable = changes['isDraggable'].currentValue;\n\n        this.updateGroupData();\n        this.sortRows('key');\n\n        console.log('TableDataSourceService', this.selectedRows.value);\n    }\n\n    private updateGroupData(): void {\n        const groupByVar = this.tdss.get('preferences').groupBy;\n        const groupData =\n            groupByVar && groupByVar !== 'key'\n                ? this.groupByData(this.tdss.get('dataSource'), groupByVar)\n                : ({ key: this.tdss.get('dataSource') } as { [key: string]: RowData[] });\n        this.groupData.value = { ...groupData };\n    }\n\n    colSpanNum(): number {\n        return this.tdss.get('headers').length + (this.isSelectable ? 1 : 0) + (this.actionButton ? 1 : 0);\n    }\n\n    objectKeysGroupData(obj: any): string[] {\n        return Object.keys(obj);\n    }\n\n    // @ts-ignore\n    private groupByData(array: RowData[], key: string): { [key: string]: RowData[] } {\n        const gKey = key.toLowerCase();\n        return array.reduce((result, currentValue) => {\n            const normalizedCurrentValue: RowData = Object.keys(currentValue).reduce((acc, k) => {\n                acc[k.toLowerCase()] = currentValue[k];\n                return acc;\n            }, {} as RowData);\n\n            const groupKey = normalizedCurrentValue[gKey] as string;\n            if (!result[groupKey]) {\n                result[groupKey] = [];\n            }\n            result[groupKey].push(currentValue);\n            return result;\n        }, {} as { [key: string]: RowData[] });\n    }\n\n    onRowClick(event: any): void {\n        // Handle the checkbox change here\n        console.log('Checkbox changed:', event);\n        // Update your data or perform actions based on the checkbox state\n    }\n\n    onRowSelection(rowData: any): void {\n        console.log('Row selected:', rowData);\n    }\n\n    get allRowsSelected(): boolean {\n        const dataSource = this.tdss.get('dataSource');\n        const selectedRows = this.tdss.get('selectedRows');\n        return dataSource.length > 0 && selectedRows.length === dataSource.length;\n    }\n\n    isRowSelected(rowData: any): boolean {\n        console.log(\n            'isRowSelected',\n            this.selectedRows.value,\n            rowData,\n            this.selectedRows.value.some((selectedRow: any) => JSON.stringify(selectedRow) === JSON.stringify(rowData))\n        );\n        return this.selectedRows.value.some((selectedRow: any) => JSON.stringify(selectedRow) === JSON.stringify(rowData));\n    }\n\n    toggleRowSelection(row: RowData): void {\n        this.tdss.setSelectedRows(row);\n        this.selectedRows.value = [...this.tdss.get('selectedRows')];\n    }\n\n    toggleSelectedAllRows(): void {\n        this.tdss.toggleSelectedAllRows();\n        this.selectedRows.value = [...this.tdss.get('selectedRows')];\n        console.log('toggleSelectedAllRows', this.tdss.get('selectedRows'), this.selectedRows);\n    }\n\n    sortRows(key: string): void {\n        // const groupByKey = this.tdss.get('preferences').groupBy ?? '';\n        const currentDirection = this.tdss.get('sortDataSource').direction;\n        const newDirection: 'ascending' | 'descending' = currentDirection === 'ascending' ? 'descending' : 'ascending';\n\n        this.tdss.sortDataSource({ key, direction: newDirection });\n        this.updateGroupData();\n    }\n\n    // Figure out how to drag from initial index and drop on target index\n\n    // dragRows(index: number) {\n    //     this.draggableUtil.dragRows(this, index);\n    // }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "\n            :host {\n                display: block;\n                width: 100%;\n            }\n        \n",
@@ -7237,11 +7552,11 @@
                         "name": "allRowsSelected",
                         "type": "boolean",
                         "returnType": "boolean",
-                        "line": 91
+                        "line": 101
                     }
                 }
             },
-            "templateData": "<table class=\"w-full text-left table-auto min-w-max\">\n  <thead>\n    <tr>\n      @if (isSelectable) {\n      <th class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-1 min-h-[48.5px] max-w-[10px]\">\n        <!-- <pre>{{this.tdss.get('selectedRows').length === this.tdss.get('dataSource').length}}</pre> -->\n        <adk-checkbox [field]=\"field\" (change)=\"toggleRowSelection()\"></adk-checkbox>\n      </th>\n      } @for(header of this.tdss.get('headers'); track $index) {\n      <th class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer min-h-[48.5px]\">\n        <tw-typography [variant]=\"'small'\" [color]=\"'blue-gray'\"\n          [classStyle]=\"'flex items-center justify-between gap-2 font-normal leading-none opacity-70'\">\n          {{ header ?? ' ' }}\n          <div class=\"flex flex-row gap-2\">\n            @if(index !== this.tdss.get('headers').length -1 && isSortable) {\n            <tw-sortable-icon (click)=\"sortRows(header, groupData)\"></tw-sortable-icon>\n            } @if(this.tdss.get('sortDataSource').key === header && isSortable) {\n            <span>{{ this.tdss.get('sortDataSource').direction === 'ascending' ? '🔼' : '🔽' }}</span>\n            }\n          </div>\n        </tw-typography>\n      </th>\n      } @if(actionButton) {\n      <th class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-3\">\n        <tw-typography [variant]=\"'small'\" [color]=\"'blue-gray'\"\n          [classStyle]=\"'flex items-center justify-between gap-2 font-normal leading-none opacity-70'\">\n          {{ actionColName ?? '' }}\n        </tw-typography>\n      </th>\n      }\n    </tr>\n  </thead>\n  <tbody>\n    @for(groupKey of objectKeysGroupData(groupData); track $index) { @if(groupBy) {\n    <tr>\n      <td [colSpan]=\"colSpanNum\" class=\"p-0\">{{ groupKey }}</td>\n    </tr>\n    } @else { @for(rowData of groupData[groupKey]; track $index) { @if (isSelectable) {\n    <tr>\n      <td [ngClass]=\"isSelectable ? 'p-1' : 'p-2'\" class=\"border-b border-blue-gray-50 min-h-[48.5px] max-w-[15px]\">\n        <adk-checkbox [field]=\"field\" (change)=\"onRowClick(rowData)\"></adk-checkbox>\n      </td>\n      @for(key of headers; track $index) {\n      <td [ngClass]=\"isSelectable ? 'p-1' : 'p-2'\"\n        class=\"border-b border-blue-gray-50 min-h-[40px] max-h-[40px] min-w-[60px] max-w-[60px]\">\n        <tw-typography [variant]=\"'small'\" [color]=\"'blue-gray'\" class=\"font-normal ml-2\">\n          {{ rowData[key.toLowerCase()] }}\n        </tw-typography>\n      </td>\n      <!-- @if (actionButton) {\n                    <td class=\"border-b border-blue-gray-50 p-2 max-h-[40px] min-w-[60px] max-w-[60px]\">\n                        <ng-container *ngTemplateOutlet=\"actionButton; context: { $implicit: rowData }\"></ng-container>\n                    </td>\n                    } -->\n      }\n    </tr>\n    } } } }\n  </tbody>\n</table>"
+            "templateData": "<table *ngIf=\"(groupData.change$ | async) as groupData\" aria-hidden=\"true\"\n  class=\"w-full text-left table-auto min-w-max\">\n  <thead>\n    <ng-container\n      *ngTemplateOutlet=\"renderThead; context: { groupData, headers, selectedRows: (selectedRows.change$ | async), isSelectable, field: field({id: 'selectAll', value: 'selectAll'}), sortDataSource: tdss.get('sortDataSource')}\"></ng-container>\n  </thead>\n  <tbody>\n    @for(groupKey of objectKeysGroupData(groupData); track $index){\n    @if(groupBy && groupKey !== 'key') {\n    <ng-container\n      *ngTemplateOutlet=\"groupByRender; context: { groupData, headers, isSelectable, groupKey }\"></ng-container>\n    } @else {\n    @for(rowData of groupData[groupKey]; track $index) {\n    <ng-container\n      *ngTemplateOutlet=\"renderRow; context: { headers, rowData, rowIndex: $index, isSelectable, field: field({id: 'field-' + $index, value: rowData}) }\"></ng-container>\n    }\n    }\n    }\n  </tbody>\n</table>\n\n<ng-template #renderThead let-groupData=\"groupData\" let-header=\"headers\" let-isSelectable=\"isSelectable\"\n  let-field=\"field\" let-sortDataSource=\"sortDataSource\" let-selectedRows=\"selectedRows\">\n  <tr>\n    @if(isSelectable) {\n    <th id=\"checkAll\" class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-1 min-h-[48.5px] max-w-[20px]\">\n      <adk-checkbox [field]=\"field\" [isChecked]=\"selectedRows.length === groupData.length\"\n        (change)=\"toggleSelectedAllRows()\"></adk-checkbox>\n    </th>\n    }\n    @for(header of headers; track $index) {\n    <th [id]=\"header\" class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer\">\n      <tw-typography [variant]=\"'small'\" [color]=\"'blue-gray'\"\n        [classStyle]=\"'flex items-center justify-between gap-2 font-normal leading-none opacity-70'\">\n        {{ header ?? ' ' }}\n        @if($index !== headers.length -1 && isSortable) {\n        <tw-sortable-icon (click)=\"sortRows(header, groupData)\"></tw-sortable-icon>\n        } @if(this.tdss.get('sortDataSource').key === header && isSortable) {\n        <span>{{ sortDataSource.direction === 'ascending' ? '🔼' : '🔽' }}</span>\n        }\n      </tw-typography>\n    </th>\n    }\n  </tr>\n</ng-template>\n\n<!-- Group By Render -->\n<ng-template #groupByRender let-groupData=\"groupData\" let-headers=\"headers\" let-isSelectable=\"isSelectable\"\n  let-groupKey=\"groupKey\">\n  <tr>\n    <td [colSpan]=\"headers.length + (isSelectable ? 1 : 0) + (actionButton ? 1 : 0)\">\n      <adk-expansion-panel>\n        <ng-template #expansionPanelHeader>\n          {{groupKey}}\n        </ng-template>\n        <ng-template #expansionPanelBody>\n          <table aria-hidden=\"true\" class=\"w-full min-w-max table-auto text-left\">\n            <tbody>\n              @for(rowData of groupData[groupKey]; track $index) {\n              <ng-container\n                *ngTemplateOutlet=\"renderRow; context: { headers, rowData, rowIndex: $index, isSelectable, field: field({id: field-$index, value: rowData}) }\">\n              </ng-container>\n              }\n            </tbody>\n          </table>\n        </ng-template>\n      </adk-expansion-panel>\n    </td>\n  </tr>\n</ng-template>\n\n<!-- Render Row Table Cells -->\n<ng-template #renderRow let-header=\"headers\" let-rowData=\"rowData\" let-rowIndex=\"rowIndex\"\n  let-isSelectable=\"isSelectable\" let-field=\"field\">\n  <tr>\n    @if(isSelectable) {\n    <td [ngClass]=\"isSelectable ? 'p-1' : 'p-4'\" class=\"border-b border-blue-gray-50 min-h-[48.5px] max-w-[15px]\">\n      <adk-checkbox [field]=\"field\" [isChecked]=\"isRowSelected(rowData)\" (change)=\"onRowClick(rowData)\"\n        (click)=\"toggleRowSelection(rowData)\"></adk-checkbox>\n    </td>\n    }\n    @for (header of headers; track $index) {\n    <td [ngClass]=\"isSelectable ? 'p-1' : 'p-2'\"\n      class=\"border-b border-blue-gray-50 min-h-[48.5px] min-w-[60px] max-w-[60px]\">\n      <tw-typography [variant]=\"'small'\" [color]=\"'blue-gray'\" class=\"font-normal ml-2\">\n        {{ rowData[header.toLowerCase()] }}\n      </tw-typography>\n    </td>\n    }\n  </tr>\n</ng-template>"
         },
         {
             "name": "TwTypographyComponent",
@@ -7415,7 +7730,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "(params: { id: string; value: any }) =>\n    FieldBuilder.createField('checkbox', params.id, params.value, '', '', {\n        required: true,\n    })"
+                "defaultValue": "(params: { id: string; value: any; props: { checked: false } }) =>\n    FieldBuilder.createField('checkbox', params.id, params.value, '', '', {\n        required: true,\n    })"
             },
             {
                 "name": "Heading",
@@ -8796,7 +9111,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "(params: { id: string; value: any }) =>\n    FieldBuilder.createField('checkbox', params.id, params.value, '', '', {\n        required: true,\n    })"
+                    "defaultValue": "(params: { id: string; value: any; props: { checked: false } }) =>\n    FieldBuilder.createField('checkbox', params.id, params.value, '', '', {\n        required: true,\n    })"
                 }
             ],
             "projects/ng-lib/src/lib/tw-form-ui/directives/field-list.spec.stories.ts": [
@@ -10236,7 +10551,7 @@
                 "linktype": "component",
                 "name": "CheckboxComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/6",
+                "coverageCount": "0/9",
                 "status": "low"
             },
             {
@@ -10842,7 +11157,7 @@
                 "linktype": "classe",
                 "name": "TableBuilder",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/2",
                 "status": "low"
             },
             {
@@ -11120,7 +11435,7 @@
                 "linktype": "component",
                 "name": "TwDefaultTableComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/21",
+                "coverageCount": "0/25",
                 "status": "low"
             },
             {
@@ -11130,6 +11445,15 @@
                 "name": "DraggableUtil",
                 "coveragePercent": 0,
                 "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/tw-ui/components/table/utils/expansion-panel.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "AdkExpansionPanelComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
                 "status": "low"
             },
             {
@@ -11184,6 +11508,15 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "TwTypographyComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/utils/imperative-observable.util.ts",
+                "type": "class",
+                "linktype": "classe",
+                "name": "ImperativeObservable",
                 "coveragePercent": 0,
                 "coverageCount": "0/4",
                 "status": "low"

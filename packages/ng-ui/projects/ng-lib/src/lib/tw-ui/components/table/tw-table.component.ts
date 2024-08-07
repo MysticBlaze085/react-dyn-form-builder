@@ -1,8 +1,21 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, TemplateRef, inject } from '@angular/core';
+import { AsyncPipe, CommonModule } from '@angular/common';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    Input,
+    OnChanges,
+    SimpleChanges,
+    TemplateRef,
+    ViewChild,
+    computed,
+    inject,
+    signal,
+} from '@angular/core';
 import { SortableIconComponent, TwTypographyComponent } from './utils';
 
+import { AdkSelection } from '../../../tw-form-ui/directives';
 import { CheckboxComponent } from '../../../tw-form-ui/components/types/checkbox.component';
-import { CommonModule } from '@angular/common';
+import { ImperativeObservable } from '../../../utils';
 import { RowData } from './models';
 import { TableDataSourceService } from './table-datasource.service';
 import { field } from './utils/select.config';
@@ -11,7 +24,7 @@ import { field } from './utils/select.config';
     selector: 'tw-default-table',
     templateUrl: './tw-table.component.html',
     standalone: true,
-    imports: [CommonModule, TwTypographyComponent, CheckboxComponent, SortableIconComponent],
+    imports: [CommonModule, AdkSelection, AsyncPipe, TwTypographyComponent, CheckboxComponent, SortableIconComponent],
     changeDetection: ChangeDetectionStrategy.OnPush,
     styles: [
         `
@@ -23,6 +36,7 @@ import { field } from './utils/select.config';
     ],
 })
 export class TwDefaultTableComponent implements OnChanges {
+    @ViewChild('selection', { static: true }) selection: any;
     @Input() isSelectable = false;
     @Input() isSortable = false;
     @Input() isDraggable = false;
@@ -32,28 +46,34 @@ export class TwDefaultTableComponent implements OnChanges {
     @Input() rows: RowData[] = [];
     @Input() groupBy = '';
 
-    tdss: TableDataSourceService = inject(TableDataSourceService);
-
-    groupData: { [key: string]: RowData[] } = { '': this.tdss.get('dataSource') };
     field = field;
+    tdss: TableDataSourceService = inject(TableDataSourceService);
+    datasource = this.tdss.get('dataSource');
+    groupData = new ImperativeObservable<{ [key: string]: RowData[] }>({ key: this.tdss.get('dataSource') });
+    selectedRows = new ImperativeObservable<RowData[]>(this.tdss.get('selectedRows'));
+    isAllRowsSelected = new ImperativeObservable<boolean>(this.selectedRows.value.length === this.datasource.length);
 
     ngOnChanges(changes: SimpleChanges): void {
+        if (changes['headers']) this.tdss.setHeaders(changes['headers'].currentValue);
+        if (changes['rows']) this.tdss.setTableDataSource(changes['rows'].currentValue);
+        if (changes['groupBy']) this.tdss.setGroupBy(changes['groupBy'].currentValue);
         if (changes['isSelectable']) this.isSelectable = changes['isSelectable'].currentValue;
         if (changes['isSortable']) this.isSortable = changes['isSortable'].currentValue;
         if (changes['isDraggable']) this.isDraggable = changes['isDraggable'].currentValue;
-        if (changes['headers']) this.tdss.setHeaders(this.headers);
-        if (changes['rows']) this.tdss.setTableDataSource(this.rows);
-        if (changes['groupBy']) this.tdss.setGroupBy(this.groupBy);
 
         this.updateGroupData();
+        this.sortRows('key');
+
+        console.log('TableDataSourceService', this.selectedRows.value);
     }
 
     private updateGroupData(): void {
         const groupByVar = this.tdss.get('preferences').groupBy;
-        this.groupData =
-            groupByVar && groupByVar !== ''
+        const groupData =
+            groupByVar && groupByVar !== 'key'
                 ? this.groupByData(this.tdss.get('dataSource'), groupByVar)
-                : ({ '': this.tdss.get('dataSource') } as { [key: string]: RowData[] });
+                : ({ key: this.tdss.get('dataSource') } as { [key: string]: RowData[] });
+        this.groupData.value = { ...groupData };
     }
 
     colSpanNum(): number {
@@ -88,6 +108,10 @@ export class TwDefaultTableComponent implements OnChanges {
         // Update your data or perform actions based on the checkbox state
     }
 
+    onRowSelection(rowData: any): void {
+        console.log('Row selected:', rowData);
+    }
+
     get allRowsSelected(): boolean {
         const dataSource = this.tdss.get('dataSource');
         const selectedRows = this.tdss.get('selectedRows');
@@ -95,15 +119,40 @@ export class TwDefaultTableComponent implements OnChanges {
     }
 
     isRowSelected(rowData: any): boolean {
-        return this.tdss.get('selectedRows').some((selectedRow: any) => JSON.stringify(selectedRow) === JSON.stringify(rowData));
+        console.log(
+            'isRowSelected',
+            this.selectedRows.value,
+            rowData,
+            this.selectedRows.value.some((selectedRow: any) => JSON.stringify(selectedRow) === JSON.stringify(rowData))
+        );
+        return this.selectedRows.value.some((selectedRow: any) => JSON.stringify(selectedRow) === JSON.stringify(rowData));
     }
 
-    toggleRowSelection() {
-        this.tdss.toggleSelectedAllRows();
+    toggleSelectAll(event: Event, groupKey: string): void {
+        const isChecked = (event.target as HTMLInputElement).checked;
+        if (isChecked) {
+            this.tdss.toggleSelectedAllRows();
+            this.groupData.value[groupKey].forEach((item) => this.selection.select(item));
+        } else {
+            this.tdss.toggleSelectedAllRows();
+            this.selection.clear();
+        }
+        console.log('toggleSelectAll', this.tdss.get('selectedRows'));
+    }
+
+    toggleSelectItem(row: object): void {
+        const itemStr = JSON.stringify(row);
+        if (this.selection.selected(itemStr)) {
+            this.selection.deselect(itemStr);
+        } else {
+            this.selection.select(itemStr);
+        }
+        this.tdss.setSelectedRows(row);
+        console.log('toggleSelectItem', this.tdss.get('selectedRows'));
     }
 
     sortRows(key: string): void {
-        const groupByKey = this.tdss.get('preferences').groupBy ?? '';
+        // const groupByKey = this.tdss.get('preferences').groupBy ?? '';
         const currentDirection = this.tdss.get('sortDataSource').direction;
         const newDirection: 'ascending' | 'descending' = currentDirection === 'ascending' ? 'descending' : 'ascending';
 
