@@ -1,16 +1,5 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
-import {
-    ChangeDetectionStrategy,
-    Component,
-    Input,
-    OnChanges,
-    SimpleChanges,
-    TemplateRef,
-    ViewChild,
-    computed,
-    inject,
-    signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewChild, inject } from '@angular/core';
 import { SortableIconComponent, TwTypographyComponent } from './utils';
 
 import { AdkSelection } from '../../../tw-form-ui/directives';
@@ -18,7 +7,6 @@ import { CheckboxComponent } from '../../../tw-form-ui/components/types/checkbox
 import { ImperativeObservable } from '../../../utils';
 import { RowData } from './models';
 import { TableDataSourceService } from './table-datasource.service';
-import { field } from './utils/select.config';
 
 @Component({
     selector: 'tw-default-table',
@@ -46,7 +34,6 @@ export class TwDefaultTableComponent implements OnChanges {
     @Input() rows: RowData[] = [];
     @Input() groupBy = '';
 
-    field = field;
     tdss: TableDataSourceService = inject(TableDataSourceService);
     datasource = this.tdss.get('dataSource');
     groupData = new ImperativeObservable<{ [key: string]: RowData[] }>({ key: this.tdss.get('dataSource') });

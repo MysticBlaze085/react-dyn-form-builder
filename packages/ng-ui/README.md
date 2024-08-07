@@ -60,3 +60,5 @@ To start the lib storybook, run:
 -   [ ] Write documentation on how to use components
 -   [ ] Test install in a standalone application
 -   [ ] Write spec tests and storybook interactive testing
+-   [ ] Use directives to run sorting, selecting, filter and building the table
+-   [ ] Write up different stories for each process I am working on
