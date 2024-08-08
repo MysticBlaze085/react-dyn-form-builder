@@ -1,7 +1,9 @@
-import type { Preview } from '@storybook/angular';
+import { applicationConfig, type Preview } from '@storybook/angular';
 import docJson from '../documentation.json';
 import { setCompodocJson } from '@storybook/addon-docs/angular';
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { importProvidersFrom } from '@angular/core';
 
 setCompodocJson(docJson);
 
@@ -41,6 +43,9 @@ const preview: Preview = {
             },
             defaultTheme: 'light',
             attributeName: 'data-mode',
+        }),
+        applicationConfig({
+            providers: [provideAnimations()],
         }),
     ],
 };

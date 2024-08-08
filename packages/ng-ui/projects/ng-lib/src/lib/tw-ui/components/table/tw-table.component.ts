@@ -2,6 +2,7 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewChild, inject } from '@angular/core';
 import { SortableIconComponent, TwTypographyComponent } from './utils';
 
+import { AdkExpansionPanelComponent } from './utils/expansion-panel.component';
 import { AdkSelection } from '../../../tw-form-ui/directives';
 import { CheckboxComponent } from '../../../tw-form-ui/components/types/checkbox.component';
 import { ImperativeObservable } from '../../../utils';
@@ -12,7 +13,15 @@ import { TableDataSourceService } from './table-datasource.service';
     selector: 'tw-default-table',
     templateUrl: './tw-table.component.html',
     standalone: true,
-    imports: [CommonModule, AdkSelection, AsyncPipe, TwTypographyComponent, CheckboxComponent, SortableIconComponent],
+    imports: [
+        CommonModule,
+        AdkSelection,
+        AdkExpansionPanelComponent,
+        AsyncPipe,
+        TwTypographyComponent,
+        CheckboxComponent,
+        SortableIconComponent,
+    ],
     changeDetection: ChangeDetectionStrategy.OnPush,
     styles: [
         `
@@ -51,6 +60,8 @@ export class TwDefaultTableComponent implements OnChanges {
 
         this.updateGroupData();
         this.sortRows('key');
+
+        console.log('tdss', this.tdss.state());
     }
 
     private updateGroupData(): void {
@@ -62,15 +73,10 @@ export class TwDefaultTableComponent implements OnChanges {
         this.groupData.value = { ...groupData };
     }
 
-    colSpanNum(): number {
-        return this.tdss.get('headers').length + (this.isSelectable ? 1 : 0) + (this.actionButton ? 1 : 0);
-    }
-
     objectKeysGroupData(obj: any): string[] {
         return Object.keys(obj);
     }
 
-    // @ts-ignore
     private groupByData(array: RowData[], key: string): { [key: string]: RowData[] } {
         const gKey = key.toLowerCase();
         return array.reduce((result, currentValue) => {
@@ -105,12 +111,6 @@ export class TwDefaultTableComponent implements OnChanges {
     }
 
     isRowSelected(rowData: any): boolean {
-        console.log(
-            'isRowSelected',
-            this.selectedRows.value,
-            rowData,
-            this.selectedRows.value.some((selectedRow: any) => JSON.stringify(selectedRow) === JSON.stringify(rowData))
-        );
         return this.selectedRows.value.some((selectedRow: any) => JSON.stringify(selectedRow) === JSON.stringify(rowData));
     }
 
@@ -123,7 +123,6 @@ export class TwDefaultTableComponent implements OnChanges {
             this.tdss.toggleSelectedAllRows();
             this.selection.clear();
         }
-        console.log('toggleSelectAll', this.tdss.get('selectedRows'));
     }
 
     toggleSelectItem(row: object): void {
@@ -134,7 +133,6 @@ export class TwDefaultTableComponent implements OnChanges {
             this.selection.select(itemStr);
         }
         this.tdss.setSelectedRows(row);
-        console.log('toggleSelectItem', this.tdss.get('selectedRows'));
     }
 
     sortRows(key: string): void {
@@ -144,10 +142,12 @@ export class TwDefaultTableComponent implements OnChanges {
         this.tdss.sortDataSource({ key, direction: newDirection });
         this.updateGroupData();
     }
-
+    /**
+     *  Drag and Drop Handlers
+     * @param index
+     */
     handleDragStart(index: number): void {
         this.tdss.dragStart(index);
-        console.log('dragStart', index, this.tdss.get('draggedColIndex'));
     }
 
     handleDragOver(event: DragEvent): void {
@@ -160,24 +160,4 @@ export class TwDefaultTableComponent implements OnChanges {
         this.headers = this.tdss.get('headers');
         this.groupData.value = this.groupByData(this.tdss.get('dataSource'), this.tdss.get('preferences').groupBy ?? 'key');
     }
-
-    // // Figure out how to drag from initial index and drop on target index
-    // drop(event: CdkDragDrop<string[]>) {
-    //     // const prevActive = headers[this.selectedIndex.value];
-    //     // moveItemInArray(headers, event.previousIndex, event.currentIndex);
-    //     this.tdss.dragStart(event.previousIndex);
-    //     this.tdss.dragDrop(event.currentIndex);
-    //     this.selectedIndex.value = event.currentIndex;
-    // }
-
-    // dropRow(event: any) {
-    //     const data = this.groupData.value[this.groupBy ?? 'key'];
-    //     moveItemInArray(data, event.previousIndex, event.currentIndex);
-    // }
-    // dropCol(event: any) {
-    //     moveItemInArray(this.headers, event.previousIndex, event.currentIndex);
-    // }
-    // dragRows(index: number) {
-    //     this.draggableUtil.dragRows(this, index);
-    // }
 }

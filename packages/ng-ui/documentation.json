@@ -271,7 +271,7 @@
     "injectables": [
         {
             "name": "TableDataSourceService",
-            "id": "injectable-TableDataSourceService-d128596aca428ae489573633458868db22fd6564888df8b3729e594d5350cc732675976b3ebbc427de59e389bf0ca24fa30519ca8ceacf15beaf1f9a52c03792",
+            "id": "injectable-TableDataSourceService-4a9eccb844ee03e2a4f69d767e16cdd83b8c8a266a72be4c08fae2c9e991ca5e919564e70db00f62070df2143a67a965f94a64ef71e44a611314a6187a841c85",
             "file": "projects/ng-lib/src/lib/tw-ui/components/table/table-datasource.service.ts",
             "properties": [
                 {
@@ -581,7 +581,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { Injectable, computed, signal } from '@angular/core';\nimport { Pagination, RowData, TableState } from './models';\n\nimport { SortRowsUtil } from './utils/sort-rows.util';\n\n@Injectable({\n    providedIn: 'root',\n})\nexport class TableDataSourceService {\n    #state = signal<TableState>({\n        dataSource: [],\n        draggedColIndex: null,\n        filterDataSource: { column: '', value: '' },\n        headers: [],\n        initialDataSource: [],\n        initialHeaders: [],\n        pagination: {\n            currentPage: 1,\n            totalPages: 1,\n            pageSize: 10,\n        },\n        preferences: {\n            visibleColumns: [],\n            groupBy: undefined,\n        },\n        selectedRows: [],\n        sortDataSource: { key: '', direction: 'ascending' },\n    });\n\n    readonly state = computed(() => this.#state());\n\n    get<K extends keyof TableState>(key: K): TableState[K] {\n        return this.#state()[key];\n    }\n\n    setHeaders(headers: string[]): void {\n        this.#state.update((state) => ({\n            ...state,\n            headers,\n            initialHeaders: headers,\n            preferences: {\n                ...state.preferences,\n                visibleColumns: headers,\n            },\n            filterDataSource: { column: headers[0], value: '' },\n        }));\n    }\n\n    setTableDataSource(dataSource: any[]): void {\n        this.#state.update((state) => ({\n            ...state,\n            dataSource,\n            initialDataSource: dataSource,\n        }));\n    }\n\n    setPaginationState(pagination: Partial<Pagination>): void {\n        this.#state.update((state) => ({\n            ...state,\n            pagination: {\n                ...state.pagination,\n                ...pagination,\n            },\n        }));\n    }\n\n    setGroupBy(groupBy: string): void {\n        this.#state.update((state) => ({\n            ...state,\n            preferences: { ...state.preferences, groupBy },\n        }));\n    }\n\n    setSelectedRows(rowData: RowData): void {\n        this.#state.update((state) => {\n            const existingIndex = state.selectedRows.findIndex((row) => JSON.stringify(row) === JSON.stringify(rowData));\n            const newSelectedRows =\n                existingIndex !== -1 ? state.selectedRows.filter((_, index) => index !== existingIndex) : [...state.selectedRows, rowData];\n            return { ...state, selectedRows: newSelectedRows };\n        });\n    }\n\n    toggleSelectedAllRows(): void {\n        this.#state.update((state) => {\n            const allSelected = state.selectedRows.length === state.dataSource.length;\n            return {\n                ...state,\n                selectedRows: allSelected ? [] : [...state.dataSource],\n            };\n        });\n    }\n\n    sortDataSource(sortDataSource: { key: string; direction: 'ascending' | 'descending' }): void {\n        if (sortDataSource.key) {\n            const sort = new SortRowsUtil();\n            this.#state.update((state) => ({\n                ...state,\n                selectedRows: [],\n                sortDataSource,\n                dataSource: sort.sortRows(state.dataSource, sortDataSource),\n            }));\n        }\n    }\n\n    getTableState(): TableState {\n        return this.#state();\n    }\n\n    dragStart(index: number): void {\n        this.#state.update((state) => ({ ...state, draggedColIndex: index }));\n    }\n\n    dragDrop(index: number): void {\n        const targetIndex = index;\n        const draggedColIndex = this.state().draggedColIndex;\n        const dataSource = this.state().dataSource;\n        if (draggedColIndex === null || draggedColIndex === targetIndex) return; // If no valid drag action, exit\n\n        // Update headers array with dragged column\n        const newHeaders = [...this.state().headers];\n        const draggedHeader = newHeaders.splice(draggedColIndex, 1)[0];\n        newHeaders.splice(targetIndex, 0, draggedHeader);\n\n        // Update rows in dataSource array with dragged column\n        const newRows = dataSource.map((row: any) => {\n            const entries = Object.entries(row);\n            const draggedEntry = entries.splice(draggedColIndex, 1)[0];\n            entries.splice(targetIndex, 0, draggedEntry);\n            return Object.fromEntries(entries); // Convert back to object\n        });\n\n        // Update state with new headers, rows, and reset draggedColIndex\n        this.setHeaders(newHeaders);\n        this.setTableDataSource(newRows);\n        this.#state.update((state) => ({ ...state, draggedColIndex: null }));\n        this.setSelectedRows([]);\n    }\n}\n",
+            "sourceCode": "import { Injectable, computed, signal } from '@angular/core';\nimport { Pagination, RowData, TableState } from './models';\n\nimport { SortRowsUtil } from './utils/sort-rows.util';\n\n@Injectable({\n    providedIn: 'root',\n})\nexport class TableDataSourceService {\n    #state = signal<TableState>({\n        dataSource: [],\n        draggedColIndex: null,\n        filterDataSource: { column: '', value: '' },\n        headers: [],\n        initialDataSource: [],\n        initialHeaders: [],\n        pagination: {\n            currentPage: 1,\n            totalPages: 1,\n            pageSize: 10,\n        },\n        preferences: {\n            visibleColumns: [],\n            groupBy: undefined,\n        },\n        selectedRows: [],\n        sortDataSource: { key: '', direction: 'ascending' },\n    });\n\n    readonly state = computed(() => this.#state());\n\n    get<K extends keyof TableState>(key: K): TableState[K] {\n        return this.#state()[key];\n    }\n\n    setHeaders(headers: string[]): void {\n        this.#state.update((state) => ({\n            ...state,\n            headers,\n            initialHeaders: headers,\n            preferences: {\n                ...state.preferences,\n                visibleColumns: headers,\n            },\n            filterDataSource: { column: headers[0], value: '' },\n        }));\n    }\n\n    setTableDataSource(dataSource: any[]): void {\n        this.#state.update((state) => ({\n            ...state,\n            dataSource,\n            initialDataSource: dataSource,\n        }));\n    }\n\n    setPaginationState(pagination: Partial<Pagination>): void {\n        this.#state.update((state) => ({\n            ...state,\n            pagination: {\n                ...state.pagination,\n                ...pagination,\n            },\n        }));\n    }\n\n    setGroupBy(groupBy: string): void {\n        this.#state.update((state) => ({\n            ...state,\n            preferences: { ...state.preferences, groupBy },\n        }));\n    }\n\n    setSelectedRows(rowData: RowData): void {\n        this.#state.update((state) => {\n            const existingIndex = state.selectedRows.findIndex((row) => JSON.stringify(row) === JSON.stringify(rowData));\n            const newSelectedRows =\n                existingIndex !== -1 ? state.selectedRows.filter((_, index) => index !== existingIndex) : [...state.selectedRows, rowData];\n            return { ...state, selectedRows: newSelectedRows };\n        });\n    }\n\n    toggleSelectedAllRows(): void {\n        this.#state.update((state) => {\n            const allSelected = state.selectedRows.length === state.dataSource.length;\n            return {\n                ...state,\n                selectedRows: allSelected ? [] : [...state.dataSource],\n            };\n        });\n    }\n\n    sortDataSource(sortDataSource: { key: string; direction: 'ascending' | 'descending' }): void {\n        if (sortDataSource.key) {\n            const sort = new SortRowsUtil();\n            this.#state.update((state) => ({\n                ...state,\n                selectedRows: [],\n                sortDataSource,\n                dataSource: sort.sortRows(state.dataSource, sortDataSource),\n            }));\n        }\n    }\n\n    getTableState(): TableState {\n        return this.#state();\n    }\n\n    dragStart(index: number): void {\n        this.#state.update((state) => ({ ...state, draggedColIndex: index }));\n    }\n\n    dragDrop(index: number): void {\n        const targetIndex = index;\n        const draggedColIndex = this.state().draggedColIndex;\n        const dataSource = this.state().dataSource;\n        if (draggedColIndex === null || draggedColIndex === targetIndex) return; // If no valid drag action, exit\n\n        // Update headers array with dragged column\n        const newHeaders = [...this.state().headers];\n        const draggedHeader = newHeaders.splice(draggedColIndex, 1)[0];\n        newHeaders.splice(targetIndex, 0, draggedHeader);\n\n        // Update rows in dataSource array with dragged column\n        const newRows = dataSource.map((row: any) => {\n            const entries = Object.entries(row);\n            const draggedEntry = entries.splice(draggedColIndex, 1)[0];\n            entries.splice(targetIndex, 0, draggedEntry);\n            return Object.fromEntries(entries); // Convert back to object\n        });\n\n        console.log('dragDrop', newHeaders, newRows);\n\n        // Update state with new headers, rows, and reset draggedColIndex\n        this.setHeaders(newHeaders);\n        this.setTableDataSource(newRows);\n        this.setSelectedRows([]);\n        this.#state.update((state) => ({ ...state, draggedColIndex: null }));\n    }\n}\n",
             "extends": [],
             "type": "injectable"
         }
@@ -8233,8 +8233,50 @@
             }
         },
         {
+            "name": "TwCardComponent",
+            "id": "component-TwCardComponent-d8425a24690659d7c5e31ff83dadfe42a8cb31733892f61d10e4f8b374543897a5a8776b0b58ad67522be1a8d6473ad8923a41d113a89a42d01204f16ad8087f",
+            "file": "projects/ng-lib/src/lib/tw-ui/components/card/tw-card.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "tw-card",
+            "styleUrls": [],
+            "styles": [
+                "\n            :host {\n                display: block;\n                width: 100%;\n            }\n        "
+            ],
+            "template": "<div class=\"relative flex flex-col mt-6 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl\">\n    <div class=\"p-6\">\n        <ng-container\n            select=\"[tw-card-header]\"\n            class=\"block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900\"\n        ></ng-container>\n        <ng-container\n            select=\"[tw-card-body]\"\n            class=\"block font-sans text-base antialiased font-light leading-relaxed text-inherit\"\n        ></ng-container>\n    </div>\n    <ng-container select=\"[tw-card-footer]\" class=\"p-6 pt-0\"></ng-container>\n</div>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { CommonModule } from '@angular/common';\nimport { Component } from '@angular/core';\n\n@Component({\n    selector: 'tw-card',\n    standalone: true,\n    imports: [CommonModule],\n    template: `\n        <div class=\"relative flex flex-col mt-6 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl\">\n            <div class=\"p-6\">\n                <ng-container\n                    select=\"[tw-card-header]\"\n                    class=\"block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900\"\n                ></ng-container>\n                <ng-container\n                    select=\"[tw-card-body]\"\n                    class=\"block font-sans text-base antialiased font-light leading-relaxed text-inherit\"\n                ></ng-container>\n            </div>\n            <ng-container select=\"[tw-card-footer]\" class=\"p-6 pt-0\"></ng-container>\n        </div>\n    `,\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n        `,\n    ],\n})\nexport class TwCardComponent {}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "\n            :host {\n                display: block;\n                width: 100%;\n            }\n        \n",
+            "extends": []
+        },
+        {
             "name": "TwDefaultTableComponent",
-            "id": "component-TwDefaultTableComponent-3f1ecde87570275abd88377bf1f2ed8ce060858e61a747a0116344cb78ae77220f1479f14890c93765925ebedcf362e4f56df0a1f7e102f70c8324eaed303394",
+            "id": "component-TwDefaultTableComponent-bc09d8fe4feb314d18ca023560a929e752cddf18f508f0495012c1c889d47327908e94d45c1dbbe6d678444ccd6eb06955174de7f801649436cb5a1148b6a6e8",
             "file": "projects/ng-lib/src/lib/tw-ui/components/table/tw-table.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -8257,7 +8299,7 @@
                     "name": "actionButton",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 34,
+                    "line": 42,
                     "type": "TemplateRef<any> | string",
                     "decorators": []
                 },
@@ -8265,7 +8307,7 @@
                     "name": "actionColName",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 33,
+                    "line": 41,
                     "type": "string",
                     "decorators": []
                 },
@@ -8274,7 +8316,7 @@
                     "defaultValue": "''",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 36,
+                    "line": 44,
                     "type": "string",
                     "decorators": []
                 },
@@ -8283,7 +8325,7 @@
                     "defaultValue": "[]",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 32,
+                    "line": 40,
                     "type": "string[]",
                     "decorators": []
                 },
@@ -8292,7 +8334,7 @@
                     "defaultValue": "false",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 31,
+                    "line": 39,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -8301,7 +8343,7 @@
                     "defaultValue": "false",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 29,
+                    "line": 37,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -8310,7 +8352,7 @@
                     "defaultValue": "false",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 30,
+                    "line": 38,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -8319,7 +8361,7 @@
                     "defaultValue": "[]",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 35,
+                    "line": 43,
                     "type": "RowData[]",
                     "decorators": []
                 }
@@ -8334,7 +8376,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 39
+                    "line": 47
                 },
                 {
                     "name": "groupData",
@@ -8344,7 +8386,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 40
+                    "line": 48
                 },
                 {
                     "name": "isAllRowsSelected",
@@ -8354,7 +8396,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 42
+                    "line": 50
                 },
                 {
                     "name": "selectedIndex",
@@ -8364,7 +8406,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 43
+                    "line": 51
                 },
                 {
                     "name": "selectedRows",
@@ -8374,7 +8416,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 41
+                    "line": 49
                 },
                 {
                     "name": "selection",
@@ -8383,7 +8425,7 @@
                     "type": "any",
                     "optional": false,
                     "description": "",
-                    "line": 28,
+                    "line": 36,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -8402,20 +8444,10 @@
                     "type": "TableDataSourceService",
                     "optional": false,
                     "description": "",
-                    "line": 38
+                    "line": 46
                 }
             ],
             "methodsClass": [
-                {
-                    "name": "colSpanNum",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "number",
-                    "typeParameters": [],
-                    "line": 66,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                },
                 {
                     "name": "groupByData",
                     "args": [
@@ -8435,7 +8467,7 @@
                     "optional": false,
                     "returnType": "literal type",
                     "typeParameters": [],
-                    "line": 75,
+                    "line": 80,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -8475,7 +8507,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 154,
+                    "line": 153,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -8506,15 +8538,32 @@
                     "line": 149,
                     "deprecated": false,
                     "deprecationMessage": "",
+                    "rawdescription": "\n\n Drag and Drop Handlers\n",
+                    "description": "<p> Drag and Drop Handlers</p>\n",
                     "jsdoctags": [
                         {
-                            "name": "index",
+                            "name": {
+                                "pos": 5816,
+                                "end": 5821,
+                                "flags": 16842752,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 80,
+                                "escapedText": "index"
+                            },
                             "type": "number",
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
-                                "text": "param"
-                            }
+                                "pos": 5810,
+                                "end": 5815,
+                                "flags": 16842752,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 80,
+                                "escapedText": "param"
+                            },
+                            "comment": ""
                         }
                     ]
                 },
@@ -8537,7 +8586,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 159,
+                    "line": 157,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -8574,7 +8623,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 108,
+                    "line": 113,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -8602,7 +8651,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 45,
+                    "line": 53,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -8630,7 +8679,7 @@
                     "optional": false,
                     "returnType": "string[]",
                     "typeParameters": [],
-                    "line": 70,
+                    "line": 76,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -8658,7 +8707,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 92,
+                    "line": 97,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -8686,7 +8735,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 98,
+                    "line": 103,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -8714,7 +8763,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 141,
+                    "line": 138,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -8748,7 +8797,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 118,
+                    "line": 117,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -8785,7 +8834,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 130,
+                    "line": 128,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -8806,7 +8855,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 57,
+                    "line": 67,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -8828,10 +8877,8 @@
                     "name": "AdkSelection"
                 },
                 {
-                    "name": "CdkDrag"
-                },
-                {
-                    "name": "CdkDropList"
+                    "name": "AdkExpansionPanelComponent",
+                    "type": "component"
                 },
                 {
                     "name": "AsyncPipe",
@@ -8853,7 +8900,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { AsyncPipe, CommonModule } from '@angular/common';\nimport { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';\nimport { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewChild, inject } from '@angular/core';\nimport { SortableIconComponent, TwTypographyComponent } from './utils';\n\nimport { AdkSelection } from '../../../tw-form-ui/directives';\nimport { CheckboxComponent } from '../../../tw-form-ui/components/types/checkbox.component';\nimport { ImperativeObservable } from '../../../utils';\nimport { RowData } from './models';\nimport { TableDataSourceService } from './table-datasource.service';\n\n@Component({\n    selector: 'tw-default-table',\n    templateUrl: './tw-table.component.html',\n    standalone: true,\n    imports: [CommonModule, AdkSelection, CdkDrag, CdkDropList, AsyncPipe, TwTypographyComponent, CheckboxComponent, SortableIconComponent],\n    changeDetection: ChangeDetectionStrategy.OnPush,\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n        `,\n    ],\n})\nexport class TwDefaultTableComponent implements OnChanges {\n    @ViewChild('selection', { static: true }) selection: any;\n    @Input() isSelectable = false;\n    @Input() isSortable = false;\n    @Input() isDraggable = false;\n    @Input() headers: string[] = [];\n    @Input() actionColName?: string;\n    @Input() actionButton?: TemplateRef<any> | string;\n    @Input() rows: RowData[] = [];\n    @Input() groupBy = '';\n\n    tdss: TableDataSourceService = inject(TableDataSourceService);\n    datasource = this.tdss.get('dataSource');\n    groupData = new ImperativeObservable<{ [key: string]: RowData[] }>({ key: this.tdss.get('dataSource') });\n    selectedRows = new ImperativeObservable<RowData[]>(this.tdss.get('selectedRows'));\n    isAllRowsSelected = new ImperativeObservable<boolean>(this.selectedRows.value.length === this.datasource.length);\n    selectedIndex = new ImperativeObservable<number>(this.tdss.get('draggedColIndex') ?? 0);\n\n    ngOnChanges(changes: SimpleChanges): void {\n        if (changes['headers']) this.tdss.setHeaders(changes['headers'].currentValue);\n        if (changes['rows']) this.tdss.setTableDataSource(changes['rows'].currentValue);\n        if (changes['groupBy']) this.tdss.setGroupBy(changes['groupBy'].currentValue);\n        if (changes['isSelectable']) this.isSelectable = changes['isSelectable'].currentValue;\n        if (changes['isSortable']) this.isSortable = changes['isSortable'].currentValue;\n        if (changes['isDraggable']) this.isDraggable = changes['isDraggable'].currentValue;\n\n        this.updateGroupData();\n        this.sortRows('key');\n    }\n\n    private updateGroupData(): void {\n        const groupByVar = this.tdss.get('preferences').groupBy;\n        const groupData =\n            groupByVar && groupByVar !== 'key'\n                ? this.groupByData(this.tdss.get('dataSource'), groupByVar)\n                : ({ key: this.tdss.get('dataSource') } as { [key: string]: RowData[] });\n        this.groupData.value = { ...groupData };\n    }\n\n    colSpanNum(): number {\n        return this.tdss.get('headers').length + (this.isSelectable ? 1 : 0) + (this.actionButton ? 1 : 0);\n    }\n\n    objectKeysGroupData(obj: any): string[] {\n        return Object.keys(obj);\n    }\n\n    // @ts-ignore\n    private groupByData(array: RowData[], key: string): { [key: string]: RowData[] } {\n        const gKey = key.toLowerCase();\n        return array.reduce((result, currentValue) => {\n            const normalizedCurrentValue: RowData = Object.keys(currentValue).reduce((acc, k) => {\n                acc[k.toLowerCase()] = currentValue[k];\n                return acc;\n            }, {} as RowData);\n\n            const groupKey = normalizedCurrentValue[gKey] as string;\n            if (!result[groupKey]) {\n                result[groupKey] = [];\n            }\n            result[groupKey].push(currentValue);\n            return result;\n        }, {} as { [key: string]: RowData[] });\n    }\n\n    onRowClick(event: any): void {\n        // Handle the checkbox change here\n        console.log('Checkbox changed:', event);\n        // Update your data or perform actions based on the checkbox state\n    }\n\n    onRowSelection(rowData: any): void {\n        console.log('Row selected:', rowData);\n    }\n\n    get allRowsSelected(): boolean {\n        const dataSource = this.tdss.get('dataSource');\n        const selectedRows = this.tdss.get('selectedRows');\n        return dataSource.length > 0 && selectedRows.length === dataSource.length;\n    }\n\n    isRowSelected(rowData: any): boolean {\n        console.log(\n            'isRowSelected',\n            this.selectedRows.value,\n            rowData,\n            this.selectedRows.value.some((selectedRow: any) => JSON.stringify(selectedRow) === JSON.stringify(rowData))\n        );\n        return this.selectedRows.value.some((selectedRow: any) => JSON.stringify(selectedRow) === JSON.stringify(rowData));\n    }\n\n    toggleSelectAll(event: Event, groupKey: string): void {\n        const isChecked = (event.target as HTMLInputElement).checked;\n        if (isChecked) {\n            this.tdss.toggleSelectedAllRows();\n            this.groupData.value[groupKey].forEach((item) => this.selection.select(item));\n        } else {\n            this.tdss.toggleSelectedAllRows();\n            this.selection.clear();\n        }\n        console.log('toggleSelectAll', this.tdss.get('selectedRows'));\n    }\n\n    toggleSelectItem(row: object): void {\n        const itemStr = JSON.stringify(row);\n        if (this.selection.selected(itemStr)) {\n            this.selection.deselect(itemStr);\n        } else {\n            this.selection.select(itemStr);\n        }\n        this.tdss.setSelectedRows(row);\n        console.log('toggleSelectItem', this.tdss.get('selectedRows'));\n    }\n\n    sortRows(key: string): void {\n        const currentDirection = this.tdss.get('sortDataSource').direction;\n        const newDirection: 'ascending' | 'descending' = currentDirection === 'ascending' ? 'descending' : 'ascending';\n\n        this.tdss.sortDataSource({ key, direction: newDirection });\n        this.updateGroupData();\n    }\n\n    handleDragStart(index: number): void {\n        // Drag start logic here\n        this.tdss.dragStart(index);\n    }\n\n    handleDragOver(event: DragEvent): void {\n        event.preventDefault();\n        // Drag over logic here\n    }\n\n    handleDrop(index: number, event: DragEvent): void {\n        event.preventDefault();\n        // Drop logic here\n        this.tdss.dragDrop(index);\n    }\n\n    // // Figure out how to drag from initial index and drop on target index\n    // drop(event: CdkDragDrop<string[]>) {\n    //     // const prevActive = headers[this.selectedIndex.value];\n    //     // moveItemInArray(headers, event.previousIndex, event.currentIndex);\n    //     this.tdss.dragStart(event.previousIndex);\n    //     this.tdss.dragDrop(event.currentIndex);\n    //     this.selectedIndex.value = event.currentIndex;\n    // }\n\n    // dropRow(event: any) {\n    //     const data = this.groupData.value[this.groupBy ?? 'key'];\n    //     moveItemInArray(data, event.previousIndex, event.currentIndex);\n    // }\n    // dropCol(event: any) {\n    //     moveItemInArray(this.headers, event.previousIndex, event.currentIndex);\n    // }\n    // dragRows(index: number) {\n    //     this.draggableUtil.dragRows(this, index);\n    // }\n}\n",
+            "sourceCode": "import { AsyncPipe, CommonModule } from '@angular/common';\nimport { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewChild, inject } from '@angular/core';\nimport { SortableIconComponent, TwTypographyComponent } from './utils';\n\nimport { AdkExpansionPanelComponent } from './utils/expansion-panel.component';\nimport { AdkSelection } from '../../../tw-form-ui/directives';\nimport { CheckboxComponent } from '../../../tw-form-ui/components/types/checkbox.component';\nimport { ImperativeObservable } from '../../../utils';\nimport { RowData } from './models';\nimport { TableDataSourceService } from './table-datasource.service';\n\n@Component({\n    selector: 'tw-default-table',\n    templateUrl: './tw-table.component.html',\n    standalone: true,\n    imports: [\n        CommonModule,\n        AdkSelection,\n        AdkExpansionPanelComponent,\n        AsyncPipe,\n        TwTypographyComponent,\n        CheckboxComponent,\n        SortableIconComponent,\n    ],\n    changeDetection: ChangeDetectionStrategy.OnPush,\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n        `,\n    ],\n})\nexport class TwDefaultTableComponent implements OnChanges {\n    @ViewChild('selection', { static: true }) selection: any;\n    @Input() isSelectable = false;\n    @Input() isSortable = false;\n    @Input() isDraggable = false;\n    @Input() headers: string[] = [];\n    @Input() actionColName?: string;\n    @Input() actionButton?: TemplateRef<any> | string;\n    @Input() rows: RowData[] = [];\n    @Input() groupBy = '';\n\n    tdss: TableDataSourceService = inject(TableDataSourceService);\n    datasource = this.tdss.get('dataSource');\n    groupData = new ImperativeObservable<{ [key: string]: RowData[] }>({ key: this.tdss.get('dataSource') });\n    selectedRows = new ImperativeObservable<RowData[]>(this.tdss.get('selectedRows'));\n    isAllRowsSelected = new ImperativeObservable<boolean>(this.selectedRows.value.length === this.datasource.length);\n    selectedIndex = new ImperativeObservable<number>(this.tdss.get('draggedColIndex') ?? 0);\n\n    ngOnChanges(changes: SimpleChanges): void {\n        if (changes['headers']) this.tdss.setHeaders(changes['headers'].currentValue);\n        if (changes['rows']) this.tdss.setTableDataSource(changes['rows'].currentValue);\n        if (changes['groupBy']) this.tdss.setGroupBy(changes['groupBy'].currentValue);\n        if (changes['isSelectable']) this.isSelectable = changes['isSelectable'].currentValue;\n        if (changes['isSortable']) this.isSortable = changes['isSortable'].currentValue;\n        if (changes['isDraggable']) this.isDraggable = changes['isDraggable'].currentValue;\n\n        this.updateGroupData();\n        this.sortRows('key');\n\n        console.log('tdss', this.tdss.state());\n    }\n\n    private updateGroupData(): void {\n        const groupByVar = this.tdss.get('preferences').groupBy;\n        const groupData =\n            groupByVar && groupByVar !== 'key'\n                ? this.groupByData(this.tdss.get('dataSource'), groupByVar)\n                : ({ key: this.tdss.get('dataSource') } as { [key: string]: RowData[] });\n        this.groupData.value = { ...groupData };\n    }\n\n    objectKeysGroupData(obj: any): string[] {\n        return Object.keys(obj);\n    }\n\n    private groupByData(array: RowData[], key: string): { [key: string]: RowData[] } {\n        const gKey = key.toLowerCase();\n        return array.reduce((result, currentValue) => {\n            const normalizedCurrentValue: RowData = Object.keys(currentValue).reduce((acc, k) => {\n                acc[k.toLowerCase()] = currentValue[k];\n                return acc;\n            }, {} as RowData);\n\n            const groupKey = normalizedCurrentValue[gKey] as string;\n            if (!result[groupKey]) {\n                result[groupKey] = [];\n            }\n            result[groupKey].push(currentValue);\n            return result;\n        }, {} as { [key: string]: RowData[] });\n    }\n\n    onRowClick(event: any): void {\n        // Handle the checkbox change here\n        console.log('Checkbox changed:', event);\n        // Update your data or perform actions based on the checkbox state\n    }\n\n    onRowSelection(rowData: any): void {\n        console.log('Row selected:', rowData);\n    }\n\n    get allRowsSelected(): boolean {\n        const dataSource = this.tdss.get('dataSource');\n        const selectedRows = this.tdss.get('selectedRows');\n        return dataSource.length > 0 && selectedRows.length === dataSource.length;\n    }\n\n    isRowSelected(rowData: any): boolean {\n        return this.selectedRows.value.some((selectedRow: any) => JSON.stringify(selectedRow) === JSON.stringify(rowData));\n    }\n\n    toggleSelectAll(event: Event, groupKey: string): void {\n        const isChecked = (event.target as HTMLInputElement).checked;\n        if (isChecked) {\n            this.tdss.toggleSelectedAllRows();\n            this.groupData.value[groupKey].forEach((item) => this.selection.select(item));\n        } else {\n            this.tdss.toggleSelectedAllRows();\n            this.selection.clear();\n        }\n    }\n\n    toggleSelectItem(row: object): void {\n        const itemStr = JSON.stringify(row);\n        if (this.selection.selected(itemStr)) {\n            this.selection.deselect(itemStr);\n        } else {\n            this.selection.select(itemStr);\n        }\n        this.tdss.setSelectedRows(row);\n    }\n\n    sortRows(key: string): void {\n        const currentDirection = this.tdss.get('sortDataSource').direction;\n        const newDirection: 'ascending' | 'descending' = currentDirection === 'ascending' ? 'descending' : 'ascending';\n\n        this.tdss.sortDataSource({ key, direction: newDirection });\n        this.updateGroupData();\n    }\n    /**\n     *  Drag and Drop Handlers\n     * @param index\n     */\n    handleDragStart(index: number): void {\n        this.tdss.dragStart(index);\n    }\n\n    handleDragOver(event: DragEvent): void {\n        event.preventDefault();\n    }\n\n    handleDrop(index: number, event: DragEvent): void {\n        event.preventDefault();\n        this.tdss.dragDrop(index);\n        this.headers = this.tdss.get('headers');\n        this.groupData.value = this.groupByData(this.tdss.get('dataSource'), this.tdss.get('preferences').groupBy ?? 'key');\n    }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "\n            :host {\n                display: block;\n                width: 100%;\n            }\n        \n",
@@ -8868,11 +8915,173 @@
                         "name": "allRowsSelected",
                         "type": "boolean",
                         "returnType": "boolean",
-                        "line": 102
+                        "line": 107
                     }
                 }
             },
-            "templateData": "<div adk-selection #selection=\"adkSelection\">\n  <table *ngIf=\"(groupData.change$ | async) as groupData\" aria-hidden=\"true\"\n    class=\"w-full text-left table-auto min-w-max\">\n    <thead cdkDrag>\n      <ng-container\n        *ngTemplateOutlet=\"renderThead; context: { groupData, headers: tdss.get('headers'), selectedRows: (selectedRows.change$ | async), isSelectable, sortDataSource: tdss.get('sortDataSource')}\"></ng-container>\n    </thead>\n    <tbody>\n      @for(groupKey of objectKeysGroupData(groupData); track $index){\n      @if(groupBy && groupKey !== 'key') {\n      <ng-container\n        *ngTemplateOutlet=\"groupByRender; context: { groupData, headers, isSelectable, groupKey }\"></ng-container>\n      } @else {\n      @for(rowData of groupData[groupKey]; track $index) {\n      <ng-container\n        *ngTemplateOutlet=\"renderRow; context: { headers, rowData, rowIndex: $index, isSelectable }\"></ng-container>\n      }\n      }\n      }\n    </tbody>\n  </table>\n</div>\n\n<ng-template #renderThead let-groupData=\"groupData\" let-header=\"headers\" let-isSelectable=\"isSelectable\"\n  let-sortDataSource=\"sortDataSource\" let-selectedRows=\"selectedRows\">\n  <tr cdkDropList cdkDropListOrientation=\"horizontal\" (cdkDropListDropped)=\"drop($event)\"\n    [(selectedIndex)]=\"selectedIndex\" animationDuration=\"0\">\n    @if(isSelectable) {\n    <th id=\"checkAll\" class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-1 min-h-[48.5px] max-w-[20px]\" cdkDrag>\n      <label for=\"selectAllCheckbox\" class=\"relative flex items-center p-3 rounded-full cursor-pointer\">\n        <input id=\"selectAllCheckbox\" name=\"selectAllCheckbox\" type=\"checkbox\"\n          (change)=\"toggleSelectAll($event, objectKeysGroupData(groupData))\"\n          class=\"before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10\" />\n      </label>\n\n    </th>\n    }\n    @for(header of headers; track $index) {\n    <th [attr.key]=\"head\" [ngClass]=\"{'border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer': true}\"\n      [attr.draggable]=\"isDraggable\" (dragstart)=\"handleDragStart(index)\" (dragover)=\"handleDragOver($event)\"\n      (drop)=\"handleDrop(index, $event)\" scope=\"col\">\n      <tw-typography [variant]=\"'small'\" [color]=\"'blue-gray'\"\n        [classStyle]=\"'flex items-center justify-between gap-2 font-normal leading-none opacity-70'\">\n        {{ header ?? ' ' }}\n        <div class=\"flex flex-row gap-2\">\n          @if($index !== headers.length && isSortable) {\n          <tw-sortable-icon (click)=\"sortRows(header, groupData)\"\n            (keydown)=\"sortRows(header, groupData)\"></tw-sortable-icon>\n          } @if(tdss.get('sortDataSource').key === header && isSortable) {\n          <span>{{ sortDataSource.direction === 'ascending' ? '🔼' : '🔽' }}</span>\n          }\n        </div>\n      </tw-typography>\n    </th>\n    }\n  </tr>\n</ng-template>\n\n<!-- Group By Render -->\n<ng-template #groupByRender let-groupData=\"groupData\" let-headers=\"headers\" let-isSelectable=\"isSelectable\"\n  let-groupKey=\"groupKey\">\n  <tr>\n    <td [colSpan]=\"headers.length + (isSelectable ? 1 : 0) + (actionButton ? 1 : 0)\">\n      <adk-expansion-panel>\n        <ng-template #expansionPanelHeader>\n          {{groupKey}}\n        </ng-template>\n        <ng-template #expansionPanelBody>\n          <table aria-hidden=\"true\" class=\"w-full min-w-max table-auto text-left\">\n            <tbody>\n              @for(rowData of groupData[groupKey]; track $index) {\n              <ng-container\n                *ngTemplateOutlet=\"renderRow; context: { headers, rowData, rowIndex: $index, isSelectable, field: field({id: field-$index, value: rowData}) }\">\n              </ng-container>\n              }\n            </tbody>\n          </table>\n        </ng-template>\n      </adk-expansion-panel>\n    </td>\n  </tr>\n</ng-template>\n\n<!-- Render Row Table Cells -->\n<ng-template #renderRow let-header=\"headers\" let-rowData=\"rowData\" let-rowIndex=\"rowIndex\"\n  let-isSelectable=\"isSelectable\">\n  <tr>\n    @if(isSelectable) {\n    <td [ngClass]=\"isSelectable ? 'p-1' : 'p-4'\" class=\"border-b border-blue-gray-50 min-h-[48.5px] max-w-[15px]\">\n      <label class=\"relative flex items-center p-3 rounded-full cursor-pointer\" for=\"checkbox\">\n        <input type=\"checkbox\" [checked]=\"selection.selected(rowData)\" (change)=\"toggleSelectItem(rowData)\"\n          class=\"before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10\" />\n      </label>\n    </td>\n    }\n    @for (header of headers; track $index) {\n    <td [ngClass]=\"isSelectable ? 'p-1' : 'p-2'\"\n      class=\"border-b border-blue-gray-50 min-h-[48.5px] min-w-[60px] max-w-[60px]\">\n      <tw-typography [variant]=\"'small'\" [color]=\"'blue-gray'\" class=\"font-normal ml-2\">\n        {{ rowData[header.toLowerCase()] }}\n      </tw-typography>\n    </td>\n    }\n  </tr>\n</ng-template>"
+            "templateData": "<div adk-selection #selection=\"adkSelection\">\n  <table *ngIf=\"(groupData.change$ | async) as groupData\" aria-hidden=\"true\"\n    class=\"w-full text-left table-auto min-w-max\">\n    <thead>\n      <ng-container\n        *ngTemplateOutlet=\"renderThead; context: { groupData, headers: tdss.get('headers'), selectedRows: (selectedRows.change$ | async), isSelectable, sortDataSource: tdss.get('sortDataSource')}\"></ng-container>\n    </thead>\n    <tbody>\n      @for(groupKey of objectKeysGroupData(groupData); track $index){\n      @if(groupBy && groupKey !== 'key') {\n      <ng-container\n        *ngTemplateOutlet=\"groupByRender; context: { groupData, headers, isSelectable, groupKey }\"></ng-container>\n      } @else {\n      @for(rowData of groupData[groupKey]; track $index) {\n      <ng-container\n        *ngTemplateOutlet=\"renderRow; context: { headers, rowData, rowIndex: $index, isSelectable }\"></ng-container>\n      }\n      }\n      }\n    </tbody>\n  </table>\n</div>\n\n<ng-template #renderThead let-groupData=\"groupData\" let-header=\"headers\" let-isSelectable=\"isSelectable\"\n  let-sortDataSource=\"sortDataSource\" let-selectedRows=\"selectedRows\">\n  <tr>\n    @if(isSelectable) {\n    <th id=\"checkAll\" class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-1 min-h-[48.5px] max-w-[20px]\">\n      <label for=\"selectAllCheckbox\" class=\"relative flex items-center p-3 rounded-full cursor-pointer\">\n        <input id=\"selectAllCheckbox\" name=\"selectAllCheckbox\" type=\"checkbox\"\n          (change)=\"toggleSelectAll($event, objectKeysGroupData(groupData))\"\n          class=\"before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10\" />\n      </label>\n\n    </th>\n    }\n    @for(header of headers; track $index) {\n    <th [id]=\"header\" class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer\" [attr.key]=\"head\"\n      [ngClass]=\"{'border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer': true}\"\n      [attr.draggable]=\"isDraggable\" (dragstart)=\"handleDragStart($index)\" (dragover)=\"handleDragOver($event)\"\n      (drop)=\"handleDrop($index, $event)\" (drop)=\"handleDrop($index, $event)\" scope=\"col\">\n      <tw-typography [variant]=\"'small'\" [color]=\"'blue-gray'\"\n        [classStyle]=\"'flex items-center justify-between gap-2 font-normal leading-none opacity-70'\">\n        {{ header ?? ' ' }}\n        <div class=\"flex flex-row gap-2\">\n          @if($index !== headers.length && isSortable) {\n          <tw-sortable-icon (click)=\"sortRows(header, groupData)\"\n            (keydown)=\"sortRows(header, groupData)\"></tw-sortable-icon>\n          } @if(tdss.get('sortDataSource').key === header && isSortable) {\n          <span>{{ sortDataSource.direction === 'ascending' ? '🔼' : '🔽' }}</span>\n          }\n        </div>\n      </tw-typography>\n    </th>\n    }\n  </tr>\n</ng-template>\n\n<!-- Group By Render -->\n<ng-template #groupByRender let-groupData=\"groupData\" let-headers=\"headers\" let-isSelectable=\"isSelectable\"\n  let-groupKey=\"groupKey\">\n  <tr>\n    <td [colSpan]=\"headers.length + (isSelectable ? 1 : 0) + (actionButton ? 1 : 0)\">\n      <adk-expansion-panel>\n        <ng-template #expansionPanelHeader>\n          {{groupKey}}\n        </ng-template>\n        <ng-template #expansionPanelBody>\n          <table aria-hidden=\"true\" class=\"w-full min-w-max table-auto text-left\">\n            <tbody>\n              @for(rowData of groupData[groupKey]; track $index) {\n              <ng-container\n                *ngTemplateOutlet=\"renderRow; context: { headers, rowData, rowIndex: $index, isSelectable }\">\n              </ng-container>\n              }\n            </tbody>\n          </table>\n        </ng-template>\n      </adk-expansion-panel>\n    </td>\n  </tr>\n</ng-template>\n\n<!-- Render Row Table Cells -->\n<ng-template #renderRow let-header=\"headers\" let-rowData=\"rowData\" let-rowIndex=\"rowIndex\"\n  let-isSelectable=\"isSelectable\">\n  <tr>\n    @if(isSelectable) {\n    <td [ngClass]=\"isSelectable ? 'p-1' : 'p-4'\" class=\"border-b border-blue-gray-50 min-h-[48.5px] max-w-[15px]\">\n      <label class=\"relative flex items-center p-3 rounded-full cursor-pointer\" for=\"checkbox\">\n        <input type=\"checkbox\" [checked]=\"selection.selected(rowData)\" (change)=\"toggleSelectItem(rowData)\"\n          class=\"before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10\" />\n      </label>\n    </td>\n    }\n    @for (header of headers; track $index) {\n    <td [ngClass]=\"isSelectable ? 'p-1' : 'p-2'\"\n      class=\"border-b border-blue-gray-50 min-h-[48.5px] min-w-[60px] max-w-[60px]\">\n      <tw-typography [variant]=\"'small'\" [color]=\"'blue-gray'\" class=\"font-normal ml-2\">\n        {{ rowData[header.toLowerCase()] }}\n      </tw-typography>\n    </td>\n    }\n  </tr>\n</ng-template>"
+        },
+        {
+            "name": "TwTableCardComponent",
+            "id": "component-TwTableCardComponent-069375aa583a1f1e5bdf2a477094ad36e99697224069614b2a23c2a917d7fe67dcd9bfd0692cfdff95d72f90164f8169002082ebf7fc1c23da565dd71633cc9c",
+            "file": "projects/ng-lib/src/lib/tw-ui/components/table/tw-table-card.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "tw-table-card",
+            "styleUrls": [],
+            "styles": [
+                "\n            :host {\n                display: block;\n                width: 100%;\n            }\n        "
+            ],
+            "template": "<tw-card>\n    <div tw-card-header>\n        <h5 class=\"block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900\">\n            UI/UX Review Check\n        </h5>\n    </div>\n    <div tw-card-body>\n        <tw-default-table\n            [headers]=\"headers\"\n            [rows]=\"rows\"\n            [isSelectable]=\"isSelectable\"\n            [isSortable]=\"isSortable\"\n            [isDraggable]=\"isDraggable\"\n            [groupBy]=\"groupBy\"\n            [actionColName]=\"actionColName\"\n            [actionButton]=\"actionButton\"\n        ></tw-default-table>\n    </div>\n</tw-card>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "actionButton",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 49,
+                    "type": "TemplateRef<any> | string",
+                    "decorators": []
+                },
+                {
+                    "name": "actionColName",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 48,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "groupBy",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 51,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "headers",
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 47,
+                    "type": "string[]",
+                    "decorators": []
+                },
+                {
+                    "name": "isDraggable",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 46,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "isSelectable",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 44,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "isSortable",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 45,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "rows",
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 50,
+                    "type": "RowData[]",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                },
+                {
+                    "name": "TwCardComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "TwDefaultTableComponent",
+                    "type": "component"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, Input, TemplateRef } from '@angular/core';\n\nimport { CommonModule } from '@angular/common';\nimport { RowData } from './models';\nimport { TwCardComponent } from '../card/tw-card.component';\nimport { TwDefaultTableComponent } from './tw-table.component';\n\n@Component({\n    selector: 'tw-table-card',\n    standalone: true,\n    imports: [CommonModule, TwCardComponent, TwDefaultTableComponent],\n    template: `\n        <tw-card>\n            <div tw-card-header>\n                <h5 class=\"block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900\">\n                    UI/UX Review Check\n                </h5>\n            </div>\n            <div tw-card-body>\n                <tw-default-table\n                    [headers]=\"headers\"\n                    [rows]=\"rows\"\n                    [isSelectable]=\"isSelectable\"\n                    [isSortable]=\"isSortable\"\n                    [isDraggable]=\"isDraggable\"\n                    [groupBy]=\"groupBy\"\n                    [actionColName]=\"actionColName\"\n                    [actionButton]=\"actionButton\"\n                ></tw-default-table>\n            </div>\n        </tw-card>\n    `,\n    changeDetection: ChangeDetectionStrategy.OnPush,\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n        `,\n    ],\n})\nexport class TwTableCardComponent {\n    @Input() isSelectable = false;\n    @Input() isSortable = false;\n    @Input() isDraggable = false;\n    @Input() headers: string[] = [];\n    @Input() actionColName?: string;\n    @Input() actionButton?: TemplateRef<any> | string;\n    @Input() rows: RowData[] = [];\n    @Input() groupBy = '';\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "\n            :host {\n                display: block;\n                width: 100%;\n            }\n        \n",
+            "extends": []
+        },
+        {
+            "name": "TwTableHeaderComponent",
+            "id": "component-TwTableHeaderComponent-4fc65ab8c13e9f35515e9f62b52b4a14d306fc262f5d1a42d7e4e709d68eee04788b484c9eb4b503884176b8e83833363216e9444c1eb74846de9f642ce5ee54",
+            "file": "projects/ng-lib/src/lib/tw-ui/components/table/tw-table-header.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "tw-table-header",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<div class=\"tw-table-card\">\n    <ng-content></ng-content>\n</div>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { CommonModule } from '@angular/common';\nimport { Component } from '@angular/core';\n\n@Component({\n    selector: 'tw-table-header',\n    standalone: true,\n    imports: [CommonModule],\n    template: `\n        <div class=\"tw-table-card\">\n            <ng-content></ng-content>\n        </div>\n    `,\n})\nexport class TwTableHeaderComponent {}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": []
         },
         {
             "name": "TwTypographyComponent",
@@ -9039,6 +9248,36 @@
                 "defaultValue": "{\n    args: {\n        disabled: false,\n        variant: 'filled',\n        color: 'danger',\n    },\n}"
             },
             {
+                "name": "Default",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n    args: {\n        headers: ['name', 'job', 'date'],\n        rows: mockData,\n        isSelectable: false,\n        isSortable: true,\n        isDraggable: false,\n    },\n}"
+            },
+            {
+                "name": "Draggable",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n    args: {\n        ...Default.args,\n        isDraggable: true,\n    },\n}"
+            },
+            {
+                "name": "Grouped",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n    args: {\n        ...Default.args,\n        groupBy: 'job',\n    },\n}"
+            },
+            {
                 "name": "Heading",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -9202,46 +9441,6 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/ng-lib/src/lib/tw-ui/components/stories/button.component.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Meta<ButtonWrapperComponent>",
-                "defaultValue": "{\n    component: ButtonWrapperComponent,\n    title: '(TW) Angular UI / Components / Button',\n    tags: ['autodocs'],\n}"
-            },
-            {
-                "name": "meta",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/ng-lib/src/lib/tw-ui/components/stories/card.component.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Meta<CardWrapperComponent>",
-                "defaultValue": "{\n    component: CardWrapperComponent,\n    title: '(TW) Angular UI / Components / Card',\n    tags: ['autodocs'],\n}"
-            },
-            {
-                "name": "meta",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/ng-lib/src/lib/tw-ui/components/stories/pill.component.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Meta<PillWrapperComponent>",
-                "defaultValue": "{\n    component: PillWrapperComponent,\n    title: '(TW) Angular UI / Components / Pill',\n    tags: ['autodocs'],\n}"
-            },
-            {
-                "name": "meta",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/ng-lib/src/lib/tw-ui/components/stories/sidebar.component.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Meta<SidebarComponent>",
-                "defaultValue": "{\n    component: SidebarComponent,\n    title: '(TW) Angular UI / Components / Sidebar',\n    decorators: [\n        // Add any decorators you need (e.g., withModules)\n    ],\n    parameters: {\n        // Add any global parameters here\n    },\n    argTypes: {\n        // Add argTypes as needed\n    },\n    tags: ['autodocs'],\n}"
-            },
-            {
-                "name": "meta",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/ng-lib/src/lib/tw-form-ui/components/stories/field.component.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -9362,11 +9561,41 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table.stories.ts",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/stories/button.component.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "Meta<TwDefaultTableComponent>",
-                "defaultValue": "{\n    title: 'TailwindUI/Components/Tables/Default Table',\n    component: TwDefaultTableComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TwDefaultTableComponent],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\n              ${story}\n            </div>`\n        ),\n    ],\n    args: {},\n}"
+                "type": "Meta<ButtonWrapperComponent>",
+                "defaultValue": "{\n    component: ButtonWrapperComponent,\n    title: '(TW) Angular UI / Components / Button',\n    tags: ['autodocs'],\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/stories/card.component.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<CardWrapperComponent>",
+                "defaultValue": "{\n    component: CardWrapperComponent,\n    title: '(TW) Angular UI / Components / Card',\n    tags: ['autodocs'],\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/stories/pill.component.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<PillWrapperComponent>",
+                "defaultValue": "{\n    component: PillWrapperComponent,\n    title: '(TW) Angular UI / Components / Pill',\n    tags: ['autodocs'],\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/stories/sidebar.component.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<SidebarComponent>",
+                "defaultValue": "{\n    component: SidebarComponent,\n    title: '(TW) Angular UI / Components / Sidebar',\n    decorators: [\n        // Add any decorators you need (e.g., withModules)\n    ],\n    parameters: {\n        // Add any global parameters here\n    },\n    argTypes: {\n        // Add argTypes as needed\n    },\n    tags: ['autodocs'],\n}"
             },
             {
                 "name": "meta",
@@ -9459,6 +9688,36 @@
                 "defaultValue": "{\n    component: TextareaComponent,\n    title: '(TW) Angular UI / Components / Form / Types / Textarea',\n}"
             },
             {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<TwTableCardComponent>",
+                "defaultValue": "{\n    title: 'Components/TwTableCard',\n    component: TwTableCardComponent,\n    tags: ['autodocs'],\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<TwDefaultTableComponent>",
+                "defaultValue": "{\n    title: 'TailwindUI/Components/Tables/Default Table',\n    component: TwDefaultTableComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TwDefaultTableComponent],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\n              ${story}\n            </div>`\n        ),\n    ],\n    args: {},\n}"
+            },
+            {
+                "name": "mockData",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "[]",
+                "defaultValue": "[\n    { name: 'John Doe', job: 'Developer', date: '2024-08-01' },\n    { name: 'Jane Smith', job: 'Designer', date: '2024-08-02' },\n    { name: 'Bob Johnson', job: 'Manager', date: '2024-08-03' },\n]"
+            },
+            {
                 "name": "MultiSelect",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -9476,7 +9735,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Preview",
-                "defaultValue": "{\n    parameters: {\n        viewport: { viewport: customViewport },\n        actions: { argTypesRegex: '^on[A-Z].*' },\n        controls: {\n            matchers: {\n                color: /(background|color)$/i,\n                date: /Date$/,\n            },\n        },\n    },\n    decorators: [\n        withThemeByDataAttribute({\n            themes: {\n                light: 'light',\n                dark: 'dark',\n            },\n            defaultTheme: 'light',\n            attributeName: 'data-mode',\n        }),\n    ],\n}"
+                "defaultValue": "{\n    parameters: {\n        viewport: { viewport: customViewport },\n        actions: { argTypesRegex: '^on[A-Z].*' },\n        controls: {\n            matchers: {\n                color: /(background|color)$/i,\n                date: /Date$/,\n            },\n        },\n    },\n    decorators: [\n        withThemeByDataAttribute({\n            themes: {\n                light: 'light',\n                dark: 'dark',\n            },\n            defaultTheme: 'light',\n            attributeName: 'data-mode',\n        }),\n        applicationConfig({\n            providers: [provideAnimations()],\n        }),\n    ],\n}"
             },
             {
                 "name": "Primary",
@@ -9487,46 +9746,6 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "{\n  args: {\n    primary: true,\n    label: 'Button',\n  },\n}"
-            },
-            {
-                "name": "Primary",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/ng-lib/src/lib/tw-ui/components/stories/button.component.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story",
-                "defaultValue": "{\n    args: {\n        disabled: false,\n        variant: 'filled',\n        color: 'primary',\n    },\n}"
-            },
-            {
-                "name": "Primary",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/ng-lib/src/lib/tw-ui/components/stories/card.component.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story",
-                "defaultValue": "{\n    args: {},\n}"
-            },
-            {
-                "name": "Primary",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/ng-lib/src/lib/tw-ui/components/stories/pill.component.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story",
-                "defaultValue": "{\n    args: {},\n}"
-            },
-            {
-                "name": "Primary",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/ng-lib/src/lib/tw-ui/components/stories/sidebar.component.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story",
-                "defaultValue": "(args: any) => ({\n    component: SidebarComponent,\n    props: {\n        ...args,\n        title: 'Sidebar',\n        navigation: [\n            { link: 'home', icon: 'home', text: 'Home' },\n            { link: 'about', icon: 'info', text: 'About' },\n            { link: 'contact', icon: 'mail', text: 'Contact' },\n        ],\n    },\n})"
             },
             {
                 "name": "Primary",
@@ -9652,6 +9871,46 @@
                 "name": "Primary",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/stories/button.component.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n    args: {\n        disabled: false,\n        variant: 'filled',\n        color: 'primary',\n    },\n}"
+            },
+            {
+                "name": "Primary",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/stories/card.component.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n    args: {},\n}"
+            },
+            {
+                "name": "Primary",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/stories/pill.component.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n    args: {},\n}"
+            },
+            {
+                "name": "Primary",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/stories/sidebar.component.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args: any) => ({\n    component: SidebarComponent,\n    props: {\n        ...args,\n        title: 'Sidebar',\n        navigation: [\n            { link: 'home', icon: 'home', text: 'Home' },\n            { link: 'about', icon: 'info', text: 'About' },\n            { link: 'contact', icon: 'mail', text: 'Contact' },\n        ],\n    },\n})"
+            },
+            {
+                "name": "Primary",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/ng-lib/src/lib/tw-form-ui/components/types/stories/checkbox.component.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -9759,6 +10018,16 @@
                 "defaultValue": "{\n    args: {\n        field: FieldBuilder.createField('select', 'select', 'name', 'Name', 'Name', {\n            isMultipleTag: false,\n            required: true,\n            options: [\n                { value: '1', label: 'One', id: '1' },\n                { value: '2', label: 'Two', id: '2' },\n            ],\n        }),\n    },\n}"
             },
             {
+                "name": "Selectable",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n    args: {\n        ...Default.args,\n        isSelectable: true,\n    },\n}"
+            },
+            {
                 "name": "Small",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -9786,7 +10055,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n    args: {\n        isSelectable: true,\n        isSortable: true,\n        headers: ['Comments', 'Candidates', 'Offers'],\n        actionColName: ' ',\n        rows: [\n            { comments: 'Great candidate', candidates: 'John Doe', offers: 'Accepted' },\n            { comments: 'Needs improvement', candidates: 'Jane Smith', offers: 'Pending' },\n            { comments: 'Excellent skills', candidates: 'Alice Johnson', offers: 'Rejected' },\n            { comments: 'Average performance', candidates: 'Bob Brown', offers: 'Accepted' },\n        ],\n    },\n}"
+                "defaultValue": "{\n    args: {\n        isSelectable: true,\n        isSortable: true,\n        headers: ['Comments', 'Candidates', 'Offers'],\n        actionColName: ' ',\n        isDraggable: true,\n        rows: [\n            { comments: 'Great candidate', candidates: 'John Doe', offers: 'Accepted' },\n            { comments: 'Needs improvement', candidates: 'Jane Smith', offers: 'Pending' },\n            { comments: 'Excellent skills', candidates: 'Alice Johnson', offers: 'Rejected' },\n            { comments: 'Average performance', candidates: 'Bob Brown', offers: 'Accepted' },\n        ],\n    },\n}"
             },
             {
                 "name": "Warn",
@@ -9797,6 +10066,16 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "{\n    args: {\n        disabled: false,\n        variant: 'filled',\n        color: 'warn',\n    },\n}"
+            },
+            {
+                "name": "WithActionColumn",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n    args: {\n        ...Default.args,\n        actionColName: 'Actions',\n        actionButton: 'Edit',\n    },\n}"
             },
             {
                 "name": "WithActiveLink",
@@ -9947,50 +10226,6 @@
                 "name": "Story",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
-                "rawtype": "StoryObj<ButtonWrapperComponent>",
-                "file": "projects/ng-lib/src/lib/tw-ui/components/stories/button.component.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "description": "",
-                "kind": 183
-            },
-            {
-                "name": "Story",
-                "ctype": "miscellaneous",
-                "subtype": "typealias",
-                "rawtype": "StoryObj<CardWrapperComponent>",
-                "file": "projects/ng-lib/src/lib/tw-ui/components/stories/card.component.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "description": "",
-                "kind": 183
-            },
-            {
-                "name": "Story",
-                "ctype": "miscellaneous",
-                "subtype": "typealias",
-                "rawtype": "StoryObj<PillWrapperComponent>",
-                "file": "projects/ng-lib/src/lib/tw-ui/components/stories/pill.component.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "description": "",
-                "kind": 183
-            },
-            {
-                "name": "Story",
-                "ctype": "miscellaneous",
-                "subtype": "typealias",
-                "rawtype": "StoryObj<SidebarComponent>",
-                "file": "projects/ng-lib/src/lib/tw-ui/components/stories/sidebar.component.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "description": "",
-                "kind": 183
-            },
-            {
-                "name": "Story",
-                "ctype": "miscellaneous",
-                "subtype": "typealias",
                 "rawtype": "StoryObj<FieldComponent>",
                 "file": "projects/ng-lib/src/lib/tw-form-ui/components/stories/field.component.stories.ts",
                 "deprecated": false,
@@ -10123,8 +10358,41 @@
                 "name": "Story",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
-                "rawtype": "StoryObj<TwDefaultTableComponent>",
-                "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table.stories.ts",
+                "rawtype": "StoryObj<ButtonWrapperComponent>",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/stories/button.component.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 183
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "StoryObj<CardWrapperComponent>",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/stories/card.component.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 183
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "StoryObj<PillWrapperComponent>",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/stories/pill.component.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 183
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "StoryObj<SidebarComponent>",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/stories/sidebar.component.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "description": "",
@@ -10224,6 +10492,28 @@
                 "subtype": "typealias",
                 "rawtype": "StoryObj<TextareaComponent>",
                 "file": "projects/ng-lib/src/lib/tw-form-ui/components/types/stories/textarea.component.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 183
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "StoryObj<TwTableCardComponent>",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 183
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "StoryObj<TwDefaultTableComponent>",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "description": "",
@@ -10457,7 +10747,79 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Preview",
-                    "defaultValue": "{\n    parameters: {\n        viewport: { viewport: customViewport },\n        actions: { argTypesRegex: '^on[A-Z].*' },\n        controls: {\n            matchers: {\n                color: /(background|color)$/i,\n                date: /Date$/,\n            },\n        },\n    },\n    decorators: [\n        withThemeByDataAttribute({\n            themes: {\n                light: 'light',\n                dark: 'dark',\n            },\n            defaultTheme: 'light',\n            attributeName: 'data-mode',\n        }),\n    ],\n}"
+                    "defaultValue": "{\n    parameters: {\n        viewport: { viewport: customViewport },\n        actions: { argTypesRegex: '^on[A-Z].*' },\n        controls: {\n            matchers: {\n                color: /(background|color)$/i,\n                date: /Date$/,\n            },\n        },\n    },\n    decorators: [\n        withThemeByDataAttribute({\n            themes: {\n                light: 'light',\n                dark: 'dark',\n            },\n            defaultTheme: 'light',\n            attributeName: 'data-mode',\n        }),\n        applicationConfig({\n            providers: [provideAnimations()],\n        }),\n    ],\n}"
+                }
+            ],
+            "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts": [
+                {
+                    "name": "Default",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n    args: {\n        headers: ['name', 'job', 'date'],\n        rows: mockData,\n        isSelectable: false,\n        isSortable: true,\n        isDraggable: false,\n    },\n}"
+                },
+                {
+                    "name": "Draggable",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n    args: {\n        ...Default.args,\n        isDraggable: true,\n    },\n}"
+                },
+                {
+                    "name": "Grouped",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n    args: {\n        ...Default.args,\n        groupBy: 'job',\n    },\n}"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<TwTableCardComponent>",
+                    "defaultValue": "{\n    title: 'Components/TwTableCard',\n    component: TwTableCardComponent,\n    tags: ['autodocs'],\n}"
+                },
+                {
+                    "name": "mockData",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "[]",
+                    "defaultValue": "[\n    { name: 'John Doe', job: 'Developer', date: '2024-08-01' },\n    { name: 'Jane Smith', job: 'Designer', date: '2024-08-02' },\n    { name: 'Bob Johnson', job: 'Manager', date: '2024-08-03' },\n]"
+                },
+                {
+                    "name": "Selectable",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n    args: {\n        ...Default.args,\n        isSelectable: true,\n    },\n}"
+                },
+                {
+                    "name": "WithActionColumn",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n    args: {\n        ...Default.args,\n        actionColName: 'Actions',\n        actionButton: 'Edit',\n    },\n}"
                 }
             ],
             "projects/ng-lib/src/lib/tw-form-ui/directives/stories/field-list.spec.stories.ts": [
@@ -10822,60 +11184,6 @@
                     "defaultValue": "{\n  title: 'Example/Page',\n  component: Page,\n  parameters: {\n    // More on how to position stories at: https://storybook.js.org/docs/angular/configure/story-layout\n    layout: 'fullscreen',\n  },\n  decorators: [\n    moduleMetadata({\n      declarations: [Button, Header],\n      imports: [CommonModule],\n    }),\n  ],\n}"
                 }
             ],
-            "projects/ng-lib/src/lib/tw-ui/components/stories/pill.component.stories.ts": [
-                {
-                    "name": "meta",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/ng-lib/src/lib/tw-ui/components/stories/pill.component.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Meta<PillWrapperComponent>",
-                    "defaultValue": "{\n    component: PillWrapperComponent,\n    title: '(TW) Angular UI / Components / Pill',\n    tags: ['autodocs'],\n}"
-                },
-                {
-                    "name": "Primary",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/ng-lib/src/lib/tw-ui/components/stories/pill.component.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story",
-                    "defaultValue": "{\n    args: {},\n}"
-                }
-            ],
-            "projects/ng-lib/src/lib/tw-ui/components/stories/sidebar.component.stories.ts": [
-                {
-                    "name": "meta",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/ng-lib/src/lib/tw-ui/components/stories/sidebar.component.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Meta<SidebarComponent>",
-                    "defaultValue": "{\n    component: SidebarComponent,\n    title: '(TW) Angular UI / Components / Sidebar',\n    decorators: [\n        // Add any decorators you need (e.g., withModules)\n    ],\n    parameters: {\n        // Add any global parameters here\n    },\n    argTypes: {\n        // Add argTypes as needed\n    },\n    tags: ['autodocs'],\n}"
-                },
-                {
-                    "name": "Primary",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/ng-lib/src/lib/tw-ui/components/stories/sidebar.component.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story",
-                    "defaultValue": "(args: any) => ({\n    component: SidebarComponent,\n    props: {\n        ...args,\n        title: 'Sidebar',\n        navigation: [\n            { link: 'home', icon: 'home', text: 'Home' },\n            { link: 'about', icon: 'info', text: 'About' },\n            { link: 'contact', icon: 'mail', text: 'Contact' },\n        ],\n    },\n})"
-                },
-                {
-                    "name": "WithActiveLink",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/ng-lib/src/lib/tw-ui/components/stories/sidebar.component.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story",
-                    "defaultValue": "(args: any) => ({\n    component: SidebarComponent,\n    props: {\n        ...args,\n        title: 'Sidebar',\n        navigation: [\n            { link: 'home', icon: 'home', text: 'Home' },\n            { link: 'about', icon: 'info', text: 'About' },\n            { link: 'contact', icon: 'mail', text: 'Contact' },\n        ],\n    },\n})"
-                }
-            ],
             "projects/ng-lib/src/lib/tw-form-ui/components/stories/field.component.stories.ts": [
                 {
                     "name": "meta",
@@ -11030,26 +11338,58 @@
                     "defaultValue": "{\n    args: {},\n}"
                 }
             ],
-            "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table.stories.ts": [
+            "projects/ng-lib/src/lib/tw-ui/components/stories/pill.component.stories.ts": [
                 {
                     "name": "meta",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table.stories.ts",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/stories/pill.component.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "Meta<TwDefaultTableComponent>",
-                    "defaultValue": "{\n    title: 'TailwindUI/Components/Tables/Default Table',\n    component: TwDefaultTableComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TwDefaultTableComponent],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\n              ${story}\n            </div>`\n        ),\n    ],\n    args: {},\n}"
+                    "type": "Meta<PillWrapperComponent>",
+                    "defaultValue": "{\n    component: PillWrapperComponent,\n    title: '(TW) Angular UI / Components / Pill',\n    tags: ['autodocs'],\n}"
                 },
                 {
-                    "name": "TableWithAllSettings",
+                    "name": "Primary",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table.stories.ts",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/stories/pill.component.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n    args: {\n        isSelectable: true,\n        isSortable: true,\n        headers: ['Comments', 'Candidates', 'Offers'],\n        actionColName: ' ',\n        rows: [\n            { comments: 'Great candidate', candidates: 'John Doe', offers: 'Accepted' },\n            { comments: 'Needs improvement', candidates: 'Jane Smith', offers: 'Pending' },\n            { comments: 'Excellent skills', candidates: 'Alice Johnson', offers: 'Rejected' },\n            { comments: 'Average performance', candidates: 'Bob Brown', offers: 'Accepted' },\n        ],\n    },\n}"
+                    "defaultValue": "{\n    args: {},\n}"
+                }
+            ],
+            "projects/ng-lib/src/lib/tw-ui/components/stories/sidebar.component.stories.ts": [
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/stories/sidebar.component.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<SidebarComponent>",
+                    "defaultValue": "{\n    component: SidebarComponent,\n    title: '(TW) Angular UI / Components / Sidebar',\n    decorators: [\n        // Add any decorators you need (e.g., withModules)\n    ],\n    parameters: {\n        // Add any global parameters here\n    },\n    argTypes: {\n        // Add argTypes as needed\n    },\n    tags: ['autodocs'],\n}"
+                },
+                {
+                    "name": "Primary",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/stories/sidebar.component.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args: any) => ({\n    component: SidebarComponent,\n    props: {\n        ...args,\n        title: 'Sidebar',\n        navigation: [\n            { link: 'home', icon: 'home', text: 'Home' },\n            { link: 'about', icon: 'info', text: 'About' },\n            { link: 'contact', icon: 'mail', text: 'Contact' },\n        ],\n    },\n})"
+                },
+                {
+                    "name": "WithActiveLink",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/stories/sidebar.component.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args: any) => ({\n    component: SidebarComponent,\n    props: {\n        ...args,\n        title: 'Sidebar',\n        navigation: [\n            { link: 'home', icon: 'home', text: 'Home' },\n            { link: 'about', icon: 'info', text: 'About' },\n            { link: 'contact', icon: 'mail', text: 'Contact' },\n        ],\n    },\n})"
                 }
             ],
             "projects/ng-lib/src/lib/tw-form-ui/components/types/stories/checkbox.component.stories.ts": [
@@ -11204,6 +11544,28 @@
                     "deprecationMessage": "",
                     "type": "Story",
                     "defaultValue": "{\n    args: {\n        field: FieldBuilder.createField('textarea', 'textarea', 'textarea', 'textarea', 'textarea'),\n    },\n}"
+                }
+            ],
+            "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table.stories.ts": [
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<TwDefaultTableComponent>",
+                    "defaultValue": "{\n    title: 'TailwindUI/Components/Tables/Default Table',\n    component: TwDefaultTableComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TwDefaultTableComponent],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\n              ${story}\n            </div>`\n        ),\n    ],\n    args: {},\n}"
+                },
+                {
+                    "name": "TableWithAllSettings",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n    args: {\n        isSelectable: true,\n        isSortable: true,\n        headers: ['Comments', 'Candidates', 'Offers'],\n        actionColName: ' ',\n        isDraggable: true,\n        rows: [\n            { comments: 'Great candidate', candidates: 'John Doe', offers: 'Accepted' },\n            { comments: 'Needs improvement', candidates: 'Jane Smith', offers: 'Pending' },\n            { comments: 'Excellent skills', candidates: 'Alice Johnson', offers: 'Rejected' },\n            { comments: 'Average performance', candidates: 'Bob Brown', offers: 'Accepted' },\n        ],\n    },\n}"
                 }
             ]
         },
@@ -11422,58 +11784,6 @@
                     "kind": 183
                 }
             ],
-            "projects/ng-lib/src/lib/tw-ui/components/stories/button.component.stories.ts": [
-                {
-                    "name": "Story",
-                    "ctype": "miscellaneous",
-                    "subtype": "typealias",
-                    "rawtype": "StoryObj<ButtonWrapperComponent>",
-                    "file": "projects/ng-lib/src/lib/tw-ui/components/stories/button.component.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "description": "",
-                    "kind": 183
-                }
-            ],
-            "projects/ng-lib/src/lib/tw-ui/components/stories/card.component.stories.ts": [
-                {
-                    "name": "Story",
-                    "ctype": "miscellaneous",
-                    "subtype": "typealias",
-                    "rawtype": "StoryObj<CardWrapperComponent>",
-                    "file": "projects/ng-lib/src/lib/tw-ui/components/stories/card.component.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "description": "",
-                    "kind": 183
-                }
-            ],
-            "projects/ng-lib/src/lib/tw-ui/components/stories/pill.component.stories.ts": [
-                {
-                    "name": "Story",
-                    "ctype": "miscellaneous",
-                    "subtype": "typealias",
-                    "rawtype": "StoryObj<PillWrapperComponent>",
-                    "file": "projects/ng-lib/src/lib/tw-ui/components/stories/pill.component.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "description": "",
-                    "kind": 183
-                }
-            ],
-            "projects/ng-lib/src/lib/tw-ui/components/stories/sidebar.component.stories.ts": [
-                {
-                    "name": "Story",
-                    "ctype": "miscellaneous",
-                    "subtype": "typealias",
-                    "rawtype": "StoryObj<SidebarComponent>",
-                    "file": "projects/ng-lib/src/lib/tw-ui/components/stories/sidebar.component.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "description": "",
-                    "kind": 183
-                }
-            ],
             "projects/ng-lib/src/lib/tw-form-ui/components/stories/field.component.stories.ts": [
                 {
                     "name": "Story",
@@ -11630,13 +11940,52 @@
                     "kind": 183
                 }
             ],
-            "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table.stories.ts": [
+            "projects/ng-lib/src/lib/tw-ui/components/stories/button.component.stories.ts": [
                 {
                     "name": "Story",
                     "ctype": "miscellaneous",
                     "subtype": "typealias",
-                    "rawtype": "StoryObj<TwDefaultTableComponent>",
-                    "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table.stories.ts",
+                    "rawtype": "StoryObj<ButtonWrapperComponent>",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/stories/button.component.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 183
+                }
+            ],
+            "projects/ng-lib/src/lib/tw-ui/components/stories/card.component.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "StoryObj<CardWrapperComponent>",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/stories/card.component.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 183
+                }
+            ],
+            "projects/ng-lib/src/lib/tw-ui/components/stories/pill.component.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "StoryObj<PillWrapperComponent>",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/stories/pill.component.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 183
+                }
+            ],
+            "projects/ng-lib/src/lib/tw-ui/components/stories/sidebar.component.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "StoryObj<SidebarComponent>",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/stories/sidebar.component.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "description": "",
@@ -11754,6 +12103,32 @@
                     "subtype": "typealias",
                     "rawtype": "StoryObj<TextareaComponent>",
                     "file": "projects/ng-lib/src/lib/tw-form-ui/components/types/stories/textarea.component.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 183
+                }
+            ],
+            "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "StoryObj<TwTableCardComponent>",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 183
+                }
+            ],
+            "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "StoryObj<TwDefaultTableComponent>",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "description": "",
@@ -12678,6 +13053,15 @@
                 "status": "low"
             },
             {
+                "filePath": "projects/ng-lib/src/lib/tw-ui/components/card/tw-card.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "TwCardComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "projects/ng-lib/src/lib/tw-ui/components/pill.component.ts",
                 "type": "component",
                 "linktype": "component",
@@ -12900,6 +13284,76 @@
                 "status": "low"
             },
             {
+                "filePath": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Default",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Draggable",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Grouped",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "mockData",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Selectable",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "WithActionColumn",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
@@ -12929,12 +13383,30 @@
                 "status": "low"
             },
             {
+                "filePath": "projects/ng-lib/src/lib/tw-ui/components/table/tw-table-card.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "TwTableCardComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/9",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/tw-ui/components/table/tw-table-header.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "TwTableHeaderComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "projects/ng-lib/src/lib/tw-ui/components/table/tw-table.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "TwDefaultTableComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/30",
+                "coveragePercent": 3,
+                "coverageCount": "1/29",
                 "status": "low"
             },
             {

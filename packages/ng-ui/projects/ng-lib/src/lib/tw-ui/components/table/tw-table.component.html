@@ -25,13 +25,14 @@
   let-sortDataSource="sortDataSource" let-selectedRows="selectedRows">
   <tr>
     @if(isSelectable) {
-    <th id="checkAll" class="border-b border-blue-gray-100 bg-blue-gray-50 p-1 min-h-[48.5px] max-w-[20px]">
-      <label for="selectAllCheckbox" class="relative flex items-center p-3 rounded-full cursor-pointer">
-        <input id="selectAllCheckbox" name="selectAllCheckbox" type="checkbox"
-          (change)="toggleSelectAll($event, objectKeysGroupData(groupData))"
-          class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10" />
-      </label>
-
+    <th id="checkAll" class="border-b border-blue-gray-100 bg-blue-gray-50 p-1 max-w-[10px]">
+      <div class="inline-flex items-center">
+        <label for="selectAllCheckbox" class="relative flex items-center cursor-pointer p-3 rounded-full">
+          <input id="selectAllCheckbox" name="selectAllCheckbox" type="checkbox"
+            (change)="toggleSelectAll($event, objectKeysGroupData(groupData))"
+            class="peer relative appearance-none border rounded-md border-blue-gray-200 cursor-pointer transition-all before:content[''] before:block before:bg-blue-gray-500 before:w-12 before:h-12 before:rounded-full before:absolute before:top-2/4 before:left-2/4 before:-translate-y-2/4 before:-translate-x-2/4 before:opacity-0 hover:before:opacity-10 before:transition-opacity checked:bg-gray-900 checked:border-gray-900 checked:before:bg-gray-900 w-4 h-4" />
+        </label>
+      </div>
     </th>
     }
     @for(header of headers; track $index) {
@@ -41,7 +42,7 @@
       (drop)="handleDrop($index, $event)" (drop)="handleDrop($index, $event)" scope="col">
       <tw-typography [variant]="'small'" [color]="'blue-gray'"
         [classStyle]="'flex items-center justify-between gap-2 font-normal leading-none opacity-70'">
-        {{ header ?? ' ' }}
+        {{ header ?? ' ' | titlecase}}
         <div class="flex flex-row gap-2">
           @if($index !== headers.length && isSortable) {
           <tw-sortable-icon (click)="sortRows(header, groupData)"
@@ -70,7 +71,7 @@
             <tbody>
               @for(rowData of groupData[groupKey]; track $index) {
               <ng-container
-                *ngTemplateOutlet="renderRow; context: { headers, rowData, rowIndex: $index, isSelectable, field: field({id: field-$index, value: rowData}) }">
+                *ngTemplateOutlet="renderRow; context: { headers, rowData, rowIndex: $index, isSelectable }">
               </ng-container>
               }
             </tbody>
@@ -86,11 +87,13 @@
   let-isSelectable="isSelectable">
   <tr>
     @if(isSelectable) {
-    <td [ngClass]="isSelectable ? 'p-1' : 'p-4'" class="border-b border-blue-gray-50 min-h-[48.5px] max-w-[15px]">
-      <label class="relative flex items-center p-3 rounded-full cursor-pointer" for="checkbox">
-        <input type="checkbox" [checked]="selection.selected(rowData)" (change)="toggleSelectItem(rowData)"
-          class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10" />
-      </label>
+    <td [ngClass]="isSelectable ? 'p-1' : 'p-4'" class="border-b border-blue-gray-50 p-1 max-h-[38px] max-w-[15px]">
+      <div class="inline-flex items-center">
+        <label class="relative flex items-center cursor-pointer p-3 rounded-full" for="checkbox">
+          <input type="checkbox" [checked]="selection.selected(rowData)" (change)="toggleSelectItem(rowData)"
+            class="peer relative appearance-none border rounded-md border-blue-gray-200 cursor-pointer transition-all before:content[''] before:block before:bg-blue-gray-500 before:w-12 before:h-12 before:rounded-full before:absolute before:top-2/4 before:left-2/4 before:-translate-y-2/4 before:-translate-x-2/4 before:opacity-0 hover:before:opacity-10 before:transition-opacity checked:bg-gray-900 checked:border-gray-900 checked:before:bg-gray-900 w-4 h-4" />
+        </label>
+      </div>
     </td>
     }
     @for (header of headers; track $index) {
