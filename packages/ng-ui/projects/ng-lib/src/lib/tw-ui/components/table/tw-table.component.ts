@@ -47,6 +47,7 @@ export class TwDefaultTableComponent implements OnChanges {
     datasource = this.tdss.get('dataSource');
     groupData = new ImperativeObservable<{ [key: string]: RowData[] }>({ key: this.tdss.get('dataSource') });
     selectedRows = new ImperativeObservable<RowData[]>(this.tdss.get('selectedRows'));
+    selectedRow = new ImperativeObservable<RowData | null>(null);
     isAllRowsSelected = new ImperativeObservable<boolean>(this.selectedRows.value.length === this.datasource.length);
     selectedIndex = new ImperativeObservable<number>(this.tdss.get('draggedColIndex') ?? 0);
 
@@ -62,6 +63,10 @@ export class TwDefaultTableComponent implements OnChanges {
         this.sortRows('key');
 
         console.log('tdss', this.tdss.state());
+    }
+
+    trackBy(index: any) {
+        return index;
     }
 
     private updateGroupData(): void {
@@ -94,14 +99,10 @@ export class TwDefaultTableComponent implements OnChanges {
         }, {} as { [key: string]: RowData[] });
     }
 
-    onRowClick(event: any): void {
-        // Handle the checkbox change here
-        console.log('Checkbox changed:', event);
-        // Update your data or perform actions based on the checkbox state
-    }
-
-    onRowSelection(rowData: any): void {
-        console.log('Row selected:', rowData);
+    isSelected(row: RowData): boolean {
+        const selectedRowStr = JSON.stringify(this.selectedRow.value);
+        const rowStr = JSON.stringify(row);
+        return selectedRowStr === rowStr;
     }
 
     get allRowsSelected(): boolean {

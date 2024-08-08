@@ -85,7 +85,7 @@
 <!-- Render Row Table Cells -->
 <ng-template #renderRow let-header="headers" let-rowData="rowData" let-rowIndex="rowIndex"
   let-isSelectable="isSelectable">
-  <tr>
+  <tr [ngClass]="isSelected(rowData) ? 'bg-light-blue-50': ''" (click)="selectedRow.value = rowData">
     @if(isSelectable) {
     <td [ngClass]="isSelectable ? 'p-1' : 'p-4'" class="border-b border-blue-gray-50 p-1 max-h-[38px] max-w-[15px]">
       <div class="inline-flex items-center">
