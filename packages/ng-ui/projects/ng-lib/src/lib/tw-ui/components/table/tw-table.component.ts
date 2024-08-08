@@ -39,6 +39,7 @@ export class TwDefaultTableComponent implements OnChanges {
     groupData = new ImperativeObservable<{ [key: string]: RowData[] }>({ key: this.tdss.get('dataSource') });
     selectedRows = new ImperativeObservable<RowData[]>(this.tdss.get('selectedRows'));
     isAllRowsSelected = new ImperativeObservable<boolean>(this.selectedRows.value.length === this.datasource.length);
+    selectedIndex = new ImperativeObservable<number>(this.tdss.get('draggedColIndex') ?? 0);
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['headers']) this.tdss.setHeaders(changes['headers'].currentValue);
@@ -50,8 +51,6 @@ export class TwDefaultTableComponent implements OnChanges {
 
         this.updateGroupData();
         this.sortRows('key');
-
-        console.log('TableDataSourceService', this.selectedRows.value);
     }
 
     private updateGroupData(): void {
@@ -139,7 +138,6 @@ export class TwDefaultTableComponent implements OnChanges {
     }
 
     sortRows(key: string): void {
-        // const groupByKey = this.tdss.get('preferences').groupBy ?? '';
         const currentDirection = this.tdss.get('sortDataSource').direction;
         const newDirection: 'ascending' | 'descending' = currentDirection === 'ascending' ? 'descending' : 'ascending';
 
@@ -147,8 +145,38 @@ export class TwDefaultTableComponent implements OnChanges {
         this.updateGroupData();
     }
 
-    // Figure out how to drag from initial index and drop on target index
+    handleDragStart(index: number): void {
+        this.tdss.dragStart(index);
+        console.log('dragStart', index, this.tdss.get('draggedColIndex'));
+    }
 
+    handleDragOver(event: DragEvent): void {
+        event.preventDefault();
+    }
+
+    handleDrop(index: number, event: DragEvent): void {
+        event.preventDefault();
+        this.tdss.dragDrop(index);
+        this.headers = this.tdss.get('headers');
+        this.groupData.value = this.groupByData(this.tdss.get('dataSource'), this.tdss.get('preferences').groupBy ?? 'key');
+    }
+
+    // // Figure out how to drag from initial index and drop on target index
+    // drop(event: CdkDragDrop<string[]>) {
+    //     // const prevActive = headers[this.selectedIndex.value];
+    //     // moveItemInArray(headers, event.previousIndex, event.currentIndex);
+    //     this.tdss.dragStart(event.previousIndex);
+    //     this.tdss.dragDrop(event.currentIndex);
+    //     this.selectedIndex.value = event.currentIndex;
+    // }
+
+    // dropRow(event: any) {
+    //     const data = this.groupData.value[this.groupBy ?? 'key'];
+    //     moveItemInArray(data, event.previousIndex, event.currentIndex);
+    // }
+    // dropCol(event: any) {
+    //     moveItemInArray(this.headers, event.previousIndex, event.currentIndex);
+    // }
     // dragRows(index: number) {
     //     this.draggableUtil.dragRows(this, index);
     // }

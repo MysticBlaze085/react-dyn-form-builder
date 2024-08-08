@@ -105,4 +105,36 @@ export class TableDataSourceService {
     getTableState(): TableState {
         return this.#state();
     }
+
+    dragStart(index: number): void {
+        this.#state.update((state) => ({ ...state, draggedColIndex: index }));
+    }
+
+    dragDrop(index: number): void {
+        const targetIndex = index;
+        const draggedColIndex = this.state().draggedColIndex;
+        const dataSource = this.state().dataSource;
+        if (draggedColIndex === null || draggedColIndex === targetIndex) return; // If no valid drag action, exit
+
+        // Update headers array with dragged column
+        const newHeaders = [...this.state().headers];
+        const draggedHeader = newHeaders.splice(draggedColIndex, 1)[0];
+        newHeaders.splice(targetIndex, 0, draggedHeader);
+
+        // Update rows in dataSource array with dragged column
+        const newRows = dataSource.map((row: any) => {
+            const entries = Object.entries(row);
+            const draggedEntry = entries.splice(draggedColIndex, 1)[0];
+            entries.splice(targetIndex, 0, draggedEntry);
+            return Object.fromEntries(entries); // Convert back to object
+        });
+
+        console.log('dragDrop', newHeaders, newRows);
+
+        // Update state with new headers, rows, and reset draggedColIndex
+        this.setHeaders(newHeaders);
+        this.setTableDataSource(newRows);
+        this.setSelectedRows([]);
+        this.#state.update((state) => ({ ...state, draggedColIndex: null }));
+    }
 }

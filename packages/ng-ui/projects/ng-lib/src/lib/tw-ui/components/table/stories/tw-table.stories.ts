@@ -32,6 +32,7 @@ export const TableWithAllSettings: Story = {
         isSortable: true,
         headers: ['Comments', 'Candidates', 'Offers'],
         actionColName: ' ',
+        isDraggable: true,
         rows: [
             { comments: 'Great candidate', candidates: 'John Doe', offers: 'Accepted' },
             { comments: 'Needs improvement', candidates: 'Jane Smith', offers: 'Pending' },

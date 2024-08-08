@@ -3,7 +3,7 @@
     class="w-full text-left table-auto min-w-max">
     <thead>
       <ng-container
-        *ngTemplateOutlet="renderThead; context: { groupData, headers, selectedRows: (selectedRows.change$ | async), isSelectable, field: field({id: 'selectAll', value: 'selectAll'}), sortDataSource: tdss.get('sortDataSource')}"></ng-container>
+        *ngTemplateOutlet="renderThead; context: { groupData, headers: tdss.get('headers'), selectedRows: (selectedRows.change$ | async), isSelectable, sortDataSource: tdss.get('sortDataSource')}"></ng-container>
     </thead>
     <tbody>
       @for(groupKey of objectKeysGroupData(groupData); track $index){
@@ -13,7 +13,7 @@
       } @else {
       @for(rowData of groupData[groupKey]; track $index) {
       <ng-container
-        *ngTemplateOutlet="renderRow; context: { headers, rowData, rowIndex: $index, isSelectable, field: field({id: 'field-' + $index, value: rowData}) }"></ng-container>
+        *ngTemplateOutlet="renderRow; context: { headers, rowData, rowIndex: $index, isSelectable }"></ng-container>
       }
       }
       }
@@ -22,26 +22,34 @@
 </div>
 
 <ng-template #renderThead let-groupData="groupData" let-header="headers" let-isSelectable="isSelectable"
-  let-field="field" let-sortDataSource="sortDataSource" let-selectedRows="selectedRows">
+  let-sortDataSource="sortDataSource" let-selectedRows="selectedRows">
   <tr>
     @if(isSelectable) {
     <th id="checkAll" class="border-b border-blue-gray-100 bg-blue-gray-50 p-1 min-h-[48.5px] max-w-[20px]">
-      <label class="relative flex items-center p-3 rounded-full cursor-pointer" for="checkbox">
-        <input type="checkbox" (change)="toggleSelectAll($event, objectKeysGroupData(groupData))"
+      <label for="selectAllCheckbox" class="relative flex items-center p-3 rounded-full cursor-pointer">
+        <input id="selectAllCheckbox" name="selectAllCheckbox" type="checkbox"
+          (change)="toggleSelectAll($event, objectKeysGroupData(groupData))"
           class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10" />
       </label>
+
     </th>
     }
     @for(header of headers; track $index) {
-    <th [id]="header" class="border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer">
+    <th [id]="header" class="border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer" [attr.key]="head"
+      [ngClass]="{'border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer': true}"
+      [attr.draggable]="isDraggable" (dragstart)="handleDragStart($index)" (dragover)="handleDragOver($event)"
+      (drop)="handleDrop($index, $event)" (drop)="handleDrop($index, $event)" scope="col">
       <tw-typography [variant]="'small'" [color]="'blue-gray'"
         [classStyle]="'flex items-center justify-between gap-2 font-normal leading-none opacity-70'">
         {{ header ?? ' ' }}
-        @if($index !== headers.length -1 && isSortable) {
-        <tw-sortable-icon (click)="sortRows(header, groupData)"></tw-sortable-icon>
-        } @if(this.tdss.get('sortDataSource').key === header && isSortable) {
-        <span>{{ sortDataSource.direction === 'ascending' ? '🔼' : '🔽' }}</span>
-        }
+        <div class="flex flex-row gap-2">
+          @if($index !== headers.length && isSortable) {
+          <tw-sortable-icon (click)="sortRows(header, groupData)"
+            (keydown)="sortRows(header, groupData)"></tw-sortable-icon>
+          } @if(tdss.get('sortDataSource').key === header && isSortable) {
+          <span>{{ sortDataSource.direction === 'ascending' ? '🔼' : '🔽' }}</span>
+          }
+        </div>
       </tw-typography>
     </th>
     }
@@ -75,7 +83,7 @@
 
 <!-- Render Row Table Cells -->
 <ng-template #renderRow let-header="headers" let-rowData="rowData" let-rowIndex="rowIndex"
-  let-isSelectable="isSelectable" let-field="field">
+  let-isSelectable="isSelectable">
   <tr>
     @if(isSelectable) {
     <td [ngClass]="isSelectable ? 'p-1' : 'p-4'" class="border-b border-blue-gray-50 min-h-[48.5px] max-w-[15px]">
