@@ -21,17 +21,8 @@ import { paginationSelector } from './utils';
             </tw-typography>
             @if((totalPages.change$ | async) > 1){
             <div class="flex gap-2">
-                <adk-button size="sm" color="blue" disabled="{{ (currentPage.change$ | async) <= 1 }}" (click)="handlePreviousClick()">
-                    Previous
-                </adk-button>
-                <adk-button
-                    size="sm"
-                    color="blue"
-                    disabled="{{ (currentPage.change$ | async) >= (totalPages.change$ | async) }}"
-                    (click)="handleNextClick()"
-                >
-                    Next
-                </adk-button>
+                <adk-button size="sm" color="blue" [disabled]="isPreviousDisabled()" (click)="handlePreviousClick()"> Previous </adk-button>
+                <adk-button size="sm" color="blue" [disabled]="isNextDisabled()" (click)="handleNextClick()"> Next </adk-button>
             </div>
             }
         </div>
@@ -56,6 +47,14 @@ export class TwTableFooterComponent implements OnInit {
 
     ngOnInit(): void {
         this.handleInitialPagination();
+    }
+
+    isNextDisabled() {
+        return this.currentPage.value >= this.totalPages.value;
+    }
+
+    isPreviousDisabled() {
+        return this.currentPage.value <= 1;
     }
 
     handleInitialPagination(): void {

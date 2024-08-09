@@ -65,6 +65,7 @@ export class TableDataSourceService {
                 totalPages: Math.ceil(state.initialDataSource.length / pageSize),
             },
         }));
+        this.setDataSourcePagination();
     }
 
     setCurrentPage(action: number) {
