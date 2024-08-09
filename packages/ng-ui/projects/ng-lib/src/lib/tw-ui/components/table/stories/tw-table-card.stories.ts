@@ -12,9 +12,41 @@ export default meta;
 type Story = StoryObj<TwTableCardComponent>;
 
 const mockData = [
-    { name: 'John Doe', job: 'Developer', date: '2024-08-01' },
-    { name: 'Jane Smith', job: 'Designer', date: '2024-08-02' },
-    { name: 'Bob Johnson', job: 'Manager', date: '2024-08-03' },
+    {
+        name: 'John Michael',
+        job: 'Manager',
+        date: '23/04/10',
+    },
+    {
+        name: 'Alexa Johnson',
+        job: 'CEO',
+        date: '23/04/02',
+    },
+    {
+        name: 'Sierra Brooks',
+        job: 'Designer',
+        date: '23/04/05',
+    },
+    {
+        name: 'Thomas Smith',
+        job: 'Developer',
+        date: '23/04/05',
+    },
+    {
+        name: 'Jenna Kian',
+        job: 'Marketing',
+        date: '23/04/18',
+    },
+    {
+        name: 'Denzel Washington',
+        job: 'Actor',
+        date: '23/04/05',
+    },
+    {
+        name: 'Morgan Freeman',
+        job: 'Actor',
+        date: '23/04/05',
+    },
 ];
 
 export const Default: Story = {

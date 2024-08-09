@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import TextFieldControl from './TextField';
+import TextFieldControl from '../TextField';
 
 const meta = {
     title: 'Material-TW/Field/Types/TextField',
@@ -22,12 +22,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  args: {
-    handler: () => {},
-    meta: {
-      label: 'Label',
+    args: {
+        handler: () => {},
+        meta: {
+            label: 'Label',
+        },
     },
-  },
 };
 
 // export const LoggedOut: Story = {};

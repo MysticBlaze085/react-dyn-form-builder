@@ -1,25 +1,25 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import React from 'react';
-import SelectControl from './Select';
+import SelectControl from '../Select';
 
 const meta = {
-    title: 'Material-TW/Field/Types/Select',
-    component: SelectControl,
-    tags: ['autodocs'],
-    parameters: {
-        layout: 'fullscreen',
-    },
-    decorators: [
-        (Story) => (
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
-                <div style={{ width: '500px' }}>
-                    <Story />
-                </div>
-            </div>
-        ),
-    ],
-    args: {},
+  title: 'Material-TW/Field/Types/Select',
+  component: SelectControl,
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'fullscreen',
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+        <div style={{ width: '500px' }}>
+          <Story />
+        </div>
+      </div>
+    ),
+  ],
+  args: {},
 } as Meta<typeof SelectControl>;
 
 export default meta;
@@ -27,7 +27,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    handler: () => {},
+    handler: () => { },
     meta: {
       label: 'Select a City',
       items: [

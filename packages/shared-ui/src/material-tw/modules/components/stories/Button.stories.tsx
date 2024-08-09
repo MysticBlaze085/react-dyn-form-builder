@@ -1,25 +1,25 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useEffect, useState } from 'react';
 
-import ButtonDefault from './Button';
+import ButtonDefault from '../Button';
 
 const meta = {
-    title: 'Material-TW/Components/Button',
-    component: ButtonDefault,
-    tags: ['autodocs'],
-    parameters: {
-        layout: 'fullscreen',
-    },
-    decorators: [
-        (Story) => (
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'auto', overflow: 'hidden' }}>
-                <div style={{ width: '80%', margin: '0 auto' }}>
-                    <Story />
-                </div>
-            </div>
-        ),
-    ],
-    args: {},
+  title: 'Material-TW/Components/Button',
+  component: ButtonDefault,
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'fullscreen',
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'auto', overflow: 'hidden' }}>
+        <div style={{ width: '80%', margin: '0 auto' }}>
+          <Story />
+        </div>
+      </div>
+    ),
+  ],
+  args: {},
 } as Meta<typeof ButtonDefault>;
 
 export default meta;

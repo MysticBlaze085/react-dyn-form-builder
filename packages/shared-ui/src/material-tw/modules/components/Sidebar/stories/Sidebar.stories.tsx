@@ -9,26 +9,26 @@ import PresentationChartBarIcon from '@heroicons/react/24/solid/PresentationChar
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import ShoppingBagIcon from '@heroicons/react/24/solid/ShoppingBagIcon';
-import Sidebar from './Sidebar';
+import Sidebar from '../Sidebar';
 import UserCircleIcon from '@heroicons/react/24/solid/UserCircleIcon';
 
 const meta = {
-    title: 'Material-TW/Components/Sidebar',
-    component: Sidebar,
-    tags: ['autodocs'],
-    parameters: {
-        layout: 'fullscreen',
-    },
-    decorators: [
-        (Story) => (
-            <Router>
-                <div style={{ display: 'flex', justifyContent: 'start', alignItems: 'start', height: '100vh', overflow: 'hidden' }}>
-                    <Story />
-                </div>
-            </Router>
-        ),
-    ],
-    args: {},
+  title: 'Material-TW/Components/Sidebar',
+  component: Sidebar,
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'fullscreen',
+  },
+  decorators: [
+    (Story) => (
+      <Router>
+        <div style={{ display: 'flex', justifyContent: 'start', alignItems: 'start', height: '100vh', overflow: 'hidden' }}>
+          <Story />
+        </div>
+      </Router>
+    ),
+  ],
+  args: {},
 } as Meta<typeof Sidebar>;
 
 export default meta;

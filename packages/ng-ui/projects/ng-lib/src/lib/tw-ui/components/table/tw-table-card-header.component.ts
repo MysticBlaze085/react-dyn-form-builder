@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 
 import { ButtonComponent } from '../button.component';
 import { CommonModule } from '@angular/common';
-import { TwTypographyComponent } from './utils';
+import { TwTypographyComponent } from '../typography.component';
 
 @Component({
     selector: 'tw-table-card-header',

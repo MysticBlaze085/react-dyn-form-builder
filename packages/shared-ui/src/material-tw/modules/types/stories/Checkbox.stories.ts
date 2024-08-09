@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
-import TextareaFieldControl from './TextareaField';
+import CheckboxControl from '../Checkbox';
 
 const meta = {
-    title: 'Material-TW/Field/Types/TextareaField',
-    component: TextareaFieldControl,
+    title: 'Material-TW/Field/Types/Checkbox',
+    component: CheckboxControl,
     // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
     tags: ['autodocs'],
     parameters: {
@@ -12,20 +11,23 @@ const meta = {
         // layout: 'fullscreen',
     },
     args: {},
-} as Meta<typeof TextareaFieldControl>;
+} satisfies Meta<typeof CheckboxControl>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  args: {
-    handler: () => {},
-    meta: {
-      label: 'Label',
-      required: false,
-      disabled: false
+    args: {
+        handler: () => ({
+            onClick: () => console.log('Checkbox clicked'),
+        }),
+        meta: {
+            item: {
+                value: 'Checkbox',
+                id: '1',
+            },
+        },
     },
-  },
 };
 
 // export const LoggedOut: Story = {};

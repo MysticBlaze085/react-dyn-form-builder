@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import TableSettingsDialog from './TableSettingsDialog';
+import TableSettingsDialog from '../TableSettingsDialog';
 import { Provider } from 'react-redux';
-import { StoreSate } from '../../../../store';
+import { StoreSate } from '../../../../../store';
 import { configureStore } from '@reduxjs/toolkit';
-import { initialState, tableDataSourceSlice } from '../../../../store/table/table-ds-slice';
+import { initialState, tableDataSourceSlice } from '../../../../../store/table/table-ds-slice';
 
 // Function to create a new store instance
 const createNewStore = (initialState: Partial<StoreSate>) => configureStore({

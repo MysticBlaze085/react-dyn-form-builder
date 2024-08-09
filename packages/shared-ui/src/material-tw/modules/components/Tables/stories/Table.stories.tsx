@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import DefaultTable from './Table';
+import DefaultTable from '../Table';
 import { Provider } from 'react-redux';
-import { store, StoreSate } from '../../../../store';
+import { store, StoreSate } from '../../../../../store';
 import React from 'react';
 import { configureStore } from '@reduxjs/toolkit';
-import { initialState, tableDataSourceSlice } from '../../../../store/table/table-ds-slice';
-import ButtonDefault from '../Button';
+import { initialState, tableDataSourceSlice } from '../../../../../store/table/table-ds-slice';
+import ButtonDefault from '../../Button';
 
 // Function to create a new store instance
 const createNewStore = (initialState: Partial<StoreSate>) => configureStore({
@@ -71,7 +71,7 @@ export const Primary: Story = {
         (story) => (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
                 <div style={{ width: '80%', margin: '0 auto' }}>
-                <Provider store={createNewStore({tableDataSource: initialState})}>{story()}</Provider>
+                    <Provider store={createNewStore({ tableDataSource: initialState })}>{story()}</Provider>
                 </div>
             </div>
         ),
@@ -101,7 +101,7 @@ export const WithActionButton: Story = {
         (story) => (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
                 <div style={{ width: '80%', margin: '0 auto' }}>
-                    <Provider store={createNewStore({tableDataSource: initialState})}>{story()}</Provider>
+                    <Provider store={createNewStore({ tableDataSource: initialState })}>{story()}</Provider>
                 </div>
             </div>
         ),
@@ -122,7 +122,7 @@ export const WithGroupBy: Story = {
         (story) => (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
                 <div style={{ width: '80%', margin: '0 auto' }}>
-                <Provider store={createNewStore({tableDataSource: initialState})}>{story()}</Provider>
+                    <Provider store={createNewStore({ tableDataSource: initialState })}>{story()}</Provider>
                 </div>
             </div>
         ),

@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { StoreSate, store } from '../../../../store';
-import { initialState, tableDataSourceSlice } from '../../../../store/table/table-ds-slice';
+import { StoreSate, store } from '../../../../../store';
+import { initialState, tableDataSourceSlice } from '../../../../../store/table/table-ds-slice';
 
-import ButtonDefault from '../Button';
+import ButtonDefault from '../../Button';
 import { Provider } from 'react-redux';
 import React from 'react';
-import TableCard from './TableCard';
-import TableDefault from './Table';
+import TableCard from '../TableCard';
+import TableDefault from '../Table';
 import { UserPlusIcon } from '@heroicons/react/24/solid';
 import { configureStore } from '@reduxjs/toolkit';
 

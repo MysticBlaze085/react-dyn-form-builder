@@ -1,13 +1,14 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewChild, inject } from '@angular/core';
-import { SortableIconComponent, TwTypographyComponent } from './utils';
 
-import { AdkExpansionPanelComponent } from './utils/expansion-panel.component';
+import { AdkExpansionPanelComponent } from '../expansion-panel.component';
 import { AdkSelection } from '../../../tw-form-ui/directives';
 import { CheckboxComponent } from '../../../tw-form-ui/components/types/checkbox.component';
 import { ImperativeObservable } from '../../../utils';
 import { RowData } from './models';
+import { SortableIconComponent } from './utils';
 import { TableDataSourceService } from './table-datasource.service';
+import { TwTypographyComponent } from '../typography.component';
 
 @Component({
     selector: 'tw-default-table',
