@@ -43,6 +43,7 @@ export class TwDefaultTableComponent implements OnChanges {
     @Input() actionButton?: TemplateRef<any> | string;
     @Input() rows: RowData[] = [];
     @Input() groupBy = '';
+    @Input() isPaginationAction?: boolean;
 
     tdss: TableDataSourceService = inject(TableDataSourceService);
     datasource = this.tdss.get('dataSource');
@@ -53,13 +54,17 @@ export class TwDefaultTableComponent implements OnChanges {
     selectedIndex = new ImperativeObservable<number>(this.tdss.get('draggedColIndex') ?? 0);
 
     ngOnChanges(changes: SimpleChanges): void {
+        console.log('changes', changes['isPaginationAction']);
         if (changes['headers']) this.tdss.setHeaders(changes['headers'].currentValue);
         if (changes['rows']) this.tdss.setTableDataSource(changes['rows'].currentValue);
         if (changes['groupBy']) this.tdss.setGroupBy(changes['groupBy'].currentValue);
         if (changes['isSelectable']) this.isSelectable = changes['isSelectable'].currentValue;
         if (changes['isSortable']) this.isSortable = changes['isSortable'].currentValue;
         if (changes['isDraggable']) this.isDraggable = changes['isDraggable'].currentValue;
-
+        if (changes['isPaginationAction'] && !changes['isPaginationAction'].isFirstChange) {
+            console.log('isPaginationAction', changes['isPaginationActin'].currentValue);
+            this.groupData.value = this.groupByData(this.tdss.get('dataSource'), this.tdss.get('preferences').groupBy ?? 'key');
+        }
         this.updateGroupData();
         this.sortRows('key');
 

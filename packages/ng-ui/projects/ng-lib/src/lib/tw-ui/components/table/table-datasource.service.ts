@@ -55,13 +55,65 @@ export class TableDataSourceService {
     }
 
     setPaginationState(pagination: Partial<Pagination>): void {
+        const pageSize = pagination.pageSize ?? this.#state().pagination.pageSize;
+        console.log('setPaginationState', pagination, pageSize);
         this.#state.update((state) => ({
             ...state,
             pagination: {
                 ...state.pagination,
                 ...pagination,
+                totalPages: Math.ceil(state.initialDataSource.length / pageSize),
             },
         }));
+    }
+
+    setCurrentPage(action: number) {
+        this.#state.update((state) => ({
+            ...state,
+            pagination: {
+                ...state.pagination,
+                currentPage: action,
+            },
+        }));
+
+        this.updateChangedCurrentPage(action);
+    }
+
+    updateChangedCurrentPage(action: any) {
+        // Update currentPage in pagination
+        this.#state.update((state) => ({
+            ...state,
+            pagination: {
+                ...state.pagination,
+                currentPage: action,
+            },
+        }));
+
+        // Update dataSource based on currentPage
+        this.setDataSourcePagination();
+    }
+
+    setDataSourcePagination() {
+        const state = this.#state();
+        // Calculate totalPages based on the full dataset (initialDataSource)
+        this.#state.update((state) => ({
+            ...state,
+            pagination: {
+                ...state.pagination,
+                totalPages: Math.ceil(state.initialDataSource.length / state.pagination.pageSize),
+            },
+        }));
+        // Check if there's data in the initialDataSource to paginate
+        if (state.initialDataSource.length > 0) {
+            // Use initialDataSource to slice the data for current page
+            this.#state.update((state) => ({
+                ...state,
+                dataSource: state.initialDataSource.slice(
+                    (state.pagination.currentPage - 1) * state.pagination.pageSize,
+                    state.pagination.currentPage * state.pagination.pageSize
+                ),
+            }));
+        }
     }
 
     setGroupBy(groupBy: string): void {

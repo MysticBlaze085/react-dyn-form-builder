@@ -29,10 +29,11 @@ import { TwTableFooterComponent } from './tw-table-footer.component';
                     [groupBy]="groupBy"
                     [actionColName]="actionColName"
                     [actionButton]="actionButton"
+                    [isPaginationAction]="paginationAction"
                 ></tw-default-table>
             </div>
             <div tw-card-footer>
-                <tw-table-footer></tw-table-footer>
+                <tw-table-footer (actionButtonClicked)="actionButtonTriggered()"></tw-table-footer>
             </div>
         </tw-card>
     `,
@@ -58,4 +59,11 @@ export class TwTableCardComponent {
     @Input() title?: string;
     @Input() subtitle?: string;
     @Input() buttons: { label: string; onClick: () => void; color: string; icon: string }[] = [];
+
+    paginationAction = false;
+
+    actionButtonTriggered() {
+        console.log('Action button clicked');
+        this.paginationAction = !this.paginationAction;
+    }
 }

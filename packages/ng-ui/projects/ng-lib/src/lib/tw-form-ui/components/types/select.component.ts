@@ -1,5 +1,5 @@
 import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { Field } from '../../models';
@@ -81,6 +81,7 @@ import { Field } from '../../models';
 })
 export class SelectComponent implements OnChanges {
     @Input() field!: Field;
+    @Output() fieldValueChange = new EventEmitter<string>();
     formControl: { [key: string]: AbstractControl | any } = {};
     errorClass = `${this.inputClass} mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500`;
     isOpen = false;
@@ -136,6 +137,10 @@ export class SelectComponent implements OnChanges {
             this.field = field.currentValue;
             this.initFormControl();
         }
+
+        this.formControl[this.field.key].valueChanges.subscribe((value: string) => {
+            this.emitValueChange(value);
+        });
     }
 
     private initFormControl(): void {
@@ -147,8 +152,13 @@ export class SelectComponent implements OnChanges {
     }
 
     selectOption(value: string) {
+        console.log('selectOption', value);
         this.field.value = value;
-        this.formControl[this.field.key].setValue(value);
+        this.formControl[this.field.key].patchValue(value);
         this.isOpen = false;
+    }
+
+    emitValueChange(value: string) {
+        this.fieldValueChange.emit(value);
     }
 }
