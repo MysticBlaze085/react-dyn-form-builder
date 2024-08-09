@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import DefaultTable from '../Table';
 import { Provider } from 'react-redux';
-import { store, StoreSate } from '../../../../../store';
+import { StoreSate } from '../../../../../store';
 import React from 'react';
 import { configureStore } from '@reduxjs/toolkit';
 import { initialState, tableDataSourceSlice } from '../../../../../store/table/table-ds-slice';
@@ -112,6 +112,7 @@ export const WithActionButton: Story = {
         isSortable: true,
         isDraggable: true,
         isSelectable: true,
+        groupBy: 'job',
         actionButton: renderActionButton,
     },
 };

@@ -64,6 +64,8 @@ export class TwDefaultTableComponent implements OnChanges {
             this.groupData.value = this.groupByData(this.tdss.get('dataSource'), this.tdss.get('preferences').groupBy ?? 'key');
         this.updateGroupData();
         this.sortRows('key');
+
+        console.log('tw-TableComponent', this.tdss.state());
     }
 
     trackBy(index: any) {
@@ -115,7 +117,11 @@ export class TwDefaultTableComponent implements OnChanges {
     isRowSelected(rowData: any): boolean {
         return this.selectedRows.value.some((selectedRow: any) => JSON.stringify(selectedRow) === JSON.stringify(rowData));
     }
-
+    /**
+     * isSelectable actions
+     * @param event
+     * @param groupKey
+     */
     toggleSelectAll(event: Event, groupKey: string): void {
         const isChecked = (event.target as HTMLInputElement).checked;
         if (isChecked) {

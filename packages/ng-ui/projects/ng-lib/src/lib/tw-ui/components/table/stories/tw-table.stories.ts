@@ -30,14 +30,45 @@ export const TableWithAllSettings: Story = {
     args: {
         isSelectable: true,
         isSortable: true,
-        headers: ['Comments', 'Candidates', 'Offers'],
+        headers: ['Name', 'Job', 'Date'],
         actionColName: ' ',
         isDraggable: true,
         rows: [
-            { comments: 'Great candidate', candidates: 'John Doe', offers: 'Accepted' },
-            { comments: 'Needs improvement', candidates: 'Jane Smith', offers: 'Pending' },
-            { comments: 'Excellent skills', candidates: 'Alice Johnson', offers: 'Rejected' },
-            { comments: 'Average performance', candidates: 'Bob Brown', offers: 'Accepted' },
+            {
+                name: 'John Michael',
+                job: 'Manager',
+                date: '23/04/10',
+            },
+            {
+                name: 'Alexa Johnson',
+                job: 'CEO',
+                date: '23/04/02',
+            },
+            {
+                name: 'Sierra Brooks',
+                job: 'Designer',
+                date: '23/04/05',
+            },
+            {
+                name: 'Thomas Smith',
+                job: 'Developer',
+                date: '23/04/05',
+            },
+            {
+                name: 'Jenna Kian',
+                job: 'Marketing',
+                date: '23/04/18',
+            },
+            {
+                name: 'Denzel Washington',
+                job: 'Actor',
+                date: '23/04/05',
+            },
+            {
+                name: 'Morgan Freeman',
+                job: 'Actor',
+                date: '23/04/05',
+            },
         ],
     },
 };
