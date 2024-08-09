@@ -20,7 +20,7 @@ import { Field } from '../../models';
                 aria-controls=":r1l:"
                 (click)="toggleDropdown()"
             >
-                <span class="absolute top-2/4 -translate-y-2/4 left-3 pt-0.5" [value]="field.value">{{ field.value }}</span>
+                <span class="absolute top-2/4 -translate-y-2/4 left-3 pt-0.5">{{ field.value }}</span>
                 <div
                     class="grid place-items-center absolute top-2/4 right-2 pt-px w-5 h-5 text-blue-gray-400 rotate-0 -translate-y-2/4 transition-all rotate-180 mt-px"
                 >
