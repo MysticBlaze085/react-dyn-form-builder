@@ -3,9 +3,19 @@ import docJson from '../documentation.json';
 import { setCompodocJson } from '@storybook/addon-docs/angular';
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { importProvidersFrom } from '@angular/core';
 
 setCompodocJson(docJson);
+
+// Function to add custom stylesheet
+const addCustomStylesheet = () => {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0';
+    document.head.appendChild(link);
+};
+
+// Call the function to add the stylesheet
+addCustomStylesheet();
 
 const customViewport = {
     large: {

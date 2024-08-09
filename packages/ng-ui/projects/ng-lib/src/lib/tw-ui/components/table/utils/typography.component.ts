@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 
@@ -45,7 +45,7 @@ type Color =
         `,
     ],
 })
-export class TwTypographyComponent {
+export class TwTypographyComponent implements OnChanges {
     @Input() variant: Variant = 'paragraph';
     @Input() color: Color = 'blue-gray';
     @Input() classStyle = '';
@@ -77,5 +77,10 @@ export class TwTypographyComponent {
 
     get colorClass(): string {
         return `text-${this.color}`;
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        console.log('changes', changes);
+        if (changes['variant']) this.variant = changes['variant'].currentValue;
     }
 }
