@@ -64,8 +64,6 @@ export class TwDefaultTableComponent implements OnChanges {
             this.groupData.value = this.groupByData(this.tdss.get('dataSource'), this.tdss.get('preferences').groupBy ?? 'key');
         this.updateGroupData();
         this.sortRows('key');
-
-        console.log('tw-TableComponent', this.tdss.state());
     }
 
     trackBy(index: any) {

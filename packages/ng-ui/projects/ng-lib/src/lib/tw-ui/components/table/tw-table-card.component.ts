@@ -14,7 +14,12 @@ import { TwTableFooterComponent } from './tw-table-footer.component';
     template: `
         <tw-card>
             <div tw-card-header>
-                <tw-table-card-header [title]="title" [subtitle]="subtitle" [buttons]="buttons"></tw-table-card-header>
+                <tw-table-card-header
+                    [title]="title"
+                    [subtitle]="subtitle"
+                    [buttons]="buttons"
+                    (actionKeyPress)="actionButtonTriggered()"
+                ></tw-table-card-header>
             </div>
             <div tw-card-body>
                 <tw-default-table

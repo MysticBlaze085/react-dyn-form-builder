@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit, inject } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 
 import { ButtonComponent } from '../button.component';
 import { CommonModule } from '@angular/common';
@@ -79,12 +79,12 @@ export class TwTableCardHeaderComponent implements OnInit, AfterViewInit {
     @Input() title?: string;
     @Input() subtitle?: string;
     @Input() buttons: { label: string; onClick: () => void; color: string; icon: string }[] = [];
+    @Output() actionKeyPress = new EventEmitter<boolean>();
 
     searchColumn = new ImperativeObservable<string | null>(this.tdss.get('filterDataSource').column);
     field?: FieldBuilder;
 
     ngAfterViewInit(): void {
-        console.log('tw-TableCardHeaderComponent', this.tdss.state());
         this.searchColumn.value = this.tdss.get('filterDataSource').column;
         this.field = searchColumnSelector(this.searchColumn.value ?? '');
     }
@@ -94,9 +94,7 @@ export class TwTableCardHeaderComponent implements OnInit, AfterViewInit {
     }
 
     handleFiltering(e: any): void {
-        console.log('Filtering', e);
         this.tdss.setFilter({ column: this.searchColumn.value, value: e });
-        console.log('tw-TableCardHeaderComponent', this.tdss.state());
-        //next trigger the change in table comp
+        this.actionKeyPress.emit(true);
     }
 }
