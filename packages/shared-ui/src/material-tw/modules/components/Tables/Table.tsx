@@ -1,4 +1,4 @@
-//@ts-nocheck
+// @ts-nocheck
 import { IconButton, Tooltip } from '@material-tailwind/react';
 import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,7 +10,7 @@ const Typography = React.lazy(() => import('@material-tailwind/react/components/
 const Accordion = React.lazy(() => import('@material-tailwind/react/components/Accordion'));
 const AccordionHeader = React.lazy(() => import('@material-tailwind/react/components/Accordion/AccordionHeader'));
 const AccordionBody = React.lazy(() => import('@material-tailwind/react/components/Accordion/AccordionBody'));
-const ChevronUpDownIcon = React.lazy(() => import('@heroicons/react/24/outline/ChevronUpDownIcon'));
+const ChevronUpDownIcon = React.lazy(() => import('@heroicons/react/24/solid/ChevronUpDownIcon'));
 const ChevronDownIcon = React.lazy(() => import('@heroicons/react/24/outline/ChevronDownIcon'));
 const ChevronUpIcon = React.lazy(() => import('@heroicons/react/24/outline/ChevronUpIcon'));
 
@@ -171,15 +171,19 @@ const DefaultTable: React.FC<DefaultTableProps> = ({ actionButton, ...props }) =
                                 <Typography
                                     variant="small"
                                     color="blue-gray"
-                                    className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 max-w-[15px]"
+                                    className="flex items-center justify-between gap-5 font-normal leading-none opacity-70"
                                 >
-                                    {head}{' '}
-                                    {index !== headers.length - 1 && isSortable && (
-                                        <ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
-                                    )}
-                                    {sortConfig?.key === head && isSortable && (
-                                        <span>{sortConfig.direction === 'ascending' ? '🔼' : '🔽'}</span>
-                                    )}
+                                    <div className='flex flex-row w-full justify-between'>
+                                        <span>{head}</span>
+                                        <span className='flex items-center'>
+                                            {index !== headers.length - 1 && isSortable && (
+                                                <ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
+                                            )}
+                                            {sortConfig?.key === head && isSortable && (
+                                                <span>{sortConfig.direction === 'ascending' ? '🔼' : '🔽'}</span>
+                                            )}
+                                        </span>
+                                    </div>
                                 </Typography>
                             </th>
                         ))}
