@@ -1,8 +1,13 @@
-import { Component, Input } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, inject } from '@angular/core';
 
 import { ButtonComponent } from '../button.component';
 import { CommonModule } from '@angular/common';
+import { FieldBuilder } from '../../../tw-form-ui';
+import { FieldComponent } from '../../../tw-form-ui/components/field.component';
+import { ImperativeObservable } from '../../../utils';
+import { TableDataSourceService } from './table-datasource.service';
 import { TwTypographyComponent } from '../typography.component';
+import { searchColumnSelector } from './utils';
 
 @Component({
     selector: 'tw-table-card-header',
@@ -37,8 +42,26 @@ import { TwTypographyComponent } from '../typography.component';
                 </div>
             </div>
         </div>
+
+        <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
+            <!-- @if(tabs?.length){ -->
+            <!-- <Tabs value="{tabs.length">
+                0 ? tabs[0].value : ''} class="w-full md:w-max">
+                <TabsHeader>
+                    {tabs.map(({ label, value }) => (
+                    <Tab key="{value}" value="{value}"> &nbsp;&nbsp;{label}&nbsp;&nbsp; </Tab>
+                    ))}
+                </TabsHeader>
+            </Tabs> -->
+            <!-- } -->
+        </div>
+        @if(searchColumn && field){
+        <div class="flex flex-row gap-2 w-full flex-wrap z-[20000]">
+            <adk-field [field]="field" (fieldValueChange)="handleFiltering($event)"></adk-field>
+        </div>
+        }
     </div>`,
-    imports: [CommonModule, TwTypographyComponent, ButtonComponent],
+    imports: [CommonModule, TwTypographyComponent, ButtonComponent, FieldComponent],
     styles: [
         `
             :host {
@@ -51,8 +74,29 @@ import { TwTypographyComponent } from '../typography.component';
         `,
     ],
 })
-export class TwTableCardHeaderComponent {
+export class TwTableCardHeaderComponent implements OnInit, AfterViewInit {
+    tdss = inject(TableDataSourceService);
     @Input() title?: string;
     @Input() subtitle?: string;
     @Input() buttons: { label: string; onClick: () => void; color: string; icon: string }[] = [];
+
+    searchColumn = new ImperativeObservable<string | null>(this.tdss.get('filterDataSource').column);
+    field?: FieldBuilder;
+
+    ngAfterViewInit(): void {
+        console.log('tw-TableCardHeaderComponent', this.tdss.state());
+        this.searchColumn.value = this.tdss.get('filterDataSource').column;
+        this.field = searchColumnSelector(this.searchColumn.value ?? '');
+    }
+
+    ngOnInit(): void {
+        this.tdss.initialFilterSearch();
+    }
+
+    handleFiltering(e: any): void {
+        console.log('Filtering', e);
+        this.tdss.setFilter({ column: this.searchColumn.value, value: e });
+        console.log('tw-TableCardHeaderComponent', this.tdss.state());
+        //next trigger the change in table comp
+    }
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 
 import { CheckboxComponent } from './types/checkbox.component';
 import { CommonModule } from '@angular/common';
@@ -40,20 +40,21 @@ const components = [
         }@case('select') {
         <adk-multi-select [field]="field"></adk-multi-select>
         } @default {
-        <adk-input [field]="field"></adk-input>
+        <adk-input [field]="field" (fieldValueChange)="emitValueChange($event)"></adk-input>
         } } }
     `,
     styles: [
         `
             :host {
                 display: block;
+                width: 100%;
             }
         `,
     ],
 })
 export class FieldComponent implements OnChanges {
     @Input() field!: Field;
-
+    @Output() fieldValueChange = new EventEmitter<string>();
     get props() {
         return this.field?.props;
     }
@@ -64,5 +65,9 @@ export class FieldComponent implements OnChanges {
 
     ngOnChanges({ field }: SimpleChanges): void {
         if (field) this.field = field.currentValue;
+    }
+
+    emitValueChange(value: string) {
+        this.fieldValueChange.emit(value);
     }
 }

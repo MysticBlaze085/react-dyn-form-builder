@@ -54,6 +54,42 @@ export class TableDataSourceService {
         }));
     }
 
+    initialFilterSearch(): void {
+        this.#state.update((state) => ({ ...state, filterDataSource: { column: state.headers[0], value: '' } }));
+    }
+
+    setFilter(action: { column: string | null; value: string }): void {
+        const column = action.column ?? this.state().filterDataSource.column;
+        const value = action.value ?? this.state().filterDataSource.value;
+        const filterDataSource = { column, value };
+        this.#state.update((state) => ({ ...state, filterDataSource }));
+        const selectedRows = this.state().selectedRows;
+        if (this.state().filterDataSource.column) {
+            if (this.state().filterDataSource.value === '') {
+                this.#state.update((state) => ({
+                    ...state,
+                    dataSource: state.initialDataSource,
+                }));
+            } else
+                this.#state.update((state) => ({
+                    ...state,
+                    dataSource: this.filterRows(state.initialDataSource, { column, value }),
+                }));
+        }
+        if (selectedRows.length > 0) {
+            const newSelectedRows = selectedRows.filter((row) => this.state().dataSource.includes(row));
+            this.#state.update((state) => ({ ...state, selectedRows: newSelectedRows }));
+        }
+    }
+
+    private filterRows = (rows: any[], filter: { column: string; value: string }) => {
+        if (!filter.column || !filter.value) return rows; // Return all rows if no filter criteria
+        return rows.filter((row) => {
+            const column = filter.column.toLowerCase();
+            return row[column]?.toLowerCase().includes(filter.value.toLowerCase()); // Case-insensitive filter
+        });
+    };
+
     setPaginationState(pagination: Partial<Pagination>): void {
         const pageSize = pagination.pageSize ?? this.#state().pagination.pageSize;
         this.#state.update((state) => ({

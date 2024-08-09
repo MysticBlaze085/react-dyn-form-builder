@@ -1,5 +1,5 @@
 import { Slice, createSlice } from '@reduxjs/toolkit';
-import { setDataSourcePagination, setPaginationState, updateChangedCurrentPage } from './pagination.util';
+import { setPaginationState, updateChangedCurrentPage } from './pagination.util';
 
 import { dragRows } from './drag.util';
 import { filterRows } from './filter-table.util';

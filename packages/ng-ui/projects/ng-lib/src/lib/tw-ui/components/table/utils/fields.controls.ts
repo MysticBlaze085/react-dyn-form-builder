@@ -1,7 +1,10 @@
 import { Field, FieldBuilder } from '../../../../tw-form-ui/models/field';
 
+import { TitleCasePipe } from '@angular/common';
+
+const titleCase = (param: string) => new TitleCasePipe().transform(param);
+
 export const paginationSelector: Field = FieldBuilder.createField('select', 'itemsPerPage', '5', 'Items Per Page', 'Items Per Page', {
-    // class: 'sm:col-span-3',
     labelClass: '',
     options: [
         {
@@ -26,3 +29,10 @@ export const paginationSelector: Field = FieldBuilder.createField('select', 'ite
         },
     ],
 });
+
+export const searchColumnSelector: (param: string) => Field = (param) =>
+    FieldBuilder.createField('text', 'searchColumn', '', `Search by ${titleCase(param)}`, ``, {
+        // class: 'sm:col-span-3',
+        labelClass: '',
+        required: false,
+    });

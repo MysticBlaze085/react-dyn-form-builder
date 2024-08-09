@@ -14,9 +14,6 @@ import { TwTableFooterComponent } from './tw-table-footer.component';
     template: `
         <tw-card>
             <div tw-card-header>
-                <!-- <h5 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-                    UI/UX Review Check
-                </h5> -->
                 <tw-table-card-header [title]="title" [subtitle]="subtitle" [buttons]="buttons"></tw-table-card-header>
             </div>
             <div tw-card-body>
