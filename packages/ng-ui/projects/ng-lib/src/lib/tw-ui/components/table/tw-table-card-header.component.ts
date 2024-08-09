@@ -6,6 +6,7 @@ import { FieldBuilder } from '../../../tw-form-ui';
 import { FieldComponent } from '../../../tw-form-ui/components/field.component';
 import { ImperativeObservable } from '../../../utils';
 import { TableDataSourceService } from './table-datasource.service';
+import { TwTableSettingsDialogComponent } from './tw-table-settings-dialog.component';
 import { TwTypographyComponent } from '../typography.component';
 import { searchColumnSelector } from './utils';
 
@@ -38,7 +39,7 @@ import { searchColumnSelector } from './utils';
                 </div>
                 }
                 <div class="flex items-center gap-3 cursor-pointer">
-                    <!-- <tw-table-settings-dialog /> -->
+                    <tw-table-settings-dialog></tw-table-settings-dialog>
                 </div>
             </div>
         </div>
@@ -61,7 +62,7 @@ import { searchColumnSelector } from './utils';
         </div>
         }
     </div>`,
-    imports: [CommonModule, TwTypographyComponent, ButtonComponent, FieldComponent],
+    imports: [CommonModule, TwTypographyComponent, ButtonComponent, FieldComponent, TwTableSettingsDialogComponent],
     styles: [
         `
             :host {
