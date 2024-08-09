@@ -80,7 +80,6 @@ export class TwTypographyComponent implements OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        console.log('changes', changes);
         if (changes['variant']) this.variant = changes['variant'].currentValue;
     }
 }

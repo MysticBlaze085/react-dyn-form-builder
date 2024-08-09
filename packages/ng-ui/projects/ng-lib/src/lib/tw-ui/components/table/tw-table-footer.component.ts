@@ -64,7 +64,6 @@ export class TwTableFooterComponent implements OnInit {
     }
 
     handlePageSizeChange(e: any): void {
-        console.log('handlePageSizeChange', e);
         //check if e is string if is turn to number
         const pageSize = typeof e === 'string' ? parseInt(e, 10) : e;
         this.tdss.setPaginationState({ currentPage: 1, pageSize });

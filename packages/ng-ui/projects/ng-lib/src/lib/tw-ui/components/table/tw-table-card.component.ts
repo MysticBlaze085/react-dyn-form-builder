@@ -63,7 +63,6 @@ export class TwTableCardComponent {
     paginationAction = false;
 
     actionButtonTriggered() {
-        console.log('Action button clicked');
         this.paginationAction = !this.paginationAction;
     }
 }

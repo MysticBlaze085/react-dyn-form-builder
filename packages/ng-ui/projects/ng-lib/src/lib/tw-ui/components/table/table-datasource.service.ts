@@ -56,7 +56,6 @@ export class TableDataSourceService {
 
     setPaginationState(pagination: Partial<Pagination>): void {
         const pageSize = pagination.pageSize ?? this.#state().pagination.pageSize;
-        console.log('setPaginationState', pagination, pageSize);
         this.#state.update((state) => ({
             ...state,
             pagination: {
@@ -181,8 +180,6 @@ export class TableDataSourceService {
             entries.splice(targetIndex, 0, draggedEntry);
             return Object.fromEntries(entries); // Convert back to object
         });
-
-        console.log('dragDrop', newHeaders, newRows);
 
         // Update state with new headers, rows, and reset draggedColIndex
         this.setHeaders(newHeaders);

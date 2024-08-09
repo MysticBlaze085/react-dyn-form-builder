@@ -152,7 +152,6 @@ export class SelectComponent implements OnChanges {
     }
 
     selectOption(value: string) {
-        console.log('selectOption', value);
         this.field.value = value;
         this.formControl[this.field.key].patchValue(value);
         this.isOpen = false;

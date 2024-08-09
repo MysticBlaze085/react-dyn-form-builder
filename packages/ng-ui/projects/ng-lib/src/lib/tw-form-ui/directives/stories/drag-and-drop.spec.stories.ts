@@ -40,17 +40,12 @@ import { Component } from '@angular/core';
 export class DragDropExampleComponent {
     droppedItem: string | null = null;
 
-    onDragStart(event: DragEvent) {
-        console.log('Drag started:', event);
-    }
+    onDragStart(_event: DragEvent) {}
 
-    onDragEnd(event: DragEvent) {
-        console.log('Drag ended:', event);
-    }
+    onDragEnd(_event: DragEvent) {}
 
-    onDrop(event: DragEvent) {
+    onDrop(_event: DragEvent) {
         this.droppedItem = 'Item dropped';
-        console.log('Dropped:', event);
     }
 }
 

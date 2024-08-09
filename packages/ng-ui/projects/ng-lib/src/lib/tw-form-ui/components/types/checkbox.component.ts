@@ -137,7 +137,6 @@ export class CheckboxComponent implements OnChanges, AfterViewInit {
             }
         }
         if (isChecked) {
-            console.log('CheckboxComponent', isChecked.currentValue);
             this.formControl[this.field.key].patchValue(isChecked.currentValue);
         }
     }
@@ -160,7 +159,6 @@ export class CheckboxComponent implements OnChanges, AfterViewInit {
         } else {
             value = this.isChecked !== undefined ? this.isChecked : value;
             this.formControl[this.field.key].patchValue(value);
-            console.log('CheckboxComponent', value, this.formControl[this.field.key].value);
         }
         this.valueChange.emit(this.field.value);
     }
