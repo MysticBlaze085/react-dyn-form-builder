@@ -33,7 +33,7 @@ type Color =
     standalone: true,
     imports: [CommonModule],
     template: `
-        <p [ngClass]="[variantClass, colorClass, classStyle, 'block', 'antialiased', 'font-sans', 'ml-2']">
+        <p [ngClass]="[variantClass, colorClass, classStyle, 'block', 'antialiased', 'font-sans']">
             <ng-content></ng-content>
         </p>
     `,

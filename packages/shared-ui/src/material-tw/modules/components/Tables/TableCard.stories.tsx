@@ -74,7 +74,7 @@ export const Primary: Story = {
     decorators: [
         (story) => (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                <div style={{ width: '80%', margin: '0 auto' }}>
+                <div style={{ width: '98%', margin: '0 auto' }}>
                     <Provider store={createNewStore({ tableDataSource: initialState })}>{story()}</Provider>
                 </div>
             </div>

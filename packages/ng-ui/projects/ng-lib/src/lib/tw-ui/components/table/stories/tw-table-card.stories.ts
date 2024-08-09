@@ -24,8 +24,8 @@ export const Default: Story = {
         isSelectable: false,
         isSortable: true,
         isDraggable: false,
-        title: 'Table Card Title',
-        subtitle: 'Table Card Subtitle',
+        title: 'Table Card',
+        subtitle: 'This is a table card',
         buttons: [
             { label: 'View ALL', onClick: () => {}, color: 'blue', icon: '' },
             { label: 'add member', onClick: () => {}, color: 'blue', icon: 'person_add' },
