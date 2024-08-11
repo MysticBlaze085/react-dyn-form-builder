@@ -6,25 +6,16 @@ import { Component } from '@angular/core';
     standalone: true,
     imports: [CommonModule],
     template: `
-        <div class="relative flex flex-col mt-6 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl">
-            <ng-content
-                select="[tw-card-header]"
-                class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900"
-            ></ng-content>
-            <ng-content
-                select="[tw-card-body]"
-                class="block font-sans text-base antialiased font-light leading-relaxed text-inherit"
-            ></ng-content>
-            <ng-content select="[tw-card-footer]" class="p-6 pt-0"></ng-content>
+        <div class="relative flex flex-col gap-4 w-full h-full text-gray-700 bg-white shadow-md rounded-md bg-clip-border">
+            <div class="px-6 pt-6 flex flex-col gap-4">
+                <ng-content select=".adk-card-header"></ng-content>
+                <ng-content select=".adk-card-subtitle"></ng-content>
+                <ng-content select=".adk-card-body"></ng-content>
+            </div>
+            <div class="p-6 pt-0">
+                <ng-content select=".adk-card-footer"></ng-content>
+            </div>
         </div>
     `,
-    styles: [
-        `
-            :host {
-                display: block;
-                width: 100%;
-            }
-        `,
-    ],
 })
 export class TwCardComponent {}

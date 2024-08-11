@@ -13,7 +13,7 @@ import { TwTableFooterComponent } from './tw-table-footer.component';
     imports: [CommonModule, TwCardComponent, TwDefaultTableComponent, TwTableCardHeaderComponent, TwTableFooterComponent],
     template: `
         <tw-card>
-            <div tw-card-header>
+            <div class="adk-card-header">
                 <tw-table-card-header
                     [title]="title"
                     [subtitle]="subtitle"
@@ -21,7 +21,7 @@ import { TwTableFooterComponent } from './tw-table-footer.component';
                     (actionKeyPress)="actionButtonTriggered()"
                 ></tw-table-card-header>
             </div>
-            <div tw-card-body>
+            <div class="adk-card-body">
                 <tw-default-table
                     [headers]="headers"
                     [rows]="rows"
@@ -34,7 +34,7 @@ import { TwTableFooterComponent } from './tw-table-footer.component';
                     [isPaginationAction]="paginationAction"
                 ></tw-default-table>
             </div>
-            <div tw-card-footer>
+            <div class="adk-card-footer">
                 <tw-table-footer (actionButtonClicked)="actionButtonTriggered()"></tw-table-footer>
             </div>
         </tw-card>

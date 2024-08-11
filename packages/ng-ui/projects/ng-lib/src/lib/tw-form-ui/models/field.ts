@@ -1,6 +1,5 @@
 import { AbstractControl, FormControl, ValidatorFn, Validators } from '@angular/forms';
 import { Identifiable, TYPE, VALUE } from './identifiable';
-import { Observable, map } from 'rxjs';
 
 export declare type AttributeEvent = (field: Field, event?: any) => void;
 

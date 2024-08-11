@@ -1,4 +1,4 @@
-import { Field, FieldBuilder } from '../../../../tw-form-ui/models/field';
+import { Field, FieldBuilder, FieldOptions } from '../../../../tw-form-ui/models/field';
 
 import { TitleCasePipe } from '@angular/common';
 
@@ -36,3 +36,61 @@ export const searchColumnSelector: (param: string) => Field = (param) =>
         labelClass: '',
         required: false,
     });
+
+export const preferenceVisibilitySelector: (params: string[]) => Field[] = (params: string[]) => {
+    const mapVisibleColumnsOptions: FieldOptions[] = params.map((param) => {
+        return {
+            id: param,
+            value: param,
+            label: titleCase(param),
+        };
+    });
+
+    const headerCheckboxGroup: Field = FieldBuilder.createField('checkbox', 'visibleColumns', params, 'visibleColumns', 'Visible Columns', {
+        labelClass: '',
+        required: false,
+        options: mapVisibleColumnsOptions,
+    });
+
+    return [
+        {
+            ...headerCheckboxGroup,
+        },
+    ];
+};
+
+export const preferenceColumnSelector: (params: string[]) => Field = (params: string[]) => {
+    const mapVisibleColumnsOptions: FieldOptions[] = params.map((param) => {
+        return {
+            id: param,
+            value: param,
+            label: titleCase(param),
+        };
+    });
+
+    const columnSearchColumn: Field = FieldBuilder.createField('select', 'column', params[0], 'Column', '', {
+        options: mapVisibleColumnsOptions,
+    });
+
+    return {
+        ...columnSearchColumn,
+    };
+};
+
+export const preferenceGroupBySelector: (params: string[]) => Field = (params: string[]) => {
+    const mapVisibleColumnsOptions: FieldOptions[] = params.map((param) => {
+        return {
+            id: param,
+            value: param,
+            label: titleCase(param),
+        };
+    });
+
+    const groupByColumn: Field = FieldBuilder.createField('select', 'groupBy', params[0], 'Group By', '', {
+        options: mapVisibleColumnsOptions,
+    });
+
+    return {
+        ...groupByColumn,
+    };
+};

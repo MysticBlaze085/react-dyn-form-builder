@@ -19,6 +19,7 @@ const components = [
     PasswordComponent,
     SelectComponent,
     MultiSelectComponent,
+    SelectComponent,
     EmailComponent,
 ];
 
@@ -38,6 +39,8 @@ const components = [
         } @case('email') {
         <adk-email-input [field]="field"></adk-email-input>
         }@case('select') {
+        <adk-select [field]="field"></adk-select>
+        }@case('multi-select') {
         <adk-multi-select [field]="field"></adk-multi-select>
         } @default {
         <adk-input [field]="field" (fieldValueChange)="emitValueChange($event)"></adk-input>

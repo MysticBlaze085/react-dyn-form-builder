@@ -134,6 +134,7 @@ export class SelectComponent implements OnChanges {
 
     ngOnChanges({ field }: SimpleChanges): void {
         if (field) {
+            console.log('field select', field.currentValue);
             this.field = field.currentValue;
             this.initFormControl();
         }

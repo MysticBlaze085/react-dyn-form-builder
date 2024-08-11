@@ -4,29 +4,28 @@ import { type Meta, type StoryObj } from '@storybook/angular';
 import { expect } from '@storybook/jest';
 import { userEvent, within } from '@storybook/test';
 import { CommonModule } from '@angular/common';
-import { CardComponent } from '../card.component';
+import { TwCardComponent } from '../card/tw-card.component';
+import { ButtonComponent } from '../button.component';
 
 @Component({
     selector: 'storybook-card-wrapper',
     standalone: true,
-    imports: [CommonModule, CardComponent],
+    imports: [CommonModule, TwCardComponent, ButtonComponent],
     template: `
-        <adk-card>
+        <tw-card>
             <h5
                 class="adk-card-header block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900"
             >
                 UI/UX Review Check
             </h5>
-            <p class="adk-card-content block font-sans text-base antialiased font-light leading-relaxed text-inherit">
+            <p class="adk-card-subtitle block font-sans text-base antialiased font-light leading-relaxed text-inherit">
                 Card content goes here
             </p>
-            <button
-                class="adk-card-footer align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
-                type="button"
-            >
-                Read More
-            </button>
-        </adk-card>
+            <div class="adk-card-body">Content for ng-content goes here</div>
+            <div class="adk-card-footer">
+                <adk-button> Read More </adk-button>
+            </div>
+        </tw-card>
     `,
 })
 class CardWrapperComponent {}
