@@ -82,7 +82,7 @@ const TableHeader: React.FC<TableHeaderProps> = ({ title, subtitle, buttons, tab
                     {buttons &&
                         buttons.length > 0 &&
                         buttons.map(({ label, onClick, color, icon }) => (
-                            <ButtonDefault key={label} size="sm" onClick={onClick} color={color} className="flex items-center gap-3">
+                            <ButtonDefault key={label} size="sm" onClick={onClick} color={color} className="flex items-center gap-2">
                                 {icon} {label}
                             </ButtonDefault>
                         ))}

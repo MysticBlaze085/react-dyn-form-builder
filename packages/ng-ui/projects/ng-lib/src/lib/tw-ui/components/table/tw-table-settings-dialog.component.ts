@@ -2,9 +2,10 @@ import { Component, OnInit, inject } from '@angular/core';
 import { SettingsIconComponent, preferenceColumnSelector, preferenceGroupBySelector, preferenceVisibilitySelector } from './utils';
 
 import { ButtonComponent } from '../button.component';
-import { CheckboxComponent } from '../../../tw-form-ui/components/types/checkbox.component';
 import { CommonModule } from '@angular/common';
 import { DialogComponent } from '../dialog/dialog.component';
+import { FieldComponent } from '../../../tw-form-ui/components/field.component';
+import { FieldsComponent } from '../../../tw-form-ui';
 import { IconButtonComponent } from './utils/icon-button.component';
 import { TableDataSourceService } from './table-datasource.service';
 import { TwCardComponent } from '../card/tw-card.component';
@@ -21,7 +22,8 @@ import { TwTypographyComponent } from '../typography.component';
         IconButtonComponent,
         DialogComponent,
         ButtonComponent,
-        CheckboxComponent,
+        FieldsComponent,
+        FieldComponent,
     ],
     template: `
         <adk-settings-icon (click)="openDialog()"> </adk-settings-icon>
@@ -37,21 +39,19 @@ import { TwTypographyComponent } from '../typography.component';
                     <div class="grow"></div>
                     <adk-icon-button (click)="closeDialog()"></adk-icon-button>
                 </tw-typography>
-                <tw-typography class="adk-card-subtitle mb-3 font-normal" variant="paragraph" color="gray">
-                    Customize the columns visibility.
-                </tw-typography>
                 <div class="adk-card-body">
                     @if (visibleColumnField) {
-                    <adk-checkbox [field]="visibleColumnField"></adk-checkbox>
-                    <!-- <adk-field [field]="visibleColumnField"></adk-field> -->
-                    }
-                    <tw-typography class="mb-3 font-normal" variant="paragraph" color="gray">
+                    <tw-typography class="adk-card-subtitle mb-3 font-normal" variant="paragraph" color="gray">
+                        Customize the columns visibility.
+                    </tw-typography>
+                    <adk-fields [fieldConfig]="visibleColumnField" [wrapperClass]="'flex flex-col gap-4'"></adk-fields>
+                    } @if (columnField) {
+                    <tw-typography class="mt-4 font-normal" variant="paragraph" color="gray">
                         Select the column to filter a search value
                     </tw-typography>
-                    @if (columnField) {
-                    <!-- <adk-field [field]="columnField"></adk-field> -->
+                    <adk-fields class="mt-4" [fieldConfig]="[columnField]" [wrapperClass]="'flex flex-col gap-4'"></adk-fields>
                     } @if (groupByField) {
-                    <!-- <adk-field [field]="groupByField"></adk-field> -->
+                    <adk-fields class="mt-4" [fieldConfig]="[groupByField]" [wrapperClass]="'flex flex-col gap-4'"></adk-fields>
                     }
                 </div>
                 <div class="adk-card-footer">

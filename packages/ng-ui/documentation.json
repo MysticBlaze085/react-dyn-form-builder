@@ -4311,7 +4311,7 @@
         },
         {
             "name": "CheckboxComponent",
-            "id": "component-CheckboxComponent-a2fb3611709c7b051eb8999e745b507709c5a9ccc9db850607057829d12500d7c2c70ea2e5e269297dfe8de299d0d58583e0af370b471aa513964150cc790be1",
+            "id": "component-CheckboxComponent-05b593209fee1f33f6069eb2e5f21c5b2f8ea6f7e8bd2a13fcc4630a8989d5a001a731b752e8bed947b7bae5191a4c5e310e7c2227d490ec5bdcc92b6a2b36a5",
             "file": "projects/ng-lib/src/lib/tw-form-ui/components/types/checkbox.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -4323,7 +4323,7 @@
             "styles": [
                 "\n            :host {\n                display: block;\n            }\n        "
             ],
-            "template": "@if (options.length > 0) { @for (option of options; track (option.id)) {\n<div [ngClass]=\"class\" class=\"relative flex gap-x-3 mt-2\">\n    <div class=\"flex h-6 items-center\">\n        <input\n            type=\"checkbox\"\n            [checked]=\"formControl[field.key][option.id]?.value\"\n            [name]=\"option.id\"\n            [id]=\"option.id\"\n            [value]=\"option.value\"\n            [formControl]=\"formControl[field.key][option.id]\"\n            [ngClass]=\"inputClass\"\n            (change)=\"onCheckChange($event, option.id)\"\n        />\n    </div>\n    <div class=\"text-sm leading-6\">\n        <label [for]=\"option.id\" [ngClass]=\"labelClass\">{{ option.label }}</label>\n        <p *ngIf=\"option.description\" class=\"text-gray-500\">{{ option.description }}</p>\n    </div>\n</div>\n} } @else {\n<div class=\"inline-flex items-center\">\n    <label class=\"relative flex items-center p-3 rounded-full cursor-pointer\" for=\"checkbox\">\n        <input\n            type=\"checkbox\"\n            class=\"before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10\"\n            [checked]=\"formControl[field.key].value\"\n            [name]=\"id\"\n            [id]=\"id\"\n            [value]=\"field.value\"\n            [formControl]=\"formControl[field.key]\"\n            [ngClass]=\"inputClass\"\n            (change)=\"onCheckChange($event, id)\"\n        />\n        <span\n            class=\"absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100\"\n        >\n            <svg\n                xmlns=\"http://www.w3.org/2000/svg\"\n                class=\"h-3.5 w-3.5\"\n                viewBox=\"0 0 20 20\"\n                fill=\"currentColor\"\n                stroke=\"currentColor\"\n                stroke-width=\"1\"\n            >\n                <path\n                    fill-rule=\"evenodd\"\n                    d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\"\n                    clip-rule=\"evenodd\"\n                ></path>\n            </svg>\n        </span>\n    </label>\n</div>\n}\n",
+            "template": "@if (options.length > 0) {\n<div class=\"flex flex-col gap-4\">\n    @for (option of options; track (option.id)) {\n    <div class=\"inline-flex items-center\">\n        <label class=\"relative flex items-center p-3 rounded-full cursor-pointer\">\n            <input\n                type=\"checkbox\"\n                class=\"before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10\"\n                [checked]=\"formControl[field.key][option.id].value\"\n                [name]=\"options.id\"\n                [id]=\"options.id\"\n                [value]=\"options.value\"\n                [formControl]=\"formControl[field.key][options.id]\"\n                [ngClass]=\"inputClass\"\n                (change)=\"onCheckChange($event, option.id)\"\n            />\n            <span\n                class=\"absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100\"\n            >\n                <svg\n                    xmlns=\"http://www.w3.org/2000/svg\"\n                    class=\"h-3.5 w-3.5\"\n                    viewBox=\"0 0 20 20\"\n                    fill=\"currentColor\"\n                    stroke=\"currentColor\"\n                    stroke-width=\"1\"\n                >\n                    <path\n                        fill-rule=\"evenodd\"\n                        d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\"\n                        clip-rule=\"evenodd\"\n                    ></path>\n                </svg>\n            </span>\n        </label>\n        <label class=\"mt-px font-light text-gray-700 cursor-pointer select-none\" htmlFor=\"ripple-on\"> {{ option.label }}</label>\n    </div>\n    }\n</div>\n} @else {\n<div class=\"inline-flex items-center\">\n    <label class=\"relative flex items-center p-3 rounded-full cursor-pointer\" for=\"checkbox\">\n        <input\n            type=\"checkbox\"\n            class=\"before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10\"\n            [checked]=\"formControl[field.key].value\"\n            [name]=\"id\"\n            [id]=\"id\"\n            [value]=\"field.value\"\n            [formControl]=\"formControl[field.key]\"\n            [ngClass]=\"inputClass\"\n            (change)=\"onCheckChange($event, id)\"\n        />\n        <span\n            class=\"absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100\"\n        >\n            <svg\n                xmlns=\"http://www.w3.org/2000/svg\"\n                class=\"h-3.5 w-3.5\"\n                viewBox=\"0 0 20 20\"\n                fill=\"currentColor\"\n                stroke=\"currentColor\"\n                stroke-width=\"1\"\n            >\n                <path\n                    fill-rule=\"evenodd\"\n                    d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\"\n                    clip-rule=\"evenodd\"\n                ></path>\n            </svg>\n        </span>\n    </label>\n</div>\n}\n",
             "templateUrl": [],
             "viewProviders": [],
             "hostDirectives": [],
@@ -4332,7 +4332,7 @@
                     "name": "field",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 76,
+                    "line": 96,
                     "type": "Field",
                     "decorators": []
                 },
@@ -4340,7 +4340,7 @@
                     "name": "isChecked",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 77,
+                    "line": 97,
                     "type": "boolean",
                     "decorators": []
                 }
@@ -4351,7 +4351,7 @@
                     "defaultValue": "new EventEmitter<any>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 78,
+                    "line": 98,
                     "type": "EventEmitter<any>"
                 }
             ],
@@ -4364,7 +4364,7 @@
                     "type": "literal type",
                     "optional": false,
                     "description": "",
-                    "line": 79
+                    "line": 99
                 }
             ],
             "methodsClass": [
@@ -4374,7 +4374,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 144,
+                    "line": 156,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4387,7 +4387,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 121,
+                    "line": 141,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -4403,7 +4403,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 130,
+                    "line": 145,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -4436,7 +4436,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 155,
+                    "line": 167,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -4479,7 +4479,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { AbstractControl, FormControl, ReactiveFormsModule } from '@angular/forms';\nimport { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';\n\nimport { CommonModule } from '@angular/common';\nimport { Field } from '../../models';\n\n@Component({\n    standalone: true,\n    selector: 'adk-checkbox',\n    imports: [CommonModule, ReactiveFormsModule],\n    template: `\n        @if (options.length > 0) { @for (option of options; track (option.id)) {\n        <div [ngClass]=\"class\" class=\"relative flex gap-x-3 mt-2\">\n            <div class=\"flex h-6 items-center\">\n                <input\n                    type=\"checkbox\"\n                    [checked]=\"formControl[field.key][option.id]?.value\"\n                    [name]=\"option.id\"\n                    [id]=\"option.id\"\n                    [value]=\"option.value\"\n                    [formControl]=\"formControl[field.key][option.id]\"\n                    [ngClass]=\"inputClass\"\n                    (change)=\"onCheckChange($event, option.id)\"\n                />\n            </div>\n            <div class=\"text-sm leading-6\">\n                <label [for]=\"option.id\" [ngClass]=\"labelClass\">{{ option.label }}</label>\n                <p *ngIf=\"option.description\" class=\"text-gray-500\">{{ option.description }}</p>\n            </div>\n        </div>\n        } } @else {\n        <div class=\"inline-flex items-center\">\n            <label class=\"relative flex items-center p-3 rounded-full cursor-pointer\" for=\"checkbox\">\n                <input\n                    type=\"checkbox\"\n                    class=\"before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10\"\n                    [checked]=\"formControl[field.key].value\"\n                    [name]=\"id\"\n                    [id]=\"id\"\n                    [value]=\"field.value\"\n                    [formControl]=\"formControl[field.key]\"\n                    [ngClass]=\"inputClass\"\n                    (change)=\"onCheckChange($event, id)\"\n                />\n                <span\n                    class=\"absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100\"\n                >\n                    <svg\n                        xmlns=\"http://www.w3.org/2000/svg\"\n                        class=\"h-3.5 w-3.5\"\n                        viewBox=\"0 0 20 20\"\n                        fill=\"currentColor\"\n                        stroke=\"currentColor\"\n                        stroke-width=\"1\"\n                    >\n                        <path\n                            fill-rule=\"evenodd\"\n                            d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\"\n                            clip-rule=\"evenodd\"\n                        ></path>\n                    </svg>\n                </span>\n            </label>\n        </div>\n        }\n    `,\n    styles: [\n        `\n            :host {\n                display: block;\n            }\n        `,\n    ],\n})\nexport class CheckboxComponent implements OnChanges, AfterViewInit {\n    @Input() field!: Field;\n    @Input() isChecked?: boolean;\n    @Output() valueChange: EventEmitter<any> = new EventEmitter<any>();\n    formControl: { [key: string]: AbstractControl | any } = {};\n\n    get id() {\n        return `${this.field.id}`;\n    }\n\n    get props() {\n        return this.field?.props;\n    }\n\n    get options() {\n        return this.props?.options ?? [];\n    }\n\n    get autocomplete() {\n        return this.props?.autocomplete ?? 'off';\n    }\n\n    get label() {\n        return this.field.label;\n    }\n\n    get description() {\n        return this.field?.description;\n    }\n\n    get placeholder() {\n        return this.field.placeholder ?? '';\n    }\n\n    get class() {\n        return this.props?.class ?? 'sm:col-span-3';\n    }\n\n    get labelClass() {\n        return this.props?.labelClass ?? 'font-medium text-gray-900';\n    }\n\n    get inputClass() {\n        return this.props?.inputClass ?? 'h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600';\n    }\n\n    ngAfterViewInit(): void {\n        //check if field has already been rendered\n        if (this.formControl[this.field.key]) {\n            return;\n        } else {\n            this.initFormControl();\n        }\n    }\n\n    ngOnChanges({ field, isChecked }: SimpleChanges): void {\n        if (field) {\n            this.field = field.currentValue;\n            if (this.formControl[this.field.key]) {\n                return;\n            } else {\n                this.initFormControl();\n            }\n        }\n        if (isChecked) {\n            this.formControl[this.field.key].patchValue(isChecked.currentValue);\n        }\n    }\n\n    private initFormControl(): void {\n        this.formControl[this.field.key] = this.field.formControl;\n        if (this.options.length > 0) {\n            this.options.forEach((option: any) => {\n                this.formControl[this.field.key][option.id] = new FormControl('');\n            });\n        } else {\n            this.formControl[this.field.key] = new FormControl(false);\n        }\n    }\n\n    onCheckChange(event: any, id: any) {\n        let value = event.target.checked;\n        if (this.options.length > 0) {\n            this.formControl[this.field.key][id].patchValue(value);\n        } else {\n            value = this.isChecked !== undefined ? this.isChecked : value;\n            this.formControl[this.field.key].patchValue(value);\n        }\n        this.valueChange.emit(this.field.value);\n    }\n}\n",
+            "sourceCode": "import { AbstractControl, FormControl, ReactiveFormsModule } from '@angular/forms';\nimport { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';\n\nimport { CommonModule } from '@angular/common';\nimport { Field } from '../../models';\n\n@Component({\n    standalone: true,\n    selector: 'adk-checkbox',\n    imports: [CommonModule, ReactiveFormsModule],\n    template: `\n        @if (options.length > 0) {\n        <div class=\"flex flex-col gap-4\">\n            @for (option of options; track (option.id)) {\n            <div class=\"inline-flex items-center\">\n                <label class=\"relative flex items-center p-3 rounded-full cursor-pointer\">\n                    <input\n                        type=\"checkbox\"\n                        class=\"before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10\"\n                        [checked]=\"formControl[field.key][option.id].value\"\n                        [name]=\"options.id\"\n                        [id]=\"options.id\"\n                        [value]=\"options.value\"\n                        [formControl]=\"formControl[field.key][options.id]\"\n                        [ngClass]=\"inputClass\"\n                        (change)=\"onCheckChange($event, option.id)\"\n                    />\n                    <span\n                        class=\"absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100\"\n                    >\n                        <svg\n                            xmlns=\"http://www.w3.org/2000/svg\"\n                            class=\"h-3.5 w-3.5\"\n                            viewBox=\"0 0 20 20\"\n                            fill=\"currentColor\"\n                            stroke=\"currentColor\"\n                            stroke-width=\"1\"\n                        >\n                            <path\n                                fill-rule=\"evenodd\"\n                                d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\"\n                                clip-rule=\"evenodd\"\n                            ></path>\n                        </svg>\n                    </span>\n                </label>\n                <label class=\"mt-px font-light text-gray-700 cursor-pointer select-none\" htmlFor=\"ripple-on\"> {{ option.label }}</label>\n            </div>\n            }\n        </div>\n        } @else {\n        <div class=\"inline-flex items-center\">\n            <label class=\"relative flex items-center p-3 rounded-full cursor-pointer\" for=\"checkbox\">\n                <input\n                    type=\"checkbox\"\n                    class=\"before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10\"\n                    [checked]=\"formControl[field.key].value\"\n                    [name]=\"id\"\n                    [id]=\"id\"\n                    [value]=\"field.value\"\n                    [formControl]=\"formControl[field.key]\"\n                    [ngClass]=\"inputClass\"\n                    (change)=\"onCheckChange($event, id)\"\n                />\n                <span\n                    class=\"absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100\"\n                >\n                    <svg\n                        xmlns=\"http://www.w3.org/2000/svg\"\n                        class=\"h-3.5 w-3.5\"\n                        viewBox=\"0 0 20 20\"\n                        fill=\"currentColor\"\n                        stroke=\"currentColor\"\n                        stroke-width=\"1\"\n                    >\n                        <path\n                            fill-rule=\"evenodd\"\n                            d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\"\n                            clip-rule=\"evenodd\"\n                        ></path>\n                    </svg>\n                </span>\n            </label>\n        </div>\n        }\n    `,\n    styles: [\n        `\n            :host {\n                display: block;\n            }\n        `,\n    ],\n})\nexport class CheckboxComponent implements OnChanges, AfterViewInit {\n    @Input() field!: Field;\n    @Input() isChecked?: boolean;\n    @Output() valueChange: EventEmitter<any> = new EventEmitter<any>();\n    formControl: { [key: string]: AbstractControl | any } = {};\n\n    get id() {\n        return `${this.field.id}`;\n    }\n\n    get props() {\n        return this.field?.props;\n    }\n\n    get options() {\n        return this.props?.options ?? [];\n    }\n\n    get autocomplete() {\n        return this.props?.autocomplete ?? 'off';\n    }\n\n    get label() {\n        return this.field.label;\n    }\n\n    get description() {\n        return this.field?.description;\n    }\n\n    get placeholder() {\n        return this.field.placeholder ?? '';\n    }\n\n    get class() {\n        return this.props?.class ?? 'sm:col-span-3';\n    }\n\n    get labelClass() {\n        return this.props?.labelClass ?? 'font-medium text-gray-900';\n    }\n\n    get inputClass() {\n        return this.props?.inputClass ?? 'h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600';\n    }\n\n    ngAfterViewInit(): void {\n        this.initFormControl();\n    }\n\n    ngOnChanges({ field, isChecked }: SimpleChanges): void {\n        if (field) {\n            console.log('field', field);\n            this.field = field.currentValue;\n            this.initFormControl();\n        }\n        if (isChecked) {\n            this.formControl[this.field.key].patchValue(isChecked.currentValue);\n        }\n    }\n\n    private initFormControl(): void {\n        this.formControl[this.field.key] = this.field.formControl;\n        if (this.options.length > 0) {\n            this.options.forEach((option: any) => {\n                this.formControl[this.field.key][option.id] = new FormControl(option.value);\n            });\n        } else {\n            this.formControl[this.field.key] = new FormControl(false);\n        }\n    }\n\n    onCheckChange(event: any, id: any) {\n        let value = event.target.checked;\n        if (this.options.length > 0) {\n            this.formControl[this.field.key][id].patchValue(value);\n        } else {\n            value = this.isChecked !== undefined ? this.isChecked : value;\n            this.formControl[this.field.key].patchValue(value);\n        }\n        this.valueChange.emit(this.field.value);\n    }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "\n            :host {\n                display: block;\n            }\n        \n",
@@ -4495,7 +4495,7 @@
                         "name": "id",
                         "type": "",
                         "returnType": "",
-                        "line": 81
+                        "line": 101
                     }
                 },
                 "props": {
@@ -4504,7 +4504,7 @@
                         "name": "props",
                         "type": "",
                         "returnType": "",
-                        "line": 85
+                        "line": 105
                     }
                 },
                 "options": {
@@ -4513,7 +4513,7 @@
                         "name": "options",
                         "type": "",
                         "returnType": "",
-                        "line": 89
+                        "line": 109
                     }
                 },
                 "autocomplete": {
@@ -4522,7 +4522,7 @@
                         "name": "autocomplete",
                         "type": "",
                         "returnType": "",
-                        "line": 93
+                        "line": 113
                     }
                 },
                 "label": {
@@ -4531,7 +4531,7 @@
                         "name": "label",
                         "type": "",
                         "returnType": "",
-                        "line": 97
+                        "line": 117
                     }
                 },
                 "description": {
@@ -4540,7 +4540,7 @@
                         "name": "description",
                         "type": "",
                         "returnType": "",
-                        "line": 101
+                        "line": 121
                     }
                 },
                 "placeholder": {
@@ -4549,7 +4549,7 @@
                         "name": "placeholder",
                         "type": "",
                         "returnType": "",
-                        "line": 105
+                        "line": 125
                     }
                 },
                 "class": {
@@ -4558,7 +4558,7 @@
                         "name": "class",
                         "type": "",
                         "returnType": "",
-                        "line": 109
+                        "line": 129
                     }
                 },
                 "labelClass": {
@@ -4567,7 +4567,7 @@
                         "name": "labelClass",
                         "type": "",
                         "returnType": "",
-                        "line": 113
+                        "line": 133
                     }
                 },
                 "inputClass": {
@@ -4576,7 +4576,7 @@
                         "name": "inputClass",
                         "type": "",
                         "returnType": "",
-                        "line": 117
+                        "line": 137
                     }
                 }
             }
@@ -7090,7 +7090,7 @@
         },
         {
             "name": "SelectComponent",
-            "id": "component-SelectComponent-2d73b393c94b4ab3ec77ba10d41b63f994519d2c88552834851716c924058a682e9cee127eead5ed2a84287977be9b5ccc93c961a3542cb3387ed5a662d84909",
+            "id": "component-SelectComponent-51f502eb1f375da2b55ae0e6d2e71ffe93e8e77ead6c1ad4dd0d2bc2713c96ac4b79a4348ae101652c1327c2bcb8cca04118b6c62419d500414dafe2b9c3cc9a",
             "file": "projects/ng-lib/src/lib/tw-form-ui/components/types/select.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -7100,9 +7100,9 @@
             "selector": "adk-select",
             "styleUrls": [],
             "styles": [
-                "\n            :host {\n                display: block;\n            }\n        "
+                "\n            :host {\n                display: block;\n                position: relative;\n            }\n        "
             ],
-            "template": "@if (field) {\n<div class=\"relative w-full min-w-[200px] h-10\">\n    <button\n        type=\"button\"\n        class=\"peer w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal text-left outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 disabled:cursor-not-allowed transition-all border-2 text-sm px-3 py-2.5 rounded-[7px] border-blue-500 border-t-transparent\"\n        aria-expanded=\"true\"\n        aria-haspopup=\"listbox\"\n        role=\"combobox\"\n        aria-controls=\":r1l:\"\n        (click)=\"toggleDropdown()\"\n    >\n        <span class=\"absolute top-2/4 -translate-y-2/4 left-3 pt-0.5\">{{ field.value }}</span>\n        <div\n            class=\"grid place-items-center absolute top-2/4 right-2 pt-px w-5 h-5 text-blue-gray-400 rotate-0 -translate-y-2/4 transition-all rotate-180 mt-px\"\n        >\n            <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 20 20\" fill=\"currentColor\">\n                <path\n                    fill-rule=\"evenodd\"\n                    d=\"M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z\"\n                    clip-rule=\"evenodd\"\n                ></path>\n            </svg>\n        </div>\n    </button>\n    <label\n        class=\"flex w-full h-full select-none pointer-events-none absolute left-0 font-normal transition-all -top-1.5 before:content[' '] before:block before:box-border before:w-2.5 before:h-1.5 before:mt-[6.5px] before:mr-1 before:rounded-tl-md before:pointer-events-none before:transition-all peer-disabled:before:border-transparent after:content[' '] after:block after:flex-grow after:box-border after:w-2.5 after:h-1.5 after:mt-[6.5px] after:ml-1 after:rounded-tr-md after:pointer-events-none after:transition-all peer-disabled:after:border-transparent text-[11px] peer-disabled:text-transparent before:border-t-2 before:border-l-2 after:border-t-2 after:border-r-2 leading-tight text-blue-500 before:border-blue-500 after:border-blue-500\"\n    >\n        {{ label }}\n    </label>\n    @if (isOpen) {\n    <ul\n        tabindex=\"-1\"\n        role=\"listbox\"\n        class=\"w-full max-h-96 bg-white p-3 border border-blue-gray-50 rounded-md shadow-lg shadow-blue-gray-500/10 font-sans text-sm font-normal text-blue-gray-500 overflow-auto focus:outline-none\"\n        style=\"position: absolute; top: -169px; left: 0px; overflow: auto; opacity: 1; transform-origin: center top 0px; transform: scale(1); width: 200px; z-index: 99;\"\n        id=\":r1l:\"\n        aria-orientation=\"vertical\"\n    >\n        @for (option of options; track $index) {\n        <li\n            [id]=\"'material-tailwind-select-' + option.value\"\n            role=\"option\"\n            class=\"pt-[9px] pb-2 px-3 rounded-md leading-tight cursor-pointer select-none hover:bg-blue-gray-50 focus:bg-blue-gray-50 hover:bg-opacity-80 focus:bg-opacity-80 hover:text-blue-gray-900 focus:text-blue-gray-900 outline outline-0 transition-all\"\n            [ngClass]=\"{ 'bg-blue-gray-50': option.value === field.value }\"\n            [attr.tabindex]=\"option.value === field.value ? 0 : -1\"\n            [attr.aria-selected]=\"option.value === field.value\"\n            (click)=\"selectOption(option.value)\"\n        >\n            {{ option.label }}\n        </li>\n        }\n    </ul>\n    }\n    <p *ngIf=\"description\" class=\"mt-3 text-sm leading-6 text-gray-600\">\n        {{ description }}\n    </p>\n    <div *ngIf=\"formControl[field.key].invalid && formControl[field.key].touched\" class=\"text-red-500 text-xs mt-1\">\n        <div *ngIf=\"formControl[field.key].errors['required']\">{{ label ?? 'field' }} is required</div>\n    </div>\n</div>\n}\n",
+            "template": "@if (field) {\n<div class=\"relative w-full min-w-[200px] h-10\">\n    <button\n        type=\"button\"\n        #dropdownButton\n        class=\"peer w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal text-left outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 disabled:cursor-not-allowed transition-all border-2 text-sm px-3 py-2.5 rounded-[7px] border-blue-500 border-t-transparent\"\n        aria-expanded=\"true\"\n        aria-haspopup=\"listbox\"\n        role=\"combobox\"\n        aria-controls=\":r1l:\"\n        (click)=\"toggleDropdown()\"\n    >\n        <span class=\"absolute top-2/4 -translate-y-2/4 left-3 pt-0.5\">{{ field.value | titlecase }}</span>\n        <div\n            class=\"grid place-items-center absolute top-2/4 right-2 pt-px w-5 h-5 text-blue-gray-400 rotate-0 -translate-y-2/4 transition-all rotate-180 mt-px\"\n        >\n            <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 20 20\" fill=\"currentColor\">\n                <path\n                    fill-rule=\"evenodd\"\n                    d=\"M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z\"\n                    clip-rule=\"evenodd\"\n                ></path>\n            </svg>\n        </div>\n    </button>\n    <label\n        class=\"flex w-full h-full select-none pointer-events-none absolute left-0 font-normal transition-all -top-1.5 before:content[' '] before:block before:box-border before:w-2.5 before:h-1.5 before:mt-[6.5px] before:mr-1 before:rounded-tl-md before:pointer-events-none before:transition-all peer-disabled:before:border-transparent after:content[' '] after:block after:flex-grow after:box-border after:w-2.5 after:h-1.5 after:mt-[6.5px] after:ml-1 after:rounded-tr-md after:pointer-events-none after:transition-all peer-disabled:after:border-transparent text-[11px] peer-disabled:text-transparent before:border-t-2 before:border-l-2 after:border-t-2 after:border-r-2 leading-tight text-blue-500 before:border-blue-500 after:border-blue-500\"\n    >\n        {{ label | titlecase }}\n    </label>\n    @if (isOpen) {\n    <ul\n        #dropdownList\n        tabindex=\"-1\"\n        role=\"listbox\"\n        class=\"w-full max-h-96 bg-white p-3 border border-blue-gray-50 rounded-md shadow-lg shadow-blue-gray-500/10 font-sans text-sm font-normal text-blue-gray-500 overflow-auto focus:outline-none\"\n        [ngStyle]=\"{ top: dropdownTop, left: dropdownLeft, width: dropdownWidth, position: 'absolute', zIndex: '1000' }\"\n        id=\":r1l:\"\n        aria-orientation=\"vertical\"\n    >\n        @for (option of options; track $index) {\n        <li\n            [id]=\"'material-tailwind-select-' + option.value\"\n            role=\"option\"\n            class=\"pt-[9px] pb-2 px-3 rounded-md leading-tight cursor-pointer select-none hover:bg-blue-gray-50 focus:bg-blue-gray-50 hover:bg-opacity-80 focus:bg-opacity-80 hover:text-blue-gray-900 focus:text-blue-gray-900 outline outline-0 transition-all\"\n            [ngClass]=\"{ 'bg-blue-gray-50': option.value === field.value }\"\n            [attr.tabindex]=\"option.value === field.value ? 0 : -1\"\n            [attr.aria-selected]=\"option.value === field.value\"\n            (click)=\"selectOption(option.value)\"\n        >\n            {{ option.label | titlecase }}\n        </li>\n        }\n    </ul>\n    }\n    <p *ngIf=\"description\" class=\"mt-3 text-sm leading-6 text-gray-600\">\n        {{ description }}\n    </p>\n    <div *ngIf=\"formControl[field.key].invalid && formControl[field.key].touched\" class=\"text-red-500 text-xs mt-1\">\n        <div *ngIf=\"formControl[field.key].errors['required']\">{{ label ?? 'field' }} is required</div>\n    </div>\n</div>\n}\n",
             "templateUrl": [],
             "viewProviders": [],
             "hostDirectives": [],
@@ -7111,7 +7111,7 @@
                     "name": "field",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 83,
+                    "line": 86,
                     "type": "Field",
                     "decorators": []
                 }
@@ -7122,20 +7122,76 @@
                     "defaultValue": "new EventEmitter<string>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 84,
+                    "line": 87,
                     "type": "EventEmitter"
                 }
             ],
             "propertiesClass": [
                 {
-                    "name": "errorClass",
-                    "defaultValue": "`${this.inputClass} mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500`",
+                    "name": "dropdownButton",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "",
+                    "type": "ElementRef",
                     "optional": false,
                     "description": "",
-                    "line": 86
+                    "line": 88,
+                    "decorators": [
+                        {
+                            "name": "ViewChild",
+                            "stringifiedArguments": "'dropdownButton'"
+                        }
+                    ],
+                    "modifierKind": [
+                        170
+                    ]
+                },
+                {
+                    "name": "dropdownLeft",
+                    "defaultValue": "'0px'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 94
+                },
+                {
+                    "name": "dropdownList",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ElementRef",
+                    "optional": false,
+                    "description": "",
+                    "line": 89,
+                    "decorators": [
+                        {
+                            "name": "ViewChild",
+                            "stringifiedArguments": "'dropdownList'"
+                        }
+                    ],
+                    "modifierKind": [
+                        170
+                    ]
+                },
+                {
+                    "name": "dropdownTop",
+                    "defaultValue": "'0px'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 93
+                },
+                {
+                    "name": "dropdownWidth",
+                    "defaultValue": "'100%'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 95
                 },
                 {
                     "name": "formControl",
@@ -7145,7 +7201,7 @@
                     "type": "literal type",
                     "optional": false,
                     "description": "",
-                    "line": 85
+                    "line": 91
                 },
                 {
                     "name": "isOpen",
@@ -7155,7 +7211,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 87
+                    "line": 92
                 }
             ],
             "methodsClass": [
@@ -7172,7 +7228,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 161,
+                    "line": 141,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -7193,7 +7249,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 147,
+                    "line": 124,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -7212,7 +7268,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 135,
+                    "line": 113,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -7239,7 +7295,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 155,
+                    "line": 135,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -7260,9 +7316,22 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 151,
+                    "line": 128,
                     "deprecated": false,
                     "deprecationMessage": ""
+                },
+                {
+                    "name": "updateDropdownPosition",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 145,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
                 }
             ],
             "deprecated": false,
@@ -7283,10 +7352,10 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { AbstractControl, ReactiveFormsModule } from '@angular/forms';\nimport { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';\n\nimport { CommonModule } from '@angular/common';\nimport { Field } from '../../models';\n\n@Component({\n    standalone: true,\n    selector: 'adk-select',\n    imports: [CommonModule, ReactiveFormsModule],\n    template: `\n        @if (field) {\n        <div class=\"relative w-full min-w-[200px] h-10\">\n            <button\n                type=\"button\"\n                class=\"peer w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal text-left outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 disabled:cursor-not-allowed transition-all border-2 text-sm px-3 py-2.5 rounded-[7px] border-blue-500 border-t-transparent\"\n                aria-expanded=\"true\"\n                aria-haspopup=\"listbox\"\n                role=\"combobox\"\n                aria-controls=\":r1l:\"\n                (click)=\"toggleDropdown()\"\n            >\n                <span class=\"absolute top-2/4 -translate-y-2/4 left-3 pt-0.5\">{{ field.value }}</span>\n                <div\n                    class=\"grid place-items-center absolute top-2/4 right-2 pt-px w-5 h-5 text-blue-gray-400 rotate-0 -translate-y-2/4 transition-all rotate-180 mt-px\"\n                >\n                    <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 20 20\" fill=\"currentColor\">\n                        <path\n                            fill-rule=\"evenodd\"\n                            d=\"M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z\"\n                            clip-rule=\"evenodd\"\n                        ></path>\n                    </svg>\n                </div>\n            </button>\n            <label\n                class=\"flex w-full h-full select-none pointer-events-none absolute left-0 font-normal transition-all -top-1.5 before:content[' '] before:block before:box-border before:w-2.5 before:h-1.5 before:mt-[6.5px] before:mr-1 before:rounded-tl-md before:pointer-events-none before:transition-all peer-disabled:before:border-transparent after:content[' '] after:block after:flex-grow after:box-border after:w-2.5 after:h-1.5 after:mt-[6.5px] after:ml-1 after:rounded-tr-md after:pointer-events-none after:transition-all peer-disabled:after:border-transparent text-[11px] peer-disabled:text-transparent before:border-t-2 before:border-l-2 after:border-t-2 after:border-r-2 leading-tight text-blue-500 before:border-blue-500 after:border-blue-500\"\n            >\n                {{ label }}\n            </label>\n            @if (isOpen) {\n            <ul\n                tabindex=\"-1\"\n                role=\"listbox\"\n                class=\"w-full max-h-96 bg-white p-3 border border-blue-gray-50 rounded-md shadow-lg shadow-blue-gray-500/10 font-sans text-sm font-normal text-blue-gray-500 overflow-auto focus:outline-none\"\n                style=\"position: absolute; top: -169px; left: 0px; overflow: auto; opacity: 1; transform-origin: center top 0px; transform: scale(1); width: 200px; z-index: 99;\"\n                id=\":r1l:\"\n                aria-orientation=\"vertical\"\n            >\n                @for (option of options; track $index) {\n                <li\n                    [id]=\"'material-tailwind-select-' + option.value\"\n                    role=\"option\"\n                    class=\"pt-[9px] pb-2 px-3 rounded-md leading-tight cursor-pointer select-none hover:bg-blue-gray-50 focus:bg-blue-gray-50 hover:bg-opacity-80 focus:bg-opacity-80 hover:text-blue-gray-900 focus:text-blue-gray-900 outline outline-0 transition-all\"\n                    [ngClass]=\"{ 'bg-blue-gray-50': option.value === field.value }\"\n                    [attr.tabindex]=\"option.value === field.value ? 0 : -1\"\n                    [attr.aria-selected]=\"option.value === field.value\"\n                    (click)=\"selectOption(option.value)\"\n                >\n                    {{ option.label }}\n                </li>\n                }\n            </ul>\n            }\n            <p *ngIf=\"description\" class=\"mt-3 text-sm leading-6 text-gray-600\">\n                {{ description }}\n            </p>\n            <div *ngIf=\"formControl[field.key].invalid && formControl[field.key].touched\" class=\"text-red-500 text-xs mt-1\">\n                <div *ngIf=\"formControl[field.key].errors['required']\">{{ label ?? 'field' }} is required</div>\n            </div>\n        </div>\n        }\n    `,\n    styles: [\n        `\n            :host {\n                display: block;\n            }\n        `,\n    ],\n})\nexport class SelectComponent implements OnChanges {\n    @Input() field!: Field;\n    @Output() fieldValueChange = new EventEmitter<string>();\n    formControl: { [key: string]: AbstractControl | any } = {};\n    errorClass = `${this.inputClass} mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500`;\n    isOpen = false;\n\n    get props() {\n        return this.field?.props;\n    }\n\n    get options() {\n        return this.props?.options ?? [];\n    }\n\n    get autocomplete() {\n        return this.props?.autocomplete ?? 'off';\n    }\n    get label() {\n        return this.field.label;\n    }\n\n    get description() {\n        return this.field.description;\n    }\n\n    get placeholder() {\n        return this.field.placeholder ?? '';\n    }\n\n    get class() {\n        return this.props?.class ?? 'sm:col-span-3';\n    }\n\n    get labelClass() {\n        return this.props?.labelClass ?? 'block text-sm font-medium leading-6 text-gray-900';\n    }\n\n    get pattern() {\n        return this.props?.pattern ?? '';\n    }\n\n    get required() {\n        return this.props?.required ?? true;\n    }\n\n    get inputClass() {\n        if (this.props && this.props.inputClass) {\n            return this.props.inputClass;\n        }\n        return 'block w-full bg-white rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6';\n    }\n\n    ngOnChanges({ field }: SimpleChanges): void {\n        if (field) {\n            console.log('field select', field.currentValue);\n            this.field = field.currentValue;\n            this.initFormControl();\n        }\n\n        this.formControl[this.field.key].valueChanges.subscribe((value: string) => {\n            this.emitValueChange(value);\n        });\n    }\n\n    private initFormControl(): void {\n        this.formControl[this.field.key] = this.field.formControl;\n    }\n\n    toggleDropdown() {\n        this.isOpen = !this.isOpen;\n    }\n\n    selectOption(value: string) {\n        this.field.value = value;\n        this.formControl[this.field.key].patchValue(value);\n        this.isOpen = false;\n    }\n\n    emitValueChange(value: string) {\n        this.fieldValueChange.emit(value);\n    }\n}\n",
+            "sourceCode": "import { AbstractControl, ReactiveFormsModule } from '@angular/forms';\nimport { Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';\n\nimport { CommonModule } from '@angular/common';\nimport { Field } from '../../models';\n\n@Component({\n    standalone: true,\n    selector: 'adk-select',\n    imports: [CommonModule, ReactiveFormsModule],\n    template: `\n        @if (field) {\n        <div class=\"relative w-full min-w-[200px] h-10\">\n            <button\n                type=\"button\"\n                #dropdownButton\n                class=\"peer w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal text-left outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 disabled:cursor-not-allowed transition-all border-2 text-sm px-3 py-2.5 rounded-[7px] border-blue-500 border-t-transparent\"\n                aria-expanded=\"true\"\n                aria-haspopup=\"listbox\"\n                role=\"combobox\"\n                aria-controls=\":r1l:\"\n                (click)=\"toggleDropdown()\"\n            >\n                <span class=\"absolute top-2/4 -translate-y-2/4 left-3 pt-0.5\">{{ field.value | titlecase }}</span>\n                <div\n                    class=\"grid place-items-center absolute top-2/4 right-2 pt-px w-5 h-5 text-blue-gray-400 rotate-0 -translate-y-2/4 transition-all rotate-180 mt-px\"\n                >\n                    <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 20 20\" fill=\"currentColor\">\n                        <path\n                            fill-rule=\"evenodd\"\n                            d=\"M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z\"\n                            clip-rule=\"evenodd\"\n                        ></path>\n                    </svg>\n                </div>\n            </button>\n            <label\n                class=\"flex w-full h-full select-none pointer-events-none absolute left-0 font-normal transition-all -top-1.5 before:content[' '] before:block before:box-border before:w-2.5 before:h-1.5 before:mt-[6.5px] before:mr-1 before:rounded-tl-md before:pointer-events-none before:transition-all peer-disabled:before:border-transparent after:content[' '] after:block after:flex-grow after:box-border after:w-2.5 after:h-1.5 after:mt-[6.5px] after:ml-1 after:rounded-tr-md after:pointer-events-none after:transition-all peer-disabled:after:border-transparent text-[11px] peer-disabled:text-transparent before:border-t-2 before:border-l-2 after:border-t-2 after:border-r-2 leading-tight text-blue-500 before:border-blue-500 after:border-blue-500\"\n            >\n                {{ label | titlecase }}\n            </label>\n            @if (isOpen) {\n            <ul\n                #dropdownList\n                tabindex=\"-1\"\n                role=\"listbox\"\n                class=\"w-full max-h-96 bg-white p-3 border border-blue-gray-50 rounded-md shadow-lg shadow-blue-gray-500/10 font-sans text-sm font-normal text-blue-gray-500 overflow-auto focus:outline-none\"\n                [ngStyle]=\"{ top: dropdownTop, left: dropdownLeft, width: dropdownWidth, position: 'absolute', zIndex: '1000' }\"\n                id=\":r1l:\"\n                aria-orientation=\"vertical\"\n            >\n                @for (option of options; track $index) {\n                <li\n                    [id]=\"'material-tailwind-select-' + option.value\"\n                    role=\"option\"\n                    class=\"pt-[9px] pb-2 px-3 rounded-md leading-tight cursor-pointer select-none hover:bg-blue-gray-50 focus:bg-blue-gray-50 hover:bg-opacity-80 focus:bg-opacity-80 hover:text-blue-gray-900 focus:text-blue-gray-900 outline outline-0 transition-all\"\n                    [ngClass]=\"{ 'bg-blue-gray-50': option.value === field.value }\"\n                    [attr.tabindex]=\"option.value === field.value ? 0 : -1\"\n                    [attr.aria-selected]=\"option.value === field.value\"\n                    (click)=\"selectOption(option.value)\"\n                >\n                    {{ option.label | titlecase }}\n                </li>\n                }\n            </ul>\n            }\n            <p *ngIf=\"description\" class=\"mt-3 text-sm leading-6 text-gray-600\">\n                {{ description }}\n            </p>\n            <div *ngIf=\"formControl[field.key].invalid && formControl[field.key].touched\" class=\"text-red-500 text-xs mt-1\">\n                <div *ngIf=\"formControl[field.key].errors['required']\">{{ label ?? 'field' }} is required</div>\n            </div>\n        </div>\n        }\n    `,\n    styles: [\n        `\n            :host {\n                display: block;\n                position: relative;\n            }\n        `,\n    ],\n})\nexport class SelectComponent implements OnChanges {\n    @Input() field!: Field;\n    @Output() fieldValueChange = new EventEmitter<string>();\n    @ViewChild('dropdownButton') dropdownButton!: ElementRef;\n    @ViewChild('dropdownList') dropdownList!: ElementRef;\n\n    formControl: { [key: string]: AbstractControl | any } = {};\n    isOpen = false;\n    dropdownTop = '0px';\n    dropdownLeft = '0px';\n    dropdownWidth = '100%';\n\n    get props() {\n        return this.field?.props;\n    }\n\n    get options() {\n        return this.props?.options ?? [];\n    }\n\n    get label() {\n        return this.field.label;\n    }\n\n    get description() {\n        return this.field.description;\n    }\n\n    ngOnChanges({ field }: SimpleChanges): void {\n        if (field) {\n            this.field = field.currentValue;\n            this.initFormControl();\n        }\n\n        this.formControl[this.field.key].valueChanges.subscribe((value: string) => {\n            this.emitValueChange(value);\n        });\n    }\n\n    private initFormControl(): void {\n        this.formControl[this.field.key] = this.field.formControl;\n    }\n\n    toggleDropdown() {\n        this.isOpen = !this.isOpen;\n        if (this.isOpen) {\n            this.updateDropdownPosition();\n        }\n    }\n\n    selectOption(value: string) {\n        this.field.value = value;\n        this.formControl[this.field.key].patchValue(value);\n        this.isOpen = false;\n    }\n\n    emitValueChange(value: string) {\n        this.fieldValueChange.emit(value);\n    }\n\n    private updateDropdownPosition() {\n        const buttonRect = this.dropdownButton.nativeElement.getBoundingClientRect();\n        this.dropdownTop = `${buttonRect.height}px`;\n        this.dropdownLeft = `0px`;\n        this.dropdownWidth = `${buttonRect.width}px`;\n    }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
-            "stylesData": "\n            :host {\n                display: block;\n            }\n        \n",
+            "stylesData": "\n            :host {\n                display: block;\n                position: relative;\n            }\n        \n",
             "extends": [],
             "implements": [
                 "OnChanges"
@@ -7298,7 +7367,7 @@
                         "name": "props",
                         "type": "",
                         "returnType": "",
-                        "line": 89
+                        "line": 97
                     }
                 },
                 "options": {
@@ -7307,16 +7376,7 @@
                         "name": "options",
                         "type": "",
                         "returnType": "",
-                        "line": 93
-                    }
-                },
-                "autocomplete": {
-                    "name": "autocomplete",
-                    "getSignature": {
-                        "name": "autocomplete",
-                        "type": "",
-                        "returnType": "",
-                        "line": 97
+                        "line": 101
                     }
                 },
                 "label": {
@@ -7325,7 +7385,7 @@
                         "name": "label",
                         "type": "",
                         "returnType": "",
-                        "line": 100
+                        "line": 105
                     }
                 },
                 "description": {
@@ -7334,61 +7394,7 @@
                         "name": "description",
                         "type": "",
                         "returnType": "",
-                        "line": 104
-                    }
-                },
-                "placeholder": {
-                    "name": "placeholder",
-                    "getSignature": {
-                        "name": "placeholder",
-                        "type": "",
-                        "returnType": "",
-                        "line": 108
-                    }
-                },
-                "class": {
-                    "name": "class",
-                    "getSignature": {
-                        "name": "class",
-                        "type": "",
-                        "returnType": "",
-                        "line": 112
-                    }
-                },
-                "labelClass": {
-                    "name": "labelClass",
-                    "getSignature": {
-                        "name": "labelClass",
-                        "type": "",
-                        "returnType": "",
-                        "line": 116
-                    }
-                },
-                "pattern": {
-                    "name": "pattern",
-                    "getSignature": {
-                        "name": "pattern",
-                        "type": "",
-                        "returnType": "",
-                        "line": 120
-                    }
-                },
-                "required": {
-                    "name": "required",
-                    "getSignature": {
-                        "name": "required",
-                        "type": "",
-                        "returnType": "",
-                        "line": 124
-                    }
-                },
-                "inputClass": {
-                    "name": "inputClass",
-                    "getSignature": {
-                        "name": "inputClass",
-                        "type": "",
-                        "returnType": "",
-                        "line": 128
+                        "line": 109
                     }
                 }
             }
@@ -8633,7 +8639,7 @@
         },
         {
             "name": "TwCardComponent",
-            "id": "component-TwCardComponent-91eb17b7ce135ba35347c955100bb7ed7f37fbef9abd1494e22586773ad921ede50b50deaa325c197aab40bff193c6021b9bff8fbe96b77599b3f84e3db97cf8",
+            "id": "component-TwCardComponent-8f3f67e824c7d4b4ba5eff22bdc0304519830ea6ef9d9c3dfdc0eb55b24a1361df2c7b28fd900a91d77c7cc7f0b08f80ec866b23ac43fe11eda367aecde16f8a",
             "file": "projects/ng-lib/src/lib/tw-ui/components/card/tw-card.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -8643,7 +8649,7 @@
             "selector": "tw-card",
             "styleUrls": [],
             "styles": [],
-            "template": "<div class=\"relative flex flex-col gap-4 w-full h-full text-gray-700 bg-white shadow-md rounded-md bg-clip-border\">\n    <div class=\"p-2\">\n        <ng-content select=\".adk-card-header\"></ng-content>\n        <ng-content select=\".adk-card-subtitle\"></ng-content>\n    </div>\n    <div class=\"p-4\">\n        <ng-content select=\".adk-card-body\"></ng-content>\n    </div>\n    <div class=\"p-6 pt-0\">\n        <ng-content select=\".adk-card-footer\"></ng-content>\n    </div>\n</div>\n",
+            "template": "<div class=\"relative flex flex-col gap-4 w-full h-full text-gray-700 bg-white shadow-md rounded-md bg-clip-border\">\n    <div class=\"px-6 pt-6 flex flex-col gap-4\">\n        <ng-content select=\".adk-card-header\"></ng-content>\n        <ng-content select=\".adk-card-subtitle\"></ng-content>\n        <ng-content select=\".adk-card-body\"></ng-content>\n    </div>\n    <div class=\"p-6 pt-0\">\n        <ng-content select=\".adk-card-footer\"></ng-content>\n    </div>\n</div>\n",
             "templateUrl": [],
             "viewProviders": [],
             "hostDirectives": [],
@@ -8665,7 +8671,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { CommonModule } from '@angular/common';\nimport { Component } from '@angular/core';\n\n@Component({\n    selector: 'tw-card',\n    standalone: true,\n    imports: [CommonModule],\n    template: `\n        <div class=\"relative flex flex-col gap-4 w-full h-full text-gray-700 bg-white shadow-md rounded-md bg-clip-border\">\n            <div class=\"p-2\">\n                <ng-content select=\".adk-card-header\"></ng-content>\n                <ng-content select=\".adk-card-subtitle\"></ng-content>\n            </div>\n            <div class=\"p-4\">\n                <ng-content select=\".adk-card-body\"></ng-content>\n            </div>\n            <div class=\"p-6 pt-0\">\n                <ng-content select=\".adk-card-footer\"></ng-content>\n            </div>\n        </div>\n    `,\n})\nexport class TwCardComponent {}\n",
+            "sourceCode": "import { CommonModule } from '@angular/common';\nimport { Component } from '@angular/core';\n\n@Component({\n    selector: 'tw-card',\n    standalone: true,\n    imports: [CommonModule],\n    template: `\n        <div class=\"relative flex flex-col gap-4 w-full h-full text-gray-700 bg-white shadow-md rounded-md bg-clip-border\">\n            <div class=\"px-6 pt-6 flex flex-col gap-4\">\n                <ng-content select=\".adk-card-header\"></ng-content>\n                <ng-content select=\".adk-card-subtitle\"></ng-content>\n                <ng-content select=\".adk-card-body\"></ng-content>\n            </div>\n            <div class=\"p-6 pt-0\">\n                <ng-content select=\".adk-card-footer\"></ng-content>\n            </div>\n        </div>\n    `,\n})\nexport class TwCardComponent {}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -9370,7 +9376,7 @@
         },
         {
             "name": "TwTableCardComponent",
-            "id": "component-TwTableCardComponent-8b10f1ad7642910be56c428cb62b47e99dea7a0face830667e6d27be2bdd34be86f94e4957225cd8c70e642ec3d87895a7f5975926117d9d386614ee43d7533c",
+            "id": "component-TwTableCardComponent-aa2399ce766156c5d8ba867062a437d0774d830f2e5261000a06642f189ef055f5dc142a4c9aeaab481a5a086a3ed1ba074ca91e28b65605a320d89e80e077aa",
             "file": "projects/ng-lib/src/lib/tw-ui/components/table/tw-table-card.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -9383,7 +9389,7 @@
             "styles": [
                 "\n            :host {\n                display: block;\n                width: 100%;\n            }\n        "
             ],
-            "template": "<tw-card>\n    <div tw-card-header>\n        <tw-table-card-header\n            [title]=\"title\"\n            [subtitle]=\"subtitle\"\n            [buttons]=\"buttons\"\n            (actionKeyPress)=\"actionButtonTriggered()\"\n        ></tw-table-card-header>\n    </div>\n    <div tw-card-body>\n        <tw-default-table\n            [headers]=\"headers\"\n            [rows]=\"rows\"\n            [isSelectable]=\"isSelectable\"\n            [isSortable]=\"isSortable\"\n            [isDraggable]=\"isDraggable\"\n            [groupBy]=\"groupBy\"\n            [actionColName]=\"actionColName\"\n            [actionButton]=\"actionButton\"\n            [isPaginationAction]=\"paginationAction\"\n        ></tw-default-table>\n    </div>\n    <div tw-card-footer>\n        <tw-table-footer (actionButtonClicked)=\"actionButtonTriggered()\"></tw-table-footer>\n    </div>\n</tw-card>\n",
+            "template": "<tw-card>\n    <div class=\"adk-card-header\">\n        <tw-table-card-header\n            [title]=\"title\"\n            [subtitle]=\"subtitle\"\n            [buttons]=\"buttons\"\n            (actionKeyPress)=\"actionButtonTriggered()\"\n        ></tw-table-card-header>\n    </div>\n    <div class=\"adk-card-body\">\n        <tw-default-table\n            [headers]=\"headers\"\n            [rows]=\"rows\"\n            [isSelectable]=\"isSelectable\"\n            [isSortable]=\"isSortable\"\n            [isDraggable]=\"isDraggable\"\n            [groupBy]=\"groupBy\"\n            [actionColName]=\"actionColName\"\n            [actionButton]=\"actionButton\"\n            [isPaginationAction]=\"paginationAction\"\n        ></tw-default-table>\n    </div>\n    <div class=\"adk-card-footer\">\n        <tw-table-footer (actionButtonClicked)=\"actionButtonTriggered()\"></tw-table-footer>\n    </div>\n</tw-card>\n",
             "templateUrl": [],
             "viewProviders": [],
             "hostDirectives": [],
@@ -9539,7 +9545,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { ChangeDetectionStrategy, Component, Input, TemplateRef } from '@angular/core';\n\nimport { CommonModule } from '@angular/common';\nimport { RowData } from './models';\nimport { TwCardComponent } from '../card/tw-card.component';\nimport { TwDefaultTableComponent } from './tw-table.component';\nimport { TwTableCardHeaderComponent } from './tw-table-card-header.component';\nimport { TwTableFooterComponent } from './tw-table-footer.component';\n\n@Component({\n    selector: 'tw-table-card',\n    standalone: true,\n    imports: [CommonModule, TwCardComponent, TwDefaultTableComponent, TwTableCardHeaderComponent, TwTableFooterComponent],\n    template: `\n        <tw-card>\n            <div tw-card-header>\n                <tw-table-card-header\n                    [title]=\"title\"\n                    [subtitle]=\"subtitle\"\n                    [buttons]=\"buttons\"\n                    (actionKeyPress)=\"actionButtonTriggered()\"\n                ></tw-table-card-header>\n            </div>\n            <div tw-card-body>\n                <tw-default-table\n                    [headers]=\"headers\"\n                    [rows]=\"rows\"\n                    [isSelectable]=\"isSelectable\"\n                    [isSortable]=\"isSortable\"\n                    [isDraggable]=\"isDraggable\"\n                    [groupBy]=\"groupBy\"\n                    [actionColName]=\"actionColName\"\n                    [actionButton]=\"actionButton\"\n                    [isPaginationAction]=\"paginationAction\"\n                ></tw-default-table>\n            </div>\n            <div tw-card-footer>\n                <tw-table-footer (actionButtonClicked)=\"actionButtonTriggered()\"></tw-table-footer>\n            </div>\n        </tw-card>\n    `,\n    changeDetection: ChangeDetectionStrategy.OnPush,\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n        `,\n    ],\n})\nexport class TwTableCardComponent {\n    @Input() isSelectable = false;\n    @Input() isSortable = false;\n    @Input() isDraggable = false;\n    @Input() headers: string[] = [];\n    @Input() actionColName?: string;\n    @Input() actionButton?: TemplateRef<any> | string;\n    @Input() rows: RowData[] = [];\n    @Input() groupBy = '';\n    @Input() title?: string;\n    @Input() subtitle?: string;\n    @Input() buttons: { label: string; onClick: () => void; color: string; icon: string }[] = [];\n\n    paginationAction = false;\n\n    actionButtonTriggered() {\n        this.paginationAction = !this.paginationAction;\n    }\n}\n",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, Input, TemplateRef } from '@angular/core';\n\nimport { CommonModule } from '@angular/common';\nimport { RowData } from './models';\nimport { TwCardComponent } from '../card/tw-card.component';\nimport { TwDefaultTableComponent } from './tw-table.component';\nimport { TwTableCardHeaderComponent } from './tw-table-card-header.component';\nimport { TwTableFooterComponent } from './tw-table-footer.component';\n\n@Component({\n    selector: 'tw-table-card',\n    standalone: true,\n    imports: [CommonModule, TwCardComponent, TwDefaultTableComponent, TwTableCardHeaderComponent, TwTableFooterComponent],\n    template: `\n        <tw-card>\n            <div class=\"adk-card-header\">\n                <tw-table-card-header\n                    [title]=\"title\"\n                    [subtitle]=\"subtitle\"\n                    [buttons]=\"buttons\"\n                    (actionKeyPress)=\"actionButtonTriggered()\"\n                ></tw-table-card-header>\n            </div>\n            <div class=\"adk-card-body\">\n                <tw-default-table\n                    [headers]=\"headers\"\n                    [rows]=\"rows\"\n                    [isSelectable]=\"isSelectable\"\n                    [isSortable]=\"isSortable\"\n                    [isDraggable]=\"isDraggable\"\n                    [groupBy]=\"groupBy\"\n                    [actionColName]=\"actionColName\"\n                    [actionButton]=\"actionButton\"\n                    [isPaginationAction]=\"paginationAction\"\n                ></tw-default-table>\n            </div>\n            <div class=\"adk-card-footer\">\n                <tw-table-footer (actionButtonClicked)=\"actionButtonTriggered()\"></tw-table-footer>\n            </div>\n        </tw-card>\n    `,\n    changeDetection: ChangeDetectionStrategy.OnPush,\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n        `,\n    ],\n})\nexport class TwTableCardComponent {\n    @Input() isSelectable = false;\n    @Input() isSortable = false;\n    @Input() isDraggable = false;\n    @Input() headers: string[] = [];\n    @Input() actionColName?: string;\n    @Input() actionButton?: TemplateRef<any> | string;\n    @Input() rows: RowData[] = [];\n    @Input() groupBy = '';\n    @Input() title?: string;\n    @Input() subtitle?: string;\n    @Input() buttons: { label: string; onClick: () => void; color: string; icon: string }[] = [];\n\n    paginationAction = false;\n\n    actionButtonTriggered() {\n        this.paginationAction = !this.paginationAction;\n    }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "\n            :host {\n                display: block;\n                width: 100%;\n            }\n        \n",
@@ -9932,7 +9938,7 @@
         },
         {
             "name": "TwTableSettingsDialogComponent",
-            "id": "component-TwTableSettingsDialogComponent-d3d94b184464a986c0763e77224a2d8c777cd9e8e450a776fa6f44942494194c6a0ee0d0a1e20a7878d3425b94902d8fdad1f59cdfa2340fe512db2b908a983a",
+            "id": "component-TwTableSettingsDialogComponent-3d1c3c51d1cf53582641d103dc81c2dd540cb1ef58e10ded44dfdcf6636d35049c32b5d310087f7283296ee2559cc5217e32fc855e10d630477e1d4193d38d75",
             "file": "projects/ng-lib/src/lib/tw-ui/components/table/tw-table-settings-dialog.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -9944,7 +9950,7 @@
             "styles": [
                 "\n            :host {\n                display: block;\n                width: 100%;\n            }\n        "
             ],
-            "template": "<adk-settings-icon (click)=\"openDialog()\"> </adk-settings-icon>\n<tw-dialog [isOpen]=\"isDialogOpen\" (close)=\"closeDialog()\" class=\"bg-transparent shadow-none\">\n    <!-- <tw-card> -->\n    <!-- <tw-typography\n            variant=\"h3\"\n            color=\"blue-gray\"\n            class=\"adk-card-header\"\n            classStyle=\"antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900 flex flex-row\"\n        >\n            Column Preferences\n            <div class=\"grow\"></div>\n            <adk-icon-button (click)=\"closeDialog()\"></adk-icon-button>\n        </tw-typography> -->\n    <!-- <tw-typography class=\"adk-card-subtitle mb-3 font-normal\" variant=\"paragraph\" color=\"gray\">\n            Customize the columns visibility.\n        </tw-typography>\n        <div class=\"adk-card-body\">\n            @if (fields) {\n            <adk-fields [fieldConfig]=\"fields\" [wrapperClass]=\"'flex flex-col gap-4'\"></adk-fields>\n            }\n        </div>\n        <div class=\"adk-card-footer\">\n            <adk-button\n                class=\"w-full\"\n                (click)=\"closeDialog()\"\n                customClasses=\"align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-blue-500 text-white shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none block w-full\"\n            >\n                Close Preferences\n            </adk-button>\n        </div> -->\n    <!-- </tw-card> -->\n</tw-dialog>\n",
+            "template": "<adk-settings-icon (click)=\"openDialog()\"> </adk-settings-icon>\n<tw-dialog [isOpen]=\"isDialogOpen\" (close)=\"closeDialog()\" class=\"bg-transparent shadow-none\">\n    <tw-card>\n        <tw-typography\n            variant=\"h3\"\n            color=\"blue-gray\"\n            class=\"adk-card-header\"\n            classStyle=\"antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900 flex flex-row\"\n        >\n            Column Preferences\n            <div class=\"grow\"></div>\n            <adk-icon-button (click)=\"closeDialog()\"></adk-icon-button>\n        </tw-typography>\n        <div class=\"adk-card-body\">\n            @if (visibleColumnField) {\n            <tw-typography class=\"adk-card-subtitle mb-3 font-normal\" variant=\"paragraph\" color=\"gray\">\n                Customize the columns visibility.\n            </tw-typography>\n            <adk-fields [fieldConfig]=\"visibleColumnField\" [wrapperClass]=\"'flex flex-col gap-4'\"></adk-fields>\n            } @if (columnField) {\n            <tw-typography class=\"mt-4 font-normal\" variant=\"paragraph\" color=\"gray\">\n                Select the column to filter a search value\n            </tw-typography>\n            <adk-fields class=\"mt-4\" [fieldConfig]=\"[columnField]\" [wrapperClass]=\"'flex flex-col gap-4'\"></adk-fields>\n            } @if (groupByField) {\n            <adk-fields class=\"mt-4\" [fieldConfig]=\"[groupByField]\" [wrapperClass]=\"'flex flex-col gap-4'\"></adk-fields>\n            }\n        </div>\n        <div class=\"adk-card-footer\">\n            <adk-button\n                class=\"w-full\"\n                (click)=\"closeDialog()\"\n                customClasses=\"align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-blue-500 text-white shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none block w-full\"\n            >\n                Close Preferences\n            </adk-button>\n        </div>\n    </tw-card>\n</tw-dialog>\n",
             "templateUrl": [],
             "viewProviders": [],
             "hostDirectives": [],
@@ -9952,13 +9958,24 @@
             "outputsClass": [],
             "propertiesClass": [
                 {
-                    "name": "fields",
+                    "name": "columnField",
+                    "defaultValue": "preferenceColumnSelector(this.tdss.get('headers'))",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "Field[]",
-                    "optional": true,
+                    "type": "",
+                    "optional": false,
                     "description": "",
-                    "line": 72
+                    "line": 82
+                },
+                {
+                    "name": "groupByField",
+                    "defaultValue": "preferenceGroupBySelector(this.tdss.get('headers'))",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 83
                 },
                 {
                     "name": "isDialogOpen",
@@ -9968,7 +9985,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 70
+                    "line": 79
                 },
                 {
                     "name": "tdss",
@@ -9978,7 +9995,17 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 71
+                    "line": 80
+                },
+                {
+                    "name": "visibleColumnField",
+                    "defaultValue": "preferenceVisibilitySelector(this.tdss.get('headers'))",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 81
                 }
             ],
             "methodsClass": [
@@ -9988,7 +10015,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 83,
+                    "line": 95,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -9998,7 +10025,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 100,
+                    "line": 112,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -10008,7 +10035,7 @@
                     "optional": false,
                     "returnType": "string[]",
                     "typeParameters": [],
-                    "line": 95,
+                    "line": 107,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -10018,7 +10045,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 74,
+                    "line": 85,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -10028,7 +10055,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 79,
+                    "line": 91,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -10070,12 +10097,16 @@
                 {
                     "name": "FieldsComponent",
                     "type": "component"
+                },
+                {
+                    "name": "FieldComponent",
+                    "type": "component"
                 }
             ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit, inject } from '@angular/core';\nimport { Field, FieldsComponent } from '../../../tw-form-ui';\nimport { SettingsIconComponent, preferencesSelector } from './utils';\n\nimport { ButtonComponent } from '../button.component';\nimport { CommonModule } from '@angular/common';\nimport { DialogComponent } from '../dialog/dialog.component';\nimport { IconButtonComponent } from './utils/icon-button.component';\nimport { TableDataSourceService } from './table-datasource.service';\nimport { TwCardComponent } from '../card/tw-card.component';\nimport { TwTypographyComponent } from '../typography.component';\n\n@Component({\n    selector: 'tw-table-settings-dialog',\n    standalone: true,\n    imports: [\n        CommonModule,\n        SettingsIconComponent,\n        TwCardComponent,\n        TwTypographyComponent,\n        IconButtonComponent,\n        DialogComponent,\n        ButtonComponent,\n        FieldsComponent,\n    ],\n    template: `\n        <adk-settings-icon (click)=\"openDialog()\"> </adk-settings-icon>\n        <tw-dialog [isOpen]=\"isDialogOpen\" (close)=\"closeDialog()\" class=\"bg-transparent shadow-none\">\n            <!-- <tw-card> -->\n            <!-- <tw-typography\n                    variant=\"h3\"\n                    color=\"blue-gray\"\n                    class=\"adk-card-header\"\n                    classStyle=\"antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900 flex flex-row\"\n                >\n                    Column Preferences\n                    <div class=\"grow\"></div>\n                    <adk-icon-button (click)=\"closeDialog()\"></adk-icon-button>\n                </tw-typography> -->\n            <!-- <tw-typography class=\"adk-card-subtitle mb-3 font-normal\" variant=\"paragraph\" color=\"gray\">\n                    Customize the columns visibility.\n                </tw-typography>\n                <div class=\"adk-card-body\">\n                    @if (fields) {\n                    <adk-fields [fieldConfig]=\"fields\" [wrapperClass]=\"'flex flex-col gap-4'\"></adk-fields>\n                    }\n                </div>\n                <div class=\"adk-card-footer\">\n                    <adk-button\n                        class=\"w-full\"\n                        (click)=\"closeDialog()\"\n                        customClasses=\"align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-blue-500 text-white shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none block w-full\"\n                    >\n                        Close Preferences\n                    </adk-button>\n                </div> -->\n            <!-- </tw-card> -->\n        </tw-dialog>\n    `,\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n        `,\n    ],\n})\nexport class TwTableSettingsDialogComponent implements OnInit {\n    isDialogOpen = false;\n    tdss = inject(TableDataSourceService);\n    fields?: Field[];\n\n    ngOnInit(): void {\n        console.log('dialog check', this.tdss.get('headers'));\n        this.fields = preferencesSelector(this.tdss.get('headers'));\n    }\n\n    openDialog() {\n        this.isDialogOpen = true;\n    }\n\n    closeDialog() {\n        // Optionally save dialog preferences using the service\n        // const updatedPreferences = this.getUpdatedPreferences();\n        // const updatedGroupBy = this.getUpdatedGroupBy();\n\n        // this.tdss.setGroupBy(updatedGroupBy);\n        // // Assume setPreferences is a method you'd implement in the service\n        // this.tdss.updatePreferences(updatedPreferences);\n\n        this.isDialogOpen = false;\n    }\n\n    getUpdatedPreferences(): string[] {\n        // Implement logic to get updated preferences from the dialog\n        return ['column1', 'column2']; // Example return value\n    }\n\n    getUpdatedGroupBy(): string {\n        // Implement logic to get updated group by from the dialog\n        return 'column1'; // Example return value\n    }\n}\n",
+            "sourceCode": "import { Component, OnInit, inject } from '@angular/core';\nimport { SettingsIconComponent, preferenceColumnSelector, preferenceGroupBySelector, preferenceVisibilitySelector } from './utils';\n\nimport { ButtonComponent } from '../button.component';\nimport { CommonModule } from '@angular/common';\nimport { DialogComponent } from '../dialog/dialog.component';\nimport { FieldComponent } from '../../../tw-form-ui/components/field.component';\nimport { FieldsComponent } from '../../../tw-form-ui';\nimport { IconButtonComponent } from './utils/icon-button.component';\nimport { TableDataSourceService } from './table-datasource.service';\nimport { TwCardComponent } from '../card/tw-card.component';\nimport { TwTypographyComponent } from '../typography.component';\n\n@Component({\n    selector: 'tw-table-settings-dialog',\n    standalone: true,\n    imports: [\n        CommonModule,\n        SettingsIconComponent,\n        TwCardComponent,\n        TwTypographyComponent,\n        IconButtonComponent,\n        DialogComponent,\n        ButtonComponent,\n        FieldsComponent,\n        FieldComponent,\n    ],\n    template: `\n        <adk-settings-icon (click)=\"openDialog()\"> </adk-settings-icon>\n        <tw-dialog [isOpen]=\"isDialogOpen\" (close)=\"closeDialog()\" class=\"bg-transparent shadow-none\">\n            <tw-card>\n                <tw-typography\n                    variant=\"h3\"\n                    color=\"blue-gray\"\n                    class=\"adk-card-header\"\n                    classStyle=\"antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900 flex flex-row\"\n                >\n                    Column Preferences\n                    <div class=\"grow\"></div>\n                    <adk-icon-button (click)=\"closeDialog()\"></adk-icon-button>\n                </tw-typography>\n                <div class=\"adk-card-body\">\n                    @if (visibleColumnField) {\n                    <tw-typography class=\"adk-card-subtitle mb-3 font-normal\" variant=\"paragraph\" color=\"gray\">\n                        Customize the columns visibility.\n                    </tw-typography>\n                    <adk-fields [fieldConfig]=\"visibleColumnField\" [wrapperClass]=\"'flex flex-col gap-4'\"></adk-fields>\n                    } @if (columnField) {\n                    <tw-typography class=\"mt-4 font-normal\" variant=\"paragraph\" color=\"gray\">\n                        Select the column to filter a search value\n                    </tw-typography>\n                    <adk-fields class=\"mt-4\" [fieldConfig]=\"[columnField]\" [wrapperClass]=\"'flex flex-col gap-4'\"></adk-fields>\n                    } @if (groupByField) {\n                    <adk-fields class=\"mt-4\" [fieldConfig]=\"[groupByField]\" [wrapperClass]=\"'flex flex-col gap-4'\"></adk-fields>\n                    }\n                </div>\n                <div class=\"adk-card-footer\">\n                    <adk-button\n                        class=\"w-full\"\n                        (click)=\"closeDialog()\"\n                        customClasses=\"align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-blue-500 text-white shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none block w-full\"\n                    >\n                        Close Preferences\n                    </adk-button>\n                </div>\n            </tw-card>\n        </tw-dialog>\n    `,\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n        `,\n    ],\n})\nexport class TwTableSettingsDialogComponent implements OnInit {\n    isDialogOpen = false;\n    tdss = inject(TableDataSourceService);\n    visibleColumnField = preferenceVisibilitySelector(this.tdss.get('headers'));\n    columnField = preferenceColumnSelector(this.tdss.get('headers'));\n    groupByField = preferenceGroupBySelector(this.tdss.get('headers'));\n\n    ngOnInit(): void {\n        this.visibleColumnField = preferenceVisibilitySelector(this.tdss.get('headers'));\n        this.columnField = preferenceColumnSelector(this.tdss.get('headers'));\n        this.groupByField = preferenceGroupBySelector(this.tdss.get('headers'));\n    }\n\n    openDialog() {\n        this.isDialogOpen = true;\n    }\n\n    closeDialog() {\n        // Optionally save dialog preferences using the service\n        // const updatedPreferences = this.getUpdatedPreferences();\n        // const updatedGroupBy = this.getUpdatedGroupBy();\n\n        // this.tdss.setGroupBy(updatedGroupBy);\n        // // Assume setPreferences is a method you'd implement in the service\n        // this.tdss.updatePreferences(updatedPreferences);\n\n        this.isDialogOpen = false;\n    }\n\n    getUpdatedPreferences(): string[] {\n        // Implement logic to get updated preferences from the dialog\n        return ['column1', 'column2']; // Example return value\n    }\n\n    getUpdatedGroupBy(): string {\n        // Implement logic to get updated group by from the dialog\n        return 'column1'; // Example return value\n    }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "\n            :host {\n                display: block;\n                width: 100%;\n            }\n        \n",
@@ -10781,14 +10812,34 @@
                 "defaultValue": "FieldBuilder.createField('select', 'itemsPerPage', '5', 'Items Per Page', 'Items Per Page', {\n    labelClass: '',\n    options: [\n        {\n            value: '5',\n            label: '5',\n            id: '1',\n        },\n        {\n            value: '10',\n            label: '10',\n            id: '2',\n        },\n        {\n            value: '25',\n            label: '25',\n            id: '3',\n        },\n        {\n            value: '100',\n            label: '100',\n            id: '4',\n        },\n    ],\n})"
             },
             {
-                "name": "preferencesSelector",
+                "name": "preferenceColumnSelector",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/table/utils/fields.controls.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Field",
+                "defaultValue": "(params: string[]) => {\n    const mapVisibleColumnsOptions: FieldOptions[] = params.map((param) => {\n        return {\n            id: param,\n            value: param,\n            label: titleCase(param),\n        };\n    });\n\n    const columnSearchColumn: Field = FieldBuilder.createField('select', 'column', 'none', 'Column', '', {\n        options: [{ id: '0', value: 'none', label: 'None' }, ...mapVisibleColumnsOptions],\n    });\n\n    return {\n        ...columnSearchColumn,\n    };\n}"
+            },
+            {
+                "name": "preferenceGroupBySelector",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/table/utils/fields.controls.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Field",
+                "defaultValue": "(params: string[]) => {\n    const mapVisibleColumnsOptions: FieldOptions[] = params.map((param) => {\n        return {\n            id: param,\n            value: param,\n            label: titleCase(param),\n        };\n    });\n\n    const groupByColumn: Field = FieldBuilder.createField('select', 'groupBy', params[0], 'Group By', '', {\n        options: mapVisibleColumnsOptions,\n    });\n\n    return {\n        ...groupByColumn,\n    };\n}"
+            },
+            {
+                "name": "preferenceVisibilitySelector",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "projects/ng-lib/src/lib/tw-ui/components/table/utils/fields.controls.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Field[]",
-                "defaultValue": "(params: string[]) => {\n    console.log('params', params);\n    const mapVisibleColumnsOptions: FieldOptions[] = params.map((param) => {\n        console.log('param', titleCase(param));\n        return {\n            id: param,\n            value: param,\n            label: titleCase(param),\n        };\n    });\n\n    const headerCheckboxGroup: Field = FieldBuilder.createField('checkbox', 'visibleColumns', params, 'visibleColumns', 'Visible Columns', {\n        labelClass: '',\n        required: false,\n        options: mapVisibleColumnsOptions,\n    });\n\n    const columnSearchColumn: Field = FieldBuilder.createField('select', 'column', params[0], 'Column', '', {\n        options: mapVisibleColumnsOptions,\n    });\n\n    const groupByColumn: Field = FieldBuilder.createField('select', 'column', params[0], 'Group By', '', {\n        options: mapVisibleColumnsOptions,\n    });\n\n    return [\n        {\n            ...headerCheckboxGroup,\n        },\n        {\n            ...columnSearchColumn,\n        },\n        {\n            ...groupByColumn,\n        },\n    ];\n}"
+                "defaultValue": "(params: string[]) => {\n    const mapVisibleColumnsOptions: FieldOptions[] = params.map((param) => {\n        return {\n            id: param,\n            value: param,\n            label: titleCase(param),\n        };\n    });\n\n    const headerCheckboxGroup: Field = FieldBuilder.createField('checkbox', 'visibleColumns', params, 'visibleColumns', 'Visible Columns', {\n        labelClass: '',\n        required: false,\n        options: mapVisibleColumnsOptions,\n    });\n\n    return [\n        {\n            ...headerCheckboxGroup,\n        },\n    ];\n}"
             },
             {
                 "name": "preview",
@@ -12673,14 +12724,34 @@
                     "defaultValue": "FieldBuilder.createField('select', 'itemsPerPage', '5', 'Items Per Page', 'Items Per Page', {\n    labelClass: '',\n    options: [\n        {\n            value: '5',\n            label: '5',\n            id: '1',\n        },\n        {\n            value: '10',\n            label: '10',\n            id: '2',\n        },\n        {\n            value: '25',\n            label: '25',\n            id: '3',\n        },\n        {\n            value: '100',\n            label: '100',\n            id: '4',\n        },\n    ],\n})"
                 },
                 {
-                    "name": "preferencesSelector",
+                    "name": "preferenceColumnSelector",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/table/utils/fields.controls.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Field",
+                    "defaultValue": "(params: string[]) => {\n    const mapVisibleColumnsOptions: FieldOptions[] = params.map((param) => {\n        return {\n            id: param,\n            value: param,\n            label: titleCase(param),\n        };\n    });\n\n    const columnSearchColumn: Field = FieldBuilder.createField('select', 'column', 'none', 'Column', '', {\n        options: [{ id: '0', value: 'none', label: 'None' }, ...mapVisibleColumnsOptions],\n    });\n\n    return {\n        ...columnSearchColumn,\n    };\n}"
+                },
+                {
+                    "name": "preferenceGroupBySelector",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/table/utils/fields.controls.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Field",
+                    "defaultValue": "(params: string[]) => {\n    const mapVisibleColumnsOptions: FieldOptions[] = params.map((param) => {\n        return {\n            id: param,\n            value: param,\n            label: titleCase(param),\n        };\n    });\n\n    const groupByColumn: Field = FieldBuilder.createField('select', 'groupBy', params[0], 'Group By', '', {\n        options: mapVisibleColumnsOptions,\n    });\n\n    return {\n        ...groupByColumn,\n    };\n}"
+                },
+                {
+                    "name": "preferenceVisibilitySelector",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "projects/ng-lib/src/lib/tw-ui/components/table/utils/fields.controls.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Field[]",
-                    "defaultValue": "(params: string[]) => {\n    console.log('params', params);\n    const mapVisibleColumnsOptions: FieldOptions[] = params.map((param) => {\n        console.log('param', titleCase(param));\n        return {\n            id: param,\n            value: param,\n            label: titleCase(param),\n        };\n    });\n\n    const headerCheckboxGroup: Field = FieldBuilder.createField('checkbox', 'visibleColumns', params, 'visibleColumns', 'Visible Columns', {\n        labelClass: '',\n        required: false,\n        options: mapVisibleColumnsOptions,\n    });\n\n    const columnSearchColumn: Field = FieldBuilder.createField('select', 'column', params[0], 'Column', '', {\n        options: mapVisibleColumnsOptions,\n    });\n\n    const groupByColumn: Field = FieldBuilder.createField('select', 'column', params[0], 'Group By', '', {\n        options: mapVisibleColumnsOptions,\n    });\n\n    return [\n        {\n            ...headerCheckboxGroup,\n        },\n        {\n            ...columnSearchColumn,\n        },\n        {\n            ...groupByColumn,\n        },\n    ];\n}"
+                    "defaultValue": "(params: string[]) => {\n    const mapVisibleColumnsOptions: FieldOptions[] = params.map((param) => {\n        return {\n            id: param,\n            value: param,\n            label: titleCase(param),\n        };\n    });\n\n    const headerCheckboxGroup: Field = FieldBuilder.createField('checkbox', 'visibleColumns', params, 'visibleColumns', 'Visible Columns', {\n        labelClass: '',\n        required: false,\n        options: mapVisibleColumnsOptions,\n    });\n\n    return [\n        {\n            ...headerCheckboxGroup,\n        },\n    ];\n}"
                 },
                 {
                     "name": "searchColumnSelector",
@@ -13540,7 +13611,7 @@
                 "linktype": "component",
                 "name": "SelectComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/11",
+                "coverageCount": "0/16",
                 "status": "low"
             },
             {
@@ -14569,7 +14640,7 @@
                 "linktype": "component",
                 "name": "TwTableSettingsDialogComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/9",
+                "coverageCount": "0/11",
                 "status": "low"
             },
             {
@@ -14605,7 +14676,27 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "preferencesSelector",
+                "name": "preferenceColumnSelector",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/tw-ui/components/table/utils/fields.controls.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "preferenceGroupBySelector",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/tw-ui/components/table/utils/fields.controls.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "preferenceVisibilitySelector",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

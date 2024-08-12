@@ -28,16 +28,19 @@ import { searchColumnSelector } from './utils';
                 }
             </div>
             <div class="flex shrink-0 flex-col gap-2 sm:flex-row">
-                @if(buttons && buttons.length > 0){
-                <div *ngFor="let button of buttons" class="flex items-center gap-3 cursor-pointer" (click)="button.onClick()">
+                @if(buttons && buttons.length > 0){ @for(button of buttons; track $index){
+                <div class="flex items-center gap-3 cursor-pointer" (click)="button.onClick()">
                     <adk-button color="{{ button.color }}" (click)="button.onClick()">
-                        @if(button.icon){
-                        <span class="material-symbols-outlined">{{ button.icon }}</span>
-                        }
-                        {{ button.label }}
+                        <!-- @if(button.icon){
+                        <span class="material-symbols-outlined mr-2 items-center">{{ button.icon }}</span>
+                        } -->
+                        <span class="flex items-center gap-2">
+                            @if(button.icon){
+                            <span class="material-symbols-outlined">{{ button.icon }}</span> }{{ button.label }}</span
+                        >
                     </adk-button>
                 </div>
-                }
+                } }
                 <div class="flex items-center gap-3 cursor-pointer">
                     <tw-table-settings-dialog></tw-table-settings-dialog>
                 </div>

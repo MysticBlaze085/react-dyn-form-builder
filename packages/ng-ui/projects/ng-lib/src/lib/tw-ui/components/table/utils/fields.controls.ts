@@ -68,8 +68,8 @@ export const preferenceColumnSelector: (params: string[]) => Field = (params: st
         };
     });
 
-    const columnSearchColumn: Field = FieldBuilder.createField('select', 'column', params[0], 'Column', '', {
-        options: mapVisibleColumnsOptions,
+    const columnSearchColumn: Field = FieldBuilder.createField('select', 'column', 'none', 'Column', '', {
+        options: [{ id: '0', value: 'none', label: 'None' }, ...mapVisibleColumnsOptions],
     });
 
     return {
