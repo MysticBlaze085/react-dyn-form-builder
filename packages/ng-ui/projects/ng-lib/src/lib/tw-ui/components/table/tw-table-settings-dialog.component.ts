@@ -28,7 +28,7 @@ import { TwTypographyComponent } from '../typography.component';
     template: `
         <adk-settings-icon (click)="openDialog()"> </adk-settings-icon>
         <tw-dialog [isOpen]="isDialogOpen" (close)="closeDialog()" class="bg-transparent shadow-none">
-            <tw-card>
+            <tw-card isHeaderWrapped="true" isFooterWrapped="true">
                 <tw-typography
                     variant="h3"
                     color="blue-gray"

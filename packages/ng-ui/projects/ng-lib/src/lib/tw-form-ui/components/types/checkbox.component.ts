@@ -139,7 +139,8 @@ export class CheckboxComponent implements OnChanges, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.initFormControl();
+        if (this.formControl[this.field.key]) return;
+        else this.initFormControl();
     }
 
     ngOnChanges({ field, isChecked }: SimpleChanges): void {

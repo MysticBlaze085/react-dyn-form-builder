@@ -115,6 +115,47 @@ const handleActionClick = (rowData) => {
     alert(`Selected Details: \n\n ${JSON.stringify(rowData, null, 2)}`);
 };
 
+export const isNotSelectable: Story = {
+    decorators: [
+        (story) => (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <div style={{ width: '98%', margin: '0 auto' }}>
+                    <Provider store={createNewStore({ tableDataSource: initialState })}>{story()}</Provider>
+                </div>
+            </div>
+        ),
+    ],
+    args: {
+        showHeader: true,
+        showFooter: true,
+        title: 'Table Card',
+        subtitle: 'This is a table card',
+        pageSizes: ['5', '10', '20', '100'],
+        buttons: [
+            {
+                label: 'View All',
+                color: 'blue',
+                onClick: () => { },
+            },
+            {
+                label: 'Add Member',
+                color: 'blue',
+                onClick: () => { },
+                icon: <UserPlusIcon strokeWidth={2} className="h-4 w-4" />,
+            },
+        ],
+        children: (
+            <TableDefault
+                isDraggable={true}
+                isSortable={true}
+                isSelectable={false}
+                headers={['Name', 'Job', 'Date']}
+                rows={mockData}
+            />
+        ),
+    },
+};
+
 const renderActionButton = (rowData) => (
     <ButtonDefault onClick={() => handleActionClick(rowData)}>
         View Details
