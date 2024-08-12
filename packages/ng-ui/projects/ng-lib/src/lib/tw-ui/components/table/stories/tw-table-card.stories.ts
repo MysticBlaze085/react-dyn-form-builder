@@ -50,19 +50,19 @@ const mockData = [
 ];
 
 export const Default: Story = {
-    args: {
-        headers: ['name', 'job', 'date'],
-        rows: mockData,
-        isSelectable: false,
-        isSortable: true,
-        isDraggable: false,
-        title: 'Table Card',
-        subtitle: 'This is a table card',
-        buttons: [
-            { label: 'View ALL', onClick: () => {}, color: 'blue', icon: '' },
-            { label: 'add member', onClick: () => {}, color: 'blue', icon: 'person_add' },
-        ],
-    },
+  args: {
+    headers: ['name', 'job', 'date'],
+    rows: mockData,
+    isSelectable: false,
+    isSortable: true,
+    isDraggable: false,
+    title: 'Table Card',
+    subtitle: 'This is a table card',
+    buttons: [
+      { label: 'View ALL', onClick: () => {}, color: 'primary', icon: '' },
+      { label: 'add member', onClick: () => {}, color: 'primary', icon: 'person_add' },
+    ],
+  },
 };
 
 export const Selectable: Story = {

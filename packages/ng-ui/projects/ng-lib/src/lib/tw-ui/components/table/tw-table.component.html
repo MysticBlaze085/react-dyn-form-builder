@@ -36,7 +36,7 @@
     </th>
     }
     @for(header of headers; track $index) {
-    <th [id]="header" class="border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer" [attr.key]="head"
+    <th [id]="header" class="border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer" [attr.key]="header"
       [ngClass]="{'border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer': true}"
       [attr.draggable]="isDraggable" (dragstart)="handleDragStart($index)" (dragover)="handleDragOver($event)"
       (drop)="handleDrop($index, $event)" (drop)="handleDrop($index, $event)" scope="col">
@@ -45,8 +45,8 @@
         {{ header ?? ' ' | titlecase}}
         <div class="flex flex-row gap-2">
           @if($index !== headers.length && isSortable) {
-          <tw-sortable-icon (click)="sortRows(header, groupData)"
-            (keydown)="sortRows(header, groupData)"></tw-sortable-icon>
+          <tw-sortable-icon (click)="sortRows(header)"
+            (keydown)="sortRows(header)"></tw-sortable-icon>
           } @if(tdss.get('sortDataSource').key === header && isSortable) {
           <span>{{ sortDataSource.direction === 'ascending' ? '🔼' : '🔽' }}</span>
           }

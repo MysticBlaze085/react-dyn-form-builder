@@ -8,6 +8,7 @@ export type TYPE =
   | 'text'
   | 'insight-text'
   | 'int'
+  | 'multi-select'
   | 'password'
   | 'radio'
   | 'slider'
