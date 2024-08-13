@@ -22,7 +22,7 @@ import { PillComponent } from '../../../tw-ui/components/pill.component';
                 <div class="flex items-center justify-between gap-8 mb-8">
                     <div>
                         @if(title) {
-                        <h5 class="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+                        <h5 class="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-gray-900">
                             {{ title }}
                         </h5>
                         } @if(caption) {
@@ -51,11 +51,11 @@ import { PillComponent } from '../../../tw-ui/components/pill.component';
                     <thead>
                         <tr>
                             @if(selectable) {
-                            <th scope="col" class="p-4 border-b border-blue-gray-100 bg-blue-gray-50"></th>
+                            <th scope="col" class="p-4 border-b border-gray-100 bg-gray-50"></th>
                             <!-- Show the select column only if selectable is true -->
                             } @for (key of headers; track key) {
-                            <th scope="col" class="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
-                                <p class="block font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
+                            <th scope="col" class="p-4 border-b border-gray-100 bg-gray-50">
+                                <p class="block font-sans text-sm antialiased font-normal leading-none text-gray-900 opacity-70">
                                     {{ key | uppercase }}
                                 </p>
                             </th>
@@ -67,23 +67,23 @@ import { PillComponent } from '../../../tw-ui/components/pill.component';
                         @for (item of datasource.items(); track (item.id); let i = $index) {
                         <tr [class.selected]="item.selected">
                             @if(selectable) {
-                            <td class="p-4 border-b border-blue-gray-50">
+                            <td class="p-4 border-b border-gray-50">
                                 <!-- Show the select cell only if selectable is true -->
                                 <input
                                     [checked]="datasource.selected(item.id)"
                                     (click)="toggleRowSelection(item)"
                                     type="checkbox"
-                                    class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                    class="h-4 w-4 rounded border-gray-300 text-gray-600 focus:ring-gray-600"
                                 />
                             </td>
                             } @for (key of headers; track key) { @if (hasField(item, key)) {
                             <td *ngIf="this.datasource.selected(item.id)">
-                                <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
+                                <p class="block font-sans text-sm antialiased font-normal leading-normal text-gray-900">
                                     <adk-field [field]="item[key]"></adk-field>
                                 </p>
                             </td>
                             } @else {
-                            <td class="p-4 border-b border-blue-gray-50">
+                            <td class="p-4 border-b border-gray-50">
                                 @if (isValueArray(item[key])) { @for (val of item[key]; track val) {
                                 <adk-pill>{{ val }}</adk-pill>
                                 } } @else { {{ item[key] }} }

@@ -12,8 +12,8 @@ import { paginationSelector } from './utils';
     selector: 'tw-table-footer',
     standalone: true,
     template: `
-        <div class="flex items-center justify-between border-t border-blue-gray-50 p-4">
-            <tw-typography variant="small" color="blue-gray" class="w-full" classStyle="flex flex-row font-normal">
+        <div class="flex items-center justify-between border-t border-gray-50 p-4">
+            <tw-typography variant="small" color="gray" class="w-full" classStyle="flex flex-row font-normal">
                 <span class="flex flex-col justify-center mr-2" style="white-space: 'nowrap'">
                     Page {{ currentPage.change$ | async }} of {{ totalPages.change$ | async }}
                 </span>

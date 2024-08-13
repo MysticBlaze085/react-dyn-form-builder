@@ -22,7 +22,7 @@ import { CommonModule } from '@angular/common';
                 </button>
             </h6>
             <div [@collapseAnimation]="isOpen ? 'open' : 'closed'" class="overflow-hidden transition-all duration-300 ease-in-out">
-                <div class="p-4 text-sm leading-normal text-blue-gray-500/80">
+                <div class="p-4 text-sm leading-normal text-gray-500/80">
                     <ng-container *ngTemplateOutlet="bodyTemplate"></ng-container>
                 </div>
             </div>

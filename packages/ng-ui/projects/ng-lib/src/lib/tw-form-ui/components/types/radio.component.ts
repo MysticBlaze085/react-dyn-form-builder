@@ -70,7 +70,7 @@ export class RadioComponent implements OnChanges {
   }
 
   get inputClass() {
-    return this.props?.inputClass ?? 'h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600';
+    return this.props?.inputClass ?? 'h-4 w-4 border-gray-300 text-gray-600 focus:ring-gray-600';
   }
 
   ngOnChanges({ field }: SimpleChanges): void {

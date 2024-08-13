@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
     imports: [],
     template: `
         <button
-            class="relative align-middle select-none font-sans font-medium text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none w-8 max-w-[32px] h-8 max-h-[32px] rounded-lg text-xs text-blue-gray-500 hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30"
+            class="relative align-middle select-none font-sans font-medium text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none w-8 max-w-[32px] h-8 max-h-[32px] rounded-lg text-xs text-gray-500 hover:bg-gray-500/10 active:bg-gray-500/30"
             type="button"
         >
             <span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform"

@@ -53,7 +53,7 @@ import { RouterModule } from '@angular/router';
                             <input
                                 [(ngModel)]="item.selected"
                                 type="checkbox"
-                                class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                class="h-4 w-4 rounded border-gray-300 text-gray-600 focus:ring-gray-600"
                             />
                         </td>
                         } @for (key of keys; track key) {

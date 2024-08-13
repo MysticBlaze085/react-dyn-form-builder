@@ -35,9 +35,9 @@ import { TwTypographyComponent } from '../typography.component';
             <tw-card [isHeaderWrapped]="true" [isFooterWrapped]="true">
                 <tw-typography
                     variant="h3"
-                    color="blue-gray"
+                    color="gray"
                     class="adk-card-header"
-                    classStyle="antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900 flex flex-row"
+                    classStyle="antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-gray-900 flex flex-row"
                 >
                     Column Preferences
                     <div class="grow"></div>

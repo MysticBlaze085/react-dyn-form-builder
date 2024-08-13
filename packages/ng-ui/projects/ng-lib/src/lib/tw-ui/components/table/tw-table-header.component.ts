@@ -20,8 +20,8 @@ import { searchColumnSelector } from './utils';
                 @if(title){
                 <tw-typography
                     variant="h5"
-                    color="blue-gray"
-                    classStyle="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900"
+                    color="gray"
+                    classStyle="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-gray-900"
                     >{{ title }}</tw-typography
                 >
                 } @if(subtitle){

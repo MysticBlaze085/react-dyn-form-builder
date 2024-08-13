@@ -56,6 +56,6 @@ describe('RadioComponent', () => {
             props: {},
         } as any;
         component.field = fieldWithoutInputClass;
-        expect(component.inputClass).toBe('h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600'); // Default inputClass value
+        expect(component.inputClass).toBe('h-4 w-4 border-gray-300 text-gray-600 focus:ring-gray-600'); // Default inputClass value
     });
 });
