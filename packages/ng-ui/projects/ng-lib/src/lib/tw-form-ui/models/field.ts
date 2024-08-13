@@ -12,13 +12,13 @@ export declare type FieldSteps = Identifiable & {
 };
 
 export declare type FieldOptions = Identifiable & {
-  [additionalProperties: string]: any;
+    [additionalProperties: string]: any;
 } & {
-  value: string;
-  label: string;
-  checked?: boolean;
-  description?: string;
-  category?: string;
+    value: string | boolean | number;
+    label: string;
+    checked?: boolean;
+    description?: string;
+    category?: string;
 };
 
 export type Field<

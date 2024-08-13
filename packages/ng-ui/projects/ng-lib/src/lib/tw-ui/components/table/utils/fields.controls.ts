@@ -32,16 +32,15 @@ export const paginationSelector: Field = FieldBuilder.createField('select', 'ite
 
 export const searchColumnSelector: (param: string) => Field = (param) =>
     FieldBuilder.createField('text', 'searchColumn', '', `Search by ${titleCase(param)}`, ``, {
-        // class: 'sm:col-span-3',
         labelClass: '',
         required: false,
     });
 
-export const preferenceVisibilitySelector: (params: string[]) => Field[] = (params: string[]) => {
+export const preferenceVisibilitySelector: (params: string[]) => Field = (params: string[]) => {
     const mapVisibleColumnsOptions: FieldOptions[] = params.map((param) => {
         return {
             id: param,
-            value: param,
+            value: true,
             label: titleCase(param),
         };
     });
@@ -52,11 +51,7 @@ export const preferenceVisibilitySelector: (params: string[]) => Field[] = (para
         options: mapVisibleColumnsOptions,
     });
 
-    return [
-        {
-            ...headerCheckboxGroup,
-        },
-    ];
+    return headerCheckboxGroup;
 };
 
 export const preferenceColumnSelector: (params: string[]) => Field = (params: string[]) => {
@@ -68,8 +63,8 @@ export const preferenceColumnSelector: (params: string[]) => Field = (params: st
         };
     });
 
-    const columnSearchColumn: Field = FieldBuilder.createField('select', 'column', 'none', 'Column', '', {
-        options: [{ id: '0', value: 'none', label: 'None' }, ...mapVisibleColumnsOptions],
+    const columnSearchColumn: Field = FieldBuilder.createField('select', 'column', params[0], 'Column', '', {
+        options: [...mapVisibleColumnsOptions],
     });
 
     return {
@@ -86,11 +81,11 @@ export const preferenceGroupBySelector: (params: string[]) => Field = (params: s
         };
     });
 
-    const groupByColumn: Field = FieldBuilder.createField('select', 'groupBy', params[0], 'Group By', '', {
-        options: mapVisibleColumnsOptions,
+    const columnSearchColumn: Field = FieldBuilder.createField('select', 'groupBy', 'none', 'Group By', '', {
+        options: [{ id: '0', value: 'none', label: 'None' }, ...mapVisibleColumnsOptions],
     });
 
     return {
-        ...groupByColumn,
+        ...columnSearchColumn,
     };
 };

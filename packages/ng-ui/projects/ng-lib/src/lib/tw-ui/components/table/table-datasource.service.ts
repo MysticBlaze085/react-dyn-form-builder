@@ -90,6 +90,18 @@ export class TableDataSourceService {
         });
     };
 
+    setPreferences(action: { visibleColumns: string[]; groupBy: string }): void {
+        this.#state.update((state) => ({
+            ...state,
+            headers: action.visibleColumns,
+            preferences: {
+                visibleColumns: action.visibleColumns,
+                groupBy: action.groupBy,
+            },
+        }));
+        this.setDataSourcePagination();
+    }
+
     setPaginationState(pagination: Partial<Pagination>): void {
         const pageSize = pagination.pageSize ?? this.#state().pagination.pageSize;
         this.#state.update((state) => ({
@@ -155,7 +167,7 @@ export class TableDataSourceService {
     setGroupBy(groupBy: string): void {
         this.#state.update((state) => ({
             ...state,
-            preferences: { ...state.preferences, groupBy },
+            preferences: { ...state.preferences, groupBy: groupBy !== 'non' ? groupBy : 'key' },
         }));
     }
 
