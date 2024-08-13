@@ -1,15 +1,5 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
-import {
-    ChangeDetectionStrategy,
-    Component,
-    EventEmitter,
-    Input,
-    OnChanges,
-    SimpleChanges,
-    TemplateRef,
-    ViewChild,
-    inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewChild, inject } from '@angular/core';
 
 import { AdkExpansionPanelComponent } from '../expansion-panel.component';
 import { AdkSelection } from '../../../tw-form-ui/directives';

@@ -56,7 +56,7 @@ To start the lib storybook, run:
 
 ## TODO
 
--   [ ] Build components similar to the react shared-ui package
+-   [x] Build components similar to the react shared-ui package
 -   [ ] Write documentation on how to use components
 -   [ ] Test install in a standalone application
 -   [ ] Write spec tests and storybook interactive testing

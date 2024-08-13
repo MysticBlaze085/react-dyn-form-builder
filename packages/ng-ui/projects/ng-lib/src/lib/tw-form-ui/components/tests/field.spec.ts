@@ -103,7 +103,7 @@ describe('FieldComponent', () => {
         expect(checkboxElement).toBeTruthy();
     });
     it('should render MultiSelectComponent when field type is "multi-select"', () => {
-        const field: Field = FieldBuilder.createField('select', 'multi-select', '', 'multi-select', 'multi-select', {
+        const field: Field = FieldBuilder.createField('multi-select', 'multi-select', '', 'multi-select', 'multi-select', {
             class: 'sm:col-span-3',
             required: true,
             minLength: 3,
