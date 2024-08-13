@@ -22,11 +22,6 @@ export const paginationSelector: Field = FieldBuilder.createField('select', 'ite
             label: '25',
             id: '3',
         },
-        {
-            value: '100',
-            label: '100',
-            id: '4',
-        },
     ],
 });
 

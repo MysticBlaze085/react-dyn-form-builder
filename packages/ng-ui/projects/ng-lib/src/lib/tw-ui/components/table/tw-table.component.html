@@ -85,9 +85,10 @@
 <!-- Render Row Table Cells -->
 <ng-template #renderRow let-header="headers" let-rowData="rowData" let-rowIndex="rowIndex"
   let-isSelectable="isSelectable">
-  <tr [ngClass]="isSelected(rowData) ? 'bg-light-blue-50': ''" (click)="selectedRow.value = rowData">
+  <tr [ngClass]="isSelected(rowData) ? 'bg-light-blue-50' : ''" (click)="selectedRow.value = rowData">
     @if(isSelectable) {
-    <td [ngClass]="isSelectable ? 'p-1' : 'p-4'" class="border-b border-blue-gray-50 p-1 max-h-[38px] max-w-[15px]">
+    <td [ngClass]="isSelectable ? 'p-1' : 'p-4'"
+      class="border-b border-blue-gray-50 p-1 max-h-[38px] max-w-[15px] overflow-hidden text-ellipsis whitespace-nowrap">
       <div class="inline-flex items-center">
         <label class="relative flex items-center cursor-pointer p-3 rounded-full" for="checkbox">
           <input type="checkbox" [checked]="selection.selected(rowData)" (change)="toggleSelectItem(rowData)"
@@ -98,12 +99,12 @@
     }
     @for (header of headers; track $index) {
     <td [ngClass]="isSelectable ? 'p-1' : 'p-2'"
-      class="border-b border-blue-gray-50 min-h-[48.5px] min-w-[60px] max-w-[60px]">
+      class="border-b border-blue-gray-50 min-h-[48.5px] min-w-[60px] max-w-[60px] overflow-hidden text-ellipsis whitespace-nowrap">
       <tw-typography [variant]="'small'" [color]="'blue-gray'" class="font-normal ml-2">
-        <!-- <pre>{{rowData | json}}</pre> -->
         {{ rowData[header] }}
       </tw-typography>
     </td>
     }
   </tr>
 </ng-template>
+
