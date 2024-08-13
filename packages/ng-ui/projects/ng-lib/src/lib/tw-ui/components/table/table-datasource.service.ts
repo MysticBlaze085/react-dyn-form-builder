@@ -244,4 +244,27 @@ export class TableDataSourceService {
         this.setSelectedRows([]);
         this.#state.update((state) => ({ ...state, draggedColIndex: null }));
     }
+
+    clear() {
+        this.#state.update((state) => ({
+            ...state,
+            dataSource: [],
+            draggedColIndex: null,
+            filterDataSource: { column: '', value: '' },
+            headers: [],
+            initialDataSource: [],
+            initialHeaders: [],
+            pagination: {
+                currentPage: 1,
+                totalPages: 1,
+                pageSize: 10,
+            },
+            preferences: {
+                visibleColumns: [],
+                groupBy: undefined,
+            },
+            selectedRows: [],
+            sortDataSource: { key: '', direction: 'ascending' },
+        }));
+    }
 }

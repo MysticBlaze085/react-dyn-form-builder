@@ -136,8 +136,8 @@ export class SelectComponent implements OnChanges {
         }
     }
 
-    selectOption(value: string) {
-        this.field.value = value;
+    selectOption(value: string | number | boolean) {
+        this.field.value = value as string;
         this.formControl[this.field.key].patchValue(value);
         this.isOpen = false;
     }

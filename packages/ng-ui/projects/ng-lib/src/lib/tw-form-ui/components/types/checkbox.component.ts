@@ -1,7 +1,6 @@
-import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
+import { AbstractControl, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 
-import { AdkFormGroup } from '../../directives';
 import { CommonModule } from '@angular/common';
 import { Field } from '../../models';
 
@@ -85,7 +84,6 @@ import { Field } from '../../models';
         </div>
         }
     `,
-    hostDirectives: [AdkFormGroup],
     styles: [
         `
             :host {
@@ -99,11 +97,7 @@ export class CheckboxComponent implements OnChanges, AfterViewInit {
     @Input() isChecked?: boolean;
     @Output() valueChange: EventEmitter<any> = new EventEmitter<any>();
     formControl: { [key: string]: AbstractControl | any } = {};
-    #formGroup = inject(AdkFormGroup, { self: true });
 
-    get formGroup() {
-        return this.#formGroup.formGroup();
-    }
     get id() {
         return `${this.field.id}`;
     }
@@ -164,7 +158,6 @@ export class CheckboxComponent implements OnChanges, AfterViewInit {
             this.options.forEach((option: any) => {
                 this.formControl[this.field.key][option.id] = new FormControl(option.value);
             });
-            this.#formGroup.setFormGroup([this.field]);
         } else {
             this.formControl[this.field.key] = new FormControl(false);
         }

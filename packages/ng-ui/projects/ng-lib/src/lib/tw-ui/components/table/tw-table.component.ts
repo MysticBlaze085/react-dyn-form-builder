@@ -1,5 +1,15 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewChild, inject } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    Input,
+    OnChanges,
+    OnDestroy,
+    SimpleChanges,
+    TemplateRef,
+    ViewChild,
+    inject,
+} from '@angular/core';
 
 import { AdkExpansionPanelComponent } from '../expansion-panel.component';
 import { AdkSelection } from '../../../tw-form-ui/directives';
@@ -33,7 +43,7 @@ import { TwTypographyComponent } from '../typography.component';
         `,
     ],
 })
-export class TwDefaultTableComponent implements OnChanges {
+export class TwDefaultTableComponent implements OnChanges, OnDestroy {
     @ViewChild('selection', { static: true }) selection: any;
     @Input() isSelectable = false;
     @Input() isSortable = false;
@@ -75,6 +85,11 @@ export class TwDefaultTableComponent implements OnChanges {
         this.sortRows('');
 
         console.log('tdss', this.tdss.state());
+    }
+
+    ngOnDestroy(): void {
+        this.tdss.clear();
+        console.log('on destroy tdss', this.tdss.state());
     }
 
     trackBy(index: any) {
@@ -173,8 +188,8 @@ export class TwDefaultTableComponent implements OnChanges {
     handleDrop(index: number, event: DragEvent): void {
         event.preventDefault();
         this.tdss.dragDrop(index);
-      this.headers = this.tdss.get('headers');
-      console.log('groupBy', this.groupBy);
+        this.headers = this.tdss.get('headers');
+        console.log('groupBy', this.groupBy);
 
         this.groupData.value = this.groupByData(this.tdss.get('dataSource'), this.groupBy);
     }

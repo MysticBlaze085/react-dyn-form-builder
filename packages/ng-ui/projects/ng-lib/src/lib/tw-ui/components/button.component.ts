@@ -33,7 +33,7 @@ import { CommonModule, NgClass } from '@angular/common';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ButtonComponent implements OnInit, OnChanges {
-    @Input() disabled: boolean = false;
+    @Input() disabled = false;
     @Input() variant: 'filled' | 'gradient' | 'outlined' | 'text' = 'filled';
     @Input() color: 'primary' | 'secondary' | 'success' | 'warn' | 'danger' = 'primary';
     @Input() type: 'button' | 'submit' | 'reset' = 'button';
@@ -75,7 +75,7 @@ export class ButtonComponent implements OnInit, OnChanges {
 
     ngOnChanges({ disabled, variant, color, customClasses, bgColor, textColor, hoverEffect, disabledEffect }: SimpleChanges) {
         if (variant || color || customClasses || bgColor || textColor || hoverEffect || disabledEffect || disabled) {
-            this.disabled = disabled.currentValue;
+            this.disabled = disabled ? disabled.currentValue : false;
             this.getButtonClasses();
         }
     }
