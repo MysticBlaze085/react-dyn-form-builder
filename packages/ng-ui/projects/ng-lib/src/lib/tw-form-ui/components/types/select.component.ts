@@ -44,7 +44,7 @@ import { Field } from '../../models';
                 #dropdownList
                 tabindex="-1"
                 role="listbox"
-                class="w-full max-h-96 bg-white p-3 border border-gray-50 rounded-md shadow-lg shadow-gray-500/10 font-sans text-sm font-normal text-gray-500 overflow-auto focus:outline-none"
+                class="w-full max-h-96 bg-white p-3 border border-gray-50 rounded-md shadow-lg shadow-gray-500/10 font-sans text-sm font-normal text-blue-gray-500 overflow-auto focus:outline-none"
                 [ngStyle]="{ top: dropdownTop, left: dropdownLeft, width: dropdownWidth, position: 'absolute', zIndex: '1000' }"
                 id=":r1l:"
                 aria-orientation="vertical"
@@ -53,8 +53,8 @@ import { Field } from '../../models';
                 <li
                     [id]="'material-tailwind-select-' + option.value"
                     role="option"
-                    class="pt-[9px] pb-2 px-3 rounded-md leading-tight cursor-pointer select-none hover:bg-gray-50 focus:bg-gray-50 hover:bg-opacity-80 focus:bg-opacity-80 hover:text-gray-900 focus:text-gray-900 outline outline-0 transition-all"
-                    [ngClass]="{ 'bg-gray-50': option.value === field.value }"
+                    class="pt-[9px] pb-2 px-3 rounded-md leading-tight cursor-pointer select-none hover:bg-blue-gray-50 focus:bg-gray-50 hover:bg-opacity-80 focus:bg-opacity-80 hover:text-blue-gray-900 focus:text-blue-gray-900 outline outline-0 transition-all"
+                    [ngClass]="{ 'bg-blue-gray-50': option.value === field.value }"
                     [attr.tabindex]="option.value === field.value ? 0 : -1"
                     [attr.aria-selected]="option.value === field.value"
                     (click)="selectOption(option.value)"
@@ -64,7 +64,7 @@ import { Field } from '../../models';
                 }
             </ul>
             }
-            <p *ngIf="description" class="mt-3 text-sm leading-6 text-gray-600">
+            <p *ngIf="description" class="mt-3 text-sm leading-6 text-blue-gray-600">
                 {{ description }}
             </p>
             <div *ngIf="formControl[field.key].invalid && formControl[field.key].touched" class="text-red-500 text-xs mt-1">

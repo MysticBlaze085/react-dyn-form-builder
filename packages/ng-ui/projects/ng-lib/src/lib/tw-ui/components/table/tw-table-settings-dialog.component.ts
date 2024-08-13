@@ -151,25 +151,15 @@ export class TwTableSettingsDialogComponent implements OnInit, AfterViewInit {
     }
 
     closeDialog() {
-        // Optionally save dialog preferences using the service
-        // const updatedPreferences = this.getUpdatedPreferences();
-        // const updatedGroupBy = this.getUpdatedGroupBy();
-
-        // this.tdss.setGroupBy(updatedGroupBy);
-        // // Assume setPreferences is a method you'd implement in the service
-        // this.tdss.updatePreferences(updatedPreferences);
-
         this.isDialogOpen = false;
         this.triggerUpdate.emit(this.isDialogOpen);
     }
 
     getUpdatedPreferences(): string[] {
-        // Implement logic to get updated preferences from the dialog
-        return ['column1', 'column2']; // Example return value
+        return ['column1', 'column2'];
     }
 
     getUpdatedGroupBy(): string {
-        // Implement logic to get updated group by from the dialog
-        return 'column1'; // Example return value
+        return 'column1';
     }
 }
