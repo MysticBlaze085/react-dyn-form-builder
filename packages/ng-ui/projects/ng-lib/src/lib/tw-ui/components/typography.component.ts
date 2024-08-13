@@ -8,7 +8,7 @@ type Color =
     | 'current'
     | 'black'
     | 'white'
-    | 'gray'
+    | 'blue-gray'
     | 'gray'
     | 'brown'
     | 'deep-orange'
@@ -47,7 +47,7 @@ type Color =
 })
 export class TwTypographyComponent implements OnChanges {
     @Input() variant: Variant = 'paragraph';
-    @Input() color: Color = 'gray';
+    @Input() color: Color = 'blue-gray';
     @Input() classStyle = '';
 
     get variantClass(): string {

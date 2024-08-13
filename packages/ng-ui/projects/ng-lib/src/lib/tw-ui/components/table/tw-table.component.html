@@ -7,7 +7,7 @@
     </thead>
     <tbody>
       @for(groupKey of objectKeysGroupData(groupData); track $index){
-      @if(groupBy && groupKey !== 'key') {
+      @if(groupBy && groupKey !== '') {
       <ng-container
         *ngTemplateOutlet="groupByRender; context: { groupData, headers, isSelectable, groupKey }"></ng-container>
       } @else {
@@ -25,24 +25,24 @@
   let-sortDataSource="sortDataSource" let-selectedRows="selectedRows">
   <tr>
     @if(isSelectable) {
-    <th id="checkAll" class="border-b border-gray-100 bg-gray-50 p-1 max-w-[10px]">
+    <th id="checkAll" class="border-b border-blue-gray-100 bg-blue-gray-50 p-1 max-w-[10px]">
       <div class="inline-flex items-center">
         <label for="selectAllCheckbox" class="relative flex items-center cursor-pointer p-3 rounded-full">
           <input id="selectAllCheckbox" name="selectAllCheckbox" type="checkbox"
             (change)="toggleSelectAll($event, objectKeysGroupData(groupData))"
-            class="peer relative appearance-none border rounded-md border-gray-200 cursor-pointer transition-all before:content[''] before:block before:bg-gray-500 before:w-12 before:h-12 before:rounded-full before:absolute before:top-2/4 before:left-2/4 before:-translate-y-2/4 before:-translate-x-2/4 before:opacity-0 hover:before:opacity-10 before:transition-opacity checked:bg-gray-900 checked:border-gray-900 checked:before:bg-gray-900 w-4 h-4" />
+            class="peer relative appearance-none border rounded-md border-blue-gray-200 cursor-pointer transition-all before:content[''] before:block before:bg-blue-gray-500 before:w-12 before:h-12 before:rounded-full before:absolute before:top-2/4 before:left-2/4 before:-translate-y-2/4 before:-translate-x-2/4 before:opacity-0 hover:before:opacity-10 before:transition-opacity checked:bg-gray-900 checked:border-gray-900 checked:before:bg-gray-900 w-4 h-4" />
         </label>
       </div>
     </th>
     }
     @for(header of headers; track $index) {
-    <th [id]="header" class="border-b border-gray-100 bg-gray-50 p-3 cursor-pointer" [attr.key]="header"
-      [ngClass]="{'border-b border-gray-100 bg-gray-50 p-3 cursor-pointer': true}"
+    <th [id]="header" class="border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer" [attr.key]="header"
+      [ngClass]="{'border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer': true}"
       [attr.draggable]="isDraggable" (dragstart)="handleDragStart($index)" (dragover)="handleDragOver($event)"
       (drop)="handleDrop($index, $event)" (drop)="handleDrop($index, $event)" scope="col">
-      <tw-typography [variant]="'small'" [color]="'gray'"
+      <tw-typography [variant]="'small'" [color]="'blue-gray'"
         [classStyle]="'flex items-center justify-between gap-2 font-normal leading-none opacity-70'">
-        {{ header ?? ' ' | titlecase}}
+        {{ header ?? ' ' | uppercase}}
         <div class="flex flex-row gap-2">
           @if($index !== headers.length && isSortable) {
           <tw-sortable-icon (click)="sortRows(header)"
@@ -87,20 +87,21 @@
   let-isSelectable="isSelectable">
   <tr [ngClass]="isSelected(rowData) ? 'bg-light-blue-50': ''" (click)="selectedRow.value = rowData">
     @if(isSelectable) {
-    <td [ngClass]="isSelectable ? 'p-1' : 'p-4'" class="border-b border-gray-50 p-1 max-h-[38px] max-w-[15px]">
+    <td [ngClass]="isSelectable ? 'p-1' : 'p-4'" class="border-b border-blue-gray-50 p-1 max-h-[38px] max-w-[15px]">
       <div class="inline-flex items-center">
         <label class="relative flex items-center cursor-pointer p-3 rounded-full" for="checkbox">
           <input type="checkbox" [checked]="selection.selected(rowData)" (change)="toggleSelectItem(rowData)"
-            class="peer relative appearance-none border rounded-md border-gray-200 cursor-pointer transition-all before:content[''] before:block before:bg-gray-500 before:w-12 before:h-12 before:rounded-full before:absolute before:top-2/4 before:left-2/4 before:-translate-y-2/4 before:-translate-x-2/4 before:opacity-0 hover:before:opacity-10 before:transition-opacity checked:bg-gray-900 checked:border-gray-900 checked:before:bg-gray-900 w-4 h-4" />
+            class="peer relative appearance-none border rounded-md border-blue-gray-200 cursor-pointer transition-all before:content[''] before:block before:bg-blue-gray-500 before:w-12 before:h-12 before:rounded-full before:absolute before:top-2/4 before:left-2/4 before:-translate-y-2/4 before:-translate-x-2/4 before:opacity-0 hover:before:opacity-10 before:transition-opacity checked:bg-gray-900 checked:border-gray-900 checked:before:bg-gray-900 w-4 h-4" />
         </label>
       </div>
     </td>
     }
     @for (header of headers; track $index) {
     <td [ngClass]="isSelectable ? 'p-1' : 'p-2'"
-      class="border-b border-gray-50 min-h-[48.5px] min-w-[60px] max-w-[60px]">
-      <tw-typography [variant]="'small'" [color]="'gray'" class="font-normal ml-2">
-        {{ rowData[header.toLowerCase()] }}
+      class="border-b border-blue-gray-50 min-h-[48.5px] min-w-[60px] max-w-[60px]">
+      <tw-typography [variant]="'small'" [color]="'blue-gray'" class="font-normal ml-2">
+        <!-- <pre>{{rowData | json}}</pre> -->
+        {{ rowData[header] }}
       </tw-typography>
     </td>
     }

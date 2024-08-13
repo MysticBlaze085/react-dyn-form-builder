@@ -18,6 +18,7 @@ import { TwTableHeaderComponent } from './tw-table-header.component';
                 <tw-table-card-header
                     [title]="title"
                     [subtitle]="subtitle"
+                    [isSearchable]="isSearchable"
                     [buttons]="buttons"
                     (actionKeyPress)="isActionChange = !isActionChange"
                 ></tw-table-card-header>
@@ -29,7 +30,7 @@ import { TwTableHeaderComponent } from './tw-table-header.component';
                     [isSelectable]="isSelectable"
                     [isSortable]="isSortable"
                     [isDraggable]="isDraggable"
-                    [groupBy]="this.tdss.get('preferences').groupBy"
+                    [groupBy]="this.tdss.get('preferences').groupBy ?? ''"
                     [actionColName]="actionColName"
                     [actionButton]="actionButton"
                     [isPaginationAction]="paginationAction"
@@ -58,6 +59,7 @@ export class TwTableCardComponent {
     @Input() isSelectable = false;
     @Input() isSortable = false;
     @Input() isDraggable = false;
+    @Input() isSearchable = false;
     @Input() headers: string[] = [];
     @Input() actionColName?: string;
     @Input() actionButton?: TemplateRef<any> | string;

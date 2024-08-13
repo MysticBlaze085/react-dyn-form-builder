@@ -29,6 +29,10 @@ export class TableDataSourceService {
 
     readonly state = computed(() => this.#state());
 
+    constructor() {
+        console.log('TableDataSourceService', this.state());
+    }
+
     get<K extends keyof TableState>(key: K): TableState[K] {
         return this.#state()[key];
     }
@@ -172,7 +176,7 @@ export class TableDataSourceService {
     setGroupBy(groupBy: string): void {
         this.#state.update((state) => ({
             ...state,
-            preferences: { ...state.preferences, groupBy: groupBy !== 'non' ? groupBy : 'key' },
+            preferences: { ...state.preferences, groupBy: groupBy !== 'non' ? groupBy : '' },
         }));
     }
 

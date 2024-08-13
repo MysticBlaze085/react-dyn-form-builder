@@ -13,7 +13,9 @@ import { ButtonComponent } from '../button.component';
     imports: [CommonModule, TwCardComponent, ButtonComponent],
     template: `
         <tw-card>
-            <h5 class="adk-card-header block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-gray-900">
+            <h5
+                class="adk-card-header block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900"
+            >
                 UI/UX Review Check
             </h5>
             <p class="adk-card-subtitle block font-sans text-base antialiased font-light leading-relaxed text-inherit">

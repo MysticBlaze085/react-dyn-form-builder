@@ -56,20 +56,25 @@ export class TwDefaultTableComponent implements OnChanges {
     selectedIndex = new ImperativeObservable<number>(this.tdss.get('draggedColIndex') ?? 0);
 
     ngOnChanges(changes: SimpleChanges): void {
+        console.log('changes', changes);
         if (changes['headers']) this.tdss.setHeaders(changes['headers'].currentValue);
         if (changes['rows']) this.tdss.setTableDataSource(changes['rows'].currentValue);
-        if (changes['isActionChange'] && !changes['isActionChange'].isFirstChange) {
-            this.headers = this.tdss.get('headers');
-            this.rows = this.tdss.get('dataSource');
+        if (changes['isActionChange']) {
+            if (!changes['isActionChange'].firstChange) {
+                this.headers = this.tdss.get('headers');
+                this.rows = this.tdss.get('dataSource');
+            }
         }
         if (changes['isPaginationAction'])
-            this.groupData.value = this.groupByData(this.tdss.get('dataSource'), this.tdss.get('preferences').groupBy ?? 'key');
+            this.groupData.value = this.groupByData(this.tdss.get('dataSource'), this.tdss.get('preferences').groupBy ?? '');
         if (changes['isSelectable']) this.isSelectable = changes['isSelectable'].currentValue;
         if (changes['isSortable']) this.isSortable = changes['isSortable'].currentValue;
         if (changes['isDraggable']) this.isDraggable = changes['isDraggable'].currentValue;
         if (changes['groupBy']) this.tdss.setGroupBy(changes['groupBy'].currentValue);
         this.updateGroupData();
-        this.sortRows('key');
+        this.sortRows('');
+
+        console.log('tdss', this.tdss.state());
     }
 
     trackBy(index: any) {
@@ -79,7 +84,7 @@ export class TwDefaultTableComponent implements OnChanges {
     private updateGroupData(): void {
         const groupByVar = this.tdss.get('preferences').groupBy;
         const groupData =
-            groupByVar && groupByVar !== 'key'
+            groupByVar && groupByVar !== ''
                 ? this.groupByData(this.tdss.get('dataSource'), groupByVar)
                 : ({ key: this.tdss.get('dataSource') } as { [key: string]: RowData[] });
         this.groupData.value = { ...groupData };
@@ -169,7 +174,9 @@ export class TwDefaultTableComponent implements OnChanges {
     handleDrop(index: number, event: DragEvent): void {
         event.preventDefault();
         this.tdss.dragDrop(index);
-        this.headers = this.tdss.get('headers');
-        this.groupData.value = this.groupByData(this.tdss.get('dataSource'), this.tdss.get('preferences').groupBy ?? 'key');
+      this.headers = this.tdss.get('headers');
+      console.log('groupBy', this.groupBy);
+
+        this.groupData.value = this.groupByData(this.tdss.get('dataSource'), this.groupBy);
     }
 }

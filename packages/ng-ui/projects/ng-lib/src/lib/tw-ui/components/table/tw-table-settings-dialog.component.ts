@@ -35,9 +35,9 @@ import { TwTypographyComponent } from '../typography.component';
             <tw-card [isHeaderWrapped]="true" [isFooterWrapped]="true">
                 <tw-typography
                     variant="h3"
-                    color="gray"
+                    color="blue-gray"
                     class="adk-card-header"
-                    classStyle="antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-gray-900 flex flex-row"
+                    classStyle="antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900 flex flex-row"
                 >
                     Column Preferences
                     <div class="grow"></div>
@@ -133,7 +133,7 @@ export class TwTableSettingsDialogComponent implements OnInit, AfterViewInit {
             });
 
             action.visibleColumns = selectedVisibleColumns;
-            action.groupBy = currentValue['groupBy'] === 'none' ? 'key' : currentValue['groupBy'];
+            action.groupBy = currentValue['groupBy'] === 'none' ? '' : currentValue['groupBy'];
             this.tdss.setPreferences(action);
             this.tdss.setFilter({ column: currentValue['column'], value: '' });
             this.triggerUpdate.emit(true);
