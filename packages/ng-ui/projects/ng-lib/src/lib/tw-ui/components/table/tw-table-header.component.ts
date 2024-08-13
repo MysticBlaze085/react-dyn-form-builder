@@ -1,8 +1,8 @@
 import { AdkFormGroup, Field, FieldsComponent } from '../../../tw-form-ui';
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, inject } from '@angular/core';
+import { AsyncPipe, CommonModule } from '@angular/common';
 
 import { ButtonComponent } from '../button.component';
-import { CommonModule } from '@angular/common';
 import { FieldComponent } from '../../../tw-form-ui/components/field.component';
 import { ImperativeObservable } from '../../../utils';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -60,13 +60,21 @@ import { searchColumnSelector } from './utils';
             </Tabs> -->
             <!-- } -->
         </div>
-        @if(searchColumn && field){
+        @if((searchColumn.change$ | async) && (field.change$ | async)){
         <form [formGroup]="formGroup" class="flex flex-row gap-2 w-full flex-wrap z-[20000]">
-            <adk-fields [fieldConfig]="[field]"></adk-fields>
+            <adk-fields [fieldConfig]="[field.change$ | async]"></adk-fields>
         </form>
         }
     </div>`,
-    imports: [CommonModule, ReactiveFormsModule, TwTypographyComponent, ButtonComponent, FieldsComponent, TwTableSettingsDialogComponent],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        AsyncPipe,
+        TwTypographyComponent,
+        ButtonComponent,
+        FieldsComponent,
+        TwTableSettingsDialogComponent,
+    ],
     hostDirectives: [AdkFormGroup],
     styles: [
         `
@@ -80,7 +88,7 @@ import { searchColumnSelector } from './utils';
         `,
     ],
 })
-export class TwTableCardHeaderComponent implements OnInit, AfterViewInit {
+export class TwTableHeaderComponent implements OnInit, AfterViewInit {
     #formGroup = inject(AdkFormGroup, { self: true });
     tdss = inject(TableDataSourceService);
     @Input() title?: string;
@@ -95,7 +103,8 @@ export class TwTableCardHeaderComponent implements OnInit, AfterViewInit {
     @Output() actionKeyPress = new EventEmitter<boolean>();
 
     searchColumn = new ImperativeObservable<string | null>(this.tdss.get('filterDataSource').column);
-    field?: Field;
+    field = new ImperativeObservable<Field | undefined>(undefined);
+    isFirstChange = true;
 
     get formGroup() {
         return this.#formGroup.formGroup();
@@ -103,11 +112,16 @@ export class TwTableCardHeaderComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit(): void {
         this.searchColumn.value = this.tdss.get('filterDataSource').column;
-        this.field = searchColumnSelector(this.searchColumn.value ?? '');
-        this.#formGroup.setFormGroup([this.field]);
-        this.formGroup.valueChanges.subscribe((e) => {
-            console.log('valueChanges', e);
-            this.handleFiltering(e);
+        this.searchColumn.change$.subscribe((e: any) => {
+            this.#formGroup.reset();
+            this.field.value = this.setField(e);
+            this.#formGroup.setFormGroup([this.field.value]);
+            this.formGroup.valueChanges.subscribe((e) => {
+                this.handleFiltering(e);
+            });
+            if (!this.isFirstChange) {
+                this.actionKeyPress.emit(true);
+            }
         });
     }
 
@@ -116,16 +130,26 @@ export class TwTableCardHeaderComponent implements OnInit, AfterViewInit {
     }
 
     handlePreferences(): void {
-        this.actionKeyPress.emit(true);
         this.searchColumn.value = this.tdss.get('filterDataSource').column;
-        this.field = searchColumnSelector(this.tdss.get('filterDataSource').column ?? '');
-        this.#formGroup.setFormGroup([this.field]);
-        console.log('searchColumn', this.tdss.state(), this.searchColumn.value, this.field);
+        // this.field = searchColumnSelector(this.tdss.get('filterDataSource').column ?? '');
+        // this.#formGroup.setFormGroup([this.field]);
+        console.log('searchColumn', this.tdss.state(), this.searchColumn.value);
+        this.actionKeyPress.emit(true);
     }
 
     handleFiltering({ searchColumn }: any): void {
-        console.log('event', searchColumn);
+        console.log('valueChanges', searchColumn);
         this.tdss.setFilter({ column: this.searchColumn.value, value: searchColumn });
         this.actionKeyPress.emit(true);
+    }
+
+    setField(column: string | undefined): Field {
+        this.resetField();
+        setTimeout(() => {}, 1000);
+        return searchColumnSelector(column ?? '');
+    }
+
+    private resetField(): void {
+        this.field.value = undefined;
     }
 }

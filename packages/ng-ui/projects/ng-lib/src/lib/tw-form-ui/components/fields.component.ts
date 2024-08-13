@@ -38,6 +38,7 @@ export class FieldsComponent implements OnChanges {
 
     ngOnChanges({ fieldConfig }: SimpleChanges): void {
         if (fieldConfig) {
+            this.fields.clear();
             this.fields.add(...fieldConfig.currentValue);
         }
     }

@@ -5,13 +5,13 @@ import { RowData } from './models';
 import { TableDataSourceService } from './table-datasource.service';
 import { TwCardComponent } from '../card/tw-card.component';
 import { TwDefaultTableComponent } from './tw-table.component';
-import { TwTableCardHeaderComponent } from './tw-table-card-header.component';
 import { TwTableFooterComponent } from './tw-table-footer.component';
+import { TwTableHeaderComponent } from './tw-table-header.component';
 
 @Component({
     selector: 'tw-table-card',
     standalone: true,
-    imports: [CommonModule, TwCardComponent, TwDefaultTableComponent, TwTableCardHeaderComponent, TwTableFooterComponent],
+    imports: [CommonModule, TwCardComponent, TwDefaultTableComponent, TwTableHeaderComponent, TwTableFooterComponent],
     template: `
         <tw-card>
             <div class="adk-card-header">
@@ -75,6 +75,10 @@ export class TwTableCardComponent {
 
     paginationAction = false;
     isActionChange = false;
+
+    isActionTriggered() {
+        this.isActionChange = !this.isActionChange;
+    }
 
     actionButtonTriggered() {
         this.paginationAction = !this.paginationAction;

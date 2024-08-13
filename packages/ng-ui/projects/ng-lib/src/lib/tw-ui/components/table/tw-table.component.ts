@@ -70,11 +70,11 @@ export class TwDefaultTableComponent implements OnChanges {
 
         if (changes['headers']) this.tdss.setHeaders(changes['headers'].currentValue);
         if (changes['rows']) this.tdss.setTableDataSource(changes['rows'].currentValue);
-        if (changes['isActionChange']) {
+        if (changes['isActionChange'] && !changes['isActionChange'].isFirstChange) {
             this.headers = this.tdss.get('headers');
-            this.tdss.setPaginationState(this.tdss.get('pagination'));
+            this.rows = this.tdss.get('dataSource');
         }
-        if (changes['isPaginationAction'] && !changes['isPaginationAction'].isFirstChange)
+        if (changes['isPaginationAction'])
             this.groupData.value = this.groupByData(this.tdss.get('dataSource'), this.tdss.get('preferences').groupBy ?? 'key');
         if (changes['isSelectable']) this.isSelectable = changes['isSelectable'].currentValue;
         if (changes['isSortable']) this.isSortable = changes['isSortable'].currentValue;

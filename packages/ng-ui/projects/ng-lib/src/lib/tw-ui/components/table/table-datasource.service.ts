@@ -70,20 +70,33 @@ export class TableDataSourceService {
                     ...state,
                     dataSource: state.initialDataSource,
                 }));
-            } else
+            } else {
+                console.log('filterDataSource', filterDataSource);
                 this.#state.update((state) => ({
                     ...state,
                     dataSource: this.filterRows(state.initialDataSource, { column, value }),
                 }));
+                if (this.state().dataSource.length > this.state().pagination.pageSize) {
+                    this.setPaginationState(this.state().pagination);
+                }
+            }
         }
         if (selectedRows.length > 0) {
             const newSelectedRows = selectedRows.filter((row) => this.state().dataSource.includes(row));
             this.#state.update((state) => ({ ...state, selectedRows: newSelectedRows }));
         }
+        if (value === '') this.setPaginationState(this.state().pagination);
     }
 
     private filterRows = (rows: any[], filter: { column: string; value: string }) => {
         if (!filter.column || !filter.value) return rows; // Return all rows if no filter criteria
+        console.log(
+            'filterRows',
+            rows.filter((row) => {
+                const column = filter.column.toLowerCase();
+                return row[column]?.toLowerCase().includes(filter.value.toLowerCase()); // Case-insensitive filter
+            })
+        );
         return rows.filter((row) => {
             const column = filter.column.toLowerCase();
             return row[column]?.toLowerCase().includes(filter.value.toLowerCase()); // Case-insensitive filter
