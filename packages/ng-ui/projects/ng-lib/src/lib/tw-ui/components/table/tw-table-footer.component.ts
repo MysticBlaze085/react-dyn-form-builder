@@ -19,7 +19,7 @@ import { paginationSelector } from './utils';
                 </span>
                 <adk-select [field]="field" (fieldValueChange)="handlePageSizeChange($event)"></adk-select>
             </tw-typography>
-            @if((totalPages.change$ | async) > 1){
+            @if((totalPages.change$ | async) ?? 0 > 1){
             <div class="flex gap-2">
                 <adk-button size="sm" color="primary" [disabled]="isPreviousDisabled()" (click)="handlePreviousClick()">
                     Previous
