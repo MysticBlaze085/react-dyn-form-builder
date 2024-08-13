@@ -1,10 +1,11 @@
+import { AdkFormGroup, Field, FieldsComponent } from '../../../tw-form-ui';
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, inject } from '@angular/core';
 
 import { ButtonComponent } from '../button.component';
 import { CommonModule } from '@angular/common';
-import { Field } from '../../../tw-form-ui';
 import { FieldComponent } from '../../../tw-form-ui/components/field.component';
 import { ImperativeObservable } from '../../../utils';
+import { ReactiveFormsModule } from '@angular/forms';
 import { TableDataSourceService } from './table-datasource.service';
 import { TwTableSettingsDialogComponent } from './tw-table-settings-dialog.component';
 import { TwTypographyComponent } from '../typography.component';
@@ -60,12 +61,13 @@ import { searchColumnSelector } from './utils';
             <!-- } -->
         </div>
         @if(searchColumn && field){
-        <div class="flex flex-row gap-2 w-full flex-wrap z-[20000]">
-            <adk-field [field]="field" (fieldValueChange)="handleFiltering($event)"></adk-field>
-        </div>
+        <form [formGroup]="formGroup" class="flex flex-row gap-2 w-full flex-wrap z-[20000]">
+            <adk-fields [fieldConfig]="[field]"></adk-fields>
+        </form>
         }
     </div>`,
-    imports: [CommonModule, TwTypographyComponent, ButtonComponent, FieldComponent, TwTableSettingsDialogComponent],
+    imports: [CommonModule, ReactiveFormsModule, TwTypographyComponent, ButtonComponent, FieldsComponent, TwTableSettingsDialogComponent],
+    hostDirectives: [AdkFormGroup],
     styles: [
         `
             :host {
@@ -79,6 +81,7 @@ import { searchColumnSelector } from './utils';
     ],
 })
 export class TwTableCardHeaderComponent implements OnInit, AfterViewInit {
+    #formGroup = inject(AdkFormGroup, { self: true });
     tdss = inject(TableDataSourceService);
     @Input() title?: string;
     @Input() subtitle?: string;
@@ -94,9 +97,18 @@ export class TwTableCardHeaderComponent implements OnInit, AfterViewInit {
     searchColumn = new ImperativeObservable<string | null>(this.tdss.get('filterDataSource').column);
     field?: Field;
 
+    get formGroup() {
+        return this.#formGroup.formGroup();
+    }
+
     ngAfterViewInit(): void {
         this.searchColumn.value = this.tdss.get('filterDataSource').column;
         this.field = searchColumnSelector(this.searchColumn.value ?? '');
+        this.#formGroup.setFormGroup([this.field]);
+        this.formGroup.valueChanges.subscribe((e) => {
+            console.log('valueChanges', e);
+            this.handleFiltering(e);
+        });
     }
 
     ngOnInit(): void {
@@ -107,12 +119,13 @@ export class TwTableCardHeaderComponent implements OnInit, AfterViewInit {
         this.actionKeyPress.emit(true);
         this.searchColumn.value = this.tdss.get('filterDataSource').column;
         this.field = searchColumnSelector(this.tdss.get('filterDataSource').column ?? '');
+        this.#formGroup.setFormGroup([this.field]);
         console.log('searchColumn', this.tdss.state(), this.searchColumn.value, this.field);
     }
 
-    handleFiltering(e: any): void {
-        this.tdss.setFilter({ column: this.searchColumn.value, value: e });
-
+    handleFiltering({ searchColumn }: any): void {
+        console.log('event', searchColumn);
+        this.tdss.setFilter({ column: this.searchColumn.value, value: searchColumn });
         this.actionKeyPress.emit(true);
     }
 }

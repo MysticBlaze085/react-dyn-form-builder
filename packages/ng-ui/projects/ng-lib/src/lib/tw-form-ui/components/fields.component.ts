@@ -10,34 +10,35 @@ import { FieldComponent } from './field.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  standalone: true,
-  selector: 'adk-fields',
-  imports: [CommonModule, ReactiveFormsModule, FieldComponent],
-  hostDirectives: [AdkFieldList, AdkFormGroup],
-  template: `
-    <div [class]="wrapperClass">
-      @for (field of fields.fields(); track (field.id)) {
-      <adk-field [field]="field"> </adk-field>
-      }
-    </div>
-  `,
-  styles: [
-    `
-      :host {
-        display: block;
-      }
+    standalone: true,
+    selector: 'adk-fields',
+    imports: [CommonModule, ReactiveFormsModule, FieldComponent],
+    hostDirectives: [AdkFieldList, AdkFormGroup],
+    template: `
+        <div [class]="wrapperClass">
+            @for (field of fields.fields(); track (field.id)) {
+            <adk-field [field]="field"> </adk-field>
+            }
+        </div>
     `,
-  ],
+    styles: [
+        `
+            :host {
+                display: block;
+                width: 100%;
+            }
+        `,
+    ],
 })
 export class FieldsComponent implements OnChanges {
-  fields = inject(AdkFieldList, { self: true });
+    fields = inject(AdkFieldList, { self: true });
 
-  @Input() fieldConfig: Field[] = [];
-  @Input() wrapperClass = 'grid grid-cols-3 gap-x-4 gap-y-4';
+    @Input() fieldConfig: Field[] = [];
+    @Input() wrapperClass = 'w-full';
 
-  ngOnChanges({ fieldConfig }: SimpleChanges): void {
-    if (fieldConfig) {
-      this.fields.add(...fieldConfig.currentValue);
+    ngOnChanges({ fieldConfig }: SimpleChanges): void {
+        if (fieldConfig) {
+            this.fields.add(...fieldConfig.currentValue);
+        }
     }
-  }
 }
