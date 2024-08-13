@@ -155,7 +155,6 @@ export class TwDefaultTableComponent implements OnChanges {
     sortRows(key: string): void {
         const currentDirection = this.tdss.get('sortDataSource').direction;
         const newDirection: 'ascending' | 'descending' = currentDirection === 'ascending' ? 'descending' : 'ascending';
-
         this.tdss.sortDataSource({ key, direction: newDirection });
         this.updateGroupData();
     }

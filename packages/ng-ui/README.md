@@ -57,8 +57,9 @@ To start the lib storybook, run:
 ## TODO
 
 -   [x] Build components similar to the react shared-ui package
+-   [ ] Preference menu if more then 5 columns exists should in a tab like display or create a bigger card so the list creates side by side of groups of
+        checkboxes, radios etc
 -   [ ] Write documentation on how to use components
 -   [ ] Test install in a standalone application
 -   [ ] Write spec tests and storybook interactive testing
--   [ ] Use directives to run sorting, selecting, filter and building the table
 -   [ ] Write up different stories for each process I am working on
