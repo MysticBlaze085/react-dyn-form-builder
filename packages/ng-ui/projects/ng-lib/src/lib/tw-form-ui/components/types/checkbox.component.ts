@@ -146,12 +146,10 @@ export class CheckboxComponent implements OnChanges, AfterViewInit {
 
     ngAfterViewInit(): void {
         this.initFormControl();
-        console.log('FormGroup', this.formGroup);
     }
 
     ngOnChanges({ field, isChecked }: SimpleChanges): void {
         if (field) {
-            console.log('field', field);
             this.field = field.currentValue;
             this.initFormControl();
         }
@@ -162,10 +160,7 @@ export class CheckboxComponent implements OnChanges, AfterViewInit {
 
     private initFormControl(): void {
         this.formControl[this.field.key] = this.field.formControl;
-        console.log('options', this.options);
         if (this.options.length > 0) {
-            console.log('options inside', this.options);
-
             this.options.forEach((option: any) => {
                 this.formControl[this.field.key][option.id] = new FormControl(option.value);
             });

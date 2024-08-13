@@ -71,7 +71,6 @@ export class TableDataSourceService {
                     dataSource: state.initialDataSource,
                 }));
             } else {
-                console.log('filterDataSource', filterDataSource);
                 this.#state.update((state) => ({
                     ...state,
                     dataSource: this.filterRows(state.initialDataSource, { column, value }),
@@ -90,13 +89,6 @@ export class TableDataSourceService {
 
     private filterRows = (rows: any[], filter: { column: string; value: string }) => {
         if (!filter.column || !filter.value) return rows; // Return all rows if no filter criteria
-        console.log(
-            'filterRows',
-            rows.filter((row) => {
-                const column = filter.column.toLowerCase();
-                return row[column]?.toLowerCase().includes(filter.value.toLowerCase()); // Case-insensitive filter
-            })
-        );
         return rows.filter((row) => {
             const column = filter.column.toLowerCase();
             return row[column]?.toLowerCase().includes(filter.value.toLowerCase()); // Case-insensitive filter

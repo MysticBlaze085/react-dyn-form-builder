@@ -131,14 +131,10 @@ export class TwTableHeaderComponent implements OnInit, AfterViewInit {
 
     handlePreferences(): void {
         this.searchColumn.value = this.tdss.get('filterDataSource').column;
-        // this.field = searchColumnSelector(this.tdss.get('filterDataSource').column ?? '');
-        // this.#formGroup.setFormGroup([this.field]);
-        console.log('searchColumn', this.tdss.state(), this.searchColumn.value);
         this.actionKeyPress.emit(true);
     }
 
     handleFiltering({ searchColumn }: any): void {
-        console.log('valueChanges', searchColumn);
         this.tdss.setFilter({ column: this.searchColumn.value, value: searchColumn });
         this.actionKeyPress.emit(true);
     }

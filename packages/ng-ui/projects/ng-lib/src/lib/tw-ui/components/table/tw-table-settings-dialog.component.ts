@@ -114,8 +114,6 @@ export class TwTableSettingsDialogComponent implements OnInit, AfterViewInit {
                 hasChanged = true;
             }
 
-            console.log('currentValue', currentValue);
-
             headers.forEach((element) => {
                 if (previousValue[element] !== currentValue[element]) {
                     hasChanged = true;
@@ -134,12 +132,10 @@ export class TwTableSettingsDialogComponent implements OnInit, AfterViewInit {
                 if (currentValue[element]) selectedVisibleColumns.push(element);
             });
 
-            console.log('selectedVisibleColumns', selectedVisibleColumns, currentValue);
             action.visibleColumns = selectedVisibleColumns;
             action.groupBy = currentValue['groupBy'] === 'none' ? 'key' : currentValue['groupBy'];
             this.tdss.setPreferences(action);
             this.tdss.setFilter({ column: currentValue['column'], value: '' });
-            console.log('dialog state', this.tdss.state());
             this.triggerUpdate.emit(true);
         });
     }

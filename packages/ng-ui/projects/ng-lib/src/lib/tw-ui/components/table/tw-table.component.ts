@@ -66,8 +66,6 @@ export class TwDefaultTableComponent implements OnChanges {
     selectedIndex = new ImperativeObservable<number>(this.tdss.get('draggedColIndex') ?? 0);
 
     ngOnChanges(changes: SimpleChanges): void {
-        console.log('changes', changes);
-
         if (changes['headers']) this.tdss.setHeaders(changes['headers'].currentValue);
         if (changes['rows']) this.tdss.setTableDataSource(changes['rows'].currentValue);
         if (changes['isActionChange'] && !changes['isActionChange'].isFirstChange) {
@@ -82,7 +80,6 @@ export class TwDefaultTableComponent implements OnChanges {
         if (changes['groupBy']) this.tdss.setGroupBy(changes['groupBy'].currentValue);
         this.updateGroupData();
         this.sortRows('key');
-        console.log('data', this.tdss.state());
     }
 
     trackBy(index: any) {
