@@ -60,6 +60,8 @@ To start the lib storybook, run:
 -   [ ] Preference menu if more then 5 columns exists should in a tab like display or create a bigger card so the list creates side by side of groups of
         checkboxes, radios etc
 -   [x] Table cell if text too long should allow tooltip display of content
+-   [ ] Handle array of data types to display string list
+-   [ ] add the select dropdown back to the table output
 -   [ ] Write documentation on how to use components
 -   [ ] Test install in a standalone application
 -   [ ] Write spec tests and storybook interactive testing

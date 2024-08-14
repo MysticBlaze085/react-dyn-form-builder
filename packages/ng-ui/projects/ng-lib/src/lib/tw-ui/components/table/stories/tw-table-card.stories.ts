@@ -47,6 +47,11 @@ const mockData = [
         job: 'Actor',
         date: '23/04/05',
     },
+    {
+        name: 'Array Testing',
+        job: ['CEO', 'Manager', 'Designer'],
+        date: '23/04/05',
+    },
 ];
 
 export const Default: Story = {
@@ -56,6 +61,7 @@ export const Default: Story = {
         isSelectable: false,
         isSortable: true,
         isDraggable: false,
+        isSearchable: true,
         title: 'Table Card',
         subtitle: 'This is a table card',
         buttons: [
