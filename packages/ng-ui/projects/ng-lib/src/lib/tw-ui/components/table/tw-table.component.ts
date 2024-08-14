@@ -68,7 +68,6 @@ export class TwDefaultTableComponent implements OnChanges, OnDestroy {
     selectedIndex = new ImperativeObservable<number>(this.tdss.get('draggedColIndex') ?? 0);
 
     ngOnChanges(changes: SimpleChanges): void {
-        console.log('changes', changes);
         if (changes['headers']) this.tdss.setHeaders(changes['headers'].currentValue);
         if (changes['rows']) this.tdss.setTableDataSource(changes['rows'].currentValue);
         if (changes['isActionChange']) {
@@ -85,13 +84,10 @@ export class TwDefaultTableComponent implements OnChanges, OnDestroy {
         if (changes['groupBy']) this.tdss.setGroupBy(changes['groupBy'].currentValue);
         this.updateGroupData();
         this.sortRows('');
-
-        console.log('tdss', this.tdss.state());
     }
 
     ngOnDestroy(): void {
         this.tdss.clear();
-        console.log('on destroy tdss', this.tdss.state());
     }
 
     trackBy(index: any) {
@@ -191,8 +187,6 @@ export class TwDefaultTableComponent implements OnChanges, OnDestroy {
         event.preventDefault();
         this.tdss.dragDrop(index);
         this.headers = this.tdss.get('headers');
-        console.log('groupBy', this.groupBy);
-
         this.groupData.value = this.groupByData(this.tdss.get('dataSource'), this.groupBy);
     }
 }

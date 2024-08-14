@@ -29,10 +29,6 @@ export class TableDataSourceService {
 
     readonly state = computed(() => this.#state());
 
-    constructor() {
-        console.log('TableDataSourceService', this.state());
-    }
-
     get<K extends keyof TableState>(key: K): TableState[K] {
         return this.#state()[key];
     }
