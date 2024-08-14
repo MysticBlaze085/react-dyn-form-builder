@@ -14,7 +14,7 @@ type Story = StoryObj<TwTableCardComponent>;
 const mockData = [
     {
         name: 'John Michael',
-        job: 'Manager',
+        job: 'Manager So I started to walk into the water. I wont lie to you, I was terrified. But I pressed on, and as I made my way past the breakers, the water became calmer and calmer.',
         date: '23/04/10',
     },
     {
@@ -50,19 +50,19 @@ const mockData = [
 ];
 
 export const Default: Story = {
-  args: {
-    headers: ['name', 'job', 'date'],
-    rows: mockData,
-    isSelectable: false,
-    isSortable: true,
-    isDraggable: false,
-    title: 'Table Card',
-    subtitle: 'This is a table card',
-    buttons: [
-      { label: 'View ALL', onClick: () => {}, color: 'primary', icon: '' },
-      { label: 'add member', onClick: () => {}, color: 'primary', icon: 'person_add' },
-    ],
-  },
+    args: {
+        headers: ['name', 'job', 'date'],
+        rows: mockData,
+        isSelectable: false,
+        isSortable: true,
+        isDraggable: false,
+        title: 'Table Card',
+        subtitle: 'This is a table card',
+        buttons: [
+            { label: 'View ALL', onClick: () => {}, color: 'primary', icon: '' },
+            { label: 'add member', onClick: () => {}, color: 'primary', icon: 'person_add' },
+        ],
+    },
 };
 
 export const Selectable: Story = {

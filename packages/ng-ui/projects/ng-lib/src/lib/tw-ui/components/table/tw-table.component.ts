@@ -13,6 +13,7 @@ import {
 
 import { AdkExpansionPanelComponent } from '../expansion-panel.component';
 import { AdkSelection } from '../../../tw-form-ui/directives';
+import { AdkTooltipDirective } from '../../../tw-form-ui/directives/tooltip';
 import { CheckboxComponent } from '../../../tw-form-ui/components/types/checkbox.component';
 import { ImperativeObservable } from '../../../utils';
 import { RowData } from './models';
@@ -27,6 +28,7 @@ import { TwTypographyComponent } from '../typography.component';
     imports: [
         CommonModule,
         AdkSelection,
+        AdkTooltipDirective,
         AdkExpansionPanelComponent,
         AsyncPipe,
         TwTypographyComponent,

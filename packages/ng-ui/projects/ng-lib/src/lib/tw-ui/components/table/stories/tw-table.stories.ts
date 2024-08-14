@@ -30,13 +30,13 @@ export const TableWithAllSettings: Story = {
     args: {
         isSelectable: true,
         isSortable: true,
-        headers: ['Name', 'Job', 'Date'],
+        headers: ['name', 'job', 'date'],
         actionColName: ' ',
         isDraggable: true,
         rows: [
             {
                 name: 'John Michael',
-                job: 'Manager',
+                job: 'Manager So I started to walk into the water. I wont lie to you, I was terrified. But I pressed on, and as I made my way past the breakers, the water became calmer and calmer.',
                 date: '23/04/10',
             },
             {
