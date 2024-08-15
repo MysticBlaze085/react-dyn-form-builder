@@ -14,7 +14,7 @@ type Story = StoryObj<MultiSelectComponent>;
 
 export const MultiSelect: Story = {
     args: {
-        field: FieldBuilder.createField('select', 'multi-select', 'name', 'Name', 'Name', {
+        field: FieldBuilder.createField('custom-select', 'multi-select', 'name', 'Name', 'Name', {
             isMultipleTag: true,
             required: true,
             options: [

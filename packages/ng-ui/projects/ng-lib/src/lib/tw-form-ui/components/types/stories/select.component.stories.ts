@@ -3,9 +3,6 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { FieldBuilder } from '../../../models';
 import { SelectComponent } from '../select.component';
 
-// import { within } from '@storybook/testing-library';
-// import { expect } from '@storybook/jest';
-
 const meta: Meta<SelectComponent> = {
     component: SelectComponent,
     title: '(TW) Angular UI / Components / Form / Types / Basic Select',

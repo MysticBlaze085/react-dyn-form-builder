@@ -84,3 +84,22 @@ export const preferenceGroupBySelector: (params: string[]) => Field = (params: s
         ...columnSearchColumn,
     };
 };
+
+export const cellSelector: (params: string[]) => Field = (params: string[]) => {
+    const mapVisibleColumnsOptions: FieldOptions[] = params.map((param) => {
+        return {
+            id: param,
+            value: param,
+            label: titleCase(param),
+        };
+    });
+
+    const columnSearchColumn: Field = FieldBuilder.createField('custom-select', 'cell', params[0], '', '', {
+        isMultipleTag: true,
+        options: [...mapVisibleColumnsOptions],
+    });
+
+    return {
+        ...columnSearchColumn,
+    };
+};
