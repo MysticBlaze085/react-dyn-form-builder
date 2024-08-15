@@ -91,17 +91,21 @@
       class="border-b border-blue-gray-50 min-h-[48.5px] min-w-[60px] max-w-[60px] truncate">
       <div [adkTooltip]="rowData[header]" tooltipPlacement="bottom" [ngStyle]="{'cursor': 'text'}">
         @if(isCellValArray(rowData[header])) {
-        @if(isSelectable){
-        <adk-field [field]="(cellMultiSelector(rowData[header]) | async)"></adk-field>
+        @if(isSelectable && isMultiSelectField){
+        <adk-field *ngIf="(cellMultiSelector(rowData[header]) | async) as field" [field]="field"></adk-field>
         } @else {
         <tw-typography [variant]="'small'" class="font-normal ml-2">
           {{ rowData[header].join(', ') }}
         </tw-typography>
         }
         } @else {
-        <tw-typography [variant]="'small'" class="font-normal ml-2">
-          {{ rowData[header] }}
-        </tw-typography>
+          @if (isCellFieldObject(rowData[header])) {
+            <adk-field [field]="rowData[header]"></adk-field>
+          } @else {
+            <tw-typography [variant]="'small'" class="font-normal ml-2">
+              {{ rowData[header] }}
+            </tw-typography>
+          }
         }
       </div>
     </td>
