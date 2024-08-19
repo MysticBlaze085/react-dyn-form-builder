@@ -5946,7 +5946,7 @@
         },
         {
             "name": "MultiSelectComponent",
-            "id": "component-MultiSelectComponent-de8cca78df4fb7a2ea329d9d361066fab848565f0697f1c30121fd04ee7926e8b87654663108a9964f1757e702f604ae3528463693622d77b1efc5231ea11db4",
+            "id": "component-MultiSelectComponent-eab05bf44b21576e50b919969909aa5a640e45271fa8f09853a68e2aa45405e740ce96909102cebf53450868746d5edbb55d6308e64e207298d2b962b96a3e0a",
             "file": "projects/ng-lib/src/lib/tw-form-ui/components/types/multi-select.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -5956,9 +5956,9 @@
             "selector": "adk-multi-select",
             "styleUrls": [],
             "styles": [
-                "\n            :host {\n                display: block;\n                width: 100%;\n                position: relative;\n            }\n\n            .dropdown {\n                position: absolute;\n                width: 100%;\n                background-color: #fff;\n                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\n                max-height: 400px;\n                overflow-y: auto;\n                z-index: 2000;\n            }\n        "
+                "\n      :host {\n        display: block;\n        width: 100%;\n        position: relative;\n      }\n\n      .dropdown {\n        position: absolute;\n        width: 100%;\n        background-color: #fff;\n        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\n        max-height: 400px;\n        overflow-y: auto;\n        z-index: 2000;\n      }\n    "
             ],
-            "template": "@if (field && this.options.length) {\n<div *ngIf=\"filteredOptions.change$ | async as filteredOptions\" class=\"w-full flex items-center justify-center\">\n    <div class=\"w-full relative\">\n        <label *ngIf=\"label\" [for]=\"field.key\" [ngClass]=\"labelClass\">{{ label }}</label>\n        <div\n            (click)=\"toggle()\"\n            tabindex=\"0\"\n            aria-expanded=\"true\"\n            [id]=\"field.id\"\n            class=\"mt-2 m-auto flex text-sm cursor-pointer text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none bg-white hover:border-gray-400 focus:border-purple-500 focus:ring focus:ring-purple-500/20\"\n        >\n            <div class=\"grow pl-2.5 py-2 pr-2 flex flex-wrap gap-1\">\n                @if(isMultipleTag) { @for (option of (selectedOptions.change$ | async); track $index) {\n                <div class=\"bg-gray-200 border rounded-sm flex space-x-1 pl-1 items-center\">\n                    <p class=\"truncate cursor-default select-none\">\n                        {{ option.label }}\n                    </p>\n                    <div\n                        (click)=\"toggleOption(option)\"\n                        class=\"flex items-center px-1 cursor-pointer rounded-r-sm hover:bg-red-200 hover:text-red-600\"\n                    >\n                        <span class=\"material-symbols-outlined text-sm\"> close </span>\n                    </div>\n                </div>\n                } } @else {\n                <p class=\"truncate cursor-default select-none self-center\">\n                    @if (filteredOptions[0]){\n                    {{ filteredOptions[0].label }}\n                    }\n                </p>\n                }\n            </div>\n            <div class=\"flex flex-none items-center gap-1 py-1.5 px-1\">\n                <div (click)=\"clearOption()\" class=\"mt-1\">\n                    <span class=\"cursor-pointer p-0 !m-auto material-symbols-outlined\"> restart_alt </span>\n                </div>\n                <div class=\"h-full w-px bg-gray-300 inline-block\"></div>\n                <span class=\"material-symbols-outlined\"> @if (isOpen) { expand_less } @else { expand_more } </span>\n            </div>\n        </div>\n        @if (isOpen) {\n        <div\n            class=\"dropdown absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-sm text-gray-700\"\n            tabindex=\"-1\"\n            style=\"position: relative; top: 0; left: 0; width: 100%; z-index: 2000; display: block;\"\n        >\n            <div class=\"relative py-1 px-2.5\">\n                <span class=\"absolute w-5 h-5 mt-2.5 pb-0.5 ml-2 text-gray-500 material-symbols-outlined\"> search </span>\n                <input\n                    #searchInput\n                    type=\"text\"\n                    name=\"Search\"\n                    id=\"Search\"\n                    [formControl]=\"searchText\"\n                    (input)=\"onSearchChange()\"\n                    placeholder=\"Search...\"\n                    class=\"w-full py-2 pl-8 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded focus:border-gray-200 focus:ring-0 focus:outline-none\"\n                />\n            </div>\n            <div role=\"option\" class=\"max-h-72 overflow-y-auto\">\n                @if (filteredOptions.length) { @for (option of filteredOptions; track $index) {\n                <div class=\"px-2.5 last:border-0 border-b-[1px] py-2 border-gray-200\">\n                    @if (option.category) {\n                    <div class=\"pr-2 py-2 cursor-default select-none truncate font-bold text-gray-700\">\n                        {{ option.category }}\n                    </div>\n                    }\n                    <li\n                        class=\"block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded text-gray-500 hover:bg-blue-100 hover:text-blue-500\"\n                        role=\"option\"\n                        aria-selected=\"false\"\n                        (click)=\"toggleOption(option)\"\n                    >\n                        {{ option.label }}\n                    </li>\n                </div>\n                } } @else {\n                <div class=\"px-2 py-2 cursor-not-allowed truncate text-gray-400 select-none\">No options found</div>\n                }\n            </div>\n        </div>\n\n        }\n    </div>\n</div>\n}\n",
+            "template": "@if (field && this.options.length) {\n<div *ngIf=\"filteredOptions.change$ | async as filteredOptions\" class=\"w-full flex items-center justify-center\">\n  <div class=\"w-full relative\">\n    <label *ngIf=\"label\" [for]=\"field.key\" [ngClass]=\"labelClass\">{{ label }}</label>\n    <div\n      (click)=\"toggle()\"\n      tabindex=\"0\"\n      aria-expanded=\"true\"\n      [id]=\"field.id\"\n      class=\"mt-2 m-auto flex text-sm cursor-pointer text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none bg-white hover:border-gray-400 focus:border-purple-500 focus:ring focus:ring-purple-500/20\"\n    >\n      <div class=\"grow pl-2.5 py-2 pr-2 flex flex-wrap gap-1\">\n        @if(isMultipleTag) { @for (option of (selectedOptions.change$ | async); track $index) {\n        <div class=\"bg-gray-200 border rounded-sm flex space-x-1 pl-1 items-center\">\n          <p class=\"truncate cursor-default select-none\">\n            {{ option.label }}\n          </p>\n          <div\n            (click)=\"toggleOption(option)\"\n            class=\"flex items-center px-1 cursor-pointer rounded-r-sm hover:bg-red-200 hover:text-red-600\"\n          >\n            <span class=\"material-symbols-outlined text-sm\"> close </span>\n          </div>\n        </div>\n        } } @else {\n        <p class=\"truncate cursor-default select-none self-center\">\n          @if (filteredOptions[0]){\n          {{ filteredOptions[0].label }}\n          }\n        </p>\n        }\n      </div>\n      <div class=\"flex flex-none items-center gap-1 py-1.5 px-1\">\n        <div (click)=\"clearOption()\" class=\"mt-1\">\n          <span class=\"cursor-pointer p-0 !m-auto material-symbols-outlined\"> restart_alt </span>\n        </div>\n        <div class=\"h-full w-px bg-gray-300 inline-block\"></div>\n        <span class=\"material-symbols-outlined\"> @if (isOpen) { expand_less } @else { expand_more } </span>\n      </div>\n    </div>\n    @if (isOpen) {\n    <div\n      class=\"dropdown absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-sm text-gray-700\"\n      tabindex=\"-1\"\n      style=\"position: relative; top: 0; left: 0; width: 100%; z-index: 2000; display: block;\"\n    >\n      <div class=\"relative py-1 px-2.5\">\n        <span class=\"absolute w-5 h-5 mt-2.5 pb-0.5 ml-2 text-gray-500 material-symbols-outlined\"> search </span>\n        <input\n          #searchInput\n          type=\"text\"\n          name=\"Search\"\n          id=\"Search\"\n          [formControl]=\"searchText\"\n          (input)=\"onSearchChange()\"\n          placeholder=\"Search...\"\n          class=\"w-full py-2 pl-8 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded focus:border-gray-200 focus:ring-0 focus:outline-none\"\n        />\n      </div>\n      <div role=\"option\" class=\"max-h-72 overflow-y-auto\">\n        @if (filteredOptions.length) { @for (option of filteredOptions; track $index) {\n        <div class=\"px-2.5 last:border-0 border-b-[1px] py-2 border-gray-200\">\n          @if (option.category) {\n          <div class=\"pr-2 py-2 cursor-default select-none truncate font-bold text-gray-700\">\n            {{ option.category }}\n          </div>\n          }\n          <li\n            class=\"block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded text-gray-500 hover:bg-blue-100 hover:text-blue-500\"\n            role=\"option\"\n            aria-selected=\"false\"\n            (click)=\"toggleOption(option)\"\n          >\n            {{ option.label }}\n          </li>\n        </div>\n        } } @else {\n        <div class=\"px-2 py-2 cursor-not-allowed truncate text-gray-400 select-none\">No options found</div>\n        }\n      </div>\n    </div>\n\n    }\n  </div>\n</div>\n}\n",
             "templateUrl": [],
             "viewProviders": [],
             "hostDirectives": [],
@@ -6063,7 +6063,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 238,
+                    "line": 239,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -6073,7 +6073,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 198,
+                    "line": 199,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -6129,7 +6129,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 194,
+                    "line": 195,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -6150,7 +6150,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 202,
+                    "line": 203,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -6160,7 +6160,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 211,
+                    "line": 212,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -6177,7 +6177,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 215,
+                    "line": 216,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -6219,10 +6219,10 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';\r\nimport { AfterViewInit, Component, Input, OnChanges, SimpleChanges, output } from '@angular/core';\r\nimport { AsyncPipe, CommonModule } from '@angular/common';\r\nimport { Field, FieldOptions } from '../../models';\r\n\r\nimport { ImperativeObservable } from '../../../utils';\r\n\r\n@Component({\r\n    standalone: true,\r\n    selector: 'adk-multi-select',\r\n    imports: [CommonModule, AsyncPipe, FormsModule, ReactiveFormsModule],\r\n    template: `\r\n        @if (field && this.options.length) {\r\n        <div *ngIf=\"filteredOptions.change$ | async as filteredOptions\" class=\"w-full flex items-center justify-center\">\r\n            <div class=\"w-full relative\">\r\n                <label *ngIf=\"label\" [for]=\"field.key\" [ngClass]=\"labelClass\">{{ label }}</label>\r\n                <div\r\n                    (click)=\"toggle()\"\r\n                    tabindex=\"0\"\r\n                    aria-expanded=\"true\"\r\n                    [id]=\"field.id\"\r\n                    class=\"mt-2 m-auto flex text-sm cursor-pointer text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none bg-white hover:border-gray-400 focus:border-purple-500 focus:ring focus:ring-purple-500/20\"\r\n                >\r\n                    <div class=\"grow pl-2.5 py-2 pr-2 flex flex-wrap gap-1\">\r\n                        @if(isMultipleTag) { @for (option of (selectedOptions.change$ | async); track $index) {\r\n                        <div class=\"bg-gray-200 border rounded-sm flex space-x-1 pl-1 items-center\">\r\n                            <p class=\"truncate cursor-default select-none\">\r\n                                {{ option.label }}\r\n                            </p>\r\n                            <div\r\n                                (click)=\"toggleOption(option)\"\r\n                                class=\"flex items-center px-1 cursor-pointer rounded-r-sm hover:bg-red-200 hover:text-red-600\"\r\n                            >\r\n                                <span class=\"material-symbols-outlined text-sm\"> close </span>\r\n                            </div>\r\n                        </div>\r\n                        } } @else {\r\n                        <p class=\"truncate cursor-default select-none self-center\">\r\n                            @if (filteredOptions[0]){\r\n                            {{ filteredOptions[0].label }}\r\n                            }\r\n                        </p>\r\n                        }\r\n                    </div>\r\n                    <div class=\"flex flex-none items-center gap-1 py-1.5 px-1\">\r\n                        <div (click)=\"clearOption()\" class=\"mt-1\">\r\n                            <span class=\"cursor-pointer p-0 !m-auto material-symbols-outlined\"> restart_alt </span>\r\n                        </div>\r\n                        <div class=\"h-full w-px bg-gray-300 inline-block\"></div>\r\n                        <span class=\"material-symbols-outlined\"> @if (isOpen) { expand_less } @else { expand_more } </span>\r\n                    </div>\r\n                </div>\r\n                @if (isOpen) {\r\n                <div\r\n                    class=\"dropdown absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-sm text-gray-700\"\r\n                    tabindex=\"-1\"\r\n                    style=\"position: relative; top: 0; left: 0; width: 100%; z-index: 2000; display: block;\"\r\n                >\r\n                    <div class=\"relative py-1 px-2.5\">\r\n                        <span class=\"absolute w-5 h-5 mt-2.5 pb-0.5 ml-2 text-gray-500 material-symbols-outlined\"> search </span>\r\n                        <input\r\n                            #searchInput\r\n                            type=\"text\"\r\n                            name=\"Search\"\r\n                            id=\"Search\"\r\n                            [formControl]=\"searchText\"\r\n                            (input)=\"onSearchChange()\"\r\n                            placeholder=\"Search...\"\r\n                            class=\"w-full py-2 pl-8 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded focus:border-gray-200 focus:ring-0 focus:outline-none\"\r\n                        />\r\n                    </div>\r\n                    <div role=\"option\" class=\"max-h-72 overflow-y-auto\">\r\n                        @if (filteredOptions.length) { @for (option of filteredOptions; track $index) {\r\n                        <div class=\"px-2.5 last:border-0 border-b-[1px] py-2 border-gray-200\">\r\n                            @if (option.category) {\r\n                            <div class=\"pr-2 py-2 cursor-default select-none truncate font-bold text-gray-700\">\r\n                                {{ option.category }}\r\n                            </div>\r\n                            }\r\n                            <li\r\n                                class=\"block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded text-gray-500 hover:bg-blue-100 hover:text-blue-500\"\r\n                                role=\"option\"\r\n                                aria-selected=\"false\"\r\n                                (click)=\"toggleOption(option)\"\r\n                            >\r\n                                {{ option.label }}\r\n                            </li>\r\n                        </div>\r\n                        } } @else {\r\n                        <div class=\"px-2 py-2 cursor-not-allowed truncate text-gray-400 select-none\">No options found</div>\r\n                        }\r\n                    </div>\r\n                </div>\r\n\r\n                }\r\n            </div>\r\n        </div>\r\n        }\r\n    `,\r\n    styles: [\r\n        `\r\n            :host {\r\n                display: block;\r\n                width: 100%;\r\n                position: relative;\r\n            }\r\n\r\n            .dropdown {\r\n                position: absolute;\r\n                width: 100%;\r\n                background-color: #fff;\r\n                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\r\n                max-height: 400px;\r\n                overflow-y: auto;\r\n                z-index: 2000;\r\n            }\r\n        `,\r\n    ],\r\n})\r\nexport class MultiSelectComponent implements OnChanges, AfterViewInit {\r\n    @Input() field!: Field;\r\n\r\n    formControl: { [key: string]: AbstractControl | any } = {};\r\n    isOpen = false;\r\n    selectedOptions = new ImperativeObservable<FieldOptions[]>([]);\r\n    filteredOptions = new ImperativeObservable<FieldOptions[]>([]);\r\n    selectedOptionChange = output<FieldOptions[]>();\r\n    clearOptionChange = output();\r\n    searchText = new FormControl('');\r\n\r\n    get props() {\r\n        return this.field?.props;\r\n    }\r\n\r\n    get isMultipleTag() {\r\n        return this.props?.isMultipleTag ?? false;\r\n    }\r\n\r\n    get options() {\r\n        return this.props?.options ?? [];\r\n    }\r\n\r\n    get autocomplete() {\r\n        return this.props?.autocomplete ?? 'off';\r\n    }\r\n\r\n    get label() {\r\n        return this.field.label;\r\n    }\r\n\r\n    get description() {\r\n        return this.field?.description;\r\n    }\r\n\r\n    get placeholder() {\r\n        return this.field.placeholder ?? '';\r\n    }\r\n\r\n    get class() {\r\n        return this.props?.class ?? 'sm:col-span-3';\r\n    }\r\n\r\n    get labelClass() {\r\n        return this.props?.labelClass ?? 'block text-sm font-medium leading-6 text-gray-900';\r\n    }\r\n\r\n    get inputClass() {\r\n        return (\r\n            this.props?.inputClass ??\r\n            'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6'\r\n        );\r\n    }\r\n\r\n    ngAfterViewInit(): void {\r\n        this.filteredOptions.value = this.options;\r\n        this.initFormControl();\r\n        this.searchText.valueChanges.subscribe((value) => {\r\n            const searchVal = value ?? '';\r\n            this.filteredOptions.value = this.options.filter((opt) => opt.label.toLowerCase().includes(searchVal.toLowerCase()));\r\n        });\r\n    }\r\n\r\n    ngOnChanges({ field }: SimpleChanges): void {\r\n        if (field && field.firstChange) {\r\n            const searchVal = this.searchText.value ?? '';\r\n            this.field = field.currentValue;\r\n            this.filteredOptions.value = this.field?.props?.options\r\n                ? this.field?.props?.options.filter((opt) => opt.label.toLowerCase().includes(searchVal.toLowerCase()))\r\n                : [];\r\n            this.initFormControl();\r\n        }\r\n    }\r\n\r\n    onOptionSelected(value: string) {\r\n        this.formControl[this.field.key].setValue(value);\r\n    }\r\n\r\n    private initFormControl(): void {\r\n        this.formControl[this.field.key] = this.field.formControl;\r\n    }\r\n\r\n    onSearchChange() {\r\n        const searchValue = this.searchText.value ?? '';\r\n        if (!searchValue || searchValue === '') {\r\n            this.filteredOptions.value = this.options;\r\n        } else {\r\n            this.filteredOptions.value = this.options.filter((opt) => opt.label.toLowerCase().includes(searchValue.toLowerCase()));\r\n        }\r\n    }\r\n\r\n    toggle() {\r\n        this.isOpen = !this.isOpen;\r\n    }\r\n\r\n    toggleOption(option: FieldOptions) {\r\n        if (this.isMultipleTag) {\r\n            if (this.selectedOptions.value.includes(option)) {\r\n                this.selectedOptions.value = this.selectedOptions.value.filter((value) => value !== option);\r\n                this.filteredOptions.value.push(option);\r\n                const selectedOptionVal = this.selectedOptions.value.map((opt) => opt.value);\r\n                this.formControl[this.field.key].setValue(selectedOptionVal);\r\n            } else {\r\n                this.selectedOptions.value.push(option);\r\n                this.filteredOptions.value = this.filteredOptions.value.filter((value) => value !== option);\r\n                const selectedOptionVal = this.selectedOptions.value.map((opt) => opt.value);\r\n                this.formControl[this.field.key].setValue(selectedOptionVal);\r\n            }\r\n        } else {\r\n            this.selectedOptions.value = [option];\r\n            this.filteredOptions.value = this.options.filter((value) => value !== option);\r\n            const selectedOptionVal = option.value;\r\n            this.formControl[this.field.key].setValue(selectedOptionVal);\r\n        }\r\n\r\n        this.selectedOptionChange.emit(this.selectedOptions.value);\r\n    }\r\n\r\n    clearOption() {\r\n        this.filteredOptions.value = this.filteredOptions.value.concat(this.selectedOptions.value);\r\n        this.selectedOptions.value = [];\r\n        this.selectedOptionChange.emit(this.selectedOptions.value);\r\n        this.formControl[this.field.key].setValue('');\r\n    }\r\n}\r\n",
+            "sourceCode": "import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';\r\nimport { AfterViewInit, Component, Input, OnChanges, SimpleChanges, output } from '@angular/core';\r\nimport { AsyncPipe, CommonModule } from '@angular/common';\r\nimport { Field, FieldOptions } from '../../models';\r\n\r\nimport { ImperativeObservable } from '../../../utils';\r\n\r\n@Component({\r\n  standalone: true,\r\n  selector: 'adk-multi-select',\r\n  imports: [CommonModule, AsyncPipe, FormsModule, ReactiveFormsModule],\r\n  template: `\r\n    @if (field && this.options.length) {\r\n    <div *ngIf=\"filteredOptions.change$ | async as filteredOptions\" class=\"w-full flex items-center justify-center\">\r\n      <div class=\"w-full relative\">\r\n        <label *ngIf=\"label\" [for]=\"field.key\" [ngClass]=\"labelClass\">{{ label }}</label>\r\n        <div\r\n          (click)=\"toggle()\"\r\n          tabindex=\"0\"\r\n          aria-expanded=\"true\"\r\n          [id]=\"field.id\"\r\n          class=\"mt-2 m-auto flex text-sm cursor-pointer text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none bg-white hover:border-gray-400 focus:border-purple-500 focus:ring focus:ring-purple-500/20\"\r\n        >\r\n          <div class=\"grow pl-2.5 py-2 pr-2 flex flex-wrap gap-1\">\r\n            @if(isMultipleTag) { @for (option of (selectedOptions.change$ | async); track $index) {\r\n            <div class=\"bg-gray-200 border rounded-sm flex space-x-1 pl-1 items-center\">\r\n              <p class=\"truncate cursor-default select-none\">\r\n                {{ option.label }}\r\n              </p>\r\n              <div\r\n                (click)=\"toggleOption(option)\"\r\n                class=\"flex items-center px-1 cursor-pointer rounded-r-sm hover:bg-red-200 hover:text-red-600\"\r\n              >\r\n                <span class=\"material-symbols-outlined text-sm\"> close </span>\r\n              </div>\r\n            </div>\r\n            } } @else {\r\n            <p class=\"truncate cursor-default select-none self-center\">\r\n              @if (filteredOptions[0]){\r\n              {{ filteredOptions[0].label }}\r\n              }\r\n            </p>\r\n            }\r\n          </div>\r\n          <div class=\"flex flex-none items-center gap-1 py-1.5 px-1\">\r\n            <div (click)=\"clearOption()\" class=\"mt-1\">\r\n              <span class=\"cursor-pointer p-0 !m-auto material-symbols-outlined\"> restart_alt </span>\r\n            </div>\r\n            <div class=\"h-full w-px bg-gray-300 inline-block\"></div>\r\n            <span class=\"material-symbols-outlined\"> @if (isOpen) { expand_less } @else { expand_more } </span>\r\n          </div>\r\n        </div>\r\n        @if (isOpen) {\r\n        <div\r\n          class=\"dropdown absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-sm text-gray-700\"\r\n          tabindex=\"-1\"\r\n          style=\"position: relative; top: 0; left: 0; width: 100%; z-index: 2000; display: block;\"\r\n        >\r\n          <div class=\"relative py-1 px-2.5\">\r\n            <span class=\"absolute w-5 h-5 mt-2.5 pb-0.5 ml-2 text-gray-500 material-symbols-outlined\"> search </span>\r\n            <input\r\n              #searchInput\r\n              type=\"text\"\r\n              name=\"Search\"\r\n              id=\"Search\"\r\n              [formControl]=\"searchText\"\r\n              (input)=\"onSearchChange()\"\r\n              placeholder=\"Search...\"\r\n              class=\"w-full py-2 pl-8 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded focus:border-gray-200 focus:ring-0 focus:outline-none\"\r\n            />\r\n          </div>\r\n          <div role=\"option\" class=\"max-h-72 overflow-y-auto\">\r\n            @if (filteredOptions.length) { @for (option of filteredOptions; track $index) {\r\n            <div class=\"px-2.5 last:border-0 border-b-[1px] py-2 border-gray-200\">\r\n              @if (option.category) {\r\n              <div class=\"pr-2 py-2 cursor-default select-none truncate font-bold text-gray-700\">\r\n                {{ option.category }}\r\n              </div>\r\n              }\r\n              <li\r\n                class=\"block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded text-gray-500 hover:bg-blue-100 hover:text-blue-500\"\r\n                role=\"option\"\r\n                aria-selected=\"false\"\r\n                (click)=\"toggleOption(option)\"\r\n              >\r\n                {{ option.label }}\r\n              </li>\r\n            </div>\r\n            } } @else {\r\n            <div class=\"px-2 py-2 cursor-not-allowed truncate text-gray-400 select-none\">No options found</div>\r\n            }\r\n          </div>\r\n        </div>\r\n\r\n        }\r\n      </div>\r\n    </div>\r\n    }\r\n  `,\r\n  styles: [\r\n    `\r\n      :host {\r\n        display: block;\r\n        width: 100%;\r\n        position: relative;\r\n      }\r\n\r\n      .dropdown {\r\n        position: absolute;\r\n        width: 100%;\r\n        background-color: #fff;\r\n        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\r\n        max-height: 400px;\r\n        overflow-y: auto;\r\n        z-index: 2000;\r\n      }\r\n    `,\r\n  ],\r\n})\r\nexport class MultiSelectComponent implements OnChanges, AfterViewInit {\r\n  @Input() field!: Field;\r\n\r\n  formControl: { [key: string]: AbstractControl | any } = {};\r\n  isOpen = false;\r\n  selectedOptions = new ImperativeObservable<FieldOptions[]>([]);\r\n  filteredOptions = new ImperativeObservable<FieldOptions[]>([]);\r\n  selectedOptionChange = output<FieldOptions[]>();\r\n  clearOptionChange = output();\r\n  searchText = new FormControl('');\r\n\r\n  get props() {\r\n    return this.field?.props;\r\n  }\r\n\r\n  get isMultipleTag() {\r\n    return this.props?.isMultipleTag ?? false;\r\n  }\r\n\r\n  get options() {\r\n    return this.props?.options ?? [];\r\n  }\r\n\r\n  get autocomplete() {\r\n    return this.props?.autocomplete ?? 'off';\r\n  }\r\n\r\n  get label() {\r\n    return this.field.label;\r\n  }\r\n\r\n  get description() {\r\n    return this.field?.description;\r\n  }\r\n\r\n  get placeholder() {\r\n    return this.field.placeholder ?? '';\r\n  }\r\n\r\n  get class() {\r\n    return this.props?.class ?? 'sm:col-span-3';\r\n  }\r\n\r\n  get labelClass() {\r\n    return this.props?.labelClass ?? 'block text-sm font-medium leading-6 text-gray-900';\r\n  }\r\n\r\n  get inputClass() {\r\n    return (\r\n      this.props?.inputClass ??\r\n      'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6'\r\n    );\r\n  }\r\n\r\n  ngAfterViewInit(): void {\r\n    this.filteredOptions.value = this.options;\r\n    this.initFormControl();\r\n    this.searchText.valueChanges.subscribe((value) => {\r\n      const searchVal = value ?? '';\r\n      this.filteredOptions.value = this.options.filter((opt) => opt.label.toLowerCase().includes(searchVal.toLowerCase()));\r\n    });\r\n  }\r\n\r\n  ngOnChanges({ field }: SimpleChanges): void {\r\n    console.log('Triggered', field);\r\n    if (field && field.firstChange) {\r\n      const searchVal = this.searchText.value ?? '';\r\n      this.field = field.currentValue;\r\n      this.filteredOptions.value = this.field?.props?.options\r\n        ? this.field?.props?.options.filter((opt) => opt.label.toLowerCase().includes(searchVal.toLowerCase()))\r\n        : [];\r\n      this.initFormControl();\r\n    }\r\n  }\r\n\r\n  onOptionSelected(value: string) {\r\n    this.formControl[this.field.key].setValue(value);\r\n  }\r\n\r\n  private initFormControl(): void {\r\n    this.formControl[this.field.key] = this.field.formControl;\r\n  }\r\n\r\n  onSearchChange() {\r\n    const searchValue = this.searchText.value ?? '';\r\n    if (!searchValue || searchValue === '') {\r\n      this.filteredOptions.value = this.options;\r\n    } else {\r\n      this.filteredOptions.value = this.options.filter((opt) => opt.label.toLowerCase().includes(searchValue.toLowerCase()));\r\n    }\r\n  }\r\n\r\n  toggle() {\r\n    this.isOpen = !this.isOpen;\r\n  }\r\n\r\n  toggleOption(option: FieldOptions) {\r\n    if (this.isMultipleTag) {\r\n      if (this.selectedOptions.value.includes(option)) {\r\n        this.selectedOptions.value = this.selectedOptions.value.filter((value) => value !== option);\r\n        this.filteredOptions.value.push(option);\r\n        const selectedOptionVal = this.selectedOptions.value.map((opt) => opt.value);\r\n        this.formControl[this.field.key].setValue(selectedOptionVal);\r\n      } else {\r\n        this.selectedOptions.value.push(option);\r\n        this.filteredOptions.value = this.filteredOptions.value.filter((value) => value !== option);\r\n        const selectedOptionVal = this.selectedOptions.value.map((opt) => opt.value);\r\n        this.formControl[this.field.key].setValue(selectedOptionVal);\r\n      }\r\n    } else {\r\n      this.selectedOptions.value = [option];\r\n      this.filteredOptions.value = this.options.filter((value) => value !== option);\r\n      const selectedOptionVal = option.value;\r\n      this.formControl[this.field.key].setValue(selectedOptionVal);\r\n    }\r\n\r\n    this.selectedOptionChange.emit(this.selectedOptions.value);\r\n  }\r\n\r\n  clearOption() {\r\n    this.filteredOptions.value = this.filteredOptions.value.concat(this.selectedOptions.value);\r\n    this.selectedOptions.value = [];\r\n    this.selectedOptionChange.emit(this.selectedOptions.value);\r\n    this.formControl[this.field.key].setValue('');\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": "",
-            "stylesData": "\n            :host {\n                display: block;\n                width: 100%;\n                position: relative;\n            }\n\n            .dropdown {\n                position: absolute;\n                width: 100%;\n                background-color: #fff;\n                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\n                max-height: 400px;\n                overflow-y: auto;\n                z-index: 2000;\n            }\n        \n",
+            "stylesData": "\n      :host {\n        display: block;\n        width: 100%;\n        position: relative;\n      }\n\n      .dropdown {\n        position: absolute;\n        width: 100%;\n        background-color: #fff;\n        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\n        max-height: 400px;\n        overflow-y: auto;\n        z-index: 2000;\n      }\n    \n",
             "extends": [],
             "implements": [
                 "OnChanges",
@@ -8027,7 +8027,7 @@
         },
         {
             "name": "TwDefaultTableComponent",
-            "id": "component-TwDefaultTableComponent-0fac2e87ad963f967f43032f588a4e4a7942ee13258bae6fbfc76ad628fa94b3f763457c2c3b04190f080bedf7657599a5eb5ec6b69ba7a03e3ca6e52ca27f3d",
+            "id": "component-TwDefaultTableComponent-e89e69aeca7653e695b8a079e373b89017159726cc8075f359fc5971ba48593fbe8966c85724e010284edc78fcda407714d3a26867074bed7e753af406ff5b64",
             "file": "projects/ng-lib/src/lib/tw-ui/components/table/tw-table.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -8038,7 +8038,7 @@
             "selector": "tw-default-table",
             "styleUrls": [],
             "styles": [
-                "\n            :host {\n                display: block;\n                width: 100%;\n            }\n        "
+                "\n      :host {\n        display: block;\n        width: 100%;\n      }\n    "
             ],
             "templateUrl": [
                 "./tw-table.component.html"
@@ -8050,7 +8050,7 @@
                     "name": "actionButton",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 59,
+                    "line": 60,
                     "type": "TemplateRef<any> | string",
                     "decorators": []
                 },
@@ -8058,7 +8058,7 @@
                     "name": "actionColName",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 58,
+                    "line": 59,
                     "type": "string",
                     "decorators": []
                 },
@@ -8067,7 +8067,7 @@
                     "defaultValue": "''",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 61,
+                    "line": 62,
                     "type": "string",
                     "decorators": []
                 },
@@ -8076,7 +8076,7 @@
                     "defaultValue": "[]",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 57,
+                    "line": 58,
                     "type": "string[]",
                     "decorators": []
                 },
@@ -8084,7 +8084,7 @@
                     "name": "isActionChange",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 63,
+                    "line": 64,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -8093,7 +8093,16 @@
                     "defaultValue": "false",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 56,
+                    "line": 57,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "isMultiSelectField",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 55,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -8101,7 +8110,7 @@
                     "name": "isPaginationAction",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 62,
+                    "line": 63,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -8119,7 +8128,7 @@
                     "defaultValue": "false",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 55,
+                    "line": 56,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -8128,7 +8137,7 @@
                     "defaultValue": "[]",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 60,
+                    "line": 61,
                     "type": "RowData[]",
                     "decorators": []
                 }
@@ -8143,7 +8152,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 66
+                    "line": 67
                 },
                 {
                     "name": "groupData",
@@ -8153,7 +8162,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 68
+                    "line": 69
                 },
                 {
                     "name": "isAllRowsSelected",
@@ -8163,7 +8172,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 71
+                    "line": 72
                 },
                 {
                     "name": "selectedIndex",
@@ -8173,7 +8182,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 72
+                    "line": 73
                 },
                 {
                     "name": "selectedRow",
@@ -8183,7 +8192,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 70
+                    "line": 71
                 },
                 {
                     "name": "selectedRows",
@@ -8193,7 +8202,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 69
+                    "line": 70
                 },
                 {
                     "name": "selection",
@@ -8221,7 +8230,7 @@
                     "type": "TableDataSourceService",
                     "optional": false,
                     "description": "",
-                    "line": 65
+                    "line": 66
                 }
             ],
             "methodsClass": [
@@ -8238,7 +8247,7 @@
                     "optional": false,
                     "returnType": "Observable<Field>",
                     "typeParameters": [],
-                    "line": 97,
+                    "line": 99,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -8272,7 +8281,7 @@
                     "optional": false,
                     "returnType": "literal type",
                     "typeParameters": [],
-                    "line": 119,
+                    "line": 127,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -8312,7 +8321,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 191,
+                    "line": 199,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -8340,7 +8349,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 187,
+                    "line": 195,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n\n Drag and Drop Handlers\n",
@@ -8348,8 +8357,8 @@
                     "jsdoctags": [
                         {
                             "name": {
-                                "pos": 7257,
-                                "end": 7262,
+                                "pos": 7045,
+                                "end": 7050,
                                 "flags": 16842752,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
@@ -8360,8 +8369,8 @@
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
-                                "pos": 7251,
-                                "end": 7256,
+                                "pos": 7039,
+                                "end": 7044,
                                 "flags": 16842752,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
@@ -8391,7 +8400,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 195,
+                    "line": 203,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -8416,6 +8425,34 @@
                     ]
                 },
                 {
+                    "name": "isCellFieldObject",
+                    "args": [
+                        {
+                            "name": "value",
+                            "type": "Field | any",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 108,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "value",
+                            "type": "Field | any",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
                     "name": "isCellValArray",
                     "args": [
                         {
@@ -8428,7 +8465,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 102,
+                    "line": 104,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -8456,7 +8493,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 148,
+                    "line": 156,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -8484,7 +8521,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 136,
+                    "line": 144,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -8512,7 +8549,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 74,
+                    "line": 75,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -8533,7 +8570,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 93,
+                    "line": 95,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -8550,7 +8587,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 115,
+                    "line": 123,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -8578,7 +8615,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 177,
+                    "line": 185,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -8612,7 +8649,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 156,
+                    "line": 164,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n\nisSelectable actions\n",
@@ -8620,8 +8657,8 @@
                     "jsdoctags": [
                         {
                             "name": {
-                                "pos": 6090,
-                                "end": 6095,
+                                "pos": 5988,
+                                "end": 5993,
                                 "flags": 16842752,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
@@ -8632,8 +8669,8 @@
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
-                                "pos": 6084,
-                                "end": 6089,
+                                "pos": 5982,
+                                "end": 5987,
                                 "flags": 16842752,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
@@ -8644,8 +8681,8 @@
                         },
                         {
                             "name": {
-                                "pos": 6111,
-                                "end": 6119,
+                                "pos": 6007,
+                                "end": 6015,
                                 "flags": 16842752,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
@@ -8656,8 +8693,8 @@
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
-                                "pos": 6105,
-                                "end": 6110,
+                                "pos": 6001,
+                                "end": 6006,
                                 "flags": 16842752,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
@@ -8681,7 +8718,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 167,
+                    "line": 175,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -8702,7 +8739,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 106,
+                    "line": 114,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -8755,10 +8792,10 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { AsyncPipe, CommonModule } from '@angular/common';\r\nimport {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    Input,\r\n    OnChanges,\r\n    OnDestroy,\r\n    SimpleChanges,\r\n    TemplateRef,\r\n    ViewChild,\r\n    inject,\r\n} from '@angular/core';\r\nimport { SortableIconComponent, cellSelector } from './utils';\r\n\r\nimport { AdkExpansionPanelComponent } from '../expansion-panel.component';\r\nimport { AdkSelection } from '../../../tw-form-ui/directives';\r\nimport { AdkTooltipDirective } from '../../../tw-form-ui/directives/tooltip';\r\nimport { CheckboxComponent } from '../../../tw-form-ui/components/types/checkbox.component';\r\nimport { Field } from '../../../tw-form-ui';\r\nimport { FieldComponent } from '../../../tw-form-ui/components/field.component';\r\nimport { ImperativeObservable } from '../../../utils';\r\nimport { Observable } from 'rxjs';\r\nimport { RowData } from './models';\r\nimport { TableDataSourceService } from './table-datasource.service';\r\nimport { TwTypographyComponent } from '../typography.component';\r\n\r\n@Component({\r\n    selector: 'tw-default-table',\r\n    templateUrl: './tw-table.component.html',\r\n    standalone: true,\r\n    imports: [\r\n        CommonModule,\r\n        AdkSelection,\r\n        AdkTooltipDirective,\r\n        AdkExpansionPanelComponent,\r\n        AsyncPipe,\r\n        TwTypographyComponent,\r\n        CheckboxComponent,\r\n        SortableIconComponent,\r\n        FieldComponent,\r\n    ],\r\n    changeDetection: ChangeDetectionStrategy.OnPush,\r\n    styles: [\r\n        `\r\n            :host {\r\n                display: block;\r\n                width: 100%;\r\n            }\r\n        `,\r\n    ],\r\n})\r\nexport class TwDefaultTableComponent implements OnChanges, OnDestroy {\r\n    @ViewChild('selection', { static: true }) selection: any;\r\n    @Input() isSelectable = false;\r\n    @Input() isSortable = false;\r\n    @Input() isDraggable = false;\r\n    @Input() headers: string[] = [];\r\n    @Input() actionColName?: string;\r\n    @Input() actionButton?: TemplateRef<any> | string;\r\n    @Input() rows: RowData[] = [];\r\n    @Input() groupBy = '';\r\n    @Input() isPaginationAction?: boolean;\r\n    @Input() isActionChange?: boolean;\r\n\r\n    tdss: TableDataSourceService = inject(TableDataSourceService);\r\n    datasource = this.tdss.get('dataSource');\r\n    // maybe add groupData to the state management service\r\n    groupData = new ImperativeObservable<{ [key: string]: RowData[] }>({ key: this.tdss.get('dataSource') });\r\n    selectedRows = new ImperativeObservable<RowData[]>(this.tdss.get('selectedRows'));\r\n    selectedRow = new ImperativeObservable<RowData | null>(null);\r\n    isAllRowsSelected = new ImperativeObservable<boolean>(this.selectedRows.value.length === this.datasource.length);\r\n    selectedIndex = new ImperativeObservable<number>(this.tdss.get('draggedColIndex') ?? 0);\r\n\r\n    ngOnChanges(changes: SimpleChanges): void {\r\n        if (changes['headers']) this.tdss.setHeaders(changes['headers'].currentValue);\r\n        if (changes['rows']) this.tdss.setTableDataSource(changes['rows'].currentValue);\r\n        if (changes['isActionChange']) {\r\n            if (!changes['isActionChange'].firstChange) {\r\n                this.headers = this.tdss.get('headers');\r\n                this.rows = this.tdss.get('dataSource');\r\n            }\r\n        }\r\n        if (changes['isPaginationAction'])\r\n            this.groupData.value = this.groupByData(this.tdss.get('dataSource'), this.tdss.get('preferences').groupBy ?? '');\r\n        if (changes['isSelectable']) this.isSelectable = changes['isSelectable'].currentValue;\r\n        if (changes['isSortable']) this.isSortable = changes['isSortable'].currentValue;\r\n        if (changes['isDraggable']) this.isDraggable = changes['isDraggable'].currentValue;\r\n        if (changes['groupBy']) this.tdss.setGroupBy(changes['groupBy'].currentValue);\r\n        this.updateGroupData();\r\n        this.sortRows('');\r\n    }\r\n\r\n    ngOnDestroy(): void {\r\n        this.tdss.clear();\r\n    }\r\n\r\n    cellMultiSelector(value: string[]): Observable<Field> {\r\n        const field = new ImperativeObservable<Field>(cellSelector(value));\r\n        return field.change$;\r\n    }\r\n\r\n    isCellValArray(value: string | []) {\r\n        return Array.isArray(value);\r\n    }\r\n\r\n    private updateGroupData(): void {\r\n        const groupByVar = this.tdss.get('preferences').groupBy;\r\n        const groupData =\r\n            groupByVar && groupByVar !== ''\r\n                ? this.groupByData(this.tdss.get('dataSource'), groupByVar)\r\n                : ({ key: this.tdss.get('dataSource') } as { [key: string]: RowData[] });\r\n        this.groupData.value = { ...groupData };\r\n    }\r\n\r\n    objectKeysGroupData(obj: any): any {\r\n        return Object.keys(obj);\r\n    }\r\n\r\n    private groupByData(array: RowData[], key: string): { [key: string]: RowData[] } {\r\n        const gKey = key.toLowerCase();\r\n        return array.reduce((result, currentValue) => {\r\n            const normalizedCurrentValue: RowData = Object.keys(currentValue).reduce((acc, k) => {\r\n                acc[k.toLowerCase()] = currentValue[k];\r\n                return acc;\r\n            }, {} as RowData);\r\n\r\n            const groupKey = normalizedCurrentValue[gKey] as string;\r\n            if (!result[groupKey]) {\r\n                result[groupKey] = [];\r\n            }\r\n            result[groupKey].push(currentValue);\r\n            return result;\r\n        }, {} as { [key: string]: RowData[] });\r\n    }\r\n\r\n    isSelected(row: RowData): boolean {\r\n        const selectedRowStr = JSON.stringify(this.selectedRow.value);\r\n        const rowStr = JSON.stringify(row);\r\n        return selectedRowStr === rowStr;\r\n    }\r\n\r\n    get allRowsSelected(): boolean {\r\n        const dataSource = this.tdss.get('dataSource');\r\n        const selectedRows = this.tdss.get('selectedRows');\r\n        return dataSource.length > 0 && selectedRows.length === dataSource.length;\r\n    }\r\n\r\n    isRowSelected(rowData: any): boolean {\r\n        return this.selectedRows.value.some((selectedRow: any) => JSON.stringify(selectedRow) === JSON.stringify(rowData));\r\n    }\r\n    /**\r\n     * isSelectable actions\r\n     * @param event\r\n     * @param groupKey\r\n     */\r\n    toggleSelectAll(event: Event, groupKey: string): void {\r\n        const isChecked = (event.target as HTMLInputElement).checked;\r\n        if (isChecked) {\r\n            this.tdss.toggleSelectedAllRows();\r\n            this.groupData.value[groupKey].forEach((item) => this.selection.select(item));\r\n        } else {\r\n            this.tdss.toggleSelectedAllRows();\r\n            this.selection.clear();\r\n        }\r\n    }\r\n\r\n    toggleSelectItem(row: object): void {\r\n        const itemStr = JSON.stringify(row);\r\n        if (this.selection.selected(itemStr)) {\r\n            this.selection.deselect(itemStr);\r\n        } else {\r\n            this.selection.select(itemStr);\r\n        }\r\n        this.tdss.setSelectedRows(row);\r\n    }\r\n\r\n    sortRows(key: string): void {\r\n        const currentDirection = this.tdss.get('sortDataSource').direction;\r\n        const newDirection: 'ascending' | 'descending' = currentDirection === 'ascending' ? 'descending' : 'ascending';\r\n        this.tdss.sortDataSource({ key, direction: newDirection });\r\n        this.updateGroupData();\r\n    }\r\n    /**\r\n     *  Drag and Drop Handlers\r\n     * @param index\r\n     */\r\n    handleDragStart(index: number): void {\r\n        this.tdss.dragStart(index);\r\n    }\r\n\r\n    handleDragOver(event: DragEvent): void {\r\n        event.preventDefault();\r\n    }\r\n\r\n    handleDrop(index: number, event: DragEvent): void {\r\n        event.preventDefault();\r\n        this.tdss.dragDrop(index);\r\n        this.headers = this.tdss.get('headers');\r\n        this.groupData.value = this.groupByData(this.tdss.get('dataSource'), this.groupBy);\r\n    }\r\n}\r\n",
+            "sourceCode": "import { AsyncPipe, CommonModule } from '@angular/common';\r\nimport {\r\n    ChangeDetectionStrategy,\r\n    Component,\r\n    Input,\r\n    OnChanges,\r\n    OnDestroy,\r\n    SimpleChanges,\r\n    TemplateRef,\r\n    ViewChild,\r\n    inject,\r\n} from '@angular/core';\r\nimport { SortableIconComponent, cellSelector } from './utils';\r\n\r\nimport { AdkExpansionPanelComponent } from '../expansion-panel.component';\r\nimport { AdkSelection } from '../../../tw-form-ui/directives';\r\nimport { AdkTooltipDirective } from '../../../tw-form-ui/directives/tooltip';\r\nimport { CheckboxComponent } from '../../../tw-form-ui/components/types/checkbox.component';\r\nimport { Field } from '../../../tw-form-ui';\r\nimport { FieldComponent } from '../../../tw-form-ui/components/field.component';\r\nimport { ImperativeObservable } from '../../../utils';\r\nimport { Observable } from 'rxjs';\r\nimport { RowData } from './models';\r\nimport { TableDataSourceService } from './table-datasource.service';\r\nimport { TwTypographyComponent } from '../typography.component';\r\n\r\n@Component({\r\n  selector: 'tw-default-table',\r\n  templateUrl: './tw-table.component.html',\r\n  standalone: true,\r\n  imports: [\r\n    CommonModule,\r\n    AdkSelection,\r\n    AdkTooltipDirective,\r\n    AdkExpansionPanelComponent,\r\n    AsyncPipe,\r\n    TwTypographyComponent,\r\n    CheckboxComponent,\r\n    SortableIconComponent,\r\n    FieldComponent,\r\n  ],\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n  styles: [\r\n    `\r\n      :host {\r\n        display: block;\r\n        width: 100%;\r\n      }\r\n    `,\r\n  ],\r\n})\r\nexport class TwDefaultTableComponent implements OnChanges, OnDestroy {\r\n  @ViewChild('selection', { static: true }) selection: any;\r\n  @Input() isSelectable = false;\r\n  @Input() isMultiSelectField = false;\r\n  @Input() isSortable = false;\r\n  @Input() isDraggable = false;\r\n  @Input() headers: string[] = [];\r\n  @Input() actionColName?: string;\r\n  @Input() actionButton?: TemplateRef<any> | string;\r\n  @Input() rows: RowData[] = [];\r\n  @Input() groupBy = '';\r\n  @Input() isPaginationAction?: boolean;\r\n  @Input() isActionChange?: boolean;\r\n\r\n  tdss: TableDataSourceService = inject(TableDataSourceService);\r\n  datasource = this.tdss.get('dataSource');\r\n  // maybe add groupData to the state management service\r\n  groupData = new ImperativeObservable<{ [key: string]: RowData[] }>({ key: this.tdss.get('dataSource') });\r\n  selectedRows = new ImperativeObservable<RowData[]>(this.tdss.get('selectedRows'));\r\n  selectedRow = new ImperativeObservable<RowData | null>(null);\r\n  isAllRowsSelected = new ImperativeObservable<boolean>(this.selectedRows.value.length === this.datasource.length);\r\n  selectedIndex = new ImperativeObservable<number>(this.tdss.get('draggedColIndex') ?? 0);\r\n\r\n  ngOnChanges(changes: SimpleChanges): void {\r\n    if (changes['headers']) this.tdss.setHeaders(changes['headers'].currentValue);\r\n    if (changes['rows']) this.tdss.setTableDataSource(changes['rows'].currentValue);\r\n    if (changes['isActionChange']) {\r\n      if (!changes['isActionChange'].firstChange) {\r\n        this.headers = this.tdss.get('headers');\r\n        this.rows = this.tdss.get('dataSource');\r\n      }\r\n    }\r\n    if (changes['isPaginationAction'])\r\n      this.groupData.value = this.groupByData(this.tdss.get('dataSource'), this.tdss.get('preferences').groupBy ?? '');\r\n    if (changes['isSelectable']) this.isSelectable = changes['isSelectable'].currentValue;\r\n    if (changes['isMultiSelectField']) this.isMultiSelectField = changes['isMultiSelectField'].currentValue;\r\n    if (changes['isSortable']) this.isSortable = changes['isSortable'].currentValue;\r\n    if (changes['isDraggable']) this.isDraggable = changes['isDraggable'].currentValue;\r\n    if (changes['groupBy']) this.tdss.setGroupBy(changes['groupBy'].currentValue);\r\n    this.updateGroupData();\r\n    this.sortRows('');\r\n  }\r\n\r\n  ngOnDestroy(): void {\r\n    this.tdss.clear();\r\n  }\r\n\r\n  cellMultiSelector(value: string[]): Observable<Field> {\r\n    const field = new ImperativeObservable<Field>(cellSelector(value));\r\n    return field.change$;\r\n  }\r\n\r\n  isCellValArray(value: string | []) {\r\n    return Array.isArray(value);\r\n  }\r\n\r\n  isCellFieldObject(value: Field | any) {\r\n    console.log('value field', value);\r\n    if (typeof value === 'object') return true;\r\n    return false;\r\n  }\r\n\r\n  private updateGroupData(): void {\r\n    const groupByVar = this.tdss.get('preferences').groupBy;\r\n    const groupData =\r\n      groupByVar && groupByVar !== ''\r\n        ? this.groupByData(this.tdss.get('dataSource'), groupByVar)\r\n        : ({ key: this.tdss.get('dataSource') } as { [key: string]: RowData[] });\r\n    this.groupData.value = { ...groupData };\r\n  }\r\n\r\n  objectKeysGroupData(obj: any): any {\r\n    return Object.keys(obj);\r\n  }\r\n\r\n  private groupByData(array: RowData[], key: string): { [key: string]: RowData[] } {\r\n    const gKey = key.toLowerCase();\r\n    return array.reduce((result, currentValue) => {\r\n      const normalizedCurrentValue: RowData = Object.keys(currentValue).reduce((acc, k) => {\r\n        acc[k.toLowerCase()] = currentValue[k];\r\n        return acc;\r\n      }, {} as RowData);\r\n\r\n      const groupKey = normalizedCurrentValue[gKey] as string;\r\n      if (!result[groupKey]) {\r\n        result[groupKey] = [];\r\n      }\r\n      result[groupKey].push(currentValue);\r\n      return result;\r\n    }, {} as { [key: string]: RowData[] });\r\n  }\r\n\r\n  isSelected(row: RowData): boolean {\r\n    const selectedRowStr = JSON.stringify(this.selectedRow.value);\r\n    const rowStr = JSON.stringify(row);\r\n    return selectedRowStr === rowStr;\r\n  }\r\n\r\n  get allRowsSelected(): boolean {\r\n    const dataSource = this.tdss.get('dataSource');\r\n    const selectedRows = this.tdss.get('selectedRows');\r\n    return dataSource.length > 0 && selectedRows.length === dataSource.length;\r\n  }\r\n\r\n  isRowSelected(rowData: any): boolean {\r\n    return this.selectedRows.value.some((selectedRow: any) => JSON.stringify(selectedRow) === JSON.stringify(rowData));\r\n  }\r\n  /**\r\n   * isSelectable actions\r\n   * @param event\r\n   * @param groupKey\r\n   */\r\n  toggleSelectAll(event: Event, groupKey: string): void {\r\n    const isChecked = (event.target as HTMLInputElement).checked;\r\n    if (isChecked) {\r\n      this.tdss.toggleSelectedAllRows();\r\n      this.groupData.value[groupKey].forEach((item) => this.selection.select(item));\r\n    } else {\r\n      this.tdss.toggleSelectedAllRows();\r\n      this.selection.clear();\r\n    }\r\n  }\r\n\r\n  toggleSelectItem(row: object): void {\r\n    const itemStr = JSON.stringify(row);\r\n    if (this.selection.selected(itemStr)) {\r\n      this.selection.deselect(itemStr);\r\n    } else {\r\n      this.selection.select(itemStr);\r\n    }\r\n    this.tdss.setSelectedRows(row);\r\n  }\r\n\r\n  sortRows(key: string): void {\r\n    const currentDirection = this.tdss.get('sortDataSource').direction;\r\n    const newDirection: 'ascending' | 'descending' = currentDirection === 'ascending' ? 'descending' : 'ascending';\r\n    this.tdss.sortDataSource({ key, direction: newDirection });\r\n    this.updateGroupData();\r\n  }\r\n  /**\r\n   *  Drag and Drop Handlers\r\n   * @param index\r\n   */\r\n  handleDragStart(index: number): void {\r\n    this.tdss.dragStart(index);\r\n  }\r\n\r\n  handleDragOver(event: DragEvent): void {\r\n    event.preventDefault();\r\n  }\r\n\r\n  handleDrop(index: number, event: DragEvent): void {\r\n    event.preventDefault();\r\n    this.tdss.dragDrop(index);\r\n    this.headers = this.tdss.get('headers');\r\n    this.groupData.value = this.groupByData(this.tdss.get('dataSource'), this.groupBy);\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": "",
-            "stylesData": "\n            :host {\n                display: block;\n                width: 100%;\n            }\n        \n",
+            "stylesData": "\n      :host {\n        display: block;\n        width: 100%;\n      }\n    \n",
             "extends": [],
             "implements": [
                 "OnChanges",
@@ -8771,11 +8808,11 @@
                         "name": "allRowsSelected",
                         "type": "boolean",
                         "returnType": "boolean",
-                        "line": 142
+                        "line": 150
                     }
                 }
             },
-            "templateData": "<div adk-selection #selection=\"adkSelection\">\r\n  <table *ngIf=\"(groupData.change$ | async) as groupData\" aria-hidden=\"true\"\r\n    class=\"w-full text-left table-auto min-w-max\">\r\n    <thead>\r\n      <ng-container\r\n        *ngTemplateOutlet=\"renderThead; context: { groupData, headers: tdss.get('headers'), selectedRows: (selectedRows.change$ | async), isSelectable, sortDataSource: tdss.get('sortDataSource')}\"></ng-container>\r\n    </thead>\r\n    <tbody>\r\n      @for(groupKey of objectKeysGroupData(groupData); track $index){\r\n      @if(groupBy && groupKey !== '') {\r\n      <ng-container\r\n        *ngTemplateOutlet=\"groupByRender; context: { groupData, headers, isSelectable, groupKey }\"></ng-container>\r\n      } @else {\r\n      @for(rowData of groupData[groupKey]; track $index) {\r\n      <ng-container\r\n        *ngTemplateOutlet=\"renderRow; context: { headers, rowData, rowIndex: $index, isSelectable }\"></ng-container>\r\n      }\r\n      }\r\n      }\r\n    </tbody>\r\n  </table>\r\n</div>\r\n\r\n<ng-template #renderThead let-groupData=\"groupData\" let-header=\"headers\" let-isSelectable=\"isSelectable\"\r\n  let-sortDataSource=\"sortDataSource\" let-selectedRows=\"selectedRows\">\r\n  <tr>\r\n    @if(isSelectable) {\r\n    <th id=\"checkAll\" class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-1 max-w-[10px]\">\r\n      <ng-container\r\n        *ngTemplateOutlet=\"checkBox; context: {selection, groupData, rowData: undefined, isCheckAll: true}\"></ng-container>\r\n    </th>\r\n    }\r\n    @for(header of headers; track $index) {\r\n    <th [id]=\"header\" class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer\" [attr.key]=\"header\"\r\n      [ngClass]=\"{'border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer': true}\"\r\n      [attr.draggable]=\"isDraggable\" (dragstart)=\"handleDragStart($index)\" (dragover)=\"handleDragOver($event)\"\r\n      (drop)=\"handleDrop($index, $event)\" (drop)=\"handleDrop($index, $event)\" scope=\"col\">\r\n      <tw-typography [variant]=\"'small'\"\r\n        [classStyle]=\"'flex items-center justify-between gap-2 font-normal leading-none opacity-70'\">\r\n        {{ header ?? ' ' | uppercase}}\r\n        <div class=\"flex flex-row gap-2\">\r\n          @if($index !== headers.length && isSortable) {\r\n          <tw-sortable-icon (click)=\"sortRows(header)\" (keydown)=\"sortRows(header)\"></tw-sortable-icon>\r\n          } @if(tdss.get('sortDataSource').key === header && isSortable) {\r\n          <span>{{ sortDataSource.direction === 'ascending' ? '🔼' : '🔽' }}</span>\r\n          }\r\n        </div>\r\n      </tw-typography>\r\n    </th>\r\n    }\r\n  </tr>\r\n</ng-template>\r\n\r\n<!-- Group By Render -->\r\n<ng-template #groupByRender let-groupData=\"groupData\" let-headers=\"headers\" let-isSelectable=\"isSelectable\"\r\n  let-groupKey=\"groupKey\">\r\n  <tr>\r\n    <td [colSpan]=\"headers.length + (isSelectable ? 1 : 0) + (actionButton ? 1 : 0)\">\r\n      <adk-expansion-panel>\r\n        <ng-template #expansionPanelHeader>\r\n          {{groupKey}}\r\n        </ng-template>\r\n        <ng-template #expansionPanelBody>\r\n          <table aria-hidden=\"true\" class=\"w-full min-w-max table-auto text-left\">\r\n            <tbody>\r\n              @for(rowData of groupData[groupKey]; track $index) {\r\n              <ng-container\r\n                *ngTemplateOutlet=\"renderRow; context: { headers, rowData, rowIndex: $index, isSelectable }\">\r\n              </ng-container>\r\n              }\r\n            </tbody>\r\n          </table>\r\n        </ng-template>\r\n      </adk-expansion-panel>\r\n    </td>\r\n  </tr>\r\n</ng-template>\r\n\r\n<!-- Render Row Table Cells -->\r\n<ng-template #renderRow let-header=\"headers\" let-rowData=\"rowData\" let-rowIndex=\"rowIndex\"\r\n  let-isSelectable=\"isSelectable\">\r\n  <tr [ngClass]=\"isSelected(rowData) ? 'bg-light-blue-50': ''\" (click)=\"selectedRow.value = rowData\">\r\n    @if(isSelectable) {\r\n    <td [ngClass]=\"isSelectable ? 'p-1' : 'p-4'\" class=\"border-b border-blue-gray-50 p-1 max-h-[38px] max-w-[15px]\">\r\n      <ng-container\r\n        *ngTemplateOutlet=\"checkBox; context: {selection, groupData: undefined, rowData, isCheckAll: false}\"></ng-container>\r\n    </td>\r\n    }\r\n    @for (header of headers; track $index) {\r\n    <td [ngClass]=\"isSelectable ? 'p-1' : 'p-2'\"\r\n      class=\"border-b border-blue-gray-50 min-h-[48.5px] min-w-[60px] max-w-[60px] truncate\">\r\n      <div [adkTooltip]=\"rowData[header]\" tooltipPlacement=\"bottom\" [ngStyle]=\"{'cursor': 'text'}\">\r\n        @if(isCellValArray(rowData[header])) {\r\n        @if(isSelectable){\r\n        <adk-field [field]=\"(cellMultiSelector(rowData[header]) | async)\"></adk-field>\r\n        } @else {\r\n        <tw-typography [variant]=\"'small'\" class=\"font-normal ml-2\">\r\n          {{ rowData[header].join(', ') }}\r\n        </tw-typography>\r\n        }\r\n        } @else {\r\n        <tw-typography [variant]=\"'small'\" class=\"font-normal ml-2\">\r\n          {{ rowData[header] }}\r\n        </tw-typography>\r\n        }\r\n      </div>\r\n    </td>\r\n    }\r\n  </tr>\r\n</ng-template>\r\n<!-- Checkbox Render -->\r\n<ng-template #checkBox let-isCheckAll=\"isCheckAll\" let-selection=\"selection\" let-groupData=\"groupData\"\r\n  let-rowData=\"rowData\">\r\n  @if(isCheckAll) {\r\n  <div class=\"inline-flex items-center\">\r\n    <label for=\"selectAllCheckbox\" class=\"relative flex items-center p-3 rounded-full cursor-pointer\">\r\n      <input type=\"checkbox\"\r\n        class=\"before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10 w-4 h-4\"\r\n        id=\"selectAllCheckbox\" name=\"selectAllCheckbox\"\r\n        (change)=\"toggleSelectAll($event, objectKeysGroupData(groupData))\" />\r\n      <span\r\n        class=\"absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100\">\r\n        <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-3.5 w-3.5\" viewBox=\"0 0 20 20\" fill=\"currentColor\"\r\n          stroke=\"currentColor\" stroke-width=\"1\">\r\n          <path fill-rule=\"evenodd\"\r\n            d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\"\r\n            clip-rule=\"evenodd\"></path>\r\n        </svg>\r\n      </span>\r\n    </label>\r\n  </div>\r\n  } @else {\r\n  <div class=\"inline-flex items-center\">\r\n    <label class=\"relative flex items-center p-3 rounded-full cursor-pointer\" for=\"checkbox\">\r\n      <input type=\"checkbox\"\r\n        class=\"before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10 w-4 h-4\"\r\n        [checked]=\"selection.selected(rowData)\" (change)=\"toggleSelectItem(rowData)\" />\r\n      <span\r\n        class=\"absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100\">\r\n        <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-3.5 w-3.5\" viewBox=\"0 0 20 20\" fill=\"currentColor\"\r\n          stroke=\"currentColor\" stroke-width=\"1\">\r\n          <path fill-rule=\"evenodd\"\r\n            d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\"\r\n            clip-rule=\"evenodd\"></path>\r\n        </svg>\r\n      </span>\r\n    </label>\r\n  </div>\r\n  }\r\n</ng-template>\r\n\r\n<ng-template>\r\n  < </ng-template>"
+            "templateData": "<div adk-selection #selection=\"adkSelection\">\r\n  <table *ngIf=\"(groupData.change$ | async) as groupData\" aria-hidden=\"true\"\r\n    class=\"w-full text-left table-auto min-w-max\">\r\n    <thead>\r\n      <ng-container\r\n        *ngTemplateOutlet=\"renderThead; context: { groupData, headers: tdss.get('headers'), selectedRows: (selectedRows.change$ | async), isSelectable, sortDataSource: tdss.get('sortDataSource')}\"></ng-container>\r\n    </thead>\r\n    <tbody>\r\n      @for(groupKey of objectKeysGroupData(groupData); track $index){\r\n      @if(groupBy && groupKey !== '') {\r\n      <ng-container\r\n        *ngTemplateOutlet=\"groupByRender; context: { groupData, headers, isSelectable, groupKey }\"></ng-container>\r\n      } @else {\r\n      @for(rowData of groupData[groupKey]; track $index) {\r\n      <ng-container\r\n        *ngTemplateOutlet=\"renderRow; context: { headers, rowData, rowIndex: $index, isSelectable }\"></ng-container>\r\n      }\r\n      }\r\n      }\r\n    </tbody>\r\n  </table>\r\n</div>\r\n\r\n<ng-template #renderThead let-groupData=\"groupData\" let-header=\"headers\" let-isSelectable=\"isSelectable\"\r\n  let-sortDataSource=\"sortDataSource\" let-selectedRows=\"selectedRows\">\r\n  <tr>\r\n    @if(isSelectable) {\r\n    <th id=\"checkAll\" class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-1 max-w-[10px]\">\r\n      <ng-container\r\n        *ngTemplateOutlet=\"checkBox; context: {selection, groupData, rowData: undefined, isCheckAll: true}\"></ng-container>\r\n    </th>\r\n    }\r\n    @for(header of headers; track $index) {\r\n    <th [id]=\"header\" class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer\" [attr.key]=\"header\"\r\n      [ngClass]=\"{'border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer': true}\"\r\n      [attr.draggable]=\"isDraggable\" (dragstart)=\"handleDragStart($index)\" (dragover)=\"handleDragOver($event)\"\r\n      (drop)=\"handleDrop($index, $event)\" (drop)=\"handleDrop($index, $event)\" scope=\"col\">\r\n      <tw-typography [variant]=\"'small'\"\r\n        [classStyle]=\"'flex items-center justify-between gap-2 font-normal leading-none opacity-70'\">\r\n        {{ header ?? ' ' | uppercase}}\r\n        <div class=\"flex flex-row gap-2\">\r\n          @if($index !== headers.length && isSortable) {\r\n          <tw-sortable-icon (click)=\"sortRows(header)\" (keydown)=\"sortRows(header)\"></tw-sortable-icon>\r\n          } @if(tdss.get('sortDataSource').key === header && isSortable) {\r\n          <span>{{ sortDataSource.direction === 'ascending' ? '🔼' : '🔽' }}</span>\r\n          }\r\n        </div>\r\n      </tw-typography>\r\n    </th>\r\n    }\r\n  </tr>\r\n</ng-template>\r\n\r\n<!-- Group By Render -->\r\n<ng-template #groupByRender let-groupData=\"groupData\" let-headers=\"headers\" let-isSelectable=\"isSelectable\"\r\n  let-groupKey=\"groupKey\">\r\n  <tr>\r\n    <td [colSpan]=\"headers.length + (isSelectable ? 1 : 0) + (actionButton ? 1 : 0)\">\r\n      <adk-expansion-panel>\r\n        <ng-template #expansionPanelHeader>\r\n          {{groupKey}}\r\n        </ng-template>\r\n        <ng-template #expansionPanelBody>\r\n          <table aria-hidden=\"true\" class=\"w-full min-w-max table-auto text-left\">\r\n            <tbody>\r\n              @for(rowData of groupData[groupKey]; track $index) {\r\n              <ng-container\r\n                *ngTemplateOutlet=\"renderRow; context: { headers, rowData, rowIndex: $index, isSelectable }\">\r\n              </ng-container>\r\n              }\r\n            </tbody>\r\n          </table>\r\n        </ng-template>\r\n      </adk-expansion-panel>\r\n    </td>\r\n  </tr>\r\n</ng-template>\r\n\r\n<!-- Render Row Table Cells -->\r\n<ng-template #renderRow let-header=\"headers\" let-rowData=\"rowData\" let-rowIndex=\"rowIndex\"\r\n  let-isSelectable=\"isSelectable\">\r\n  <tr [ngClass]=\"isSelected(rowData) ? 'bg-light-blue-50': ''\" (click)=\"selectedRow.value = rowData\">\r\n    @if(isSelectable) {\r\n    <td [ngClass]=\"isSelectable ? 'p-1' : 'p-4'\" class=\"border-b border-blue-gray-50 p-1 max-h-[38px] max-w-[15px]\">\r\n      <ng-container\r\n        *ngTemplateOutlet=\"checkBox; context: {selection, groupData: undefined, rowData, isCheckAll: false}\"></ng-container>\r\n    </td>\r\n    }\r\n    @for (header of headers; track $index) {\r\n    <td [ngClass]=\"isSelectable ? 'p-1' : 'p-2'\"\r\n      class=\"border-b border-blue-gray-50 min-h-[48.5px] min-w-[60px] max-w-[60px] truncate\">\r\n      <div [adkTooltip]=\"rowData[header]\" tooltipPlacement=\"bottom\" [ngStyle]=\"{'cursor': 'text'}\">\r\n        @if(isCellValArray(rowData[header])) {\r\n        @if(isSelectable && isMultiSelectField){\r\n        <adk-field *ngIf=\"(cellMultiSelector(rowData[header]) | async) as field\" [field]=\"field\"></adk-field>\r\n        } @else {\r\n        <tw-typography [variant]=\"'small'\" class=\"font-normal ml-2\">\r\n          {{ rowData[header].join(', ') }}\r\n        </tw-typography>\r\n        }\r\n        } @else {\r\n          @if (isCellFieldObject(rowData[header])) {\r\n            <adk-field [field]=\"rowData[header]\"></adk-field>\r\n          } @else {\r\n            <tw-typography [variant]=\"'small'\" class=\"font-normal ml-2\">\r\n              {{ rowData[header] }}\r\n            </tw-typography>\r\n          }\r\n        }\r\n      </div>\r\n    </td>\r\n    }\r\n  </tr>\r\n</ng-template>\r\n<!-- Checkbox Render -->\r\n<ng-template #checkBox let-isCheckAll=\"isCheckAll\" let-selection=\"selection\" let-groupData=\"groupData\"\r\n  let-rowData=\"rowData\">\r\n  @if(isCheckAll) {\r\n  <div class=\"inline-flex items-center\">\r\n    <label for=\"selectAllCheckbox\" class=\"relative flex items-center p-3 rounded-full cursor-pointer\">\r\n      <input type=\"checkbox\"\r\n        class=\"before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10 w-4 h-4\"\r\n        id=\"selectAllCheckbox\" name=\"selectAllCheckbox\"\r\n        (change)=\"toggleSelectAll($event, objectKeysGroupData(groupData))\" />\r\n      <span\r\n        class=\"absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100\">\r\n        <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-3.5 w-3.5\" viewBox=\"0 0 20 20\" fill=\"currentColor\"\r\n          stroke=\"currentColor\" stroke-width=\"1\">\r\n          <path fill-rule=\"evenodd\"\r\n            d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\"\r\n            clip-rule=\"evenodd\"></path>\r\n        </svg>\r\n      </span>\r\n    </label>\r\n  </div>\r\n  } @else {\r\n  <div class=\"inline-flex items-center\">\r\n    <label class=\"relative flex items-center p-3 rounded-full cursor-pointer\" for=\"checkbox\">\r\n      <input type=\"checkbox\"\r\n        class=\"before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10 w-4 h-4\"\r\n        [checked]=\"selection.selected(rowData)\" (change)=\"toggleSelectItem(rowData)\" />\r\n      <span\r\n        class=\"absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100\">\r\n        <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-3.5 w-3.5\" viewBox=\"0 0 20 20\" fill=\"currentColor\"\r\n          stroke=\"currentColor\" stroke-width=\"1\">\r\n          <path fill-rule=\"evenodd\"\r\n            d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\"\r\n            clip-rule=\"evenodd\"></path>\r\n        </svg>\r\n      </span>\r\n    </label>\r\n  </div>\r\n  }\r\n</ng-template>\r\n\r\n<ng-template>\r\n  < </ng-template>\r\n"
         },
         {
             "name": "TwTableCardComponent",
@@ -14148,7 +14185,7 @@
                 "linktype": "component",
                 "name": "TwDefaultTableComponent",
                 "coveragePercent": 5,
-                "coverageCount": "2/34",
+                "coverageCount": "2/36",
                 "status": "low"
             },
             {
