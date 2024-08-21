@@ -1,7 +1,7 @@
-import { Directive, computed, signal } from '@angular/core';
+import { Directive, Input, computed, signal } from '@angular/core';
+import { FilterCriteria, TableDataSourceState } from '../models';
 import { ID, Identifiable } from 'projects/ng-lib/src/lib/tw-form-ui/models';
-
-import { TableState } from '../models';
+import { PaginationCriteria, SortCriteria } from '../models/table.interface';
 
 @Directive({
     selector: '[adk-table]',
@@ -14,92 +14,269 @@ import { TableState } from '../models';
     // ],
 })
 export class AdkTable<T extends Identifiable> {
-    // TODO: handle inital table data source
-    // TODO: handle headers to be displayed - can automate by running through datasource list or allow
-    // developer to specify
-    // TODO: handle pagination
-    // TODO: handle selecting rows with checkbox selected is true to display a specific row
-    // TODO: handle sorting of columns
-    // TODO: handle filtering of columns
-    // TODO: handle dragging of columns
-    // TODO: handle grouping of columns
-    // TODO: handle action buttons
-    // TODO: handle action column
-    // TODO: handle row selection
+    @Input() set initialData(data: T[]) {
+        this.setInitialData(data);
+    }
 
-    //TODO: figure away to handle initial values to be able to reset to initial values
-    #state = signal<TableState>({
-        //TODO: remove dataSource its mutable
+    @Input() set columns(cols: string[]) {
+        this.setColumns(cols);
+    }
+
+    @Input() set groupBy(column: string | undefined) {
+        this.setGroupBy(column);
+    }
+
+    @Input() set filterBy(criteria: FilterCriteria) {
+        this.applyFilter(criteria);
+    }
+
+    #state = signal<TableDataSourceState>({
         dataSource: [],
-        draggedColIndex: null,
-        filterDataSource: { column: '', value: '' },
-        //TODO: remove headers its mutable
+        filteredData: [],
         headers: [],
-        initialDataSource: [],
-        initialHeaders: [],
-        pagination: {
+        paginationCriteria: {
             currentPage: 1,
             totalPages: 1,
             pageSize: 10,
         },
-        preferences: {
+        preferenceCriteria: {
             visibleColumns: [],
             groupBy: undefined,
         },
         selectedRows: [],
-        sortDataSource: { key: '', direction: 'ascending' },
+        sortCriteria: { key: '', direction: 'ascending' },
+        filterCriteria: { column: '', value: '' },
     });
-    state = computed(() => this.#state());
 
-    #dataSource = signal<Record<ID, T>>({});
-    readonly dataSource = computed(() => Object.values(this.#dataSource()));
+    // Computed signals for derived state
+    readonly visibleData = computed(() => this.getVisibleData());
+    readonly filteredData = computed(() => this.getFilterCriteriaData());
+    readonly currentPageData = computed(() => this.getCurrentPageData());
+    readonly selectedRowsData = computed(() => this.getSelectedRowsData());
+    readonly groupedData = computed(() => this.getGroupedData());
+    readonly sortCriteriaData = computed(() => this.getSortCriteriaData());
+    readonly paginationCriteria = computed(() => this.getPaginationCriteria());
 
-    #headers = signal<string[]>([]);
-    readonly headers = computed(() => this.#headers());
-
-    get(id: ID): T | undefined {
-        return this.#dataSource()[id];
+    setInitialData(data: Partial<T>[]) {
+        this.#state.update((state) => ({
+            ...state,
+            dataSource: data,
+            filteredData: data,
+            headers: data.length > 0 ? Object.keys(data[0]) : [],
+            preferenceCriteria: {
+                ...state.preferenceCriteria,
+                visibleColumns: data.length > 0 ? Object.keys(data[0]) : [],
+            },
+            paginationCriteria: {
+                ...state.paginationCriteria,
+                totalPages: Math.ceil(data.length / state.paginationCriteria.pageSize),
+            },
+        }));
+        this.updatePagination();
     }
 
-    set(...newItems: T[]): void {
-        this.#dataSource.update((items) =>
-            newItems.reduce((accumulator, item) => {
-                return { ...accumulator, [item.id]: item };
-            }, items)
-        );
+    private setColumns(columns: string[]) {
+        this.#state.update((state) => ({
+            ...state,
+            headers: columns,
+            preferenceCriteria: {
+                ...state.preferenceCriteria,
+                visibleColumns: columns,
+            },
+        }));
+    }
 
-        this.#headers.update(() => {
-            const newHeaders = Object.keys(newItems[0]);
-            return newHeaders;
+    setGroupBy(column: string | undefined) {
+        this.#state.update((state) => ({
+            ...state,
+            preferenceCriteria: {
+                ...state.preferenceCriteria,
+                groupBy: column,
+            },
+        }));
+    }
+
+    // Pagination
+    private updatePagination() {
+        const { dataSource, paginationCriteria } = this.#state();
+        const totalPages = Math.ceil(dataSource.length / paginationCriteria.pageSize);
+        this.#state.update((state) => ({
+            ...state,
+            paginationCriteria: {
+                ...state.paginationCriteria,
+                totalPages,
+            },
+        }));
+    }
+
+    setPage(page: number) {
+        this.#state.update((state) => ({
+            ...state,
+            paginationCriteria: {
+                ...state.paginationCriteria,
+                currentPage: page,
+            },
+        }));
+        console.log('next page', this.#state());
+    }
+
+    setItemsPerPage(pageSize: number | string) {
+        const pageSizeNum = Number(pageSize);
+
+        this.#state.update((state) => ({
+            ...state,
+            paginationCriteria: {
+                ...state.paginationCriteria,
+                pageSize: pageSizeNum,
+                currentPage: 1,
+                totalPages: Math.ceil(state.filteredData.length / pageSizeNum),
+            },
+        }));
+        this.updatePagination();
+        console.log('set page', this.#state());
+    }
+
+    // Sorting
+    sortBy(key: string) {
+        this.#state.update((state) => ({
+            ...state,
+            sortCriteria: {
+                key,
+                direction: state.sortCriteria.key === key && state.sortCriteria.direction === 'ascending' ? 'descending' : 'ascending',
+            },
+        }));
+        this.applySort();
+    }
+
+    private applySort() {
+        const { sortCriteria, filteredData } = this.#state();
+        const sortedData = [...filteredData].sort((a, b) => {
+            if (a[sortCriteria.key] < b[sortCriteria.key]) return sortCriteria.direction === 'ascending' ? -1 : 1;
+            if (a[sortCriteria.key] > b[sortCriteria.key]) return sortCriteria.direction === 'ascending' ? 1 : -1;
+            return 0;
         });
+        this.#state.update((state) => ({ ...state, filteredData: sortedData }));
+    }
 
+    // Filtering
+    applyFilter(criteria: FilterCriteria) {
+        this.#state.update((state) => ({ ...state, filterCriteria: criteria }));
+        this.updateFilteredData();
+    }
+
+    private updateFilteredData() {
+        const { dataSource, filterCriteria } = this.#state();
+        const filteredData = dataSource.filter((item) =>
+            String(item[filterCriteria.column]).toLowerCase().includes(filterCriteria.value.toLowerCase())
+        );
+        this.#state.update((state) => ({ ...state, filteredData }));
+        this.updatePagination();
+    }
+
+    // Row selection
+    toggleRowSelection(id: ID) {
         this.#state.update((state) => ({
             ...state,
-            dataSource: Object.values(this.#dataSource()),
-            initialDataSource: Object.values(this.#dataSource()),
-            headers: Object.keys(newItems[0]),
-            initialHeaders: Object.keys(newItems[0]),
-            preferences: {
-                ...state.preferences,
-                visibleColumns: Object.keys(newItems[0]),
+            selectedRows: state.selectedRows.includes(id)
+                ? state.selectedRows.filter((rowId) => rowId !== id)
+                : [...state.selectedRows, id],
+        }));
+    }
+
+    toggleAllRowsSelection() {
+        this.#state.update((state) => {
+            const allSelected = state.selectedRows.length === state.dataSource.length;
+            return {
+                ...state,
+                selectedRows: allSelected ? [] : state.dataSource.map((item) => item.id),
+            };
+        });
+    }
+
+    // Column visibility
+    toggleColumnVisibility(column: string) {
+        this.#state.update((state) => ({
+            ...state,
+            preferenceCriteria: {
+                ...state.preferenceCriteria,
+                visibleColumns: state.preferenceCriteria.visibleColumns.includes(column)
+                    ? state.preferenceCriteria.visibleColumns.filter((col) => col !== column)
+                    : [...state.preferenceCriteria.visibleColumns, column],
             },
         }));
     }
 
-    setHeaders(headers: string[]): void {
-        this.#headers.set(headers);
-        this.#state.update((state) => ({
-            ...state,
-            headers,
-            initialHeaders: headers,
-            preferences: {
-                ...state.preferences,
-                visibleColumns: headers,
-            },
-        }));
+    // Helper methods for computed signals
+    private getVisibleData(): T[] {
+        const { filteredData, preferenceCriteria } = this.#state();
+        return filteredData.map((item) => {
+            const visibleItem = {} as T;
+            preferenceCriteria.visibleColumns.forEach((col) => {
+                //@ts-ignore
+                visibleItem[col] = item[col];
+            });
+            return visibleItem;
+        });
     }
 
-    clear(): void {
-        this.#dataSource.set({});
+    private getCurrentPageData(): T[] {
+        const { paginationCriteria } = this.#state();
+        const startIndex = (paginationCriteria.currentPage - 1) * paginationCriteria.pageSize;
+        return this.visibleData().slice(startIndex, startIndex + paginationCriteria.pageSize);
+    }
+
+    private getSelectedRowsData(): T[] {
+        const { selectedRows, dataSource } = this.#state();
+        return dataSource.filter((item) => selectedRows.includes(item.id));
+    }
+
+    private getGroupedData(): { [key: string]: T[] } {
+        const { filteredData, preferenceCriteria } = this.#state();
+        if (!preferenceCriteria.groupBy) {
+            return { All: filteredData };
+        }
+        return filteredData.reduce((groups, item) => {
+            const key = item[preferenceCriteria.groupBy as keyof T] as string;
+            if (!groups[key]) {
+                groups[key] = [];
+            }
+            groups[key].push(item);
+            return groups;
+        }, {} as { [key: string]: T[] });
+    }
+
+    private getSortCriteriaData(): SortCriteria {
+        const { sortCriteria } = this.#state();
+        return sortCriteria;
+    }
+
+    private getPaginationCriteria(): PaginationCriteria {
+        const { paginationCriteria } = this.#state();
+        return paginationCriteria;
+    }
+
+    private getFilterCriteriaData(): FilterCriteria {
+        const { filterCriteria } = this.#state();
+        return filterCriteria;
+    }
+
+    // Reset to initial state
+    resetToInitialState() {
+        this.#state.update((state) => ({
+            ...state,
+            filteredData: state.dataSource,
+            paginationCriteria: {
+                currentPage: 1,
+                totalPages: Math.ceil(state.dataSource.length / state.paginationCriteria.pageSize),
+                pageSize: state.paginationCriteria.pageSize,
+            },
+            selectedRows: [],
+            sortCriteria: { key: '', direction: 'ascending' },
+            filterCriteria: { column: '', value: '' },
+            preferenceCriteria: {
+                ...state.preferenceCriteria,
+                groupBy: undefined,
+            },
+        }));
     }
 }

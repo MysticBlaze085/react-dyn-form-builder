@@ -2,6 +2,8 @@ import { Field } from './field';
 import { Observable } from 'rxjs';
 import { TABLE_TYPE } from './identifiable';
 
+// need to think how I can simplify this
+
 export declare type RowData = {
     [additionalProperties: string]: any;
 } & {

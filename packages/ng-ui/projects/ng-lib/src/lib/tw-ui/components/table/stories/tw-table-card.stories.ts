@@ -62,7 +62,7 @@ export const Default: Story = {
         headers: ['name', 'job', 'date'],
         rows: mockData,
         isSelectable: false,
-        isMultiSelectField: false,
+        hasFields: false,
         isSortable: true,
         isDraggable: false,
         isSearchable: true,
@@ -85,7 +85,7 @@ export const Selectable: Story = {
     args: {
         ...Default.args,
         isSelectable: true,
-        isMultiSelectField: true,
+        hasFields: true,
     },
 };
 

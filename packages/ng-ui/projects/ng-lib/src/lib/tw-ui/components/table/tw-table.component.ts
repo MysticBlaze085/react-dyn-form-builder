@@ -57,7 +57,7 @@ export class TwDefaultTableComponent implements OnChanges, OnDestroy {
     #formGroup = inject(AdkFormGroup, { self: true });
     @ViewChild('selection', { static: true }) selection: any;
     @Input() isSelectable = false;
-    @Input() isMultiSelectField = false;
+    @Input() hasFields = false;
     @Input() isSortable = false;
     @Input() isDraggable = false;
     @Input() headers: string[] = [];
@@ -94,7 +94,7 @@ export class TwDefaultTableComponent implements OnChanges, OnDestroy {
         if (changes['isPaginationAction'])
             this.groupData.value = this.groupByData(this.tdss.get('dataSource'), this.tdss.get('preferences').groupBy ?? '');
         if (changes['isSelectable']) this.isSelectable = changes['isSelectable'].currentValue;
-        if (changes['isMultiSelectField']) this.isMultiSelectField = changes['isMultiSelectField'].currentValue;
+        if (changes['hasFields']) this.hasFields = changes['hasFields'].currentValue;
         if (changes['isSortable']) this.isSortable = changes['isSortable'].currentValue;
         if (changes['isDraggable']) this.isDraggable = changes['isDraggable'].currentValue;
         if (changes['groupBy']) this.tdss.setGroupBy(changes['groupBy'].currentValue);

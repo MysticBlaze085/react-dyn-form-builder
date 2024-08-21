@@ -22,4 +22,5 @@ export type VALUE = string | string[] | boolean | null;
 
 export type Identifiable = {
     id: ID;
+    [key: string]: any;
 };

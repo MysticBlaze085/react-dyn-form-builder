@@ -28,7 +28,7 @@ import { TwTableHeaderComponent } from './tw-table-header.component';
                     [headers]="headers"
                     [rows]="rows"
                     [isSelectable]="isSelectable"
-                    [isMultiSelectField]="isMultiSelectField"
+                    [hasFields]="hasFields"
                     [isSortable]="isSortable"
                     [isDraggable]="isDraggable"
                     [groupBy]="this.tdss.get('preferences').groupBy ?? ''"
@@ -59,7 +59,7 @@ import { TwTableHeaderComponent } from './tw-table-header.component';
 export class TwTableCardComponent {
     tdss = inject(TableDataSourceService);
     @Input() isSelectable = false;
-    @Input() isMultiSelectField = false;
+    @Input() hasFields = false;
     @Input() isSortable = false;
     @Input() isDraggable = false;
     @Input() isSearchable = false;
