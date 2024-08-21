@@ -3,17 +3,17 @@
     class="w-full text-left table-auto min-w-max">
     <thead>
       <ng-container
-        *ngTemplateOutlet="renderThead; context: { groupData, headers: tdss.get('headers'), selectedRows: (selectedRows.change$ | async), isSelectable, sortDataSource: tdss.get('sortDataSource')}"></ng-container>
+        *ngTemplateOutlet="renderThead; context: { groupData, headers: tdss.get('headers'), isSelectable, sortDataSource: tdss.get('sortDataSource')}, selection"></ng-container>
     </thead>
     <tbody>
       @for(groupKey of objectKeysGroupData(groupData); track $index){
       @if(groupBy && groupKey !== '') {
       <ng-container
-        *ngTemplateOutlet="groupByRender; context: { groupData, headers, isSelectable, groupKey }"></ng-container>
+        *ngTemplateOutlet="groupByRender; context: { groupData, headers, isSelectable, groupKey, selection }"></ng-container>
       } @else {
       @for(rowData of groupData[groupKey]; track $index) {
       <ng-container
-        *ngTemplateOutlet="renderRow; context: { headers, rowData, rowIndex: $index, isSelectable }"></ng-container>
+        *ngTemplateOutlet="renderRow; context: { headers, rowData, rowIndex: $index, isSelectable, selection }"></ng-container>
       }
       }
       }
@@ -21,8 +21,9 @@
   </table>
 </div>
 
+<!-- Render Table Header -->
 <ng-template #renderThead let-groupData="groupData" let-header="headers" let-isSelectable="isSelectable"
-  let-sortDataSource="sortDataSource" let-selectedRows="selectedRows">
+  let-sortDataSource="sortDataSource" let-selection="selection">
   <tr>
     @if(isSelectable) {
     <th id="checkAll" class="border-b border-blue-gray-100 bg-blue-gray-50 p-1 max-w-[10px]">
@@ -53,7 +54,7 @@
 
 <!-- Group By Render -->
 <ng-template #groupByRender let-groupData="groupData" let-headers="headers" let-isSelectable="isSelectable"
-  let-groupKey="groupKey">
+  let-groupKey="groupKey" let-selection="selection">
   <tr>
     <td [colSpan]="headers.length + (isSelectable ? 1 : 0) + (actionButton ? 1 : 0)">
       <adk-expansion-panel>
@@ -65,7 +66,7 @@
             <tbody>
               @for(rowData of groupData[groupKey]; track $index) {
               <ng-container
-                *ngTemplateOutlet="renderRow; context: { headers, rowData, rowIndex: $index, isSelectable }">
+                *ngTemplateOutlet="renderRow; context: { headers, rowData, rowIndex: $index, isSelectable, selection }">
               </ng-container>
               }
             </tbody>
@@ -78,7 +79,7 @@
 
 <!-- Render Row Table Cells -->
 <ng-template #renderRow let-header="headers" let-rowData="rowData" let-rowIndex="rowIndex"
-  let-isSelectable="isSelectable">
+  let-isSelectable="isSelectable" let-selection="selection">
   <tr [ngClass]="isSelected(rowData) ? 'bg-light-blue-50': ''" (click)="selectedRow.value = rowData">
     @if(isSelectable) {
     <td [ngClass]="isSelectable ? 'p-1' : 'p-4'" class="border-b border-blue-gray-50 p-1 max-h-[38px] max-w-[15px]">
@@ -92,26 +93,29 @@
       <div [adkTooltip]="rowData[header]" tooltipPlacement="bottom" [ngStyle]="{'cursor': 'text'}">
         @if(isCellValArray(rowData[header])) {
         @if(isSelectable && isMultiSelectField){
-        <adk-field *ngIf="(cellMultiSelector(rowData[header]) | async) as field" [field]="field"></adk-field>
+        <adk-field
+          *ngIf="selection.selectedObj(rowData) && (cellMultiSelector(rowIndex, rowData[header]) | async) as field"
+          [field]="field"></adk-field>
         } @else {
         <tw-typography [variant]="'small'" class="font-normal ml-2">
           {{ rowData[header].join(', ') }}
         </tw-typography>
         }
         } @else {
-          @if (isCellFieldObject(rowData[header])) {
-            <adk-field [field]="rowData[header]"></adk-field>
-          } @else {
-            <tw-typography [variant]="'small'" class="font-normal ml-2">
-              {{ rowData[header] }}
-            </tw-typography>
-          }
+        @if (isCellFieldObject(rowData[header])) {
+        <adk-field [field]="rowData[header]"></adk-field>
+        } @else {
+        <tw-typography [variant]="'small'" class="font-normal ml-2">
+          {{ rowData[header] }}
+        </tw-typography>
+        }
         }
       </div>
     </td>
     }
   </tr>
 </ng-template>
+
 <!-- Checkbox Render -->
 <ng-template #checkBox let-isCheckAll="isCheckAll" let-selection="selection" let-groupData="groupData"
   let-rowData="rowData">
@@ -120,7 +124,7 @@
     <label for="selectAllCheckbox" class="relative flex items-center p-3 rounded-full cursor-pointer">
       <input type="checkbox"
         class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10 w-4 h-4"
-        id="selectAllCheckbox" name="selectAllCheckbox"
+        id="selectAllCheckbox" name="selectAllCheckbox" [checked]="allRowsSelected"
         (change)="toggleSelectAll($event, objectKeysGroupData(groupData))" />
       <span
         class="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
@@ -152,6 +156,3 @@
   </div>
   }
 </ng-template>
-
-<ng-template>
-  < </ng-template>

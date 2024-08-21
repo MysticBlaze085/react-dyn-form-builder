@@ -18,7 +18,3 @@ export interface TableState {
     sortDataSource: { key: string; direction: 'ascending' | 'descending' };
     [key: string]: any;
 }
-
-export interface RowData {
-    [key: string]: any;
-}

@@ -1,6 +1,7 @@
 import { Injectable, computed, signal } from '@angular/core';
-import { Pagination, RowData, TableState } from './models';
+import { Pagination, TableState } from './models';
 
+import { RowData } from '../../../tw-form-ui';
 import { SortRowsUtil } from './utils/sort-rows.util';
 
 @Injectable({
@@ -90,9 +91,9 @@ export class TableDataSourceService {
     private filterRows = (rows: any[], filter: { column: string; value: string }) => {
         if (!filter.column || !filter.value) return rows; // Return all rows if no filter criteria
         return rows.filter((row) => {
-          const column = filter.column.toLowerCase();
-          const rowData = row[column];
-          if (Array.isArray(rowData)) return;
+            const column = filter.column.toLowerCase();
+            const rowData = row[column];
+            if (Array.isArray(rowData)) return;
             return row[column]?.toLowerCase().includes(filter.value.toLowerCase()); // Case-insensitive filter
         });
     };
@@ -189,10 +190,10 @@ export class TableDataSourceService {
 
     toggleSelectedAllRows(): void {
         this.#state.update((state) => {
-            const allSelected = state.selectedRows.length === state.dataSource.length;
+            const allSelected = state.selectedRows.length === state.initialDataSource.length;
             return {
                 ...state,
-                selectedRows: allSelected ? [] : [...state.dataSource],
+                selectedRows: allSelected ? [] : [...state.initialDataSource],
             };
         });
     }

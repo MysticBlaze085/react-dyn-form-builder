@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, inject } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
-import { RowData } from './models';
+import { RowData } from '../../../tw-form-ui/models';
 import { TableDataSourceService } from './table-datasource.service';
 import { TwCardComponent } from '../card/tw-card.component';
 import { TwDefaultTableComponent } from './tw-table.component';
@@ -28,6 +28,7 @@ import { TwTableHeaderComponent } from './tw-table-header.component';
                     [headers]="headers"
                     [rows]="rows"
                     [isSelectable]="isSelectable"
+                    [isMultiSelectField]="isMultiSelectField"
                     [isSortable]="isSortable"
                     [isDraggable]="isDraggable"
                     [groupBy]="this.tdss.get('preferences').groupBy ?? ''"
@@ -35,6 +36,7 @@ import { TwTableHeaderComponent } from './tw-table-header.component';
                     [actionButton]="actionButton"
                     [isPaginationAction]="paginationAction"
                     [isActionChange]="isActionChange"
+                    (selectedRowsChange)="selectedRowsChangeHandler($event)"
                 ></tw-default-table>
             </div>
             @if (rows.length > 5) {
@@ -57,6 +59,7 @@ import { TwTableHeaderComponent } from './tw-table-header.component';
 export class TwTableCardComponent {
     tdss = inject(TableDataSourceService);
     @Input() isSelectable = false;
+    @Input() isMultiSelectField = false;
     @Input() isSortable = false;
     @Input() isDraggable = false;
     @Input() isSearchable = false;
@@ -74,6 +77,7 @@ export class TwTableCardComponent {
         icon: string;
     }[] = [];
     @Output() actionKeyPress = new EventEmitter<boolean>();
+    @Output() selectedRowsChange = new EventEmitter<RowData[]>();
 
     paginationAction = false;
     isActionChange = false;
@@ -84,5 +88,9 @@ export class TwTableCardComponent {
 
     actionButtonTriggered() {
         this.paginationAction = !this.paginationAction;
+    }
+
+    selectedRowsChangeHandler(event: RowData[]) {
+        this.selectedRowsChange.emit(event);
     }
 }

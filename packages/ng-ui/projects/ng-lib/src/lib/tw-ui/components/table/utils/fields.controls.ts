@@ -85,7 +85,7 @@ export const preferenceGroupBySelector: (params: string[]) => Field = (params: s
     };
 };
 
-export const cellSelector: (params: string[]) => Field = (params: string[]) => {
+export const cellSelector: (index: string | number, params: string[]) => Field = (index: string | number, params: string[]) => {
     const mapVisibleColumnsOptions: FieldOptions[] = params.map((param) => {
         return {
             id: param,
@@ -94,7 +94,7 @@ export const cellSelector: (params: string[]) => Field = (params: string[]) => {
         };
     });
 
-    const columnSearchColumn: Field = FieldBuilder.createField('custom-select', 'cell', params[0], '', '', {
+    const columnSearchColumn: Field = FieldBuilder.createField('custom-select', 'cell', index, '', '', {
         isMultipleTag: true,
         options: [...mapVisibleColumnsOptions],
     });
