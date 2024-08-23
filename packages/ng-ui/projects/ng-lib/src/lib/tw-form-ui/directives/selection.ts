@@ -11,6 +11,7 @@ export class AdkSelection {
     #items = signal<Record<ID, boolean>>({});
     count = computed(() => Object.values(this.#items()).filter(Boolean).length);
 
+    items = computed(() => Object.keys(this.#items()).filter((id) => this.#items()[id]));
     /**
      * Select multiple items
      * @param ids

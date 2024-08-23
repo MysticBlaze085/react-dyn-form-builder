@@ -1,19 +1,18 @@
-import { Directive, Input, computed, signal } from '@angular/core';
+import { Directive, Input, computed, inject, signal } from '@angular/core';
 import { FilterCriteria, TableDataSourceState } from '../models';
-import { ID, Identifiable } from 'projects/ng-lib/src/lib/tw-form-ui/models';
+import { ID, Identifiable, RowData } from 'projects/ng-lib/src/lib/tw-form-ui/models';
 import { PaginationCriteria, SortCriteria } from '../models/table.interface';
+
+import { AdkSelection } from 'projects/ng-lib/src/lib/tw-form-ui';
 
 @Directive({
     selector: '[adk-table]',
     exportAs: 'adkTable',
     standalone: true,
-    // hostDirectives: [
-    //     AdkList,
-    //     AdkSelection,
-    //     AdkPagination,
-    // ],
+    hostDirectives: [AdkSelection],
 })
 export class AdkTable<T extends Identifiable> {
+    #selection = inject(AdkSelection, { self: true });
     @Input() set initialData(data: T[]) {
         this.setInitialData(data);
     }
@@ -174,23 +173,36 @@ export class AdkTable<T extends Identifiable> {
     }
 
     // Row selection
-    toggleRowSelection(id: ID) {
+    toggleRowSelection(row: RowData) {
+        const rowDataStr = JSON.stringify(row);
+        if (this.#selection.selected(rowDataStr)) this.#selection.deselect(rowDataStr);
+        else this.#selection.select(rowDataStr);
         this.#state.update((state) => ({
             ...state,
-            selectedRows: state.selectedRows.includes(id)
-                ? state.selectedRows.filter((rowId) => rowId !== id)
-                : [...state.selectedRows, id],
+            selectedRows: this.#selection.items().map((item) => JSON.parse(item)),
         }));
     }
 
     toggleAllRowsSelection() {
         this.#state.update((state) => {
             const allSelected = state.selectedRows.length === state.dataSource.length;
+            if (allSelected) this.#selection.clear();
+
             return {
                 ...state,
-                selectedRows: allSelected ? [] : state.dataSource.map((item) => item.id),
+                selectedRows: allSelected
+                    ? []
+                    : state.dataSource.map((item) => {
+                          this.#selection.select(JSON.stringify(item));
+                          return item;
+                      }),
             };
         });
+    }
+
+    selected(row: RowData): boolean {
+        const selectedRowStr = JSON.stringify(row);
+        return this.#selection.selected(selectedRowStr);
     }
 
     // Column visibility
@@ -227,7 +239,8 @@ export class AdkTable<T extends Identifiable> {
 
     private getSelectedRowsData(): T[] {
         const { selectedRows, dataSource } = this.#state();
-        return dataSource.filter((item) => selectedRows.includes(item.id));
+        console.log('selectedRows', selectedRows);
+        return dataSource.filter((item) => selectedRows.includes(item));
     }
 
     private getGroupedData(): { [key: string]: T[] } {

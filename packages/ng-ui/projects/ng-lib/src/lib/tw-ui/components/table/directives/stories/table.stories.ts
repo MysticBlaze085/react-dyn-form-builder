@@ -15,12 +15,12 @@ import { FormsModule } from '@angular/forms';
             <option *ngFor="let col of columns" [value]="col">Filter by {{ col }}</option>
         </select>
         <input [(ngModel)]="filterValue" (input)="applyFilter()" [ngModelOptions]="{ standalone: true }" placeholder="Enter filter value" />
-        <!-- <input
+        <input
             [(ngModel)]="filterValue"
             (input)="adkTable.applyFilter({ column: 'name', value: this.filterValue })"
             [ngModelOptions]="{ standalone: true }"
             placeholder="Filter by name"
-        /> -->
+        />
         <select [(ngModel)]="groupByColumn" (change)="adkTable.setGroupBy(groupByColumn)">
             <option value="">No Grouping</option>
             <option *ngFor="let col of columns" [value]="col">Group by {{ col }}</option>
@@ -58,7 +58,7 @@ import { FormsModule } from '@angular/forms';
                                     <input
                                         type="checkbox"
                                         [checked]="adkTable.selectedRowsData().includes(row)"
-                                        (change)="adkTable.toggleRowSelection(row.id)"
+                                        (change)="adkTable.toggleRowSelection(row)"
                                     />
                                 </td>
                                 <td *ngFor="let col of columns">{{ row[col] }}</td>
@@ -69,11 +69,7 @@ import { FormsModule } from '@angular/forms';
                 <ng-template #flatView>
                     <tr *ngFor="let row of adkTable.currentPageData()">
                         <td>
-                            <input
-                                type="checkbox"
-                                [checked]="adkTable.selectedRowsData().includes(row)"
-                                (change)="adkTable.toggleRowSelection(row.id)"
-                            />
+                            <input type="checkbox" [checked]="adkTable.selected(row)" (change)="adkTable.toggleRowSelection(row)" />
                         </td>
                         <td *ngFor="let col of columns">{{ row[col] }}</td>
                     </tr>
@@ -170,33 +166,33 @@ export default meta;
 type Story = StoryObj<DummyTableComponent>;
 
 const sampleData = [
-    { id: 1, name: 'John Doe', age: 30, department: 'IT' },
-    { id: 2, name: 'Jane Smith', age: 25, department: 'HR' },
-    { id: 3, name: 'Bob Johnson', age: 35, department: 'IT' },
-    { id: 4, name: 'Alice Brown', age: 28, department: 'Finance' },
-    { id: 5, name: 'Charlie Davis', age: 42, department: 'HR' },
-    { id: 6, name: 'Eva Wilson', age: 33, department: 'Finance' },
-    { id: 7, name: 'Frank Miller', age: 39, department: 'IT' },
+    { uid: 1, name: 'John Doe', age: 30, department: 'IT' },
+    { uid: 2, name: 'Jane Smith', age: 25, department: 'HR' },
+    { uid: 3, name: 'Bob Johnson', age: 35, department: 'IT' },
+    { uid: 4, name: 'Alice Brown', age: 28, department: 'Finance' },
+    { uid: 5, name: 'Charlie Davis', age: 42, department: 'HR' },
+    { uid: 6, name: 'Eva Wilson', age: 33, department: 'Finance' },
+    { uid: 7, name: 'Frank Miller', age: 39, department: 'IT' },
 ];
 
 export const Default: Story = {
     args: {
         data: sampleData,
-        columns: ['id', 'name', 'age', 'department'],
+        columns: ['uid', 'name', 'age', 'department'],
     },
 };
 
 export const WithFiltering: Story = {
     args: {
         data: sampleData,
-        columns: ['id', 'name', 'age', 'department'],
+        columns: ['uid', 'name', 'age', 'department'],
     },
 };
 
 export const WithSorting: Story = {
     args: {
         data: sampleData,
-        columns: ['id', 'name', 'age', 'department'],
+        columns: ['uid', 'name', 'age', 'department'],
     },
     play: async ({ canvasElement }) => {
         const canvas = canvasElement.querySelector('app-dummy-table');
@@ -220,14 +216,14 @@ export const WithPagination: Story = {
                 age: 20 + (i % 30),
                 department: ['IT', 'HR', 'Finance'][i % 3],
             })),
-        columns: ['id', 'name', 'age', 'department'],
+        columns: ['uid', 'name', 'age', 'department'],
     },
 };
 
 export const WithSelection: Story = {
     args: {
         data: sampleData,
-        columns: ['id', 'name', 'age', 'department'],
+        columns: ['uid', 'name', 'age', 'department'],
     },
     play: async ({ canvasElement }) => {
         const canvas = canvasElement.querySelector('app-dummy-table');
@@ -244,7 +240,7 @@ export const WithSelection: Story = {
 export const GroupedByDepartment: Story = {
     args: {
         data: sampleData,
-        columns: ['id', 'name', 'age', 'department'],
+        columns: ['uid', 'name', 'age', 'department'],
     },
     play: async ({ canvasElement }) => {
         const canvas = canvasElement.querySelector('app-dummy-table');
@@ -261,6 +257,6 @@ export const GroupedByDepartment: Story = {
 export const EmptyTable: Story = {
     args: {
         data: [],
-        columns: ['id', 'name', 'age', 'department'],
+        columns: ['uid', 'name', 'age', 'department'],
     },
 };
