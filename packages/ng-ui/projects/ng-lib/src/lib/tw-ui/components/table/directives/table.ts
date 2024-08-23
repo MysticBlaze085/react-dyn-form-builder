@@ -116,7 +116,6 @@ export class AdkTable<T extends Identifiable> {
                 currentPage: page,
             },
         }));
-        console.log('next page', this.#state());
     }
 
     setItemsPerPage(pageSize: number | string) {
@@ -132,7 +131,6 @@ export class AdkTable<T extends Identifiable> {
             },
         }));
         this.updatePagination();
-        console.log('set page', this.#state());
     }
 
     // Sorting
@@ -239,7 +237,6 @@ export class AdkTable<T extends Identifiable> {
 
     private getSelectedRowsData(): T[] {
         const { selectedRows, dataSource } = this.#state();
-        console.log('selectedRows', selectedRows);
         return dataSource.filter((item) => selectedRows.includes(item));
     }
 

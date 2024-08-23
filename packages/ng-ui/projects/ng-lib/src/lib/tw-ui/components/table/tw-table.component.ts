@@ -100,8 +100,6 @@ export class TwDefaultTableComponent implements OnChanges, OnDestroy {
         if (changes['groupBy']) this.tdss.setGroupBy(changes['groupBy'].currentValue);
         this.updateGroupData();
         this.sortRows('');
-
-        console.log('formGroup', this.formGroup.value);
     }
 
     ngOnDestroy(): void {

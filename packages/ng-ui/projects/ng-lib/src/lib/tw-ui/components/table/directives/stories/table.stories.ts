@@ -147,7 +147,6 @@ export class DummyTableComponent implements OnInit {
 
     onItemsPerPageChange() {
         this.adkTable.setItemsPerPage(this.itemsPerPage);
-        console.log('itemsPerPage', this.itemsPerPage);
     }
 }
 
