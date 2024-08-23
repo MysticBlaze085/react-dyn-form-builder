@@ -15,12 +15,6 @@ import { FormsModule } from '@angular/forms';
             <option *ngFor="let col of columns" [value]="col">Filter by {{ col }}</option>
         </select>
         <input [(ngModel)]="filterValue" (input)="applyFilter()" [ngModelOptions]="{ standalone: true }" placeholder="Enter filter value" />
-        <input
-            [(ngModel)]="filterValue"
-            (input)="adkTable.applyFilter({ column: 'name', value: this.filterValue })"
-            [ngModelOptions]="{ standalone: true }"
-            placeholder="Filter by name"
-        />
         <select [(ngModel)]="groupByColumn" (change)="adkTable.setGroupBy(groupByColumn)">
             <option value="">No Grouping</option>
             <option *ngFor="let col of columns" [value]="col">Group by {{ col }}</option>
@@ -38,7 +32,7 @@ import { FormsModule } from '@angular/forms';
                     <th
                         *ngFor="let col of columns; let i = index"
                         (click)="adkTable.sortBy(col)"
-                        [attr.draggable]="true"
+                        draggable="true"
                         (dragstart)="adkTable.dragStart(i)"
                         (dragover)="$event.preventDefault()"
                         (drop)="onDragDrop(i)"
