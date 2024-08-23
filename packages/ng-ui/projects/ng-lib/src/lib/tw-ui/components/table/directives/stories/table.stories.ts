@@ -158,7 +158,7 @@ export class DummyTableComponent implements OnInit {
 }
 
 const meta: Meta<DummyTableComponent> = {
-    title: 'Components/AdkTable',
+    title: 'TailwindUI/Components/Directives/AdkTable',
     component: DummyTableComponent,
     decorators: [
         moduleMetadata({

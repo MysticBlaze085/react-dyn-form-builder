@@ -1,6 +1,6 @@
 import { AdkFields } from '../field';
 import { Component } from '@angular/core';
-import { Field } from '../../models';
+import { Field } from '../../tw-form-ui/models';
 import { TestBed } from '@angular/core/testing';
 
 @Component({

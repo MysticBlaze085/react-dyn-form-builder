@@ -1,6 +1,6 @@
 import { AdkList } from '../list';
 import { Component } from '@angular/core';
-import { FieldOptions } from '../../models';
+import { FieldOptions } from '../../tw-form-ui/models';
 import { TestBed } from '@angular/core/testing';
 import { expect } from '@jest/globals';
 

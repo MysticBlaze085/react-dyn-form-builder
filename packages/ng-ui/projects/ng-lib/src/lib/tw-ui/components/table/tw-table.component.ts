@@ -1,4 +1,4 @@
-import { AdkFormGroup, AdkSelection } from '../../../tw-form-ui/directives';
+import { AdkFormGroup, AdkSelection } from '../../../directives';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import {
     ChangeDetectionStrategy,
@@ -17,7 +17,7 @@ import { Field, RowData } from '../../../tw-form-ui';
 import { SortableIconComponent, cellSelector } from './utils';
 
 import { AdkExpansionPanelComponent } from '../expansion-panel.component';
-import { AdkTooltipDirective } from '../../../tw-form-ui/directives/tooltip';
+import { AdkTooltipDirective } from '../../../directives/tooltip';
 import { CheckboxComponent } from '../../../tw-form-ui/components/types/checkbox.component';
 import { FieldComponent } from '../../../tw-form-ui/components/field.component';
 import { ImperativeObservable } from '../../../utils';

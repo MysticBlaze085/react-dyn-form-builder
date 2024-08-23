@@ -1,4 +1,4 @@
-import { Field, FieldBuilder } from '../../models';
+import { Field, FieldBuilder } from '../../tw-form-ui/models';
 
 import { AdkFieldList } from '../field-list';
 import { Component } from '@angular/core';

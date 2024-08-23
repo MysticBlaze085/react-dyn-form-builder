@@ -1,5 +1,5 @@
 import { Directive, computed, inject } from '@angular/core';
-import { ID, Identifiable } from '../models';
+import { ID, Identifiable } from '../tw-form-ui/models';
 import { Observable, map } from 'rxjs';
 
 import { AdkList } from './list';

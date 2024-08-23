@@ -1,6 +1,6 @@
 import { Directive, computed, signal } from '@angular/core';
 
-import { ID } from '../models';
+import { ID } from '../tw-form-ui/models';
 
 @Directive({
     selector: '[adk-selection]',

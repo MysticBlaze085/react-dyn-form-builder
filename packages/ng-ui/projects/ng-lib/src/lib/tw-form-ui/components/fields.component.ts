@@ -2,8 +2,8 @@
 
 import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 
-import { AdkFieldList } from '../directives';
-import { AdkFormGroup } from '../directives/form-group';
+import { AdkFieldList } from '../../directives';
+import { AdkFormGroup } from '../../directives/form-group';
 import { CommonModule } from '@angular/common';
 import { Field } from '../models';
 import { FieldComponent } from './field.component';

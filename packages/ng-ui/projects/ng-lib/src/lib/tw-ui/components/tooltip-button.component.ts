@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { AdkTooltipDirective } from '../../tw-form-ui/directives/tooltip';
+import { AdkTooltipDirective } from '../../directives/tooltip';
 import { CommonModule } from '@angular/common';
 
 @Component({

@@ -1,6 +1,6 @@
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { Directive, WritableSignal, signal } from '@angular/core';
-import { Field, FieldOptions } from '../models';
+import { Field, FieldOptions } from '../tw-form-ui/models';
 
 @Directive({
     selector: '[adk-form-group]',
