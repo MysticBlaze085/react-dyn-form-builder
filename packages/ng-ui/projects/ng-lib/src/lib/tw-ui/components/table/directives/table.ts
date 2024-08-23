@@ -31,6 +31,7 @@ export class AdkTable<T extends Identifiable> {
 
     #state = signal<TableDataSourceState>({
         dataSource: [],
+        draggedColIndex: null,
         filteredData: [],
         headers: [],
         paginationCriteria: {
@@ -48,6 +49,7 @@ export class AdkTable<T extends Identifiable> {
     });
 
     // Computed signals for derived state
+    readonly headers = computed(() => this.#state().headers);
     readonly visibleData = computed(() => this.getVisibleData());
     readonly filteredData = computed(() => this.getFilterCriteriaData());
     readonly currentPageData = computed(() => this.getCurrentPageData());
@@ -93,6 +95,50 @@ export class AdkTable<T extends Identifiable> {
                 groupBy: column,
             },
         }));
+    }
+
+    // Drag and Drop
+    dragStart(index: number): void {
+        console.log('dragStart', index, this.#state());
+        this.#state.update((state) => ({ ...state, draggedColIndex: index }));
+    }
+
+    dragDrop(index: number): void {
+        console.log('dragDrop', index);
+        const targetIndex = index;
+        const { draggedColIndex, dataSource, headers } = this.#state();
+        // Reset selected rows if dragging a column
+        this.#selection.clear();
+        console.log('dragDrop', this.#state(), 'start', draggedColIndex, targetIndex);
+
+        if (draggedColIndex === null || draggedColIndex === targetIndex) return;
+
+        // Update headers array with dragged column
+        const newHeaders = [...headers];
+        const draggedHeader = newHeaders.splice(draggedColIndex, 1)[0];
+        newHeaders.splice(targetIndex, 0, draggedHeader);
+
+        // Update rows in dataSource array with dragged column
+        const newRows = dataSource.map((row: any) => {
+            const entries = Object.entries(row);
+            const draggedEntry = entries.splice(draggedColIndex, 1)[0];
+            console.log('dragDropEntry', draggedEntry);
+            entries.splice(targetIndex, 0, draggedEntry);
+            return Object.fromEntries(entries);
+        });
+
+        // Update state with new headers, rows, and reset draggedColIndex
+        this.#state.update((state) => ({
+            ...state,
+            headers: newHeaders,
+            dataSource: newRows,
+            filteredData: newRows,
+            selectedRows: [],
+            draggedColIndex: null,
+        }));
+
+        // Update other necessary parts of the state
+        this.updatePagination();
     }
 
     // Pagination

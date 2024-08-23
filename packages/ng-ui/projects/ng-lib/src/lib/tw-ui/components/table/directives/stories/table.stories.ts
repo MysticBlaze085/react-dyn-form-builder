@@ -35,7 +35,14 @@ import { FormsModule } from '@angular/forms';
                             (change)="adkTable.toggleAllRowsSelection()"
                         />
                     </th>
-                    <th *ngFor="let col of columns" (click)="adkTable.sortBy(col)">
+                    <th
+                        *ngFor="let col of columns; let i = index"
+                        (click)="adkTable.sortBy(col)"
+                        [attr.draggable]="true"
+                        (dragstart)="adkTable.dragStart(i)"
+                        (dragover)="$event.preventDefault()"
+                        (drop)="onDragDrop(i)"
+                    >
                         {{ col }}
                         <span *ngIf="adkTable.sortCriteriaData().key === col">
                             {{ adkTable.sortCriteriaData().direction === 'ascending' ? '▲' : '▼' }}
@@ -119,6 +126,7 @@ export class DummyTableComponent implements OnInit {
         this.adkTable.initialData = value;
     }
     @Input() columns: string[] = [];
+
     groupByColumn: string = '';
     expandedGroups: { [key: string]: boolean } = {};
     itemsPerPage: number = 10;
@@ -147,6 +155,11 @@ export class DummyTableComponent implements OnInit {
 
     onItemsPerPageChange() {
         this.adkTable.setItemsPerPage(this.itemsPerPage);
+    }
+
+    onDragDrop(index: number) {
+        this.adkTable.dragDrop(index);
+        this.columns = this.adkTable.headers();
     }
 }
 
@@ -248,6 +261,32 @@ export const GroupedByDepartment: Story = {
             if (select) {
                 select.value = 'department';
                 select.dispatchEvent(new Event('change'));
+            }
+        }
+    },
+};
+
+export const WithDragAndDrop: Story = {
+    args: {
+        data: sampleData,
+        columns: ['uid', 'name', 'age', 'department'],
+    },
+    play: async ({ canvasElement }) => {
+        const canvas = canvasElement.querySelector('app-dummy-table');
+        if (canvas) {
+            const headers = canvas.querySelectorAll('th');
+            if (headers.length > 2) {
+                const dragEvent = new DragEvent('dragstart', {
+                    bubbles: true,
+                    cancelable: true,
+                });
+                headers[1].dispatchEvent(dragEvent);
+
+                const dropEvent = new DragEvent('drop', {
+                    bubbles: true,
+                    cancelable: true,
+                });
+                headers[3].dispatchEvent(dropEvent);
             }
         }
     },

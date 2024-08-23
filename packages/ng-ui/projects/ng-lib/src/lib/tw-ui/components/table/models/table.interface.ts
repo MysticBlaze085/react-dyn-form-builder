@@ -21,6 +21,7 @@ export interface TableState {
 
 export interface TableDataSourceState {
     dataSource: any[];
+    draggedColIndex: number | null;
     filteredData: any[];
     headers: string[];
     paginationCriteria: PaginationCriteria;
