@@ -1,0 +1,170 @@
+<table *ngIf="adkTable" aria-hidden="true" class="w-full text-left table-auto min-w-max">
+  <thead>
+    <ng-container *ngTemplateOutlet="
+                renderThead;
+                context: {
+                    groupData: adkTable.groupedData(),
+                    columns: adkTable?.headers(),
+                    isSelectable,
+                    sortDataSource: adkTable.currentPageData()
+                }
+            ">
+    </ng-container>
+  </thead>
+  <tbody>
+    <ng-container *ngIf="groupByColumn; else flatView">
+      @for(groupData of adkTable.groupedData(); track $index) {
+      <ng-container *ngTemplateOutlet="
+                    groupByRender;
+                    context: { groupData, columns: adkTable?.headers(), isSelectable, groupKey: groupData[0][groupByColumn] }
+                "></ng-container>
+      }
+    </ng-container>
+    <ng-template #flatView>
+      @for(rowData of adkTable.visibleData(); track $index) {
+      <ng-container
+        *ngTemplateOutlet="renderRow; context: { columns: adkTable?.headers(), rowData, rowIndex: $index, isSelectable }"></ng-container>
+      }
+    </ng-template>
+    <!-- @for(groupKey of objectKeysGroupData(groupData); track $index){
+      @if(groupBy && groupKey !== '') {
+      <ng-container
+        *ngTemplateOutlet="groupByRender; context: { groupData, headers, isSelectable, groupKey, adkTable }"></ng-container>
+      } @else {
+      @for(rowData of groupData[groupKey]; track $index) {
+      <ng-container
+        *ngTemplateOutlet="renderRow; context: { headers, rowData, rowIndex: $index, isSelectable, adkTable }"></ng-container>
+      }
+      }
+      } -->
+  </tbody>
+</table>
+
+<!-- Render Table Header -->
+<ng-template #renderThead let-groupData="groupData" let-columns="columns" let-isSelectable="isSelectable"
+  let-sortDataSource="sortDataSource">
+  <tr>
+    @if(isSelectable) {
+    <th id="checkAll" class="border-b border-blue-gray-100 bg-blue-gray-50 p-1 max-w-[10px]">
+      <ng-container
+        *ngTemplateOutlet="checkbox; context: { adkTable, groupData, rowData: undefined, isCheckAll: true }"></ng-container>
+    </th>
+    } @for(col of columns; track $index) {
+    <th [id]="col" class="border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer" [attr.key]="col"
+      [ngClass]="{ 'border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer': true }"
+      [attr.draggable]="isDraggable" (dragstart)="adkTable.dragStart($index)" (dragover)="adkTable.dragOver($event)"
+      (drop)="adkTable.dragDrop($index, $event)" scope="col">
+      <tw-typography [variant]="'small'"
+        [classStyle]="'flex items-center justify-between gap-2 font-normal leading-none opacity-70'">
+        {{ col ?? ' ' | uppercase }}
+        <div class="flex flex-row gap-2">
+          @if($index !== columns.length && isSortable) {
+          <tw-sortable-icon (click)="sortRows(col)" (keydown)="sortRows(col)"></tw-sortable-icon>
+          } @if(adkTable?.sortCriteriaData().key === col) {
+          <span>{{ sortDataSource.direction === 'ascending' ? '🔼' : '🔽' }}</span>
+          }
+        </div>
+      </tw-typography>
+    </th>
+    }
+  </tr>
+</ng-template>
+
+<!-- Group By Render -->
+<ng-template #groupByRender let-groupData="groupData" let-columns="columns" let-isSelectable="isSelectable"
+  let-groupKey="groupKey">
+  <tr>
+    <td [colSpan]="columns.length + (isSelectable ? 1 : 0) + (actionButton ? 1 : 0)">
+      <adk-expansion-panel>
+        <ng-template #expansionPanelHeader>
+          {{ groupKey }}
+        </ng-template>
+        <ng-template #expansionPanelBody>
+          <table aria-hidden="true" class="w-full min-w-max table-auto text-left">
+            <tbody>
+              @for(rowData of groupData[groupKey]; track $index) {
+              <ng-container
+                *ngTemplateOutlet="renderRow; context: { columns, rowData, rowIndex: $index, isSelectable, adkTable }">
+              </ng-container>
+              }
+            </tbody>
+          </table>
+        </ng-template>
+      </adk-expansion-panel>
+    </td>
+  </tr>
+</ng-template>
+
+<!-- Render Row Table Cells -->
+<ng-template #renderRow let-columns="columns" let-rowData="rowData" let-rowIndex="rowIndex"
+  let-isSelectable="isSelectable">
+  <tr [ngClass]="isRowFocused(rowData) ? 'bg-light-blue-50' : ''" (click)="rowFocus.value = rowData">
+    @if(isSelectable) {
+    <td [ngClass]="isSelectable ? 'p-1' : 'p-4'" class="border-b border-blue-gray-50 p-1 max-h-[38px] max-w-[15px]">
+      <ng-container
+        *ngTemplateOutlet="checkbox; context: { adkTable, groupData: undefined, rowData, isCheckAll: false }"></ng-container>
+    </td>
+    } @for (col of columns; track $index) {
+    <td [ngClass]="isSelectable ? 'p-1' : 'p-2'"
+      class="border-b border-blue-gray-50 min-h-[48.5px] min-w-[60px] max-w-[60px] truncate">
+      <div [adkTooltip]="rowData[col]" tooltipPlacement="bottom" [ngStyle]="{ cursor: 'text' }">
+        @if(isCellValArray(rowData[col])) { @if(isSelectable && isMultiSelectField){
+        <adk-field *ngIf="adkTable.selected(rowData) && (cellMultiSelector(rowIndex, rowData[col]) | async) as field"
+          [field]="field"></adk-field>
+        } @else {
+        <tw-typography [variant]="'small'" class="font-normal ml-2">
+          {{ rowData[col].join(', ') }}
+        </tw-typography>
+        } } @else { @if (isCellFieldObject(rowData[col])) {
+        <adk-field [field]="rowData[col]"></adk-field>
+        } @else {
+        <tw-typography [variant]="'small'" class="font-normal ml-2">
+          {{ rowData[col] }}
+        </tw-typography>
+        } }
+      </div>
+    </td>
+    }
+  </tr>
+</ng-template>
+
+<!-- Checkbox Render -->
+<ng-template #checkbox let-isCheckAll="isCheckAll" let-groupData="groupData" let-rowData="rowData">
+  @if(isCheckAll) {
+  <div class="inline-flex items-center">
+    <label for="selectAllCheckbox" class="relative flex items-center p-3 rounded-full cursor-pointer">
+      <input type="checkbox"
+        class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10 w-4 h-4"
+        id="selectAllCheckbox" name="selectAllCheckbox"
+        [checked]="adkTable.selectedRowsData().length === adkTable.visibleData().length"
+        (change)="adkTable.toggleAllRowsSelection()" />
+      <span
+        class="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"
+          stroke="currentColor" stroke-width="1">
+          <path fill-rule="evenodd"
+            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+            clip-rule="evenodd"></path>
+        </svg>
+      </span>
+    </label>
+  </div>
+  } @else {
+  <div class="inline-flex items-center">
+    <label class="relative flex items-center p-3 rounded-full cursor-pointer" for="checkbox">
+      <input type="checkbox"
+        class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10 w-4 h-4"
+        [checked]="isSelected(rowData)" (change)="adkTable.toggleRowSelection(rowData)" />
+      <span
+        class="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"
+          stroke="currentColor" stroke-width="1">
+          <path fill-rule="evenodd"
+            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+            clip-rule="evenodd"></path>
+        </svg>
+      </span>
+    </label>
+  </div>
+  }
+</ng-template>

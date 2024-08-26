@@ -1,7 +1,6 @@
 import { AdkFormGroup, FieldsComponent } from '../../../tw-form-ui';
 import { AfterViewInit, Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { SettingsIconComponent, preferenceColumnSelector, preferenceGroupBySelector, preferenceVisibilitySelector } from './utils';
-import { distinct, distinctUntilChanged } from 'rxjs';
 
 import { ButtonComponent } from '../button.component';
 import { CommonModule } from '@angular/common';
@@ -12,6 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TableDataSourceService } from './table-datasource.service';
 import { TwCardComponent } from '../card/tw-card.component';
 import { TwTypographyComponent } from '../typography.component';
+import { distinctUntilChanged } from 'rxjs';
 
 @Component({
     selector: 'tw-table-settings-dialog',

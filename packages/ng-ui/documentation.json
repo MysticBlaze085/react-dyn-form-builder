@@ -4403,12 +4403,12 @@
         },
         {
             "name": "AdkTable",
-            "id": "directive-AdkTable-45fa70b54ab50210ad158cacc8ee28490028b15026b07ad12c3ac36be130c6b6722db0075155ad12f5d40cfd64d9244b0a0f13645f4f66303aee8976977fb1e0",
+            "id": "directive-AdkTable-75716620aa29251ef2e4d9972c54d06e4cf5576c74cf80f520ae3bed612bb36055d8fc64b1dc6f92a864ec61040978c48af0f3372a3ad2e619407d97405049a7",
             "file": "projects/ng-lib/src/lib/tw-ui/components/table/directives/table.ts",
             "type": "directive",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { Directive, Input, computed, inject, signal } from '@angular/core';\nimport { FilterCriteria, TableDataSourceState } from '../models';\nimport { ID, Identifiable, RowData } from 'projects/ng-lib/src/lib/tw-form-ui/models';\nimport { PaginationCriteria, SortCriteria } from '../models/table.interface';\n\nimport { AdkSelection } from 'projects/ng-lib/src/lib/tw-form-ui';\n\n@Directive({\n    selector: '[adk-table]',\n    exportAs: 'adkTable',\n    standalone: true,\n    hostDirectives: [AdkSelection],\n})\nexport class AdkTable<T extends Identifiable> {\n    #selection = inject(AdkSelection, { self: true });\n    @Input() set initialData(data: T[]) {\n        this.setInitialData(data);\n    }\n\n    @Input() set columns(cols: string[]) {\n        this.setColumns(cols);\n    }\n\n    @Input() set groupBy(column: string | undefined) {\n        this.setGroupBy(column);\n    }\n\n    @Input() set filterBy(criteria: FilterCriteria) {\n        this.applyFilter(criteria);\n    }\n\n    #state = signal<TableDataSourceState>({\n        dataSource: [],\n        draggedColIndex: null,\n        filteredData: [],\n        headers: [],\n        paginationCriteria: {\n            currentPage: 1,\n            totalPages: 1,\n            pageSize: 10,\n        },\n        preferenceCriteria: {\n            visibleColumns: [],\n            groupBy: undefined,\n        },\n        selectedRows: [],\n        sortCriteria: { key: '', direction: 'ascending' },\n        filterCriteria: { column: '', value: '' },\n    });\n\n    // Computed signals for derived state\n    readonly headers = computed(() => this.#state().headers);\n    readonly visibleData = computed(() => this.getVisibleData());\n    readonly filteredData = computed(() => this.getFilterCriteriaData());\n    readonly currentPageData = computed(() => this.getCurrentPageData());\n    readonly selectedRowsData = computed(() => this.getSelectedRowsData());\n    readonly groupedData = computed(() => this.getGroupedData());\n    readonly sortCriteriaData = computed(() => this.getSortCriteriaData());\n    readonly paginationCriteria = computed(() => this.getPaginationCriteria());\n\n    setInitialData(data: Partial<T>[]) {\n        this.#state.update((state) => ({\n            ...state,\n            dataSource: data,\n            filteredData: data,\n            headers: data.length > 0 ? Object.keys(data[0]) : [],\n            preferenceCriteria: {\n                ...state.preferenceCriteria,\n                visibleColumns: data.length > 0 ? Object.keys(data[0]) : [],\n            },\n            paginationCriteria: {\n                ...state.paginationCriteria,\n                totalPages: Math.ceil(data.length / state.paginationCriteria.pageSize),\n            },\n        }));\n        this.updatePagination();\n    }\n\n    private setColumns(columns: string[]) {\n        this.#state.update((state) => ({\n            ...state,\n            headers: columns,\n            preferenceCriteria: {\n                ...state.preferenceCriteria,\n                visibleColumns: columns,\n            },\n        }));\n    }\n\n    setGroupBy(column: string | undefined) {\n        this.#state.update((state) => ({\n            ...state,\n            preferenceCriteria: {\n                ...state.preferenceCriteria,\n                groupBy: column,\n            },\n        }));\n    }\n\n    // Drag and Drop\n    dragStart(index: number): void {\n        console.log('dragStart', index, this.#state());\n        this.#state.update((state) => ({ ...state, draggedColIndex: index }));\n    }\n\n    dragDrop(index: number): void {\n        console.log('dragDrop', index);\n        const targetIndex = index;\n        const { draggedColIndex, dataSource, headers } = this.#state();\n        // Reset selected rows if dragging a column\n        this.#selection.clear();\n        console.log('dragDrop', this.#state(), 'start', draggedColIndex, targetIndex);\n\n        if (draggedColIndex === null || draggedColIndex === targetIndex) return;\n\n        // Update headers array with dragged column\n        const newHeaders = [...headers];\n        const draggedHeader = newHeaders.splice(draggedColIndex, 1)[0];\n        newHeaders.splice(targetIndex, 0, draggedHeader);\n\n        // Update rows in dataSource array with dragged column\n        const newRows = dataSource.map((row: any) => {\n            const entries = Object.entries(row);\n            const draggedEntry = entries.splice(draggedColIndex, 1)[0];\n            console.log('dragDropEntry', draggedEntry);\n            entries.splice(targetIndex, 0, draggedEntry);\n            return Object.fromEntries(entries);\n        });\n\n        // Update state with new headers, rows, and reset draggedColIndex\n        this.#state.update((state) => ({\n            ...state,\n            headers: newHeaders,\n            dataSource: newRows,\n            filteredData: newRows,\n            selectedRows: [],\n            draggedColIndex: null,\n        }));\n\n        // Update other necessary parts of the state\n        this.updatePagination();\n    }\n\n    // Pagination\n    private updatePagination() {\n        const { dataSource, paginationCriteria } = this.#state();\n        const totalPages = Math.ceil(dataSource.length / paginationCriteria.pageSize);\n        this.#state.update((state) => ({\n            ...state,\n            paginationCriteria: {\n                ...state.paginationCriteria,\n                totalPages,\n            },\n        }));\n    }\n\n    setPage(page: number) {\n        this.#state.update((state) => ({\n            ...state,\n            paginationCriteria: {\n                ...state.paginationCriteria,\n                currentPage: page,\n            },\n        }));\n    }\n\n    setItemsPerPage(pageSize: number | string) {\n        const pageSizeNum = Number(pageSize);\n\n        this.#state.update((state) => ({\n            ...state,\n            paginationCriteria: {\n                ...state.paginationCriteria,\n                pageSize: pageSizeNum,\n                currentPage: 1,\n                totalPages: Math.ceil(state.filteredData.length / pageSizeNum),\n            },\n        }));\n        this.updatePagination();\n    }\n\n    // Sorting\n    sortBy(key: string) {\n        this.#state.update((state) => ({\n            ...state,\n            sortCriteria: {\n                key,\n                direction: state.sortCriteria.key === key && state.sortCriteria.direction === 'ascending' ? 'descending' : 'ascending',\n            },\n        }));\n        this.applySort();\n    }\n\n    private applySort() {\n        const { sortCriteria, filteredData } = this.#state();\n        const sortedData = [...filteredData].sort((a, b) => {\n            if (a[sortCriteria.key] < b[sortCriteria.key]) return sortCriteria.direction === 'ascending' ? -1 : 1;\n            if (a[sortCriteria.key] > b[sortCriteria.key]) return sortCriteria.direction === 'ascending' ? 1 : -1;\n            return 0;\n        });\n        this.#state.update((state) => ({ ...state, filteredData: sortedData }));\n    }\n\n    // Filtering\n    applyFilter(criteria: FilterCriteria) {\n        this.#state.update((state) => ({ ...state, filterCriteria: criteria }));\n        this.updateFilteredData();\n    }\n\n    private updateFilteredData() {\n        const { dataSource, filterCriteria } = this.#state();\n        const filteredData = dataSource.filter((item) =>\n            String(item[filterCriteria.column]).toLowerCase().includes(filterCriteria.value.toLowerCase())\n        );\n        this.#state.update((state) => ({ ...state, filteredData }));\n        this.updatePagination();\n    }\n\n    // Row selection\n    toggleRowSelection(row: RowData) {\n        const rowDataStr = JSON.stringify(row);\n        if (this.#selection.selected(rowDataStr)) this.#selection.deselect(rowDataStr);\n        else this.#selection.select(rowDataStr);\n        this.#state.update((state) => ({\n            ...state,\n            selectedRows: this.#selection.items().map((item) => JSON.parse(item)),\n        }));\n    }\n\n    toggleAllRowsSelection() {\n        this.#state.update((state) => {\n            const allSelected = state.selectedRows.length === state.dataSource.length;\n            if (allSelected) this.#selection.clear();\n\n            return {\n                ...state,\n                selectedRows: allSelected\n                    ? []\n                    : state.dataSource.map((item) => {\n                          this.#selection.select(JSON.stringify(item));\n                          return item;\n                      }),\n            };\n        });\n    }\n\n    selected(row: RowData): boolean {\n        const selectedRowStr = JSON.stringify(row);\n        return this.#selection.selected(selectedRowStr);\n    }\n\n    // Column visibility\n    toggleColumnVisibility(column: string) {\n        this.#state.update((state) => ({\n            ...state,\n            preferenceCriteria: {\n                ...state.preferenceCriteria,\n                visibleColumns: state.preferenceCriteria.visibleColumns.includes(column)\n                    ? state.preferenceCriteria.visibleColumns.filter((col) => col !== column)\n                    : [...state.preferenceCriteria.visibleColumns, column],\n            },\n        }));\n    }\n\n    // Helper methods for computed signals\n    private getVisibleData(): T[] {\n        const { filteredData, preferenceCriteria } = this.#state();\n        return filteredData.map((item) => {\n            const visibleItem = {} as T;\n            preferenceCriteria.visibleColumns.forEach((col) => {\n                //@ts-ignore\n                visibleItem[col] = item[col];\n            });\n            return visibleItem;\n        });\n    }\n\n    private getCurrentPageData(): T[] {\n        const { paginationCriteria } = this.#state();\n        const startIndex = (paginationCriteria.currentPage - 1) * paginationCriteria.pageSize;\n        return this.visibleData().slice(startIndex, startIndex + paginationCriteria.pageSize);\n    }\n\n    private getSelectedRowsData(): T[] {\n        const { selectedRows, dataSource } = this.#state();\n        return dataSource.filter((item) => selectedRows.includes(item));\n    }\n\n    private getGroupedData(): { [key: string]: T[] } {\n        const { filteredData, preferenceCriteria } = this.#state();\n        if (!preferenceCriteria.groupBy) {\n            return { All: filteredData };\n        }\n        return filteredData.reduce((groups, item) => {\n            const key = item[preferenceCriteria.groupBy as keyof T] as string;\n            if (!groups[key]) {\n                groups[key] = [];\n            }\n            groups[key].push(item);\n            return groups;\n        }, {} as { [key: string]: T[] });\n    }\n\n    private getSortCriteriaData(): SortCriteria {\n        const { sortCriteria } = this.#state();\n        return sortCriteria;\n    }\n\n    private getPaginationCriteria(): PaginationCriteria {\n        const { paginationCriteria } = this.#state();\n        return paginationCriteria;\n    }\n\n    private getFilterCriteriaData(): FilterCriteria {\n        const { filterCriteria } = this.#state();\n        return filterCriteria;\n    }\n\n    // Reset to initial state\n    resetToInitialState() {\n        this.#state.update((state) => ({\n            ...state,\n            filteredData: state.dataSource,\n            paginationCriteria: {\n                currentPage: 1,\n                totalPages: Math.ceil(state.dataSource.length / state.paginationCriteria.pageSize),\n                pageSize: state.paginationCriteria.pageSize,\n            },\n            selectedRows: [],\n            sortCriteria: { key: '', direction: 'ascending' },\n            filterCriteria: { column: '', value: '' },\n            preferenceCriteria: {\n                ...state.preferenceCriteria,\n                groupBy: undefined,\n            },\n        }));\n    }\n}\n",
+            "sourceCode": "import { Directive, Input, computed, inject, signal } from '@angular/core';\nimport { FilterCriteria, TableDataSourceState } from '../models';\nimport { Identifiable, RowData } from 'projects/ng-lib/src/lib/tw-form-ui/models';\nimport { PaginationCriteria, SortCriteria } from '../models/table.interface';\n\nimport { AdkSelection } from 'projects/ng-lib/src/lib/tw-form-ui';\n\n@Directive({\n    selector: '[adk-table]',\n    exportAs: 'adkTable',\n    standalone: true,\n    hostDirectives: [AdkSelection],\n})\nexport class AdkTable<T extends Identifiable> {\n    #selection = inject(AdkSelection, { self: true });\n    @Input() set initialData(data: T[]) {\n        this.setInitialData(data);\n    }\n\n    @Input() set columns(cols: string[]) {\n        this.setColumns(cols);\n    }\n\n    @Input() set groupBy(column: string | undefined) {\n        this.setGroupBy(column);\n    }\n\n    @Input() set filterBy(criteria: FilterCriteria) {\n        this.applyFilter(criteria);\n    }\n\n    #state = signal<TableDataSourceState>({\n        dataSource: [],\n        draggedColIndex: null,\n        filteredData: [],\n        headers: [],\n        paginationCriteria: {\n            currentPage: 1,\n            totalPages: 1,\n            pageSize: 10,\n        },\n        preferenceCriteria: {\n            visibleColumns: [],\n            groupBy: undefined,\n        },\n        selectedRows: [],\n        sortCriteria: { key: '', direction: 'ascending' },\n        filterCriteria: { column: '', value: '' },\n    });\n\n    // Computed signals for derived state\n    readonly state = computed(() => this.#state());\n    readonly headers = computed(() => this.#state().headers);\n    readonly visibleData = computed(() => this.getVisibleData());\n    readonly filteredData = computed(() => this.getFilterCriteriaData());\n    readonly currentPageData = computed(() => this.getCurrentPageData());\n    readonly selectedRowsData = computed(() => this.getSelectedRowsData());\n    readonly groupedData = computed(() => this.getGroupedData());\n    readonly sortCriteriaData = computed(() => this.getSortCriteriaData());\n    readonly paginationCriteria = computed(() => this.getPaginationCriteria());\n\n    setInitialData(data: Partial<T>[]) {\n        this.#state.update((state) => ({\n            ...state,\n            dataSource: data,\n            filteredData: data,\n            headers: data.length > 0 ? Object.keys(data[0]) : [],\n            preferenceCriteria: {\n                ...state.preferenceCriteria,\n                visibleColumns: data.length > 0 ? Object.keys(data[0]) : [],\n            },\n            paginationCriteria: {\n                ...state.paginationCriteria,\n                totalPages: Math.ceil(data.length / state.paginationCriteria.pageSize),\n            },\n        }));\n        this.updatePagination();\n    }\n\n    private setColumns(columns: string[]) {\n        this.#state.update((state) => ({\n            ...state,\n            headers: columns,\n            preferenceCriteria: {\n                ...state.preferenceCriteria,\n                visibleColumns: columns,\n            },\n        }));\n    }\n\n    setGroupBy(column: string | undefined) {\n        this.#state.update((state) => ({\n            ...state,\n            preferenceCriteria: {\n                ...state.preferenceCriteria,\n                groupBy: column,\n            },\n        }));\n    }\n\n    // Drag and Drop\n    dragStart(index: number): void {\n        console.log('dragStart', index, this.#state());\n        this.#state.update((state) => ({ ...state, draggedColIndex: index }));\n    }\n\n    dragDrop(index: number): void {\n        console.log('dragDrop', index);\n        const targetIndex = index;\n        const { draggedColIndex, dataSource, headers } = this.#state();\n        // Reset selected rows if dragging a column\n        this.#selection.clear();\n        console.log('dragDrop', this.#state(), 'start', draggedColIndex, targetIndex);\n\n        if (draggedColIndex === null || draggedColIndex === targetIndex) return;\n\n        // Update headers array with dragged column\n        const newHeaders = [...headers];\n        const draggedHeader = newHeaders.splice(draggedColIndex, 1)[0];\n        newHeaders.splice(targetIndex, 0, draggedHeader);\n\n        // Update rows in dataSource array with dragged column\n        const newRows = dataSource.map((row: any) => {\n            const entries = Object.entries(row);\n            const draggedEntry = entries.splice(draggedColIndex, 1)[0];\n            console.log('dragDropEntry', draggedEntry);\n            entries.splice(targetIndex, 0, draggedEntry);\n            return Object.fromEntries(entries);\n        });\n\n        // Update state with new headers, rows, and reset draggedColIndex\n        this.#state.update((state) => ({\n            ...state,\n            headers: newHeaders,\n            dataSource: newRows,\n            filteredData: newRows,\n            selectedRows: [],\n            draggedColIndex: null,\n        }));\n\n        // Update other necessary parts of the state\n        this.updatePagination();\n    }\n\n    // Pagination\n    private updatePagination() {\n        const { dataSource, paginationCriteria } = this.#state();\n        const totalPages = Math.ceil(dataSource.length / paginationCriteria.pageSize);\n        this.#state.update((state) => ({\n            ...state,\n            paginationCriteria: {\n                ...state.paginationCriteria,\n                totalPages,\n            },\n        }));\n    }\n\n    setPage(page: number) {\n        this.#state.update((state) => ({\n            ...state,\n            paginationCriteria: {\n                ...state.paginationCriteria,\n                currentPage: page,\n            },\n        }));\n    }\n\n    setItemsPerPage(pageSize: number | string) {\n        const pageSizeNum = Number(pageSize);\n\n        this.#state.update((state) => ({\n            ...state,\n            paginationCriteria: {\n                ...state.paginationCriteria,\n                pageSize: pageSizeNum,\n                currentPage: 1,\n                totalPages: Math.ceil(state.filteredData.length / pageSizeNum),\n            },\n        }));\n        this.updatePagination();\n    }\n\n    // Sorting\n    sortBy(key: string) {\n        this.#state.update((state) => ({\n            ...state,\n            sortCriteria: {\n                key,\n                direction: state.sortCriteria.key === key && state.sortCriteria.direction === 'ascending' ? 'descending' : 'ascending',\n            },\n        }));\n        this.applySort();\n    }\n\n    private applySort() {\n        const { sortCriteria, filteredData } = this.#state();\n        const sortedData = [...filteredData].sort((a, b) => {\n            if (a[sortCriteria.key] < b[sortCriteria.key]) return sortCriteria.direction === 'ascending' ? -1 : 1;\n            if (a[sortCriteria.key] > b[sortCriteria.key]) return sortCriteria.direction === 'ascending' ? 1 : -1;\n            return 0;\n        });\n        this.#state.update((state) => ({ ...state, filteredData: sortedData }));\n    }\n\n    // Filtering\n    applyFilter(criteria: FilterCriteria) {\n        this.#state.update((state) => ({ ...state, filterCriteria: criteria }));\n        this.updateFilteredData();\n    }\n\n    private updateFilteredData() {\n        const { dataSource, filterCriteria } = this.#state();\n        const filteredData = dataSource.filter((item) =>\n            String(item[filterCriteria.column]).toLowerCase().includes(filterCriteria.value.toLowerCase())\n        );\n        this.#state.update((state) => ({ ...state, filteredData }));\n        this.updatePagination();\n    }\n\n    // Row selection\n    toggleRowSelection(row: RowData) {\n        const rowDataStr = JSON.stringify(row);\n        if (this.#selection.selected(rowDataStr)) this.#selection.deselect(rowDataStr);\n        else this.#selection.select(rowDataStr);\n        this.#state.update((state) => ({\n            ...state,\n            selectedRows: this.#selection.items(),\n        }));\n    }\n\n    toggleAllRowsSelection() {\n        this.#state.update((state) => {\n            const allSelected = state.selectedRows.length === state.dataSource.length;\n            if (allSelected) this.#selection.clear();\n\n            return {\n                ...state,\n                selectedRows: allSelected\n                    ? []\n                    : state.dataSource.map((item) => {\n                          const itemStr = JSON.stringify(item);\n                          this.#selection.select(itemStr);\n                          return item;\n                      }),\n            };\n        });\n\n        console.log('selectedRows', this.selectedRowsData());\n    }\n\n    selected(row: RowData): boolean {\n        const selectedRowStr = JSON.stringify(row);\n        return this.#selection.selected(selectedRowStr);\n    }\n\n    // Column visibility\n    toggleColumnVisibility(column: string) {\n        this.#state.update((state) => ({\n            ...state,\n            preferenceCriteria: {\n                ...state.preferenceCriteria,\n                visibleColumns: state.preferenceCriteria.visibleColumns.includes(column)\n                    ? state.preferenceCriteria.visibleColumns.filter((col) => col !== column)\n                    : [...state.preferenceCriteria.visibleColumns, column],\n            },\n        }));\n    }\n\n    // Helper methods for computed signals\n    private getVisibleData(): T[] {\n        const { filteredData, preferenceCriteria } = this.#state();\n        return filteredData.map((item) => {\n            const visibleItem = {} as T;\n            preferenceCriteria.visibleColumns.forEach((col) => {\n                //@ts-ignore\n                visibleItem[col] = item[col];\n            });\n            return visibleItem;\n        });\n    }\n\n    private getCurrentPageData(): T[] {\n        const { paginationCriteria } = this.#state();\n        const startIndex = (paginationCriteria.currentPage - 1) * paginationCriteria.pageSize;\n        return this.visibleData().slice(startIndex, startIndex + paginationCriteria.pageSize);\n    }\n\n    private getSelectedRowsData(): string[] {\n        const { selectedRows, dataSource } = this.#state();\n        return dataSource.filter((item) => selectedRows.includes(item)).map((item) => JSON.stringify(item));\n    }\n\n    private getGroupedData(): { [key: string]: T[] } {\n        const { filteredData, preferenceCriteria } = this.#state();\n        if (!preferenceCriteria.groupBy) {\n            return { All: filteredData };\n        }\n        return filteredData.reduce((groups, item) => {\n            const key = item[preferenceCriteria.groupBy as keyof T] as string;\n            if (!groups[key]) {\n                groups[key] = [];\n            }\n            groups[key].push(item);\n            return groups;\n        }, {} as { [key: string]: T[] });\n    }\n\n    private getSortCriteriaData(): SortCriteria {\n        const { sortCriteria } = this.#state();\n        return sortCriteria;\n    }\n\n    private getPaginationCriteria(): PaginationCriteria {\n        const { paginationCriteria } = this.#state();\n        return paginationCriteria;\n    }\n\n    private getFilterCriteriaData(): FilterCriteria {\n        const { filterCriteria } = this.#state();\n        return filterCriteria;\n    }\n\n    // Reset to initial state\n    resetToInitialState() {\n        this.#state.update((state) => ({\n            ...state,\n            filteredData: state.dataSource,\n            paginationCriteria: {\n                currentPage: 1,\n                totalPages: Math.ceil(state.dataSource.length / state.paginationCriteria.pageSize),\n                pageSize: state.paginationCriteria.pageSize,\n            },\n            selectedRows: [],\n            sortCriteria: { key: '', direction: 'ascending' },\n            filterCriteria: { column: '', value: '' },\n            preferenceCriteria: {\n                ...state.preferenceCriteria,\n                groupBy: undefined,\n            },\n        }));\n    }\n}\n",
             "selector": "[adk-table]",
             "providers": [],
             "exportAs": "adkTable",
@@ -4492,7 +4492,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 55,
+                    "line": 56,
                     "modifierKind": [
                         148
                     ]
@@ -4505,7 +4505,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 54,
+                    "line": 55,
                     "modifierKind": [
                         148
                     ]
@@ -4518,7 +4518,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 57,
+                    "line": 58,
                     "modifierKind": [
                         148
                     ]
@@ -4531,7 +4531,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 52,
+                    "line": 53,
                     "modifierKind": [
                         148
                     ]
@@ -4544,7 +4544,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 59,
+                    "line": 60,
                     "modifierKind": [
                         148
                     ]
@@ -4557,7 +4557,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 56,
+                    "line": 57,
                     "modifierKind": [
                         148
                     ]
@@ -4570,7 +4570,20 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 58,
+                    "line": 59,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "state",
+                    "defaultValue": "computed(() => this.#state())",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 52,
                     "modifierKind": [
                         148
                     ]
@@ -4583,7 +4596,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 53,
+                    "line": 54,
                     "modifierKind": [
                         148
                     ]
@@ -4603,7 +4616,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 205,
+                    "line": 206,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -4624,7 +4637,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 194,
+                    "line": 195,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4644,7 +4657,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 106,
+                    "line": 107,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -4672,7 +4685,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 101,
+                    "line": 102,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -4693,7 +4706,7 @@
                     "optional": false,
                     "returnType": "T[]",
                     "typeParameters": [],
-                    "line": 278,
+                    "line": 282,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4706,7 +4719,7 @@
                     "optional": false,
                     "returnType": "FilterCriteria",
                     "typeParameters": [],
-                    "line": 314,
+                    "line": 318,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4719,7 +4732,7 @@
                     "optional": false,
                     "returnType": "literal type",
                     "typeParameters": [],
-                    "line": 289,
+                    "line": 293,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4732,7 +4745,7 @@
                     "optional": false,
                     "returnType": "PaginationCriteria",
                     "typeParameters": [],
-                    "line": 309,
+                    "line": 313,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4743,9 +4756,9 @@
                     "name": "getSelectedRowsData",
                     "args": [],
                     "optional": false,
-                    "returnType": "T[]",
+                    "returnType": "string[]",
                     "typeParameters": [],
-                    "line": 284,
+                    "line": 288,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4758,7 +4771,7 @@
                     "optional": false,
                     "returnType": "SortCriteria",
                     "typeParameters": [],
-                    "line": 304,
+                    "line": 308,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4771,7 +4784,7 @@
                     "optional": false,
                     "returnType": "T[]",
                     "typeParameters": [],
-                    "line": 266,
+                    "line": 270,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4784,7 +4797,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 320,
+                    "line": 324,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -4801,7 +4814,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 247,
+                    "line": 251,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -4829,7 +4842,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 79,
+                    "line": 80,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4860,7 +4873,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 90,
+                    "line": 91,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -4888,7 +4901,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 61,
+                    "line": 62,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -4916,7 +4929,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 167,
+                    "line": 168,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -4944,7 +4957,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 157,
+                    "line": 158,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -4972,7 +4985,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 183,
+                    "line": 184,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -4993,7 +5006,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 230,
+                    "line": 231,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -5010,7 +5023,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 253,
+                    "line": 257,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -5038,7 +5051,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 220,
+                    "line": 221,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -5059,7 +5072,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 210,
+                    "line": 211,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -5072,7 +5085,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 145,
+                    "line": 146,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -6424,7 +6437,7 @@
         },
         {
             "name": "DummyTableComponent",
-            "id": "component-DummyTableComponent-0179ebb83c0381950456008195e03213c6f8d247eb1470ff74fdb365f15a6728a7a1e7a6c7353a744c34127a7fe04b17c0e90cdbb8b69da89a416292f1ff3a9d",
+            "id": "component-DummyTableComponent-7778fa202ad12bfedfd939e08174bd70d1b5d0fde11b64afbcf0a1321cc5eb66afc4139707abeccba94bf52e8ea816dd1d8eadc97c2682af7e7218edaec72d31",
             "file": "projects/ng-lib/src/lib/tw-ui/components/table/directives/stories/table.stories.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -6663,7 +6676,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input, OnInit, inject } from '@angular/core';\nimport { Meta, StoryObj, moduleMetadata } from '@storybook/angular';\n\nimport { AdkTable } from '../table';\nimport { CommonModule } from '@angular/common';\nimport { FormsModule } from '@angular/forms';\n\n@Component({\n    selector: 'app-dummy-table',\n    standalone: true,\n    imports: [CommonModule, FormsModule, AdkTable],\n    hostDirectives: [AdkTable],\n    template: `\n        <select [(ngModel)]=\"filterColumn\" (change)=\"onFilterColumnChange($event.target.value)\">\n            <option *ngFor=\"let col of columns\" [value]=\"col\">Filter by {{ col }}</option>\n        </select>\n        <input [(ngModel)]=\"filterValue\" (input)=\"applyFilter()\" [ngModelOptions]=\"{ standalone: true }\" placeholder=\"Enter filter value\" />\n        <select [(ngModel)]=\"groupByColumn\" (change)=\"adkTable.setGroupBy(groupByColumn)\">\n            <option value=\"\">No Grouping</option>\n            <option *ngFor=\"let col of columns\" [value]=\"col\">Group by {{ col }}</option>\n        </select>\n        <table>\n            <thead>\n                <tr>\n                    <th>\n                        <input\n                            type=\"checkbox\"\n                            [checked]=\"adkTable.selectedRowsData().length === adkTable.visibleData().length\"\n                            (change)=\"adkTable.toggleAllRowsSelection()\"\n                        />\n                    </th>\n                    <th\n                        *ngFor=\"let col of columns; let i = index\"\n                        (click)=\"adkTable.sortBy(col)\"\n                        draggable=\"true\"\n                        (dragstart)=\"adkTable.dragStart(i)\"\n                        (dragover)=\"$event.preventDefault()\"\n                        (drop)=\"onDragDrop(i)\"\n                    >\n                        {{ col }}\n                        <span *ngIf=\"adkTable.sortCriteriaData().key === col\">\n                            {{ adkTable.sortCriteriaData().direction === 'ascending' ? '▲' : '▼' }}\n                        </span>\n                    </th>\n                </tr>\n            </thead>\n            <tbody>\n                <ng-container *ngIf=\"groupByColumn; else flatView\">\n                    <ng-container *ngFor=\"let group of adkTable.groupedData() | keyvalue\">\n                        <tr (click)=\"toggleGroup(group.key)\" class=\"group-header\">\n                            <td [attr.colspan]=\"columns.length + 1\">\n                                {{ group.key }} ({{ group.value.length }} items)\n                                <span>{{ expandedGroups[group.key] ? '▼' : '▶' }}</span>\n                            </td>\n                        </tr>\n                        <ng-container *ngIf=\"expandedGroups[group.key]\">\n                            <tr *ngFor=\"let row of group.value\">\n                                <td>\n                                    <input\n                                        type=\"checkbox\"\n                                        [checked]=\"adkTable.selectedRowsData().includes(row)\"\n                                        (change)=\"adkTable.toggleRowSelection(row)\"\n                                    />\n                                </td>\n                                <td *ngFor=\"let col of columns\">{{ row[col] }}</td>\n                            </tr>\n                        </ng-container>\n                    </ng-container>\n                </ng-container>\n                <ng-template #flatView>\n                    <tr *ngFor=\"let row of adkTable.currentPageData()\">\n                        <td>\n                            <input type=\"checkbox\" [checked]=\"adkTable.selected(row)\" (change)=\"adkTable.toggleRowSelection(row)\" />\n                        </td>\n                        <td *ngFor=\"let col of columns\">{{ row[col] }}</td>\n                    </tr>\n                </ng-template>\n            </tbody>\n        </table>\n        <div>\n            <button\n                (click)=\"adkTable.setPage(adkTable.paginationCriteria().currentPage - 1)\"\n                [disabled]=\"adkTable.paginationCriteria().currentPage === 1\"\n            >\n                Previous\n            </button>\n            <span>Page {{ adkTable.paginationCriteria().currentPage }} of {{ adkTable.paginationCriteria().totalPages }}</span>\n            <button\n                (click)=\"adkTable.setPage(adkTable.paginationCriteria().currentPage + 1)\"\n                [disabled]=\"adkTable.paginationCriteria().currentPage === adkTable.paginationCriteria().totalPages\"\n            >\n                Next\n            </button>\n            <select [(ngModel)]=\"itemsPerPage\" (change)=\"adkTable.setItemsPerPage(itemsPerPage)\">\n                <option [value]=\"5\">5</option>\n                <option [value]=\"10\">10</option>\n                <option [value]=\"25\">25</option>\n            </select>\n            <span>Items per page</span>\n        </div>\n        <div>\n            <p>Selected rows: {{ adkTable.selectedRowsData().length }}</p>\n        </div>\n    `,\n    styles: [\n        `\n            .group-header {\n                cursor: pointer;\n                background-color: #f0f0f0;\n            }\n            .group-header:hover {\n                background-color: #e0e0e0;\n            }\n        `,\n    ],\n})\nexport class DummyTableComponent implements OnInit {\n    adkTable = inject(AdkTable, { self: true });\n    @Input() set data(value: any[]) {\n        this.adkTable.initialData = value;\n    }\n    @Input() columns: string[] = [];\n\n    groupByColumn: string = '';\n    expandedGroups: { [key: string]: boolean } = {};\n    itemsPerPage: number = 10;\n\n    filterColumn: string = '';\n    filterValue: string = '';\n\n    ngOnInit(): void {\n        if (this.columns.length > 0) {\n            this.filterColumn = this.columns[0];\n        }\n    }\n\n    onFilterColumnChange(column: string) {\n        this.filterColumn = column;\n        this.applyFilter();\n    }\n\n    applyFilter() {\n        this.adkTable.applyFilter({ column: this.filterColumn, value: this.filterValue });\n    }\n\n    toggleGroup(key: string) {\n        this.expandedGroups[key] = !this.expandedGroups[key];\n    }\n\n    onItemsPerPageChange() {\n        this.adkTable.setItemsPerPage(this.itemsPerPage);\n    }\n\n    onDragDrop(index: number) {\n        this.adkTable.dragDrop(index);\n        this.columns = this.adkTable.headers();\n    }\n}\n\nconst meta: Meta<DummyTableComponent> = {\n    title: 'Components/AdkTable',\n    component: DummyTableComponent,\n    decorators: [\n        moduleMetadata({\n            imports: [DummyTableComponent],\n        }),\n    ],\n    tags: ['autodocs'],\n};\n\nexport default meta;\ntype Story = StoryObj<DummyTableComponent>;\n\nconst sampleData = [\n    { uid: 1, name: 'John Doe', age: 30, department: 'IT' },\n    { uid: 2, name: 'Jane Smith', age: 25, department: 'HR' },\n    { uid: 3, name: 'Bob Johnson', age: 35, department: 'IT' },\n    { uid: 4, name: 'Alice Brown', age: 28, department: 'Finance' },\n    { uid: 5, name: 'Charlie Davis', age: 42, department: 'HR' },\n    { uid: 6, name: 'Eva Wilson', age: 33, department: 'Finance' },\n    { uid: 7, name: 'Frank Miller', age: 39, department: 'IT' },\n];\n\nexport const Default: Story = {\n    args: {\n        data: sampleData,\n        columns: ['uid', 'name', 'age', 'department'],\n    },\n};\n\nexport const WithFiltering: Story = {\n    args: {\n        data: sampleData,\n        columns: ['uid', 'name', 'age', 'department'],\n    },\n};\n\nexport const WithSorting: Story = {\n    args: {\n        data: sampleData,\n        columns: ['uid', 'name', 'age', 'department'],\n    },\n    play: async ({ canvasElement }) => {\n        const canvas = canvasElement.querySelector('app-dummy-table');\n        if (canvas) {\n            const ageHeader = canvas.querySelector('th:nth-child(3)');\n            if (ageHeader) {\n                // @ts-ignore\n                ageHeader.click();\n            }\n        }\n    },\n};\n\nexport const WithPagination: Story = {\n    args: {\n        data: Array(50)\n            .fill(null)\n            .map((_, i) => ({\n                id: i + 1,\n                name: `Person ${i + 1}`,\n                age: 20 + (i % 30),\n                department: ['IT', 'HR', 'Finance'][i % 3],\n            })),\n        columns: ['uid', 'name', 'age', 'department'],\n    },\n};\n\nexport const WithSelection: Story = {\n    args: {\n        data: sampleData,\n        columns: ['uid', 'name', 'age', 'department'],\n    },\n    play: async ({ canvasElement }) => {\n        const canvas = canvasElement.querySelector('app-dummy-table');\n        if (canvas) {\n            const checkboxes = canvas.querySelectorAll('input[type=\"checkbox\"]');\n            if (checkboxes.length > 1) {\n                (checkboxes[1] as HTMLInputElement).click();\n                (checkboxes[2] as HTMLInputElement).click();\n            }\n        }\n    },\n};\n\nexport const GroupedByDepartment: Story = {\n    args: {\n        data: sampleData,\n        columns: ['uid', 'name', 'age', 'department'],\n    },\n    play: async ({ canvasElement }) => {\n        const canvas = canvasElement.querySelector('app-dummy-table');\n        if (canvas) {\n            const select = canvas.querySelector('select');\n            if (select) {\n                select.value = 'department';\n                select.dispatchEvent(new Event('change'));\n            }\n        }\n    },\n};\n\nexport const WithDragAndDrop: Story = {\n    args: {\n        data: sampleData,\n        columns: ['uid', 'name', 'age', 'department'],\n    },\n    play: async ({ canvasElement }) => {\n        const canvas = canvasElement.querySelector('app-dummy-table');\n        if (canvas) {\n            const headers = canvas.querySelectorAll('th');\n            if (headers.length > 2) {\n                const dragEvent = new DragEvent('dragstart', {\n                    bubbles: true,\n                    cancelable: true,\n                });\n                headers[1].dispatchEvent(dragEvent);\n\n                const dropEvent = new DragEvent('drop', {\n                    bubbles: true,\n                    cancelable: true,\n                });\n                headers[3].dispatchEvent(dropEvent);\n            }\n        }\n    },\n};\n\nexport const EmptyTable: Story = {\n    args: {\n        data: [],\n        columns: ['uid', 'name', 'age', 'department'],\n    },\n};\n",
+            "sourceCode": "import { Component, Input, OnInit, inject } from '@angular/core';\nimport { Meta, StoryObj, moduleMetadata } from '@storybook/angular';\n\nimport { AdkTable } from '../table';\nimport { CommonModule } from '@angular/common';\nimport { FormsModule } from '@angular/forms';\n\n@Component({\n    selector: 'app-dummy-table',\n    standalone: true,\n    imports: [CommonModule, FormsModule, AdkTable],\n    hostDirectives: [AdkTable],\n    template: `\n        <select [(ngModel)]=\"filterColumn\" (change)=\"onFilterColumnChange($event.target.value)\">\n            <option *ngFor=\"let col of columns\" [value]=\"col\">Filter by {{ col }}</option>\n        </select>\n        <input [(ngModel)]=\"filterValue\" (input)=\"applyFilter()\" [ngModelOptions]=\"{ standalone: true }\" placeholder=\"Enter filter value\" />\n        <select [(ngModel)]=\"groupByColumn\" (change)=\"adkTable.setGroupBy(groupByColumn)\">\n            <option value=\"\">No Grouping</option>\n            <option *ngFor=\"let col of columns\" [value]=\"col\">Group by {{ col }}</option>\n        </select>\n        <table>\n            <thead>\n                <tr>\n                    <th>\n                        <input\n                            type=\"checkbox\"\n                            [checked]=\"adkTable.selectedRowsData().length === adkTable.visibleData().length\"\n                            (change)=\"adkTable.toggleAllRowsSelection()\"\n                        />\n                    </th>\n                    <th\n                        *ngFor=\"let col of columns; let i = index\"\n                        (click)=\"adkTable.sortBy(col)\"\n                        draggable=\"true\"\n                        (dragstart)=\"adkTable.dragStart(i)\"\n                        (dragover)=\"$event.preventDefault()\"\n                        (drop)=\"onDragDrop(i)\"\n                    >\n                        {{ col }}\n                        <span *ngIf=\"adkTable.sortCriteriaData().key === col\">\n                            {{ adkTable.sortCriteriaData().direction === 'ascending' ? '▲' : '▼' }}\n                        </span>\n                    </th>\n                </tr>\n            </thead>\n            <tbody>\n                <ng-container *ngIf=\"groupByColumn; else flatView\">\n                    <ng-container *ngFor=\"let group of adkTable.groupedData() | keyvalue\">\n                        <tr (click)=\"toggleGroup(group.key)\" class=\"group-header\">\n                            <td [attr.colspan]=\"columns.length + 1\">\n                                {{ group.key }} ({{ group.value.length }} items)\n                                <span>{{ expandedGroups[group.key] ? '▼' : '▶' }}</span>\n                            </td>\n                        </tr>\n                        <ng-container *ngIf=\"expandedGroups[group.key]\">\n                            <tr *ngFor=\"let row of group.value\">\n                                <td>\n                                    <input\n                                        type=\"checkbox\"\n                                        [checked]=\"adkTable.selectedRowsData().includes(row)\"\n                                        (change)=\"adkTable.toggleRowSelection(row)\"\n                                    />\n                                </td>\n                                <td *ngFor=\"let col of columns\">{{ row[col] }}</td>\n                            </tr>\n                        </ng-container>\n                    </ng-container>\n                </ng-container>\n                <ng-template #flatView>\n                    <tr *ngFor=\"let row of adkTable.currentPageData()\">\n                        <td>\n                            <input type=\"checkbox\" [checked]=\"adkTable.selected(row)\" (change)=\"adkTable.toggleRowSelection(row)\" />\n                        </td>\n                        <td *ngFor=\"let col of columns\">{{ row[col] }}</td>\n                    </tr>\n                </ng-template>\n            </tbody>\n        </table>\n        <div>\n            <button\n                (click)=\"adkTable.setPage(adkTable.paginationCriteria().currentPage - 1)\"\n                [disabled]=\"adkTable.paginationCriteria().currentPage === 1\"\n            >\n                Previous\n            </button>\n            <span>Page {{ adkTable.paginationCriteria().currentPage }} of {{ adkTable.paginationCriteria().totalPages }}</span>\n            <button\n                (click)=\"adkTable.setPage(adkTable.paginationCriteria().currentPage + 1)\"\n                [disabled]=\"adkTable.paginationCriteria().currentPage === adkTable.paginationCriteria().totalPages\"\n            >\n                Next\n            </button>\n            <select [(ngModel)]=\"itemsPerPage\" (change)=\"adkTable.setItemsPerPage(itemsPerPage)\">\n                <option [value]=\"5\">5</option>\n                <option [value]=\"10\">10</option>\n                <option [value]=\"25\">25</option>\n            </select>\n            <span>Items per page</span>\n        </div>\n        <div>\n            <p>Selected rows: {{ adkTable.selectedRowsData().length }}</p>\n        </div>\n    `,\n    styles: [\n        `\n            .group-header {\n                cursor: pointer;\n                background-color: #f0f0f0;\n            }\n            .group-header:hover {\n                background-color: #e0e0e0;\n            }\n        `,\n    ],\n})\nexport class DummyTableComponent implements OnInit {\n    adkTable = inject(AdkTable, { self: true });\n    @Input() set data(value: any[]) {\n        this.adkTable.initialData = value;\n    }\n    @Input() columns: string[] = [];\n\n    groupByColumn: string = '';\n    expandedGroups: { [key: string]: boolean } = {};\n    itemsPerPage: number = 10;\n\n    filterColumn: string = '';\n    filterValue: string = '';\n\n    ngOnInit(): void {\n        if (this.columns.length > 0) {\n            this.filterColumn = this.columns[0];\n        }\n    }\n\n    onFilterColumnChange(column: string) {\n        this.filterColumn = column;\n        this.applyFilter();\n    }\n\n    applyFilter() {\n        this.adkTable.applyFilter({ column: this.filterColumn, value: this.filterValue });\n    }\n\n    toggleGroup(key: string) {\n        this.expandedGroups[key] = !this.expandedGroups[key];\n    }\n\n    onItemsPerPageChange() {\n        this.adkTable.setItemsPerPage(this.itemsPerPage);\n    }\n\n    onDragDrop(index: number) {\n        this.adkTable.dragDrop(index);\n        this.columns = this.adkTable.headers();\n    }\n}\n\nconst meta: Meta<DummyTableComponent> = {\n    title: 'TailwindUI/Components/Directives/AdkTable',\n    component: DummyTableComponent,\n    decorators: [\n        moduleMetadata({\n            imports: [DummyTableComponent],\n        }),\n    ],\n    tags: ['autodocs'],\n};\n\nexport default meta;\ntype Story = StoryObj<DummyTableComponent>;\n\nconst sampleData = [\n    { uid: 1, name: 'John Doe', age: 30, department: 'IT' },\n    { uid: 2, name: 'Jane Smith', age: 25, department: 'HR' },\n    { uid: 3, name: 'Bob Johnson', age: 35, department: 'IT' },\n    { uid: 4, name: 'Alice Brown', age: 28, department: 'Finance' },\n    { uid: 5, name: 'Charlie Davis', age: 42, department: 'HR' },\n    { uid: 6, name: 'Eva Wilson', age: 33, department: 'Finance' },\n    { uid: 7, name: 'Frank Miller', age: 39, department: 'IT' },\n];\n\nexport const Default: Story = {\n    args: {\n        data: sampleData,\n        columns: ['uid', 'name', 'age', 'department'],\n    },\n};\n\nexport const WithFiltering: Story = {\n    args: {\n        data: sampleData,\n        columns: ['uid', 'name', 'age', 'department'],\n    },\n};\n\nexport const WithSorting: Story = {\n    args: {\n        data: sampleData,\n        columns: ['uid', 'name', 'age', 'department'],\n    },\n    play: async ({ canvasElement }) => {\n        const canvas = canvasElement.querySelector('app-dummy-table');\n        if (canvas) {\n            const ageHeader = canvas.querySelector('th:nth-child(3)');\n            if (ageHeader) {\n                // @ts-ignore\n                ageHeader.click();\n            }\n        }\n    },\n};\n\nexport const WithPagination: Story = {\n    args: {\n        data: Array(50)\n            .fill(null)\n            .map((_, i) => ({\n                id: i + 1,\n                name: `Person ${i + 1}`,\n                age: 20 + (i % 30),\n                department: ['IT', 'HR', 'Finance'][i % 3],\n            })),\n        columns: ['uid', 'name', 'age', 'department'],\n    },\n};\n\nexport const WithSelection: Story = {\n    args: {\n        data: sampleData,\n        columns: ['uid', 'name', 'age', 'department'],\n    },\n    play: async ({ canvasElement }) => {\n        const canvas = canvasElement.querySelector('app-dummy-table');\n        if (canvas) {\n            const checkboxes = canvas.querySelectorAll('input[type=\"checkbox\"]');\n            if (checkboxes.length > 1) {\n                (checkboxes[1] as HTMLInputElement).click();\n                (checkboxes[2] as HTMLInputElement).click();\n            }\n        }\n    },\n};\n\nexport const GroupedByDepartment: Story = {\n    args: {\n        data: sampleData,\n        columns: ['uid', 'name', 'age', 'department'],\n    },\n    play: async ({ canvasElement }) => {\n        const canvas = canvasElement.querySelector('app-dummy-table');\n        if (canvas) {\n            const select = canvas.querySelector('select');\n            if (select) {\n                select.value = 'department';\n                select.dispatchEvent(new Event('change'));\n            }\n        }\n    },\n};\n\nexport const WithDragAndDrop: Story = {\n    args: {\n        data: sampleData,\n        columns: ['uid', 'name', 'age', 'department'],\n    },\n    play: async ({ canvasElement }) => {\n        const canvas = canvasElement.querySelector('app-dummy-table');\n        if (canvas) {\n            const headers = canvas.querySelectorAll('th');\n            if (headers.length > 2) {\n                const dragEvent = new DragEvent('dragstart', {\n                    bubbles: true,\n                    cancelable: true,\n                });\n                headers[1].dispatchEvent(dragEvent);\n\n                const dropEvent = new DragEvent('drop', {\n                    bubbles: true,\n                    cancelable: true,\n                });\n                headers[3].dispatchEvent(dropEvent);\n            }\n        }\n    },\n};\n\nexport const EmptyTable: Story = {\n    args: {\n        data: [],\n        columns: ['uid', 'name', 'age', 'department'],\n    },\n};\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "\n            .group-header {\n                cursor: pointer;\n                background-color: #f0f0f0;\n            }\n            .group-header:hover {\n                background-color: #e0e0e0;\n            }\n        \n",
@@ -9197,6 +9210,325 @@
             "extends": []
         },
         {
+            "name": "TableComponent",
+            "id": "component-TableComponent-6819b0ce69684bb94356f0cebbc66739ed920abb6c7e60dbe1734748fa26df7e4f9c7e602b383632a5b015452159e5d1355e006f0302bd78dbd8ffe2ebd8ba61",
+            "file": "projects/ng-lib/src/lib/tw-ui/components/table/table.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "tw-table",
+            "styleUrls": [],
+            "styles": [
+                "\n            :host {\n                display: block;\n                width: 100%;\n            }\n        "
+            ],
+            "template": "<table *ngIf=\"adkTable\" aria-hidden=\"true\" class=\"w-full text-left table-auto min-w-max\">           <thead>\n               <ng-container\n                   *ngTemplateOutlet=\"\n                       renderThead;\n                       context: {\n                           groupData: adkTable.groupedData(),\n                           columns: adkTable?.headers(),\n                           isSelectable,\n                           sortDataSource: adkTable.currentPageData()\n                       }\n                   \"\n               ></ng-container>\n           </thead>\n           <tbody>\n               <ng-container *ngIf=\"groupByColumn; else flatView\">\n                   @for(groupData of adkTable.groupedData(); track $index) {\n                   <ng-container\n                       *ngTemplateOutlet=\"\n                           groupByRender;\n                           context: { groupData, columns: adkTable?.headers(), isSelectable, groupKey: groupData[0][groupByColumn] }\n                       \"\n                   ></ng-container>\n                   }\n               </ng-container>\n               <ng-template #flatView>\n                   @for(rowData of adkTable.visibleData(); track $index) {\n                   <ng-container\n                       *ngTemplateOutlet=\"renderRow; context: { columns: adkTable?.headers(), rowData, rowIndex: $index, isSelectable }\"\n                   ></ng-container>\n                   }\n               </ng-template>\n               <!-- @for(groupKey of objectKeysGroupData(groupData); track $index){\n     @if(groupBy && groupKey !== '') {\n     <ng-container\n       *ngTemplateOutlet=\"groupByRender; context: { groupData, headers, isSelectable, groupKey, adkTable }\"></ng-container>\n     } @else {\n     @for(rowData of groupData[groupKey]; track $index) {\n     <ng-container\n       *ngTemplateOutlet=\"renderRow; context: { headers, rowData, rowIndex: $index, isSelectable, adkTable }\"></ng-container>\n     }\n     }\n     } -->\n           </tbody>\n       </table>\n\n       <!-- Render Table Header -->\n       <ng-template\n           #renderThead\n           let-groupData=\"groupData\"\n           let-columns=\"columns\"\n           let-isSelectable=\"isSelectable\"\n           let-sortDataSource=\"sortDataSource\"\n       >\n           <tr>\n               @if(isSelectable) {\n               <th id=\"checkAll\" class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-1 max-w-[10px]\">\n                   <ng-container\n                       *ngTemplateOutlet=\"checkbox; context: { adkTable, groupData, rowData: undefined, isCheckAll: true }\"\n                   ></ng-container>\n               </th>\n               } @for(col of columns; track $index) {\n               <th\n                   [id]=\"col\"\n                   class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer\"\n                   [attr.key]=\"col\"\n                   [ngClass]=\"{ 'border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer': true }\"\n                   [attr.draggable]=\"isDraggable\"\n                   (dragstart)=\"handleDragStart($index)\"\n                   (dragover)=\"handleDragOver($event)\"\n                   (drop)=\"handleDrop($index, $event)\"\n                   (drop)=\"handleDrop($index, $event)\"\n                   scope=\"col\"\n               >\n                   <tw-typography\n                       [variant]=\"'small'\"\n                       [classStyle]=\"'flex items-center justify-between gap-2 font-normal leading-none opacity-70'\"\n                   >\n                       {{ col ?? ' ' | uppercase }}\n                       <div class=\"flex flex-row gap-2\">\n                           @if($index !== columns.length && isSortable) {\n                           <tw-sortable-icon (click)=\"sortRows(col)\" (keydown)=\"sortRows(col)\"></tw-sortable-icon>\n                           } @if(adkTable?.sortCriteriaData().key === col) {\n                           <span>{{ sortDataSource.direction === 'ascending' ? '🔼' : '🔽' }}</span>\n                           }\n                       </div>\n                   </tw-typography>\n               </th>\n               }\n           </tr>\n       </ng-template>\n\n       <!-- Group By Render -->\n       <ng-template #groupByRender let-groupData=\"groupData\" let-columns=\"columns\" let-isSelectable=\"isSelectable\" let-groupKey=\"groupKey\">\n           <tr>\n               <td [colSpan]=\"columns.length + (isSelectable ? 1 : 0) + (actionButton ? 1 : 0)\">\n                   <adk-expansion-panel>\n                       <ng-template #expansionPanelHeader>\n                           {{ groupKey }}\n                       </ng-template>\n                       <ng-template #expansionPanelBody>\n                           <table aria-hidden=\"true\" class=\"w-full min-w-max table-auto text-left\">\n                               <tbody>\n                                   @for(rowData of groupData[groupKey]; track $index) {\n                                   <ng-container\n                                       *ngTemplateOutlet=\"\n                                           renderRow;\n                                           context: { columns, rowData, rowIndex: $index, isSelectable, adkTable }\n                                       \"\n                                   >\n                                   </ng-container>\n                                   }\n                               </tbody>\n                           </table>\n                       </ng-template>\n                   </adk-expansion-panel>\n               </td>\n           </tr>\n       </ng-template>\n\n       <!-- Render Row Table Cells -->\n       <ng-template #renderRow let-columns=\"columns\" let-rowData=\"rowData\" let-rowIndex=\"rowIndex\" let-isSelectable=\"isSelectable\">\n           <tr [ngClass]=\"isRowFocused(rowData) ? 'bg-light-blue-50' : ''\" (click)=\"rowFocus.value = rowData\">\n               @if(isSelectable) {\n               <td [ngClass]=\"isSelectable ? 'p-1' : 'p-4'\" class=\"border-b border-blue-gray-50 p-1 max-h-[38px] max-w-[15px]\">\n                   <ng-container\n                       *ngTemplateOutlet=\"checkbox; context: { adkTable, groupData: undefined, rowData, isCheckAll: false }\"\n                   ></ng-container>\n               </td>\n               } @for (col of columns; track $index) {\n               <td\n                   [ngClass]=\"isSelectable ? 'p-1' : 'p-2'\"\n                   class=\"border-b border-blue-gray-50 min-h-[48.5px] min-w-[60px] max-w-[60px] truncate\"\n               >\n                   <div [adkTooltip]=\"rowData[col]\" tooltipPlacement=\"bottom\" [ngStyle]=\"{ cursor: 'text' }\">\n                       @if(isCellValArray(rowData[col])) { @if(isSelectable && isMultiSelectField){\n                       <adk-field\n                           *ngIf=\"adkTable.selected(rowData) && (cellMultiSelector(rowIndex, rowData[col]) | async) as field\"\n                           [field]=\"field\"\n                       ></adk-field>\n                       } @else {\n                       <tw-typography [variant]=\"'small'\" class=\"font-normal ml-2\">\n                           {{ rowData[col].join(', ') }}\n                       </tw-typography>\n                       } } @else { @if (isCellFieldObject(rowData[col])) {\n                       <adk-field [field]=\"rowData[col]\"></adk-field>\n                       } @else {\n                       <tw-typography [variant]=\"'small'\" class=\"font-normal ml-2\">\n                           {{ rowData[col] }}\n                       </tw-typography>\n                       } }\n                   </div>\n               </td>\n               }\n           </tr>\n       </ng-template>\n\n       <!-- Checkbox Render -->\n       <ng-template #checkbox let-isCheckAll=\"isCheckAll\" let-groupData=\"groupData\" let-rowData=\"rowData\">\n           @if(isCheckAll) {\n           <div class=\"inline-flex items-center\">\n               <label for=\"selectAllCheckbox\" class=\"relative flex items-center p-3 rounded-full cursor-pointer\">\n                   <input\n                       type=\"checkbox\"\n                       class=\"before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10 w-4 h-4\"\n                       id=\"selectAllCheckbox\"\n                       name=\"selectAllCheckbox\"\n                       [checked]=\"adkTable.selectedRowsData().length === adkTable.visibleData().length\"\n                       (change)=\"adkTable.toggleAllRowsSelection()\"\n                   />\n                   <span\n                       class=\"absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100\"\n                   >\n                       <svg\n                           xmlns=\"http://www.w3.org/2000/svg\"\n                           class=\"h-3.5 w-3.5\"\n                           viewBox=\"0 0 20 20\"\n                           fill=\"currentColor\"\n                           stroke=\"currentColor\"\n                           stroke-width=\"1\"\n                       >\n                           <path\n                               fill-rule=\"evenodd\"\n                               d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\"\n                               clip-rule=\"evenodd\"\n                           ></path>\n                       </svg>\n                   </span>\n               </label>\n           </div>\n           } @else {\n           <div class=\"inline-flex items-center\">\n               <label class=\"relative flex items-center p-3 rounded-full cursor-pointer\" for=\"checkbox\">\n                   <input\n                       type=\"checkbox\"\n                       class=\"before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10 w-4 h-4\"\n                       [checked]=\"isSelected(rowData)\"\n                       (change)=\"adkTable.toggleRowSelection(rowData)\"\n                   />\n                   <span\n                       class=\"absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100\"\n                   >\n                       <svg\n                           xmlns=\"http://www.w3.org/2000/svg\"\n                           class=\"h-3.5 w-3.5\"\n                           viewBox=\"0 0 20 20\"\n                           fill=\"currentColor\"\n                           stroke=\"currentColor\"\n                           stroke-width=\"1\"\n                       >\n                           <path\n                               fill-rule=\"evenodd\"\n                               d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\"\n                               clip-rule=\"evenodd\"\n                           ></path>\n                       </svg>\n                   </span>\n               </label>\n           </div>\n           }\n       </ng-template>",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [
+                {
+                    "name": "AdkTable"
+                }
+            ],
+            "inputsClass": [
+                {
+                    "name": "columns",
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 266,
+                    "type": "string[]",
+                    "decorators": []
+                },
+                {
+                    "name": "data",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 263,
+                    "type": "any[]",
+                    "decorators": []
+                },
+                {
+                    "name": "isDraggable",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 267,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "isSelectable",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 268,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "isSortable",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 269,
+                    "type": "boolean",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "adkTable",
+                    "defaultValue": "inject(AdkTable, { self: true })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 262
+                },
+                {
+                    "name": "rowFocus",
+                    "defaultValue": "new ImperativeObservable<RowData | null>(null)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 271
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "isCellFieldObject",
+                    "args": [
+                        {
+                            "name": "value",
+                            "type": "Field | any",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 288,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "value",
+                            "type": "Field | any",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "isCellValArray",
+                    "args": [
+                        {
+                            "name": "value",
+                            "type": "string | ",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "any",
+                    "typeParameters": [],
+                    "line": 284,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "value",
+                            "type": "string | ",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "isRowFocused",
+                    "args": [
+                        {
+                            "name": "row",
+                            "type": "RowData",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 278,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "row",
+                            "type": "RowData",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "isSelected",
+                    "args": [
+                        {
+                            "name": "row",
+                            "type": "RowData",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 273,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "row",
+                            "type": "RowData",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "onDragDrop",
+                    "args": [
+                        {
+                            "name": "index",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 293,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "index",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                },
+                {
+                    "name": "AdkSelection"
+                },
+                {
+                    "name": "AdkTooltipDirective",
+                    "type": "directive"
+                },
+                {
+                    "name": "AdkExpansionPanelComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "AsyncPipe",
+                    "type": "pipe"
+                },
+                {
+                    "name": "TwTypographyComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "CheckboxComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "SortableIconComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "FieldComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "AdkTable"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { AsyncPipe, CommonModule } from '@angular/common';\nimport { Component, Input, inject } from '@angular/core';\nimport { Field, RowData } from '../../../tw-form-ui';\n\nimport { AdkExpansionPanelComponent } from '../expansion-panel.component';\nimport { AdkSelection } from '../../../directives';\nimport { AdkTable } from './directives/table';\nimport { AdkTooltipDirective } from '../../../directives/tooltip';\nimport { CheckboxComponent } from 'projects/ng-lib/src/public-api';\nimport { FieldComponent } from '../../../tw-form-ui/components/field.component';\nimport { ImperativeObservable } from '../../../utils';\nimport { SortableIconComponent } from './utils';\nimport { TwTypographyComponent } from '../typography.component';\n\n@Component({\n    selector: 'tw-table',\n    standalone: true,\n    imports: [\n        CommonModule,\n        AdkSelection,\n        AdkTooltipDirective,\n        AdkExpansionPanelComponent,\n        AsyncPipe,\n        TwTypographyComponent,\n        CheckboxComponent,\n        SortableIconComponent,\n        FieldComponent,\n        AdkTable,\n    ],\n    hostDirectives: [AdkTable],\n    template: ` <table *ngIf=\"adkTable\" aria-hidden=\"true\" class=\"w-full text-left table-auto min-w-max\">\n            <thead>\n                <ng-container\n                    *ngTemplateOutlet=\"\n                        renderThead;\n                        context: {\n                            groupData: adkTable.groupedData(),\n                            columns: adkTable?.headers(),\n                            isSelectable,\n                            sortDataSource: adkTable.currentPageData()\n                        }\n                    \"\n                ></ng-container>\n            </thead>\n            <tbody>\n                <ng-container *ngIf=\"groupByColumn; else flatView\">\n                    @for(groupData of adkTable.groupedData(); track $index) {\n                    <ng-container\n                        *ngTemplateOutlet=\"\n                            groupByRender;\n                            context: { groupData, columns: adkTable?.headers(), isSelectable, groupKey: groupData[0][groupByColumn] }\n                        \"\n                    ></ng-container>\n                    }\n                </ng-container>\n                <ng-template #flatView>\n                    @for(rowData of adkTable.visibleData(); track $index) {\n                    <ng-container\n                        *ngTemplateOutlet=\"renderRow; context: { columns: adkTable?.headers(), rowData, rowIndex: $index, isSelectable }\"\n                    ></ng-container>\n                    }\n                </ng-template>\n                <!-- @for(groupKey of objectKeysGroupData(groupData); track $index){\n      @if(groupBy && groupKey !== '') {\n      <ng-container\n        *ngTemplateOutlet=\"groupByRender; context: { groupData, headers, isSelectable, groupKey, adkTable }\"></ng-container>\n      } @else {\n      @for(rowData of groupData[groupKey]; track $index) {\n      <ng-container\n        *ngTemplateOutlet=\"renderRow; context: { headers, rowData, rowIndex: $index, isSelectable, adkTable }\"></ng-container>\n      }\n      }\n      } -->\n            </tbody>\n        </table>\n\n        <!-- Render Table Header -->\n        <ng-template\n            #renderThead\n            let-groupData=\"groupData\"\n            let-columns=\"columns\"\n            let-isSelectable=\"isSelectable\"\n            let-sortDataSource=\"sortDataSource\"\n        >\n            <tr>\n                @if(isSelectable) {\n                <th id=\"checkAll\" class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-1 max-w-[10px]\">\n                    <ng-container\n                        *ngTemplateOutlet=\"checkbox; context: { adkTable, groupData, rowData: undefined, isCheckAll: true }\"\n                    ></ng-container>\n                </th>\n                } @for(col of columns; track $index) {\n                <th\n                    [id]=\"col\"\n                    class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer\"\n                    [attr.key]=\"col\"\n                    [ngClass]=\"{ 'border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer': true }\"\n                    [attr.draggable]=\"isDraggable\"\n                    (dragstart)=\"handleDragStart($index)\"\n                    (dragover)=\"handleDragOver($event)\"\n                    (drop)=\"handleDrop($index, $event)\"\n                    (drop)=\"handleDrop($index, $event)\"\n                    scope=\"col\"\n                >\n                    <tw-typography\n                        [variant]=\"'small'\"\n                        [classStyle]=\"'flex items-center justify-between gap-2 font-normal leading-none opacity-70'\"\n                    >\n                        {{ col ?? ' ' | uppercase }}\n                        <div class=\"flex flex-row gap-2\">\n                            @if($index !== columns.length && isSortable) {\n                            <tw-sortable-icon (click)=\"sortRows(col)\" (keydown)=\"sortRows(col)\"></tw-sortable-icon>\n                            } @if(adkTable?.sortCriteriaData().key === col) {\n                            <span>{{ sortDataSource.direction === 'ascending' ? '🔼' : '🔽' }}</span>\n                            }\n                        </div>\n                    </tw-typography>\n                </th>\n                }\n            </tr>\n        </ng-template>\n\n        <!-- Group By Render -->\n        <ng-template #groupByRender let-groupData=\"groupData\" let-columns=\"columns\" let-isSelectable=\"isSelectable\" let-groupKey=\"groupKey\">\n            <tr>\n                <td [colSpan]=\"columns.length + (isSelectable ? 1 : 0) + (actionButton ? 1 : 0)\">\n                    <adk-expansion-panel>\n                        <ng-template #expansionPanelHeader>\n                            {{ groupKey }}\n                        </ng-template>\n                        <ng-template #expansionPanelBody>\n                            <table aria-hidden=\"true\" class=\"w-full min-w-max table-auto text-left\">\n                                <tbody>\n                                    @for(rowData of groupData[groupKey]; track $index) {\n                                    <ng-container\n                                        *ngTemplateOutlet=\"\n                                            renderRow;\n                                            context: { columns, rowData, rowIndex: $index, isSelectable, adkTable }\n                                        \"\n                                    >\n                                    </ng-container>\n                                    }\n                                </tbody>\n                            </table>\n                        </ng-template>\n                    </adk-expansion-panel>\n                </td>\n            </tr>\n        </ng-template>\n\n        <!-- Render Row Table Cells -->\n        <ng-template #renderRow let-columns=\"columns\" let-rowData=\"rowData\" let-rowIndex=\"rowIndex\" let-isSelectable=\"isSelectable\">\n            <tr [ngClass]=\"isRowFocused(rowData) ? 'bg-light-blue-50' : ''\" (click)=\"rowFocus.value = rowData\">\n                @if(isSelectable) {\n                <td [ngClass]=\"isSelectable ? 'p-1' : 'p-4'\" class=\"border-b border-blue-gray-50 p-1 max-h-[38px] max-w-[15px]\">\n                    <ng-container\n                        *ngTemplateOutlet=\"checkbox; context: { adkTable, groupData: undefined, rowData, isCheckAll: false }\"\n                    ></ng-container>\n                </td>\n                } @for (col of columns; track $index) {\n                <td\n                    [ngClass]=\"isSelectable ? 'p-1' : 'p-2'\"\n                    class=\"border-b border-blue-gray-50 min-h-[48.5px] min-w-[60px] max-w-[60px] truncate\"\n                >\n                    <div [adkTooltip]=\"rowData[col]\" tooltipPlacement=\"bottom\" [ngStyle]=\"{ cursor: 'text' }\">\n                        @if(isCellValArray(rowData[col])) { @if(isSelectable && isMultiSelectField){\n                        <adk-field\n                            *ngIf=\"adkTable.selected(rowData) && (cellMultiSelector(rowIndex, rowData[col]) | async) as field\"\n                            [field]=\"field\"\n                        ></adk-field>\n                        } @else {\n                        <tw-typography [variant]=\"'small'\" class=\"font-normal ml-2\">\n                            {{ rowData[col].join(', ') }}\n                        </tw-typography>\n                        } } @else { @if (isCellFieldObject(rowData[col])) {\n                        <adk-field [field]=\"rowData[col]\"></adk-field>\n                        } @else {\n                        <tw-typography [variant]=\"'small'\" class=\"font-normal ml-2\">\n                            {{ rowData[col] }}\n                        </tw-typography>\n                        } }\n                    </div>\n                </td>\n                }\n            </tr>\n        </ng-template>\n\n        <!-- Checkbox Render -->\n        <ng-template #checkbox let-isCheckAll=\"isCheckAll\" let-groupData=\"groupData\" let-rowData=\"rowData\">\n            @if(isCheckAll) {\n            <div class=\"inline-flex items-center\">\n                <label for=\"selectAllCheckbox\" class=\"relative flex items-center p-3 rounded-full cursor-pointer\">\n                    <input\n                        type=\"checkbox\"\n                        class=\"before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10 w-4 h-4\"\n                        id=\"selectAllCheckbox\"\n                        name=\"selectAllCheckbox\"\n                        [checked]=\"adkTable.selectedRowsData().length === adkTable.visibleData().length\"\n                        (change)=\"adkTable.toggleAllRowsSelection()\"\n                    />\n                    <span\n                        class=\"absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100\"\n                    >\n                        <svg\n                            xmlns=\"http://www.w3.org/2000/svg\"\n                            class=\"h-3.5 w-3.5\"\n                            viewBox=\"0 0 20 20\"\n                            fill=\"currentColor\"\n                            stroke=\"currentColor\"\n                            stroke-width=\"1\"\n                        >\n                            <path\n                                fill-rule=\"evenodd\"\n                                d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\"\n                                clip-rule=\"evenodd\"\n                            ></path>\n                        </svg>\n                    </span>\n                </label>\n            </div>\n            } @else {\n            <div class=\"inline-flex items-center\">\n                <label class=\"relative flex items-center p-3 rounded-full cursor-pointer\" for=\"checkbox\">\n                    <input\n                        type=\"checkbox\"\n                        class=\"before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10 w-4 h-4\"\n                        [checked]=\"isSelected(rowData)\"\n                        (change)=\"adkTable.toggleRowSelection(rowData)\"\n                    />\n                    <span\n                        class=\"absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100\"\n                    >\n                        <svg\n                            xmlns=\"http://www.w3.org/2000/svg\"\n                            class=\"h-3.5 w-3.5\"\n                            viewBox=\"0 0 20 20\"\n                            fill=\"currentColor\"\n                            stroke=\"currentColor\"\n                            stroke-width=\"1\"\n                        >\n                            <path\n                                fill-rule=\"evenodd\"\n                                d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\"\n                                clip-rule=\"evenodd\"\n                            ></path>\n                        </svg>\n                    </span>\n                </label>\n            </div>\n            }\n        </ng-template>`,\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n        `,\n    ],\n})\nexport class TableComponent {\n    adkTable = inject(AdkTable, { self: true });\n    @Input() set data(value: any[]) {\n        this.adkTable.initialData = value;\n    }\n    @Input() columns: string[] = [];\n    @Input() isDraggable = false;\n    @Input() isSelectable = false;\n    @Input() isSortable = false;\n\n    rowFocus = new ImperativeObservable<RowData | null>(null);\n\n    isSelected(row: RowData): boolean {\n        const rowStr = JSON.stringify(row);\n        return this.adkTable.selectedRowsData().includes(rowStr);\n    }\n\n    isRowFocused(row: RowData): boolean {\n        const selectedRowStr = JSON.stringify(this.rowFocus.value);\n        const rowStr = JSON.stringify(row);\n        return selectedRowStr === rowStr;\n    }\n\n    isCellValArray(value: string | []) {\n        return Array.isArray(value);\n    }\n\n    isCellFieldObject(value: Field | any) {\n        if (typeof value === 'object') return true;\n        return false;\n    }\n\n    onDragDrop(index: number) {\n        this.adkTable.dragDrop(index);\n        this.columns = this.adkTable.headers();\n    }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "\n            :host {\n                display: block;\n                width: 100%;\n            }\n        \n",
+            "extends": [],
+            "accessors": {
+                "data": {
+                    "name": "data",
+                    "setSignature": {
+                        "name": "data",
+                        "type": "void",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "args": [
+                            {
+                                "name": "value",
+                                "type": "any[]",
+                                "deprecated": false,
+                                "deprecationMessage": ""
+                            }
+                        ],
+                        "returnType": "void",
+                        "line": 263,
+                        "jsdoctags": [
+                            {
+                                "name": "value",
+                                "type": "any[]",
+                                "deprecated": false,
+                                "deprecationMessage": "",
+                                "tagName": {
+                                    "text": "param"
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
             "name": "TableExampleComponent",
             "id": "component-TableExampleComponent-0ca1ef03e795b6cf06947eed6c061c32a8852c1c7af72cfcc962c0fc8e2620894262e298f24d9090ca697fd8133a1a59be60e56cf5ba26d5d7b948d03404e500",
             "file": "projects/ng-lib/src/lib/directives/stories/selection.spec.stories.ts",
@@ -11321,7 +11653,7 @@
         },
         {
             "name": "TwTableSettingsDialogComponent",
-            "id": "component-TwTableSettingsDialogComponent-d9e1e0243862ae49479b6e2ba6ef95fc1d3ffed91acdd1793cc0a15d21c33f653d73c37a2cfb421f30dda4acb3999b34ca8069ed870f11004bdb6acadecd855e",
+            "id": "component-TwTableSettingsDialogComponent-0eeb33dae33e017fbfa649558cee0f0921eb4978637e263dcb5f5dba1ec0d9a8e2eabe494d04690da76979dc11b52f30211624540dee4045c46a8102c1e8a93c",
             "file": "projects/ng-lib/src/lib/tw-ui/components/table/tw-table-settings-dialog.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -11529,7 +11861,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { AdkFormGroup, FieldsComponent } from '../../../tw-form-ui';\nimport { AfterViewInit, Component, EventEmitter, OnInit, Output, inject } from '@angular/core';\nimport { SettingsIconComponent, preferenceColumnSelector, preferenceGroupBySelector, preferenceVisibilitySelector } from './utils';\nimport { distinct, distinctUntilChanged } from 'rxjs';\n\nimport { ButtonComponent } from '../button.component';\nimport { CommonModule } from '@angular/common';\nimport { DialogComponent } from '../dialog/dialog.component';\nimport { FieldComponent } from '../../../tw-form-ui/components/field.component';\nimport { IconButtonComponent } from './utils/icon-button.component';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { TableDataSourceService } from './table-datasource.service';\nimport { TwCardComponent } from '../card/tw-card.component';\nimport { TwTypographyComponent } from '../typography.component';\n\n@Component({\n    selector: 'tw-table-settings-dialog',\n    standalone: true,\n    imports: [\n        CommonModule,\n        ReactiveFormsModule,\n        SettingsIconComponent,\n        TwCardComponent,\n        TwTypographyComponent,\n        IconButtonComponent,\n        DialogComponent,\n        ButtonComponent,\n        FieldsComponent,\n        FieldComponent,\n    ],\n    hostDirectives: [AdkFormGroup],\n    template: `\n        <adk-settings-icon (click)=\"openDialog()\"> </adk-settings-icon>\n        <tw-dialog [isOpen]=\"isDialogOpen\" (close)=\"closeDialog()\" class=\"bg-transparent shadow-none\">\n            <tw-card [isHeaderWrapped]=\"true\" [isFooterWrapped]=\"true\">\n                <tw-typography\n                    variant=\"h3\"\n                    color=\"blue-gray\"\n                    class=\"adk-card-header\"\n                    classStyle=\"antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900 flex flex-row\"\n                >\n                    Column Preferences\n                    <div class=\"grow\"></div>\n                    <adk-icon-button (click)=\"closeDialog()\"></adk-icon-button>\n                </tw-typography>\n                <div class=\"adk-card-body\">\n                    <form [formGroup]=\"formGroup\">\n                        @if (visibleColumnField) {\n                        <tw-typography class=\"adk-card-subtitle mb-3 font-normal\" variant=\"paragraph\" color=\"gray\">\n                            Customize the columns visibility.\n                        </tw-typography>\n                        <adk-fields [fieldConfig]=\"[visibleColumnField]\" [wrapperClass]=\"'flex flex-col gap-4'\"></adk-fields>\n                        } @if (columnField) {\n                        <tw-typography class=\"mt-4 font-normal\" variant=\"paragraph\" color=\"gray\">\n                            Select the column to filter a search value\n                        </tw-typography>\n                        <adk-fields class=\"mt-4\" [fieldConfig]=\"[columnField]\" [wrapperClass]=\"'flex flex-col gap-4'\"></adk-fields>\n                        } @if (groupByField) {\n                        <adk-fields class=\"mt-4\" [fieldConfig]=\"[groupByField]\" [wrapperClass]=\"'flex flex-col gap-4'\"></adk-fields>\n                        }\n                    </form>\n                </div>\n                <div class=\"adk-card-footer\">\n                    <adk-button\n                        class=\"w-full\"\n                        (click)=\"closeDialog()\"\n                        customClasses=\"align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-blue-500 text-white shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none block w-full\"\n                    >\n                        Close Preferences\n                    </adk-button>\n                </div>\n            </tw-card>\n        </tw-dialog>\n    `,\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n        `,\n    ],\n})\nexport class TwTableSettingsDialogComponent implements OnInit, AfterViewInit {\n    @Output() triggerUpdate = new EventEmitter<boolean>();\n    #formGroup = inject(AdkFormGroup, { self: true });\n    isDialogOpen = false;\n    tdss = inject(TableDataSourceService);\n    visibleColumnField = preferenceVisibilitySelector(this.tdss.get('headers'));\n    columnField = preferenceColumnSelector(this.tdss.get('headers'));\n    groupByField = preferenceGroupBySelector(this.tdss.get('headers'));\n\n    get formGroup() {\n        return this.#formGroup.formGroup();\n    }\n\n    ngAfterViewInit(): void {\n        this.#formGroup.setFormGroup([this.visibleColumnField, this.columnField, this.groupByField]);\n        let previousValue = this.formGroup.value;\n        const headers = this.tdss.get('headers');\n\n        this.formGroup.valueChanges.pipe(distinctUntilChanged()).subscribe((currentValue) => {\n            let selectedVisibleColumns: string[] = [];\n            let action = { visibleColumns: selectedVisibleColumns, groupBy: currentValue['groupBy'] };\n\n            // Check if any relevant value has changed\n            let hasChanged = false;\n\n            if (previousValue['groupBy'] !== currentValue['groupBy']) {\n                hasChanged = true;\n            }\n\n            if (previousValue['column'] !== currentValue['column']) {\n                hasChanged = true;\n            }\n\n            headers.forEach((element) => {\n                if (previousValue[element] !== currentValue[element]) {\n                    hasChanged = true;\n                }\n            });\n\n            if (!hasChanged) {\n                return;\n            }\n\n            // Update previous value\n            previousValue = { ...currentValue };\n\n            // Process the changes\n            headers.forEach((element) => {\n                if (currentValue[element]) selectedVisibleColumns.push(element);\n            });\n\n            action.visibleColumns = selectedVisibleColumns;\n            action.groupBy = currentValue['groupBy'] === 'none' ? '' : currentValue['groupBy'];\n            this.tdss.setPreferences(action);\n            this.tdss.setFilter({ column: currentValue['column'], value: '' });\n            this.triggerUpdate.emit(true);\n        });\n    }\n\n    ngOnInit(): void {\n        this.visibleColumnField = preferenceVisibilitySelector(this.tdss.get('headers'));\n        this.columnField = preferenceColumnSelector(this.tdss.get('headers'));\n        this.groupByField = preferenceGroupBySelector(this.tdss.get('headers'));\n    }\n\n    openDialog() {\n        this.isDialogOpen = true;\n    }\n\n    closeDialog() {\n        this.isDialogOpen = false;\n        this.triggerUpdate.emit(this.isDialogOpen);\n    }\n\n    getUpdatedPreferences(): string[] {\n        return ['column1', 'column2'];\n    }\n\n    getUpdatedGroupBy(): string {\n        return 'column1';\n    }\n}\n",
+            "sourceCode": "import { AdkFormGroup, FieldsComponent } from '../../../tw-form-ui';\nimport { AfterViewInit, Component, EventEmitter, OnInit, Output, inject } from '@angular/core';\nimport { SettingsIconComponent, preferenceColumnSelector, preferenceGroupBySelector, preferenceVisibilitySelector } from './utils';\n\nimport { ButtonComponent } from '../button.component';\nimport { CommonModule } from '@angular/common';\nimport { DialogComponent } from '../dialog/dialog.component';\nimport { FieldComponent } from '../../../tw-form-ui/components/field.component';\nimport { IconButtonComponent } from './utils/icon-button.component';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { TableDataSourceService } from './table-datasource.service';\nimport { TwCardComponent } from '../card/tw-card.component';\nimport { TwTypographyComponent } from '../typography.component';\nimport { distinctUntilChanged } from 'rxjs';\n\n@Component({\n    selector: 'tw-table-settings-dialog',\n    standalone: true,\n    imports: [\n        CommonModule,\n        ReactiveFormsModule,\n        SettingsIconComponent,\n        TwCardComponent,\n        TwTypographyComponent,\n        IconButtonComponent,\n        DialogComponent,\n        ButtonComponent,\n        FieldsComponent,\n        FieldComponent,\n    ],\n    hostDirectives: [AdkFormGroup],\n    template: `\n        <adk-settings-icon (click)=\"openDialog()\"> </adk-settings-icon>\n        <tw-dialog [isOpen]=\"isDialogOpen\" (close)=\"closeDialog()\" class=\"bg-transparent shadow-none\">\n            <tw-card [isHeaderWrapped]=\"true\" [isFooterWrapped]=\"true\">\n                <tw-typography\n                    variant=\"h3\"\n                    color=\"blue-gray\"\n                    class=\"adk-card-header\"\n                    classStyle=\"antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900 flex flex-row\"\n                >\n                    Column Preferences\n                    <div class=\"grow\"></div>\n                    <adk-icon-button (click)=\"closeDialog()\"></adk-icon-button>\n                </tw-typography>\n                <div class=\"adk-card-body\">\n                    <form [formGroup]=\"formGroup\">\n                        @if (visibleColumnField) {\n                        <tw-typography class=\"adk-card-subtitle mb-3 font-normal\" variant=\"paragraph\" color=\"gray\">\n                            Customize the columns visibility.\n                        </tw-typography>\n                        <adk-fields [fieldConfig]=\"[visibleColumnField]\" [wrapperClass]=\"'flex flex-col gap-4'\"></adk-fields>\n                        } @if (columnField) {\n                        <tw-typography class=\"mt-4 font-normal\" variant=\"paragraph\" color=\"gray\">\n                            Select the column to filter a search value\n                        </tw-typography>\n                        <adk-fields class=\"mt-4\" [fieldConfig]=\"[columnField]\" [wrapperClass]=\"'flex flex-col gap-4'\"></adk-fields>\n                        } @if (groupByField) {\n                        <adk-fields class=\"mt-4\" [fieldConfig]=\"[groupByField]\" [wrapperClass]=\"'flex flex-col gap-4'\"></adk-fields>\n                        }\n                    </form>\n                </div>\n                <div class=\"adk-card-footer\">\n                    <adk-button\n                        class=\"w-full\"\n                        (click)=\"closeDialog()\"\n                        customClasses=\"align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-blue-500 text-white shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none block w-full\"\n                    >\n                        Close Preferences\n                    </adk-button>\n                </div>\n            </tw-card>\n        </tw-dialog>\n    `,\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n        `,\n    ],\n})\nexport class TwTableSettingsDialogComponent implements OnInit, AfterViewInit {\n    @Output() triggerUpdate = new EventEmitter<boolean>();\n    #formGroup = inject(AdkFormGroup, { self: true });\n    isDialogOpen = false;\n    tdss = inject(TableDataSourceService);\n    visibleColumnField = preferenceVisibilitySelector(this.tdss.get('headers'));\n    columnField = preferenceColumnSelector(this.tdss.get('headers'));\n    groupByField = preferenceGroupBySelector(this.tdss.get('headers'));\n\n    get formGroup() {\n        return this.#formGroup.formGroup();\n    }\n\n    ngAfterViewInit(): void {\n        this.#formGroup.setFormGroup([this.visibleColumnField, this.columnField, this.groupByField]);\n        let previousValue = this.formGroup.value;\n        const headers = this.tdss.get('headers');\n\n        this.formGroup.valueChanges.pipe(distinctUntilChanged()).subscribe((currentValue) => {\n            let selectedVisibleColumns: string[] = [];\n            let action = { visibleColumns: selectedVisibleColumns, groupBy: currentValue['groupBy'] };\n\n            // Check if any relevant value has changed\n            let hasChanged = false;\n\n            if (previousValue['groupBy'] !== currentValue['groupBy']) {\n                hasChanged = true;\n            }\n\n            if (previousValue['column'] !== currentValue['column']) {\n                hasChanged = true;\n            }\n\n            headers.forEach((element) => {\n                if (previousValue[element] !== currentValue[element]) {\n                    hasChanged = true;\n                }\n            });\n\n            if (!hasChanged) {\n                return;\n            }\n\n            // Update previous value\n            previousValue = { ...currentValue };\n\n            // Process the changes\n            headers.forEach((element) => {\n                if (currentValue[element]) selectedVisibleColumns.push(element);\n            });\n\n            action.visibleColumns = selectedVisibleColumns;\n            action.groupBy = currentValue['groupBy'] === 'none' ? '' : currentValue['groupBy'];\n            this.tdss.setPreferences(action);\n            this.tdss.setFilter({ column: currentValue['column'], value: '' });\n            this.triggerUpdate.emit(true);\n        });\n    }\n\n    ngOnInit(): void {\n        this.visibleColumnField = preferenceVisibilitySelector(this.tdss.get('headers'));\n        this.columnField = preferenceColumnSelector(this.tdss.get('headers'));\n        this.groupByField = preferenceGroupBySelector(this.tdss.get('headers'));\n    }\n\n    openDialog() {\n        this.isDialogOpen = true;\n    }\n\n    closeDialog() {\n        this.isDialogOpen = false;\n        this.triggerUpdate.emit(this.isDialogOpen);\n    }\n\n    getUpdatedPreferences(): string[] {\n        return ['column1', 'column2'];\n    }\n\n    getUpdatedGroupBy(): string {\n        return 'column1';\n    }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "\n            :host {\n                display: block;\n                width: 100%;\n            }\n        \n",
@@ -12240,6 +12572,16 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/table.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<TableComponent>",
+                "defaultValue": "{\n    title: 'TailwindUI/Components/Tables/Table',\n    component: TableComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TableComponent],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\n              ${story}\n            </div>`\n        ),\n    ],\n    args: {},\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table-card.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -12264,7 +12606,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<DummyTableComponent>",
-                "defaultValue": "{\n    title: 'Components/AdkTable',\n    component: DummyTableComponent,\n    decorators: [\n        moduleMetadata({\n            imports: [DummyTableComponent],\n        }),\n    ],\n    tags: ['autodocs'],\n}"
+                "defaultValue": "{\n    title: 'TailwindUI/Components/Directives/AdkTable',\n    component: DummyTableComponent,\n    decorators: [\n        moduleMetadata({\n            imports: [DummyTableComponent],\n        }),\n    ],\n    tags: ['autodocs'],\n}"
             },
             {
                 "name": "mockData",
@@ -12645,6 +12987,16 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "{\n    args: {\n        disabled: false,\n        variant: 'filled',\n        color: 'success',\n    },\n}"
+            },
+            {
+                "name": "TableWithAllSettings",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/table.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n    args: {\n        data: [\n            {\n                name: 'John Michael',\n                job: 'Manager So I started to walk into the water. I wont lie to you, I was terrified. But I pressed on, and as I made my way past the breakers, the water became calmer and calmer.',\n                date: '23/04/10',\n            },\n            {\n                name: 'Alexa Johnson',\n                job: 'CEO',\n                date: '23/04/02',\n            },\n            {\n                name: 'Sierra Brooks',\n                job: 'Designer',\n                date: '23/04/05',\n            },\n            {\n                name: 'Thomas Smith',\n                job: 'Developer',\n                date: '23/04/05',\n            },\n            {\n                name: 'Jenna Kian',\n                job: 'Marketing',\n                date: '23/04/18',\n            },\n            {\n                name: 'Denzel Washington',\n                job: 'Actor',\n                date: '23/04/05',\n            },\n            {\n                name: 'Morgan Freeman',\n                job: 'Actor',\n                date: '23/04/05',\n            },\n        ],\n        isSelectable: true,\n        isSortable: true,\n        isDraggable: true,\n        // headers: ['name', 'job', 'date'],\n        // actionColName: ' ',\n        // isDraggable: true,\n        // rows: [\n        //     {\n        //         name: 'John Michael',\n        //         job: 'Manager So I started to walk into the water. I wont lie to you, I was terrified. But I pressed on, and as I made my way past the breakers, the water became calmer and calmer.',\n        //         date: '23/04/10',\n        //     },\n        //     {\n        //         name: 'Alexa Johnson',\n        //         job: 'CEO',\n        //         date: '23/04/02',\n        //     },\n        //     {\n        //         name: 'Sierra Brooks',\n        //         job: 'Designer',\n        //         date: '23/04/05',\n        //     },\n        //     {\n        //         name: 'Thomas Smith',\n        //         job: 'Developer',\n        //         date: '23/04/05',\n        //     },\n        //     {\n        //         name: 'Jenna Kian',\n        //         job: 'Marketing',\n        //         date: '23/04/18',\n        //     },\n        //     {\n        //         name: 'Denzel Washington',\n        //         job: 'Actor',\n        //         date: '23/04/05',\n        //     },\n        //     {\n        //         name: 'Morgan Freeman',\n        //         job: 'Actor',\n        //         date: '23/04/05',\n        //     },\n        // ],\n    },\n}"
             },
             {
                 "name": "TableWithAllSettings",
@@ -13129,6 +13481,17 @@
                 "subtype": "typealias",
                 "rawtype": "StoryObj<TextareaComponent>",
                 "file": "projects/ng-lib/src/lib/tw-form-ui/components/types/stories/textarea.component.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 183
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "StoryObj<TableComponent>",
+                "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/table.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "description": "",
@@ -13631,7 +13994,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<DummyTableComponent>",
-                    "defaultValue": "{\n    title: 'Components/AdkTable',\n    component: DummyTableComponent,\n    decorators: [\n        moduleMetadata({\n            imports: [DummyTableComponent],\n        }),\n    ],\n    tags: ['autodocs'],\n}"
+                    "defaultValue": "{\n    title: 'TailwindUI/Components/Directives/AdkTable',\n    component: DummyTableComponent,\n    decorators: [\n        moduleMetadata({\n            imports: [DummyTableComponent],\n        }),\n    ],\n    tags: ['autodocs'],\n}"
                 },
                 {
                     "name": "sampleData",
@@ -14352,6 +14715,28 @@
                     "defaultValue": "{\n    args: {\n        field: FieldBuilder.createField('textarea', 'textarea', 'textarea', 'textarea', 'textarea'),\n    },\n}"
                 }
             ],
+            "projects/ng-lib/src/lib/tw-ui/components/table/stories/table.stories.ts": [
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/table.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<TableComponent>",
+                    "defaultValue": "{\n    title: 'TailwindUI/Components/Tables/Table',\n    component: TableComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TableComponent],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\n              ${story}\n            </div>`\n        ),\n    ],\n    args: {},\n}"
+                },
+                {
+                    "name": "TableWithAllSettings",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/table.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n    args: {\n        data: [\n            {\n                name: 'John Michael',\n                job: 'Manager So I started to walk into the water. I wont lie to you, I was terrified. But I pressed on, and as I made my way past the breakers, the water became calmer and calmer.',\n                date: '23/04/10',\n            },\n            {\n                name: 'Alexa Johnson',\n                job: 'CEO',\n                date: '23/04/02',\n            },\n            {\n                name: 'Sierra Brooks',\n                job: 'Designer',\n                date: '23/04/05',\n            },\n            {\n                name: 'Thomas Smith',\n                job: 'Developer',\n                date: '23/04/05',\n            },\n            {\n                name: 'Jenna Kian',\n                job: 'Marketing',\n                date: '23/04/18',\n            },\n            {\n                name: 'Denzel Washington',\n                job: 'Actor',\n                date: '23/04/05',\n            },\n            {\n                name: 'Morgan Freeman',\n                job: 'Actor',\n                date: '23/04/05',\n            },\n        ],\n        isSelectable: true,\n        isSortable: true,\n        isDraggable: true,\n        // headers: ['name', 'job', 'date'],\n        // actionColName: ' ',\n        // isDraggable: true,\n        // rows: [\n        //     {\n        //         name: 'John Michael',\n        //         job: 'Manager So I started to walk into the water. I wont lie to you, I was terrified. But I pressed on, and as I made my way past the breakers, the water became calmer and calmer.',\n        //         date: '23/04/10',\n        //     },\n        //     {\n        //         name: 'Alexa Johnson',\n        //         job: 'CEO',\n        //         date: '23/04/02',\n        //     },\n        //     {\n        //         name: 'Sierra Brooks',\n        //         job: 'Designer',\n        //         date: '23/04/05',\n        //     },\n        //     {\n        //         name: 'Thomas Smith',\n        //         job: 'Developer',\n        //         date: '23/04/05',\n        //     },\n        //     {\n        //         name: 'Jenna Kian',\n        //         job: 'Marketing',\n        //         date: '23/04/18',\n        //     },\n        //     {\n        //         name: 'Denzel Washington',\n        //         job: 'Actor',\n        //         date: '23/04/05',\n        //     },\n        //     {\n        //         name: 'Morgan Freeman',\n        //         job: 'Actor',\n        //         date: '23/04/05',\n        //     },\n        // ],\n    },\n}"
+                }
+            ],
             "projects/ng-lib/src/lib/tw-ui/components/table/stories/tw-table.stories.ts": [
                 {
                     "name": "meta",
@@ -14883,6 +15268,19 @@
                     "subtype": "typealias",
                     "rawtype": "StoryObj<TextareaComponent>",
                     "file": "projects/ng-lib/src/lib/tw-form-ui/components/types/stories/textarea.component.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 183
+                }
+            ],
+            "projects/ng-lib/src/lib/tw-ui/components/table/stories/table.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "StoryObj<TableComponent>",
+                    "file": "projects/ng-lib/src/lib/tw-ui/components/table/stories/table.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "description": "",
@@ -16145,7 +16543,7 @@
                 "linktype": "directive",
                 "name": "AdkTable",
                 "coveragePercent": 0,
-                "coverageCount": "0/39",
+                "coverageCount": "0/40",
                 "status": "low"
             },
             {
@@ -16209,6 +16607,26 @@
                 "name": "TableState",
                 "coveragePercent": 0,
                 "coverageCount": "0/11",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/tw-ui/components/table/stories/table.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/tw-ui/components/table/stories/table.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "TableWithAllSettings",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {
@@ -16308,6 +16726,15 @@
                 "name": "TableDataSourceService",
                 "coveragePercent": 0,
                 "coverageCount": "0/22",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-lib/src/lib/tw-ui/components/table/table.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "TableComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/13",
                 "status": "low"
             },
             {

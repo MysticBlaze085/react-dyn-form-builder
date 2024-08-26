@@ -1,6 +1,6 @@
 import { Directive, Input, computed, inject, signal } from '@angular/core';
 import { FilterCriteria, TableDataSourceState } from '../models';
-import { ID, Identifiable, RowData } from 'projects/ng-lib/src/lib/tw-form-ui/models';
+import { Identifiable, RowData } from 'projects/ng-lib/src/lib/tw-form-ui/models';
 import { PaginationCriteria, SortCriteria } from '../models/table.interface';
 
 import { AdkSelection } from 'projects/ng-lib/src/lib/tw-form-ui';
@@ -49,6 +49,7 @@ export class AdkTable<T extends Identifiable> {
     });
 
     // Computed signals for derived state
+    readonly state = computed(() => this.#state());
     readonly headers = computed(() => this.#state().headers);
     readonly visibleData = computed(() => this.getVisibleData());
     readonly filteredData = computed(() => this.getFilterCriteriaData());
@@ -101,6 +102,10 @@ export class AdkTable<T extends Identifiable> {
     dragStart(index: number): void {
         console.log('dragStart', index, this.#state());
         this.#state.update((state) => ({ ...state, draggedColIndex: index }));
+    }
+
+    dragOver(event: DragEvent): void {
+        event.preventDefault();
     }
 
     dragDrop(index: number): void {
@@ -223,7 +228,7 @@ export class AdkTable<T extends Identifiable> {
         else this.#selection.select(rowDataStr);
         this.#state.update((state) => ({
             ...state,
-            selectedRows: this.#selection.items().map((item) => JSON.parse(item)),
+            selectedRows: this.#selection.items(),
         }));
     }
 
@@ -237,11 +242,14 @@ export class AdkTable<T extends Identifiable> {
                 selectedRows: allSelected
                     ? []
                     : state.dataSource.map((item) => {
-                          this.#selection.select(JSON.stringify(item));
+                          const itemStr = JSON.stringify(item);
+                          this.#selection.select(itemStr);
                           return item;
                       }),
             };
         });
+
+        console.log('selectedRows', this.selectedRowsData());
     }
 
     selected(row: RowData): boolean {
@@ -281,9 +289,9 @@ export class AdkTable<T extends Identifiable> {
         return this.visibleData().slice(startIndex, startIndex + paginationCriteria.pageSize);
     }
 
-    private getSelectedRowsData(): T[] {
+    private getSelectedRowsData(): string[] {
         const { selectedRows, dataSource } = this.#state();
-        return dataSource.filter((item) => selectedRows.includes(item));
+        return dataSource.filter((item) => selectedRows.includes(item)).map((item) => JSON.stringify(item));
     }
 
     private getGroupedData(): { [key: string]: T[] } {
