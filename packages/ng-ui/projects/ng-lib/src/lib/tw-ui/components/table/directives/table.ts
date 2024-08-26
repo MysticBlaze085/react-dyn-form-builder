@@ -52,7 +52,7 @@ export class AdkTable<T extends Identifiable> {
     readonly state = computed(() => this.#state());
     readonly headers = computed(() => this.#state().headers);
     readonly visibleData = computed(() => this.getVisibleData());
-    readonly filteredData = computed(() => this.getFilterCriteriaData());
+    readonly filteredCriteria = computed(() => this.getFilterCriteriaData());
     readonly currentPageData = computed(() => this.getCurrentPageData());
     readonly selectedRowsData = computed(() => this.getSelectedRowsData());
     readonly groupedData = computed(() => this.getGroupedData());
@@ -72,6 +72,10 @@ export class AdkTable<T extends Identifiable> {
             paginationCriteria: {
                 ...state.paginationCriteria,
                 totalPages: Math.ceil(data.length / state.paginationCriteria.pageSize),
+            },
+            filterCriteria: {
+                column: data.length > 0 ? Object.keys(data[0])[0] : '',
+                value: '',
             },
         }));
         this.updatePagination();

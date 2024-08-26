@@ -1,16 +1,16 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
-import { Field, RowData } from '../../../tw-form-ui';
+import { Field, RowData } from '../../../../tw-form-ui';
 
-import { AdkExpansionPanelComponent } from '../expansion-panel.component';
-import { AdkSelection } from '../../../directives';
-import { AdkTable } from './directives/table';
-import { AdkTooltipDirective } from '../../../directives/tooltip';
+import { AdkExpansionPanelComponent } from '../../expansion-panel.component';
+import { AdkSelection } from '../../../../directives';
+import { AdkTable } from '../directives/table';
+import { AdkTooltipDirective } from '../../../../directives/tooltip';
 import { CheckboxComponent } from 'projects/ng-lib/src/public-api';
-import { FieldComponent } from '../../../tw-form-ui/components/field.component';
-import { ImperativeObservable } from '../../../utils';
-import { SortableIconComponent } from './utils';
-import { TwTypographyComponent } from '../typography.component';
+import { FieldComponent } from '../../../../tw-form-ui/components/field.component';
+import { ImperativeObservable } from '../../../../utils';
+import { SortableIconComponent } from '../utils';
+import { TwTypographyComponent } from '../../typography.component';
 
 @Component({
     selector: 'tw-table',
@@ -39,8 +39,8 @@ import { TwTypographyComponent } from '../typography.component';
     ],
 })
 export class TableComponent {
-    adkTable = inject(AdkTable, { self: true });
-    @Input() set data(value: any[]) {
+    adkTable = inject(AdkTable);
+    @Input() set data(value: RowData[]) {
         this.adkTable.initialData = value;
     }
     @Input() columns: string[] = [];

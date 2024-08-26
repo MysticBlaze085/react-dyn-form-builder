@@ -59,7 +59,7 @@
         {{ col ?? ' ' | uppercase }}
         <div class="flex flex-row gap-2">
           @if($index !== columns.length && isSortable) {
-          <tw-sortable-icon (click)="sortRows(col)" (keydown)="sortRows(col)"></tw-sortable-icon>
+          <tw-sortable-icon (click)="adkTable.sortBy(col)" (keydown)="sortRows(col)"></tw-sortable-icon>
           } @if(adkTable?.sortCriteriaData().key === col) {
           <span>{{ sortDataSource.direction === 'ascending' ? '🔼' : '🔽' }}</span>
           }
