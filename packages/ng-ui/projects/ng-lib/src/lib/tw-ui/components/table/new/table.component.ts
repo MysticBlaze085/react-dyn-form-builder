@@ -1,11 +1,12 @@
+import { AdkFormGroup, AdkSelection } from '../../../../directives';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { Field, RowData } from '../../../../tw-form-ui';
 
 import { AdkExpansionPanelComponent } from '../../expansion-panel.component';
-import { AdkSelection } from '../../../../directives';
 import { AdkTable } from '../directives/table';
 import { AdkTooltipDirective } from '../../../../directives/tooltip';
+import { ButtonComponent } from '../../button.component';
 import { CheckboxComponent } from 'projects/ng-lib/src/public-api';
 import { FieldComponent } from '../../../../tw-form-ui/components/field.component';
 import { FormsModule } from '@angular/forms';
@@ -15,25 +16,28 @@ import { TableHeaderComponent } from './table-header.component';
 import { TwCardComponent } from '../../card/tw-card.component';
 import { TwTypographyComponent } from '../../typography.component';
 
+const imports = [
+    CommonModule,
+    AdkSelection,
+    AdkTooltipDirective,
+    AdkExpansionPanelComponent,
+    AsyncPipe,
+    TableHeaderComponent,
+    TwTypographyComponent,
+    TwCardComponent,
+    CheckboxComponent,
+    SortableIconComponent,
+    FieldComponent,
+    AdkTable,
+    FormsModule,
+    ButtonComponent,
+];
+
 @Component({
     selector: 'tw-table',
     standalone: true,
-    imports: [
-        CommonModule,
-        AdkSelection,
-        AdkTooltipDirective,
-        AdkExpansionPanelComponent,
-        AsyncPipe,
-        TableHeaderComponent,
-        TwTypographyComponent,
-        TwCardComponent,
-        CheckboxComponent,
-        SortableIconComponent,
-        FieldComponent,
-        AdkTable,
-        FormsModule,
-    ],
-    hostDirectives: [AdkTable],
+    imports: [...imports],
+    hostDirectives: [AdkTable, AdkFormGroup],
     templateUrl: './table.component.html',
     styles: [
         `
@@ -41,10 +45,14 @@ import { TwTypographyComponent } from '../../typography.component';
                 display: block;
                 width: 100%;
             }
+            .material-symbols-outlined {
+                font-size: 16px !important;
+            }
         `,
     ],
 })
 export class TableComponent implements OnInit {
+    #formGroup = inject(AdkFormGroup, { self: true });
     adkTable = inject(AdkTable);
     @Input() isWrapped = false;
     @Input() set data(value: RowData[]) {
@@ -56,6 +64,10 @@ export class TableComponent implements OnInit {
     @Input() isSortable = false;
     @Input() tableHeader!: { title: string; subtitle: string; isSearchable: boolean; buttons: any[] };
 
+    get formGroup() {
+        return this.#formGroup.formGroup();
+    }
+
     rowFocus = new ImperativeObservable<RowData | null>(null);
 
     groupByColumn: string = '';
@@ -64,6 +76,9 @@ export class TableComponent implements OnInit {
 
     filterColumn: string = '';
     filterValue: string = '';
+
+    searchColumn = new ImperativeObservable<string | null>('');
+    field = new ImperativeObservable<Field | undefined>(undefined);
 
     ngOnInit(): void {
         console.log('ngOnInit', this.data, this.adkTable.state());

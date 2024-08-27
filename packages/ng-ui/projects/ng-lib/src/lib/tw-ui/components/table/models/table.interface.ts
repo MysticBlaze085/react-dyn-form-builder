@@ -49,5 +49,5 @@ export interface SortCriteria {
 
 export interface PreferenceCriteria {
     visibleColumns: string[];
-    groupBy: string | undefined;
+    groupByColumn: string;
 }

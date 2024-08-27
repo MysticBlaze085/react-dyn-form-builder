@@ -2,9 +2,8 @@
 @if(isWrapped && tableHeader) {
 <tw-card>
   <div class="adk-card-header">
-    <tw-table-header [title]="tableHeader.title" [subtitle]="tableHeader.subtitle"
-      [isSearchable]="tableHeader.isSearchable" [buttons]="tableHeader.buttons"></tw-table-header>
-    <select [(ngModel)]="filterColumn" (change)="onFilterColumnChange($event.target.value)">
+    <ng-container *ngTemplateOutlet="tableWrapperHeader; context: {tableHeader}"></ng-container>
+    <!-- <select [(ngModel)]="filterColumn" (change)="onFilterColumnChange($event.target.value)">
       <option *ngFor="let col of columns" [value]="col">Filter by {{ col }}</option>
     </select>
     <input [(ngModel)]="filterValue" (input)="applyFilter()" [ngModelOptions]="{ standalone: true }"
@@ -12,7 +11,7 @@
     <select [(ngModel)]="groupByColumn" (change)="adkTable.setGroupBy(groupByColumn)">
       <option value="">No Grouping</option>
       <option *ngFor="let col of columns" [value]="col">Group by {{ col }}</option>
-    </select>
+    </select> -->
   </div>
   <div class="adk-card-body">
     <ng-container *ngTemplateOutlet="tableContent; context: {
@@ -208,4 +207,53 @@
     </label>
   </div>
   }
+</ng-template>
+
+<ng-template #tableWrapperHeader let-tableHeader="tableHeader">
+  <div class="relative bg-clip-border mt-4 mx-4 bg-white text-gray-700 rounded-none overflow-visible">
+    <div class="mb-2 flex items-center justify-between gap-8">
+      <div>
+        @if(tableHeader.title){
+        <tw-typography variant="h5" color="blue-gray"
+          classStyle="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">{{
+          tableHeader.title }}</tw-typography>
+        } @if(tableHeader.subtitle){
+        <tw-typography color="gray" classStyle="mt-1 font-normal">{{ tableHeader.subtitle }}</tw-typography>
+        }
+      </div>
+      <div class="flex shrink-0 flex-col gap-2 sm:flex-row">
+        @if(tableHeader.buttons && tableHeader.buttons.length > 0){ @for(button of tableHeader.buttons; track $index){
+        <div class="flex items-center gap-3 cursor-pointer" (click)="button.onClick()">
+          <adk-button [color]="button.color" (click)="button.onClick()">
+            <span class="flex items-center gap-2">
+              @if(button.icon){
+              <span class="material-symbols-outlined">{{ button.icon }}</span> }{{ button.label }}</span>
+          </adk-button>
+        </div>
+        } }
+        <div class="flex items-center gap-3 cursor-pointer">
+          <!-- <tw-table-settings-dialog (triggerUpdate)="handlePreferences()"></tw-table-settings-dialog> -->
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
+      <!-- @if(tabs?.length){ -->
+      <!-- <Tabs value="{tabs.length">
+                0 ? tabs[0].value : ''} class="w-full md:w-max">
+                <TabsHeader>
+                    {tabs.map(({ label, value }) => (
+                    <Tab key="{value}" value="{value}"> &nbsp;&nbsp;{label}&nbsp;&nbsp; </Tab>
+                    ))}
+                </TabsHeader>
+            </Tabs> -->
+      <!-- } -->
+    </div>
+    @if((searchColumn.change$ | async) && isSearchable){
+    <form *ngIf="field.change$ | async as field" [formGroup]="formGroup"
+      class="flex flex-row gap-2 w-full flex-wrap z-[20000]">
+      <adk-fields [fieldConfig]="[field]"></adk-fields>
+    </form>
+    }
+  </div>
 </ng-template>

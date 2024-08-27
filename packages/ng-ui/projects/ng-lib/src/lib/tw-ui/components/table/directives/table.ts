@@ -5,6 +5,8 @@ import { PaginationCriteria, SortCriteria } from '../models/table.interface';
 
 import { AdkSelection } from 'projects/ng-lib/src/lib/tw-form-ui';
 
+//TODO: figure out field for search value it should change based on the column that are visible
+//TODO: maybe make a preferences adk directive of itself handling the preferences interactions
 @Directive({
     selector: '[adk-table]',
     exportAs: 'adkTable',
@@ -21,7 +23,7 @@ export class AdkTable<T extends Identifiable> {
         this.setColumns(cols);
     }
 
-    @Input() set groupBy(column: string | undefined) {
+    @Input() set groupBy(column: string) {
         this.setGroupBy(column);
     }
 
@@ -41,7 +43,7 @@ export class AdkTable<T extends Identifiable> {
         },
         preferenceCriteria: {
             visibleColumns: [],
-            groupBy: undefined,
+            groupByColumn: '',
         },
         selectedRows: [],
         sortCriteria: { key: '', direction: 'ascending' },
@@ -92,12 +94,12 @@ export class AdkTable<T extends Identifiable> {
         }));
     }
 
-    setGroupBy(column: string | undefined) {
+    setGroupBy(column: string) {
         this.#state.update((state) => ({
             ...state,
             preferenceCriteria: {
                 ...state.preferenceCriteria,
-                groupBy: column,
+                groupByColumn: column,
             },
         }));
     }
@@ -300,11 +302,11 @@ export class AdkTable<T extends Identifiable> {
 
     private getGroupedData(): { [key: string]: T[] } {
         const { filteredData, preferenceCriteria } = this.#state();
-        if (!preferenceCriteria.groupBy) {
+        if (!preferenceCriteria.groupByColumn) {
             return { All: filteredData };
         }
         return filteredData.reduce((groups, item) => {
-            const key = item[preferenceCriteria.groupBy as keyof T] as string;
+            const key = item[preferenceCriteria.groupByColumn as keyof T] as string;
             if (!groups[key]) {
                 groups[key] = [];
             }
@@ -343,7 +345,7 @@ export class AdkTable<T extends Identifiable> {
             filterCriteria: { column: '', value: '' },
             preferenceCriteria: {
                 ...state.preferenceCriteria,
-                groupBy: undefined,
+                groupByColumn: '',
             },
         }));
     }
