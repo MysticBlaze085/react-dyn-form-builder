@@ -17,7 +17,7 @@ import { FormsModule } from '@angular/forms';
         <input [(ngModel)]="filterValue" (input)="applyFilter()" [ngModelOptions]="{ standalone: true }" placeholder="Enter filter value" />
         <select [(ngModel)]="groupByColumn" (change)="adkTable.setGroupBy(groupByColumn)">
             <option value="">No Grouping</option>
-            <option *ngFor="let col of columns" [value]="col">Group by {{ col }}</option>
+            <option>option *ngFor="let col of columns" [value]="col">Group by {{ col }}</option>
         </select>
         <table>
             <thead>

@@ -8,6 +8,7 @@ import { AdkTable } from '../directives/table';
 import { AdkTooltipDirective } from '../../../../directives/tooltip';
 import { CheckboxComponent } from 'projects/ng-lib/src/public-api';
 import { FieldComponent } from '../../../../tw-form-ui/components/field.component';
+import { FormsModule } from '@angular/forms';
 import { ImperativeObservable } from '../../../../utils';
 import { SortableIconComponent } from '../utils';
 import { TableHeaderComponent } from './table-header.component';
@@ -30,6 +31,7 @@ import { TwTypographyComponent } from '../../typography.component';
         SortableIconComponent,
         FieldComponent,
         AdkTable,
+        FormsModule,
     ],
     hostDirectives: [AdkTable],
     templateUrl: './table.component.html',
@@ -56,8 +58,32 @@ export class TableComponent implements OnInit {
 
     rowFocus = new ImperativeObservable<RowData | null>(null);
 
+    groupByColumn: string = '';
+    expandedGroups: { [key: string]: boolean } = {};
+    itemsPerPage: number = 10;
+
+    filterColumn: string = '';
+    filterValue: string = '';
+
     ngOnInit(): void {
         console.log('ngOnInit', this.data, this.adkTable.state());
+    }
+
+    onFilterColumnChange(column: string) {
+        this.filterColumn = column;
+        this.applyFilter();
+    }
+
+    applyFilter() {
+        this.adkTable.applyFilter({ column: this.filterColumn, value: this.filterValue });
+    }
+
+    toggleGroup(key: string) {
+        this.expandedGroups[key] = !this.expandedGroups[key];
+    }
+
+    onItemsPerPageChange() {
+        this.adkTable.setItemsPerPage(this.itemsPerPage);
     }
 
     isSelected(row: RowData): boolean {
