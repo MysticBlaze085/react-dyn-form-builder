@@ -1,5 +1,5 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { Field, RowData } from '../../../../tw-form-ui';
 
 import { AdkExpansionPanelComponent } from '../../expansion-panel.component';
@@ -10,6 +10,8 @@ import { CheckboxComponent } from 'projects/ng-lib/src/public-api';
 import { FieldComponent } from '../../../../tw-form-ui/components/field.component';
 import { ImperativeObservable } from '../../../../utils';
 import { SortableIconComponent } from '../utils';
+import { TableHeaderComponent } from './table-header.component';
+import { TwCardComponent } from '../../card/tw-card.component';
 import { TwTypographyComponent } from '../../typography.component';
 
 @Component({
@@ -21,7 +23,9 @@ import { TwTypographyComponent } from '../../typography.component';
         AdkTooltipDirective,
         AdkExpansionPanelComponent,
         AsyncPipe,
+        TableHeaderComponent,
         TwTypographyComponent,
+        TwCardComponent,
         CheckboxComponent,
         SortableIconComponent,
         FieldComponent,
@@ -38,8 +42,9 @@ import { TwTypographyComponent } from '../../typography.component';
         `,
     ],
 })
-export class TableComponent {
+export class TableComponent implements OnInit {
     adkTable = inject(AdkTable);
+    @Input() isWrapped = false;
     @Input() set data(value: RowData[]) {
         this.adkTable.initialData = value;
     }
@@ -47,8 +52,13 @@ export class TableComponent {
     @Input() isDraggable = false;
     @Input() isSelectable = false;
     @Input() isSortable = false;
+    @Input() tableHeader!: { title: string; subtitle: string; isSearchable: boolean; buttons: any[] };
 
     rowFocus = new ImperativeObservable<RowData | null>(null);
+
+    ngOnInit(): void {
+        console.log('ngOnInit', this.data, this.adkTable.state());
+    }
 
     isSelected(row: RowData): boolean {
         const rowStr = JSON.stringify(row);

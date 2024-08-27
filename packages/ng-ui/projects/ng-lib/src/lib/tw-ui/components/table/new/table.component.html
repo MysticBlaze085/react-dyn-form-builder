@@ -1,44 +1,74 @@
-<table *ngIf="adkTable" aria-hidden="true" class="w-full text-left table-auto min-w-max">
-  <thead>
-    <ng-container *ngTemplateOutlet="
-                renderThead;
-                context: {
-                    groupData: adkTable.groupedData(),
-                    columns: adkTable?.headers(),
-                    isSelectable,
-                    sortDataSource: adkTable.currentPageData()
-                }
-            ">
-    </ng-container>
-  </thead>
-  <tbody>
-    <ng-container *ngIf="groupByColumn; else flatView">
-      @for(groupData of adkTable.groupedData(); track $index) {
+@if(adkTable) {
+@if(isWrapped && tableHeader) {
+<tw-card>
+  <div class="adk-card-header">
+    <tw-table-header [title]="tableHeader.title" [subtitle]="tableHeader.subtitle"
+      [isSearchable]="tableHeader.isSearchable" [buttons]="tableHeader.buttons"></tw-table-header>
+  </div>
+  <div class="adk-card-body">
+    <ng-container *ngTemplateOutlet="tableContent; context: {
+                    adkTable,
+                    groupByColumn: groupByColumn
+    }"></ng-container>
+  </div>
+  @if (adkTable.visibleData().length > 5) {
+  <div class="adk-card-footer">
+    <!-- <tw-table-footer (actionButtonClicked)="actionButtonTriggered()"></tw-table-footer> -->
+  </div>
+  }
+</tw-card>
+} @else {
+<ng-container *ngTemplateOutlet="tableContent; context: {
+                        adkTable,
+                        groupByColumn: groupByColumn
+        }"></ng-container>
+}
+}
+
+<!-- Table -->
+<ng-template #tableContent let-adkTable="adkTable" let-groupByColumn="groupByColumn">
+  <table aria-hidden="true" class="w-full text-left table-auto min-w-max">
+    <thead>
       <ng-container *ngTemplateOutlet="
-                    groupByRender;
-                    context: { groupData, columns: adkTable?.headers(), isSelectable, groupKey: groupData[0][groupByColumn] }
-                "></ng-container>
-      }
-    </ng-container>
-    <ng-template #flatView>
-      @for(rowData of adkTable.visibleData(); track $index) {
-      <ng-container
-        *ngTemplateOutlet="renderRow; context: { columns: adkTable?.headers(), rowData, rowIndex: $index, isSelectable }"></ng-container>
-      }
-    </ng-template>
-    <!-- @for(groupKey of objectKeysGroupData(groupData); track $index){
-      @if(groupBy && groupKey !== '') {
-      <ng-container
-        *ngTemplateOutlet="groupByRender; context: { groupData, headers, isSelectable, groupKey, adkTable }"></ng-container>
-      } @else {
-      @for(rowData of groupData[groupKey]; track $index) {
-      <ng-container
-        *ngTemplateOutlet="renderRow; context: { headers, rowData, rowIndex: $index, isSelectable, adkTable }"></ng-container>
-      }
-      }
-      } -->
-  </tbody>
-</table>
+                   renderThead;
+                   context: {
+                       groupData: adkTable.groupedData(),
+                       columns: adkTable?.headers(),
+                       isSelectable,
+                       sortDataSource: adkTable.currentPageData()
+                   }
+               ">
+      </ng-container>
+    </thead>
+    <tbody>
+      <ng-container *ngIf="groupByColumn; else flatView">
+        @for(groupData of adkTable.groupedData(); track $index) {
+        <ng-container *ngTemplateOutlet="
+                       groupByRender;
+                       context: { groupData, columns: adkTable?.headers(), isSelectable, groupKey: groupData[0][groupByColumn] }
+                   "></ng-container>
+        }
+      </ng-container>
+      <ng-template #flatView>
+        @for(rowData of adkTable.visibleData(); track $index) {
+        <ng-container
+          *ngTemplateOutlet="renderRow; context: { columns: adkTable?.headers(), rowData, rowIndex: $index, isSelectable }"></ng-container>
+        }
+      </ng-template>
+      <!-- @for(groupKey of objectKeysGroupData(groupData); track $index){
+         @if(groupBy && groupKey !== '') {
+         <ng-container
+           *ngTemplateOutlet="groupByRender; context: { groupData, headers, isSelectable, groupKey, adkTable }"></ng-container>
+         } @else {
+         @for(rowData of groupData[groupKey]; track $index) {
+         <ng-container
+           *ngTemplateOutlet="renderRow; context: { headers, rowData, rowIndex: $index, isSelectable, adkTable }"></ng-container>
+         }
+         }
+         } -->
+    </tbody>
+  </table>
+</ng-template>
 
 <!-- Render Table Header -->
 <ng-template #renderThead let-groupData="groupData" let-columns="columns" let-isSelectable="isSelectable"

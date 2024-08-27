@@ -1,6 +1,7 @@
 import { Meta, StoryObj, componentWrapperDecorator, moduleMetadata } from '@storybook/angular';
 
 import { TableComponent } from './table.component';
+import { action } from '@storybook/addon-actions';
 
 const meta: Meta<TableComponent> = {
     title: 'TailwindUI/Components/Tables/Table',
@@ -31,6 +32,7 @@ export const TableWithAllSettings: Story = {
         isSelectable: true,
         isSortable: true,
         isDraggable: true,
+        isWrapped: false,
         data: [
             {
                 name: 'John Michael',
@@ -69,6 +71,67 @@ export const TableWithAllSettings: Story = {
             },
         ],
         columns: ['name', 'job', 'date'],
+    },
+};
+
+export const TableWithAllSettingsAndWrapped: Story = {
+    args: {
+        isSelectable: true,
+        isSortable: true,
+        isDraggable: true,
+        isWrapped: true,
+        data: [
+            {
+                name: 'John Michael',
+                job: 'Manager So I started to walk into the water. I wont lie to you, I was terrified. But I pressed on, and as I made my way past the breakers, the water became calmer and calmer.',
+                date: '23/04/10',
+            },
+            {
+                name: 'Alexa Johnson',
+                job: 'CEO',
+                date: '23/04/02',
+            },
+            {
+                name: 'Sierra Brooks',
+                job: 'Designer',
+                date: '23/04/05',
+            },
+            {
+                name: 'Thomas Smith',
+                job: 'Developer',
+                date: '23/04/05',
+            },
+            {
+                name: 'Jenna Kian',
+                job: 'Marketing',
+                date: '23/04/18',
+            },
+            {
+                name: 'Denzel Washington',
+                job: 'Actor',
+                date: '23/04/05',
+            },
+            {
+                name: 'Morgan Freeman',
+                job: 'Actor',
+                date: '23/04/05',
+            },
+        ],
+        columns: ['name', 'job', 'date'],
+        tableHeader: {
+            title: 'Table Header',
+            subtitle: 'Table Subtitle',
+            isSearchable: true,
+            buttons: [
+                {
+                    label: 'View ALL',
+                    onClick: action('View All clicked'),
+                    color: 'primary',
+                    icon: '',
+                },
+                { label: 'add member', onClick: action('Add Member clicked'), color: 'primary', icon: 'person_add' },
+            ],
+        },
     },
 };
 

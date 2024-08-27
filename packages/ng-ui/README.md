@@ -67,3 +67,4 @@ To start the lib storybook, run:
 -   [ ] Test install in a standalone application
 -   [ ] Write spec tests and storybook interactive testing
 -   [ ] Write up different stories for each process I am working on
+-  [ ] error when drag and dropping a column makes selecting items break in new updated code using AdkTable

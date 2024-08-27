@@ -11,6 +11,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TwTypographyComponent } from '../../typography.component';
 import { searchColumnSelector } from '../utils';
 
+// TODO: get values to output to parent component
+// wondering if I should add all to one component and have controls to turn certain features on and off
+// or if I should have separate components for each feature
 @Component({
     selector: 'tw-table-header',
     standalone: true,
