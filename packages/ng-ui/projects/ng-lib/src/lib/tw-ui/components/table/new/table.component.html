@@ -91,21 +91,44 @@
 </ng-template>
 
 <!-- Group By Render -->
-<ng-template #groupByRender let-group="group" let-columns="columns" let-isSelectable="isSelectable">
+<ng-template #groupByRender let-group="group" let-columns="columns" let-isSelectable="isSelectable"
+  let-actionButton="actionButton">
   <tr>
-    <td [colSpan]="columns.length + (isSelectable ? 1 : 0) + (actionButton ? 1 : 0)">
-      <adk-expansion-panel>
+    <td [colSpan]="columns.length + (isSelectable ? 1 : 0) + (actionButton ? 1 : 0)" class="w-full">
+      <adk-expansion-panel class="full">
         <ng-template #expansionPanelHeader>
           <span class="min-w-[200px] max-w-[200px] truncate">
-            ({{ group.value.length}})
-            {{group.key }}</span>
+            ({{ group.value.length }})
+            {{ group.key }}
+          </span>
         </ng-template>
         <ng-template #expansionPanelBody>
           <table aria-hidden="true" class="w-full min-w-max table-auto text-left">
+            <thead>
+              <tr>
+                @if(isSelectable) {
+                <th class="border-b border-blue-gray-100 bg-blue-gray-50 p-1 max-w-[10px]"></th>
+                }
+                @for(col of columns; track $index) {
+                <th class="border-b border-blue-gray-100 bg-blue-gray-50 p-3">
+                  <tw-typography [variant]="'small'" [color]="'blue-gray'" [classStyle]="'font-normal'">
+                    {{ col | uppercase }}
+                  </tw-typography>
+                </th>
+                }
+                @if(isActionButton) {
+                <th class="border-b border-blue-gray-100 bg-blue-gray-50 p-3 text-right">
+                  <tw-typography [variant]="'small'" [color]="'blue-gray'" [classStyle]="'font-normal'">
+                    {{ actionColName ?? 'Actions' }}
+                  </tw-typography>
+                </th>
+                }
+              </tr>
+            </thead>
             <tbody>
               @for(rowData of group.value; track $index) {
               <ng-container
-                *ngTemplateOutlet="renderRow; context: { columns, rowData, rowIndex: $index, isSelectable, adkTable }">
+                *ngTemplateOutlet="renderRow; context: { columns, rowData, rowIndex: $index, isSelectable, adkTable, actionButton }">
               </ng-container>
               }
             </tbody>
@@ -150,7 +173,7 @@
     </td>
     }
     @if (isActionButton) {
-    <td class="border-b border-blue-gray-50 min-h-[48.5px] w-auto max-w-[120px]">
+    <td class="border-b border-blue-gray-50 min-h-[48.5px] w-auto max-w-[120px] p-3">
       <div class="flex items-center gap-3 cursor-pointer flex-wrap justify-end">
         @for(action of actionButtons; track $index) {
         <adk-button class="min-w-[60px] max-w-[100px] flex-grow" [color]="action.color"
