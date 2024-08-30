@@ -1,23 +1,26 @@
 import { AdkFormGroup, AdkSelection } from '../../../../directives';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { Field, RowData } from '../../../../tw-form-ui';
+import { Field, FieldsComponent, RowData } from '../../../../tw-form-ui';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AdkExpansionPanelComponent } from '../../expansion-panel.component';
 import { AdkTable } from '../directives/table';
 import { AdkTooltipDirective } from '../../../../directives/tooltip';
 import { ButtonComponent } from '../../button.component';
 import { CheckboxComponent } from 'projects/ng-lib/src/public-api';
-import { FieldComponent } from '../../../../tw-form-ui/components/field.component';
-import { FormsModule } from '@angular/forms';
 import { ImperativeObservable } from '../../../../utils';
+import { SettingCriteria } from '../models';
 import { SortableIconComponent } from '../utils';
 import { TableHeaderComponent } from './table-header.component';
 import { TwCardComponent } from '../../card/tw-card.component';
+import { TwTableSettingsDialogComponent } from './tw-table-settings-dialog.component';
 import { TwTypographyComponent } from '../../typography.component';
+import { searchColumnSelector } from './fields.controls';
 
 const imports = [
     CommonModule,
+    ReactiveFormsModule,
     AdkSelection,
     AdkTooltipDirective,
     AdkExpansionPanelComponent,
@@ -27,10 +30,11 @@ const imports = [
     TwCardComponent,
     CheckboxComponent,
     SortableIconComponent,
-    FieldComponent,
+    FieldsComponent,
     AdkTable,
     FormsModule,
     ButtonComponent,
+    TwTableSettingsDialogComponent,
 ];
 
 @Component({
@@ -62,6 +66,7 @@ export class TableComponent implements OnInit {
     @Input() isDraggable = false;
     @Input() isSelectable = false;
     @Input() isSortable = false;
+    @Input() isSearchable = false;
     @Input() tableHeader!: { title: string; subtitle: string; isSearchable: boolean; buttons: any[] };
 
     get formGroup() {
@@ -70,32 +75,35 @@ export class TableComponent implements OnInit {
 
     rowFocus = new ImperativeObservable<RowData | null>(null);
 
-    groupByColumn: string = '';
+    // groupByColumn: string = '';
     expandedGroups: { [key: string]: boolean } = {};
     itemsPerPage: number = 10;
 
-    filterColumn: string = '';
-    filterValue: string = '';
+    // filterColumn: string = '';
+    // filterValue: string = '';
 
-    searchColumn = new ImperativeObservable<string | null>('');
     field = new ImperativeObservable<Field | undefined>(undefined);
 
     ngOnInit(): void {
-        console.log('ngOnInit', this.data, this.adkTable.state());
+        this.field.value = this.setField(this.adkTable.headers()[0]);
+        this.#formGroup.setFormGroup([this.field.value]);
+        console.log('ngOnInit form', this.adkTable.headers()[0], this.data, this.adkTable.state(), this.formGroup.value);
+        this.onFormValueChanges();
     }
 
-    onFilterColumnChange(column: string) {
-        this.filterColumn = column;
-        this.applyFilter();
-    }
+    // onFilterColumnChange({ column }: FilterCriteria) {
+    //     console.log('onFilterColumnChange', column);
+    //     this.filterColumn = column;
+    //     this.applyFilter();
+    // }
 
-    applyFilter() {
-        this.adkTable.applyFilter({ column: this.filterColumn, value: this.filterValue });
-    }
+    // applyFilter() {
+    //     this.adkTable.applyFilter({ column: this.filterColumn, value: this.filterValue });
+    // }
 
-    toggleGroup(key: string) {
-        this.expandedGroups[key] = !this.expandedGroups[key];
-    }
+    // toggleGroup(key: string) {
+    //     this.expandedGroups[key] = !this.expandedGroups[key];
+    // }
 
     onItemsPerPageChange() {
         this.adkTable.setItemsPerPage(this.itemsPerPage);
@@ -124,5 +132,36 @@ export class TableComponent implements OnInit {
     onDragDrop(index: number) {
         this.adkTable.dragDrop(index);
         this.columns = this.adkTable.headers();
+    }
+
+    onSettingsCriteria(event: SettingCriteria) {
+        console.log('onSettingCriteria', event);
+        this.adkTable.setGroupBy(event.groupByColumn);
+        this.adkTable.setColumns(event.visibleColumns);
+        // this.groupByColumn = event.groupByColumn;
+        if (event.column) this.adkTable.applyFilter({ column: event.column, value: '' });
+        this.field.value = this.setField(event.column);
+        this.#formGroup.setFormGroup([this.field.value]);
+        this.onFormValueChanges();
+        console.log('onSettingCriteria after', this.adkTable.state(), this.field.value);
+    }
+
+    setField(column: string | undefined): Field {
+        this.resetField();
+        setTimeout(() => {
+            console.info('Timed column value update');
+        }, 1000);
+        return searchColumnSelector(column ?? '');
+    }
+
+    onFormValueChanges() {
+        this.formGroup.valueChanges.subscribe((e) => {
+            this.adkTable.filterColumns(e['searchColumn']);
+            console.log('formGroup valueChanges', e, this.adkTable.state());
+        });
+    }
+
+    private resetField(): void {
+        this.field.value = undefined;
     }
 }

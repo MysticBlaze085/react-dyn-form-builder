@@ -60,6 +60,7 @@ export class AdkTable<T extends Identifiable> {
     readonly groupedData = computed(() => this.getGroupedData());
     readonly sortCriteriaData = computed(() => this.getSortCriteriaData());
     readonly paginationCriteria = computed(() => this.getPaginationCriteria());
+    readonly preferenceCriteria = computed(() => this.getPreferenceCriteriaData());
 
     setInitialData(data: Partial<T>[]) {
         this.#state.update((state) => ({
@@ -83,7 +84,7 @@ export class AdkTable<T extends Identifiable> {
         this.updatePagination();
     }
 
-    private setColumns(columns: string[]) {
+    setColumns(columns: string[]) {
         this.#state.update((state) => ({
             ...state,
             headers: columns,
@@ -218,6 +219,17 @@ export class AdkTable<T extends Identifiable> {
         this.updateFilteredData();
     }
 
+    filterColumns(search: string) {
+        this.#state.update((state) => ({
+            ...state,
+            filterCriteria: {
+                ...state.filterCriteria,
+                value: search,
+            },
+        }));
+        this.updateFilteredData();
+    }
+
     private updateFilteredData() {
         const { dataSource, filterCriteria } = this.#state();
         const filteredData = dataSource.filter((item) =>
@@ -264,14 +276,13 @@ export class AdkTable<T extends Identifiable> {
     }
 
     // Column visibility
-    toggleColumnVisibility(column: string) {
+    toggleColumnVisibility(columns: string[]) {
+        console.log('toggleColumnVisibility', columns);
         this.#state.update((state) => ({
             ...state,
             preferenceCriteria: {
                 ...state.preferenceCriteria,
-                visibleColumns: state.preferenceCriteria.visibleColumns.includes(column)
-                    ? state.preferenceCriteria.visibleColumns.filter((col) => col !== column)
-                    : [...state.preferenceCriteria.visibleColumns, column],
+                visibleColumns: columns,
             },
         }));
     }
@@ -328,6 +339,11 @@ export class AdkTable<T extends Identifiable> {
     private getFilterCriteriaData(): FilterCriteria {
         const { filterCriteria } = this.#state();
         return filterCriteria;
+    }
+
+    private getPreferenceCriteriaData() {
+        const { preferenceCriteria } = this.#state();
+        return preferenceCriteria;
     }
 
     // Reset to initial state

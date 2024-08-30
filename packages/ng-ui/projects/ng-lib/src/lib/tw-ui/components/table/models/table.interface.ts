@@ -51,3 +51,7 @@ export interface PreferenceCriteria {
     visibleColumns: string[];
     groupByColumn: string;
 }
+
+export interface SettingCriteria extends PreferenceCriteria {
+    column: string;
+}

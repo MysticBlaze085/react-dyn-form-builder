@@ -2,7 +2,7 @@
 @if(isWrapped && tableHeader) {
 <tw-card>
   <div class="adk-card-header">
-    <ng-container *ngTemplateOutlet="tableWrapperHeader; context: {tableHeader}"></ng-container>
+    <ng-container *ngTemplateOutlet="tableWrapperHeader; context: {adkTable, tableHeader}"></ng-container>
     <!-- <select [(ngModel)]="filterColumn" (change)="onFilterColumnChange($event.target.value)">
       <option *ngFor="let col of columns" [value]="col">Filter by {{ col }}</option>
     </select>
@@ -49,7 +49,7 @@
       </ng-container>
     </thead>
     <tbody>
-      <ng-container *ngIf="groupByColumn; else flatView">
+      <ng-container *ngIf="adkTable.preferenceCriteria().groupByColumn; else flatView">
         @for(group of adkTable.groupedData() | keyvalue; track $index) {
         <!-- <pre>{{group | json}}</pre> -->
         <ng-container *ngTemplateOutlet="
@@ -209,7 +209,7 @@
   }
 </ng-template>
 
-<ng-template #tableWrapperHeader let-tableHeader="tableHeader">
+<ng-template #tableWrapperHeader let-adkTable="adkTable" let-tableHeader="tableHeader">
   <div class="relative bg-clip-border mt-4 mx-4 bg-white text-gray-700 rounded-none overflow-visible">
     <div class="mb-2 flex items-center justify-between gap-8">
       <div>
@@ -232,7 +232,8 @@
         </div>
         } }
         <div class="flex items-center gap-3 cursor-pointer">
-          <!-- <tw-table-settings-dialog (triggerUpdate)="handlePreferences()"></tw-table-settings-dialog> -->
+          <tw-table-settings-dialog [headers]="adkTable.headers()"
+            (settingsCriteria)="onSettingsCriteria($event)"></tw-table-settings-dialog>
         </div>
       </div>
     </div>
@@ -249,9 +250,10 @@
             </Tabs> -->
       <!-- } -->
     </div>
-    @if((searchColumn.change$ | async) && isSearchable){
+    @if(isSearchable){
     <form *ngIf="field.change$ | async as field" [formGroup]="formGroup"
       class="flex flex-row gap-2 w-full flex-wrap z-[20000]">
+      <pre>{{formGroup.value | json}}</pre>
       <adk-fields [fieldConfig]="[field]"></adk-fields>
     </form>
     }

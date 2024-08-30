@@ -33,6 +33,7 @@ export const TableWithAllSettings: Story = {
         isSortable: true,
         isDraggable: true,
         isWrapped: false,
+        isSearchable: true,
         data: [
             {
                 name: 'John Michael',
@@ -80,6 +81,7 @@ export const TableWithAllSettingsAndWrapped: Story = {
         isSortable: true,
         isDraggable: true,
         isWrapped: true,
+        isSearchable: true,
         data: [
             {
                 name: 'John Michael',
