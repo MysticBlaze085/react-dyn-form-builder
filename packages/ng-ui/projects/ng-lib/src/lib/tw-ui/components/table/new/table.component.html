@@ -3,21 +3,9 @@
 <tw-card>
   <div class="adk-card-header">
     <ng-container *ngTemplateOutlet="tableWrapperHeader; context: {adkTable, tableHeader}"></ng-container>
-    <!-- <select [(ngModel)]="filterColumn" (change)="onFilterColumnChange($event.target.value)">
-      <option *ngFor="let col of columns" [value]="col">Filter by {{ col }}</option>
-    </select>
-    <input [(ngModel)]="filterValue" (input)="applyFilter()" [ngModelOptions]="{ standalone: true }"
-      placeholder="Enter filter value" />
-    <select [(ngModel)]="groupByColumn" (change)="adkTable.setGroupBy(groupByColumn)">
-      <option value="">No Grouping</option>
-      <option *ngFor="let col of columns" [value]="col">Group by {{ col }}</option>
-    </select> -->
   </div>
   <div class="adk-card-body">
-    <ng-container *ngTemplateOutlet="tableContent; context: {
-                    adkTable,
-                    groupByColumn: groupByColumn
-    }"></ng-container>
+    <ng-container *ngTemplateOutlet="tableContent; context: {adkTable, groupByColumn: groupByColumn}"></ng-container>
   </div>
   @if (adkTable.visibleData().length > 5) {
   <div class="adk-card-footer">
@@ -26,10 +14,7 @@
   }
 </tw-card>
 } @else {
-<ng-container *ngTemplateOutlet="tableContent; context: {
-                        adkTable,
-                        groupByColumn: groupByColumn
-        }"></ng-container>
+<ng-container *ngTemplateOutlet="tableContent; context: {adkTable, groupByColumn: groupByColumn}"></ng-container>
 }
 }
 
@@ -49,9 +34,9 @@
       </ng-container>
     </thead>
     <tbody>
+      @if(columns.length > 0) {
       <ng-container *ngIf="adkTable.preferenceCriteria().groupByColumn; else flatView">
         @for(group of adkTable.groupedData() | keyvalue; track $index) {
-        <!-- <pre>{{group | json}}</pre> -->
         <ng-container *ngTemplateOutlet="
                        groupByRender;
                        context: { group, columns: adkTable?.headers(), isSelectable }
@@ -64,17 +49,7 @@
           *ngTemplateOutlet="renderRow; context: { columns: adkTable?.headers(), rowData, rowIndex: $index, isSelectable }"></ng-container>
         }
       </ng-template>
-      <!-- @for(groupKey of objectKeysGroupData(groupData); track $index){
-         @if(groupBy && groupKey !== '') {
-         <ng-container
-           *ngTemplateOutlet="groupByRender; context: { groupData, headers, isSelectable, groupKey, adkTable }"></ng-container>
-         } @else {
-         @for(rowData of groupData[groupKey]; track $index) {
-         <ng-container
-           *ngTemplateOutlet="renderRow; context: { headers, rowData, rowIndex: $index, isSelectable, adkTable }"></ng-container>
-         }
-         }
-         } -->
+      }
     </tbody>
   </table>
 </ng-template>
@@ -83,7 +58,7 @@
 <ng-template #renderThead let-groupData="groupData" let-columns="columns" let-isSelectable="isSelectable"
   let-sortDataSource="sortDataSource">
   <tr>
-    @if(isSelectable) {
+    @if(isSelectable && columns.length > 0) {
     <th id="checkAll" class="border-b border-blue-gray-100 bg-blue-gray-50 p-1 max-w-[10px]">
       <ng-container
         *ngTemplateOutlet="checkbox; context: { adkTable, groupData, rowData: undefined, isCheckAll: true }"></ng-container>
@@ -103,6 +78,12 @@
           <span>{{ sortDataSource.direction === 'ascending' ? '🔼' : '🔽' }}</span>
           }
         </div>
+      </tw-typography>
+    </th>
+    }@if(isActionButton) {
+    <th scope="col" class="border-b border-blue-gray-100 bg-blue-gray-50 p-3 text-right">
+      <tw-typography [variant]="'small'" [color]="'blue-gray'" [classStyle]="'font-normal'">
+        {{ actionColName ?? 'Actions' }}
       </tw-typography>
     </th>
     }
@@ -138,13 +119,15 @@
 <!-- Render Row Table Cells -->
 <ng-template #renderRow let-columns="columns" let-rowData="rowData" let-rowIndex="rowIndex"
   let-isSelectable="isSelectable">
-  <tr [ngClass]="isRowFocused(rowData) ? 'bg-light-blue-50' : ''" (click)="rowFocus.value = rowData">
+  <tr [ngClass]="isRowFocused(rowData) ? 'bg-light-blue-50' : ''" (keypress)="rowFocus.value = rowData"
+    (click)="rowFocus.value = rowData">
     @if(isSelectable) {
     <td [ngClass]="isSelectable ? 'p-1' : 'p-4'" class="border-b border-blue-gray-50 p-1 max-h-[38px] max-w-[15px]">
       <ng-container
         *ngTemplateOutlet="checkbox; context: { adkTable, groupData: undefined, rowData, isCheckAll: false }"></ng-container>
     </td>
-    } @for (col of columns; track $index) {
+    }
+    @for (col of columns; track $index) {
     <td [ngClass]="isSelectable ? 'p-1' : 'p-2'"
       class="border-b border-blue-gray-50 min-h-[48.5px] min-w-[60px] max-w-[60px] truncate">
       <div [adkTooltip]="rowData[col]" tooltipPlacement="bottom" [ngStyle]="{ cursor: 'text' }">
@@ -155,13 +138,30 @@
         <tw-typography [variant]="'small'" class="font-normal ml-2">
           {{ rowData[col].join(', ') }}
         </tw-typography>
-        } } @else { @if (isCellFieldObject(rowData[col])) {
+        } } @else {
+        @if (isCellFieldObject(rowData[col])) {
         <adk-field [field]="rowData[col]"></adk-field>
         } @else {
         <tw-typography [variant]="'small'" class="font-normal ml-2">
           {{ rowData[col] }}
         </tw-typography>
         } }
+      </div>
+    </td>
+    }
+    @if (isActionButton) {
+    <td class="border-b border-blue-gray-50 min-h-[48.5px] w-auto max-w-[120px]">
+      <div class="flex items-center gap-3 cursor-pointer flex-wrap justify-end">
+        @for(action of actionButtons; track $index) {
+        <adk-button class="min-w-[60px] max-w-[100px] flex-grow" [color]="action.color"
+          (click)="action.onClick(rowData)">
+          <span class="flex items-center gap-2">
+            @if(action.icon) {
+            <span class="material-symbols-outlined">{{ action.icon }}</span>
+            } {{ action.label }}
+          </span>
+        </adk-button>
+        }
       </div>
     </td>
     }
@@ -253,7 +253,6 @@
     @if(isSearchable){
     <form *ngIf="field.change$ | async as field" [formGroup]="formGroup"
       class="flex flex-row gap-2 w-full flex-wrap z-[20000]">
-      <pre>{{formGroup.value | json}}</pre>
       <adk-fields [fieldConfig]="[field]"></adk-fields>
     </form>
     }

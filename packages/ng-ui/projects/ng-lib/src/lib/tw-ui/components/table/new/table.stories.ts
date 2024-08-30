@@ -20,7 +20,35 @@ const meta: Meta<TableComponent> = {
             </div>`
         ),
     ],
-    args: {},
+    argTypes: {
+        isSelectable: {
+            control: 'boolean',
+        },
+        isSortable: {
+            control: 'boolean',
+        },
+        isDraggable: {
+            control: 'boolean',
+        },
+        isWrapped: {
+            control: 'boolean',
+        },
+        isSearchable: {
+            control: 'boolean',
+        },
+        isActionButton: {
+            control: 'boolean',
+        },
+        data: {
+            control: 'object',
+        },
+        columns: {
+            control: 'array',
+        },
+        tableHeader: {
+            control: 'object',
+        },
+    },
 };
 
 export default meta;
@@ -34,6 +62,27 @@ export const TableWithAllSettings: Story = {
         isDraggable: true,
         isWrapped: false,
         isSearchable: true,
+        isActionButton: true,
+        actionButtons: [
+            {
+                icon: 'visibility',
+                label: 'View',
+                color: 'primary',
+                onClick: action('View clicked'),
+            },
+            {
+                icon: 'edit',
+                label: 'Edit',
+                color: 'primary',
+                onClick: action('Edit clicked'),
+            },
+            {
+                icon: 'delete',
+                label: 'Delete',
+                color: 'danger',
+                onClick: action('Delete clicked'),
+            },
+        ],
         data: [
             {
                 name: 'John Michael',
@@ -82,6 +131,27 @@ export const TableWithAllSettingsAndWrapped: Story = {
         isDraggable: true,
         isWrapped: true,
         isSearchable: true,
+        isActionButton: true,
+        actionButtons: [
+            {
+                icon: 'visibility',
+                label: 'View',
+                color: 'primary',
+                onClick: action('View clicked'),
+            },
+            {
+                icon: 'edit',
+                label: 'Edit',
+                color: 'primary',
+                onClick: action('Edit clicked'),
+            },
+            {
+                icon: 'delete',
+                label: 'Delete',
+                color: 'danger',
+                onClick: action('Delete clicked'),
+            },
+        ],
         data: [
             {
                 name: 'John Michael',

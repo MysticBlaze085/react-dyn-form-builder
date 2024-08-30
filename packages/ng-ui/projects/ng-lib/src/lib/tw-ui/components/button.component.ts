@@ -22,7 +22,7 @@ import { CommonModule, NgClass } from '@angular/common';
         `
             :host {
                 display: block;
-                width: 100%;
+                width: auto;
             }
             button:disabled {
                 cursor: not-allowed;

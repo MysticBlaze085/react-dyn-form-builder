@@ -67,6 +67,9 @@ export class TableComponent implements OnInit {
     @Input() isSelectable = false;
     @Input() isSortable = false;
     @Input() isSearchable = false;
+    @Input() isActionButton = false;
+    @Input() actionColName: string = 'Actions';
+    @Input() actionButtons: { icon?: string; label: string; color: string; onClick: (rowData: any) => void }[] = [];
     @Input() tableHeader!: { title: string; subtitle: string; isSearchable: boolean; buttons: any[] };
 
     get formGroup() {
@@ -75,12 +78,8 @@ export class TableComponent implements OnInit {
 
     rowFocus = new ImperativeObservable<RowData | null>(null);
 
-    // groupByColumn: string = '';
     expandedGroups: { [key: string]: boolean } = {};
     itemsPerPage: number = 10;
-
-    // filterColumn: string = '';
-    // filterValue: string = '';
 
     field = new ImperativeObservable<Field | undefined>(undefined);
 
@@ -91,19 +90,9 @@ export class TableComponent implements OnInit {
         this.onFormValueChanges();
     }
 
-    // onFilterColumnChange({ column }: FilterCriteria) {
-    //     console.log('onFilterColumnChange', column);
-    //     this.filterColumn = column;
-    //     this.applyFilter();
-    // }
-
-    // applyFilter() {
-    //     this.adkTable.applyFilter({ column: this.filterColumn, value: this.filterValue });
-    // }
-
-    // toggleGroup(key: string) {
-    //     this.expandedGroups[key] = !this.expandedGroups[key];
-    // }
+    onRowClick(rowData: any) {
+        console.log('Row clicked:', rowData);
+    }
 
     onItemsPerPageChange() {
         this.adkTable.setItemsPerPage(this.itemsPerPage);
@@ -138,7 +127,7 @@ export class TableComponent implements OnInit {
         console.log('onSettingCriteria', event);
         this.adkTable.setGroupBy(event.groupByColumn);
         this.adkTable.setColumns(event.visibleColumns);
-        // this.groupByColumn = event.groupByColumn;
+        this.columns = event.visibleColumns;
         if (event.column) this.adkTable.applyFilter({ column: event.column, value: '' });
         this.field.value = this.setField(event.column);
         this.#formGroup.setFormGroup([this.field.value]);
@@ -157,7 +146,6 @@ export class TableComponent implements OnInit {
     onFormValueChanges() {
         this.formGroup.valueChanges.subscribe((e) => {
             this.adkTable.filterColumns(e['searchColumn']);
-            console.log('formGroup valueChanges', e, this.adkTable.state());
         });
     }
 
