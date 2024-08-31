@@ -107,7 +107,6 @@ export class AdkTable<T extends Identifiable> {
 
     // Drag and Drop
     dragStart(index: number): void {
-        console.log('dragStart', index, this.#state());
         this.#state.update((state) => ({ ...state, draggedColIndex: index }));
     }
 
@@ -116,29 +115,22 @@ export class AdkTable<T extends Identifiable> {
     }
 
     dragDrop(index: number): void {
-        console.log('dragDrop', index);
         const targetIndex = index;
         const { draggedColIndex, dataSource, headers } = this.#state();
         // Reset selected rows if dragging a column
         this.#selection.clear();
-        console.log('dragDrop', this.#state(), 'start', draggedColIndex, targetIndex);
-
         if (draggedColIndex === null || draggedColIndex === targetIndex) return;
-
         // Update headers array with dragged column
         const newHeaders = [...headers];
         const draggedHeader = newHeaders.splice(draggedColIndex, 1)[0];
         newHeaders.splice(targetIndex, 0, draggedHeader);
-
         // Update rows in dataSource array with dragged column
         const newRows = dataSource.map((row: any) => {
             const entries = Object.entries(row);
             const draggedEntry = entries.splice(draggedColIndex, 1)[0];
-            console.log('dragDropEntry', draggedEntry);
             entries.splice(targetIndex, 0, draggedEntry);
             return Object.fromEntries(entries);
         });
-
         // Update state with new headers, rows, and reset draggedColIndex
         this.#state.update((state) => ({
             ...state,
@@ -148,7 +140,6 @@ export class AdkTable<T extends Identifiable> {
             selectedRows: [],
             draggedColIndex: null,
         }));
-
         // Update other necessary parts of the state
         this.updatePagination();
     }
@@ -254,7 +245,6 @@ export class AdkTable<T extends Identifiable> {
         this.#state.update((state) => {
             const allSelected = state.selectedRows.length === state.dataSource.length;
             if (allSelected) this.#selection.clear();
-
             return {
                 ...state,
                 selectedRows: allSelected
@@ -266,8 +256,6 @@ export class AdkTable<T extends Identifiable> {
                       }),
             };
         });
-
-        console.log('selectedRows', this.selectedRowsData());
     }
 
     selected(row: RowData): boolean {
@@ -277,7 +265,6 @@ export class AdkTable<T extends Identifiable> {
 
     // Column visibility
     toggleColumnVisibility(columns: string[]) {
-        console.log('toggleColumnVisibility', columns);
         this.#state.update((state) => ({
             ...state,
             preferenceCriteria: {

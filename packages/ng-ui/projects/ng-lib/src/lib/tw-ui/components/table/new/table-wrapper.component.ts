@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 
 import { AdkTable } from '../directives/table';
 import { CommonModule } from '@angular/common';
@@ -48,7 +48,7 @@ import { TwCardComponent } from '../../card/tw-card.component';
         `,
     ],
 })
-export class TableWrapperComponent implements OnInit, AfterViewInit {
+export class TableWrapperComponent {
     @ViewChild('table') table!: TableComponent;
     @Input() data: RowData[] = [];
     @Input() columns: string[] = [];
@@ -62,12 +62,4 @@ export class TableWrapperComponent implements OnInit, AfterViewInit {
         isSearchable: false,
         buttons: [],
     };
-
-    ngAfterViewInit(): void {
-        console.log('TableWrapperComponent AfterViewInit', this.table.adkTable.state());
-    }
-
-    ngOnInit() {
-        console.log('TableWrapperComponent OnInit', this.data);
-    }
 }

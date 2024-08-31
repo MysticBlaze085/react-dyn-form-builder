@@ -101,51 +101,39 @@ export class TwTableSettingsDialogComponent implements OnInit, AfterViewInit {
         this.#formGroup.setFormGroup([this.visibleColumnField, this.columnField, this.groupByField]);
         let previousValue = this.formGroup.value;
         const headers = this.headers;
-        console.log('ngAfterViewInit', this.formGroup.value);
-
         this.formGroup.valueChanges.subscribe((currentValue) => {
-            console.log('ngAfterViewInit current', currentValue);
             let selectedVisibleColumns: string[] = [];
             let action = {
                 visibleColumns: selectedVisibleColumns,
                 groupByColumn: currentValue['groupByColumn'],
                 column: currentValue['column'],
             };
-
             // Check if any relevant value has changed
             let hasChanged = false;
-
             if (previousValue['groupByColumn'] !== currentValue['groupByColumn']) {
                 hasChanged = true;
             }
-
             if (previousValue['column'] !== currentValue['column']) {
                 hasChanged = true;
             }
-
             headers.forEach((element) => {
                 if (previousValue[element] !== currentValue[element]) {
                     hasChanged = true;
                 }
             });
-
             if (!hasChanged) {
                 return;
             }
-
             // Update previous value
             previousValue = { ...currentValue };
-
             // Process the changes
             headers.forEach((element) => {
                 if (currentValue[element]) selectedVisibleColumns.push(element);
             });
-
             action.visibleColumns = selectedVisibleColumns;
             action.groupByColumn = currentValue['groupByColumn'] === 'none' ? '' : currentValue['groupByColumn'];
             action.column = currentValue['column'];
             this.settingsCriteria.emit(action);
-            console.log('ngAfterViewInit after', action);
         });
     }
 
@@ -161,8 +149,6 @@ export class TwTableSettingsDialogComponent implements OnInit, AfterViewInit {
 
     closeDialog() {
         this.isDialogOpen = false;
-        // this.triggerUpdate.emit(this.isDialogOpen);
-        console.log('closeDialog', this.formGroup.value);
     }
 
     getUpdatedPreferences(): string[] {

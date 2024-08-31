@@ -86,7 +86,6 @@ export class TableComponent implements OnInit {
     ngOnInit(): void {
         this.field.value = this.setField(this.adkTable.headers()[0]);
         this.#formGroup.setFormGroup([this.field.value]);
-        console.log('ngOnInit form', this.adkTable.headers()[0], this.data, this.adkTable.state(), this.formGroup.value);
         this.onFormValueChanges();
     }
 
@@ -124,7 +123,6 @@ export class TableComponent implements OnInit {
     }
 
     onSettingsCriteria(event: SettingCriteria) {
-        console.log('onSettingCriteria', event);
         this.adkTable.setGroupBy(event.groupByColumn);
         this.adkTable.setColumns(event.visibleColumns);
         this.columns = event.visibleColumns;
@@ -132,7 +130,6 @@ export class TableComponent implements OnInit {
         this.field.value = this.setField(event.column);
         this.#formGroup.setFormGroup([this.field.value]);
         this.onFormValueChanges();
-        console.log('onSettingCriteria after', this.adkTable.state(), this.field.value);
     }
 
     setField(column: string | undefined): Field {

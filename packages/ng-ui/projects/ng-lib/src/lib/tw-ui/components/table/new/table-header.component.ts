@@ -107,7 +107,6 @@ export class TableHeaderComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        console.log('ngAfterViewInit', this.searchColumn.value);
         this.searchColumn.value = this.visibleColumns[0];
         this.searchColumn.change$.subscribe((e: any) => {
             this.#formGroup.reset();
@@ -116,21 +115,15 @@ export class TableHeaderComponent implements OnInit, AfterViewInit {
             this.formGroup.valueChanges.subscribe((e) => {
                 this.handleFiltering(e);
             });
-            // if (!this.isFirstChange) {
-            // this.actionKeyPress.emit(true);
-            // }
         });
     }
     ngOnInit(): void {
-        // this.tdss.initialFilterSearch();
-        // this.adkTable.applyFilter({ column: this.adkTable.headers()[0], value: this.searchColumnValue ?? '' });
         this.filterCriteria.emit({ column: this.visibleColumns[0], value: this.searchColumnValue ?? '' });
     }
 
     handlePreferences(event: any): void {
         console.log('handlePreferences', event);
         // this.searchColumn.value = this.visibleColumns[0];
-
         // this.actionKeyPress.emit(true);
     }
 
