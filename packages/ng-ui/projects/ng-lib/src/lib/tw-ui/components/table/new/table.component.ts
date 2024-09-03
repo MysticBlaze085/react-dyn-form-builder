@@ -1,6 +1,6 @@
 import { AdkFormGroup, AdkSelection } from '../../../../directives';
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { Field, FieldsComponent, RowData } from '../../../../tw-form-ui';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -52,6 +52,10 @@ const imports = [
             .material-symbols-outlined {
                 font-size: 16px !important;
             }
+            thead th:last-child,
+            tbody td:last-child {
+                text-align: right;
+            }
         `,
     ],
 })
@@ -68,19 +72,18 @@ export class TableComponent implements OnInit {
     @Input() isSortable = false;
     @Input() isSearchable = false;
     @Input() isActionButton = false;
-    @Input() actionColName: string = 'Actions';
+    @Input() actionColName?: string;
     @Input() actionButtons: { icon?: string; label: string; color: string; onClick: (rowData: any) => void }[] = [];
     @Input() tableHeader!: { title: string; subtitle: string; isSearchable: boolean; buttons: any[] };
+    @Output() rowClickedData = new EventEmitter<RowData>();
 
     get formGroup() {
         return this.#formGroup.formGroup();
     }
 
     rowFocus = new ImperativeObservable<RowData | null>(null);
-
     expandedGroups: { [key: string]: boolean } = {};
     itemsPerPage: number = 10;
-
     field = new ImperativeObservable<Field | undefined>(undefined);
 
     ngOnInit(): void {
@@ -89,8 +92,9 @@ export class TableComponent implements OnInit {
         this.onFormValueChanges();
     }
 
-    onRowClick(rowData: any) {
+    onRowClick(rowData: RowData) {
         console.log('Row clicked:', rowData);
+        this.rowClickedData.emit(rowData);
     }
 
     onItemsPerPageChange() {
@@ -102,10 +106,9 @@ export class TableComponent implements OnInit {
         return this.adkTable.selectedRowsData().includes(rowStr);
     }
 
-    isRowFocused(row: RowData): boolean {
-        const selectedRowStr = JSON.stringify(this.rowFocus.value);
-        const rowStr = JSON.stringify(row);
-        return selectedRowStr === rowStr;
+    setRowFocus(rowData: RowData) {
+        this.rowFocus.value = rowData;
+        this.rowClickedData.emit(rowData);
     }
 
     isCellValArray(value: string | []) {

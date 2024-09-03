@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
-import { FilterCriteria, PreferenceCriteria, SettingCriteria } from '../models/table.interface';
 import { preferenceColumnSelector, preferenceGroupBySelector, preferenceVisibilitySelector } from './fields.controls';
 
 import { AdkFormGroup } from 'projects/ng-lib/src/lib/directives';
@@ -11,6 +10,7 @@ import { FieldComponent } from 'projects/ng-lib/src/lib/tw-form-ui/components/fi
 import { FieldsComponent } from 'projects/ng-lib/src/lib/tw-form-ui';
 import { IconButtonComponent } from '../utils/icon-button.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SettingCriteria } from '../models/table.interface';
 import { SettingsIconComponent } from '../utils/settings-icon.component';
 import { TwCardComponent } from '../../card/tw-card.component';
 import { TwTypographyComponent } from '../../typography.component';

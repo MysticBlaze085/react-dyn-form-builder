@@ -1,4 +1,5 @@
 import { Meta, StoryObj, componentWrapperDecorator, moduleMetadata } from '@storybook/angular';
+import { userEvent, within } from '@storybook/testing-library';
 
 import { TableComponent } from './table.component';
 import { action } from '@storybook/addon-actions';
@@ -48,6 +49,7 @@ const meta: Meta<TableComponent> = {
         tableHeader: {
             control: 'object',
         },
+        rowClickedData: { action: 'rowClickedData emitted' },
     },
 };
 
@@ -121,6 +123,17 @@ export const TableWithAllSettings: Story = {
             },
         ],
         columns: ['name', 'job', 'date'],
+    },
+    play: async ({ canvasElement }) => {
+        let eventTriggered = false; // Local flag to ensure the event is triggered only once
+        const canvas = within(canvasElement);
+        const row = canvas.getByText('John Michael');
+        row.addEventListener('click', async () => {
+            if (!eventTriggered) {
+                await userEvent.click(row);
+                eventTriggered = true; // Set the flag to true after the event is triggered
+            }
+        });
     },
 };
 
@@ -204,6 +217,17 @@ export const TableWithAllSettingsAndWrapped: Story = {
                 { label: 'add member', onClick: action('Add Member clicked'), color: 'primary', icon: 'person_add' },
             ],
         },
+    },
+    play: async ({ canvasElement }) => {
+        let eventTriggered = false; // Local flag to ensure the event is triggered only once
+        const canvas = within(canvasElement);
+        const row = canvas.getByText('John Michael');
+        row.addEventListener('click', async () => {
+            if (!eventTriggered) {
+                await userEvent.click(row);
+                eventTriggered = true; // Set the flag to true after the event is triggered
+            }
+        });
     },
 };
 

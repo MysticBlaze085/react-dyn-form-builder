@@ -4429,12 +4429,12 @@
         },
         {
             "name": "AdkTable",
-            "id": "directive-AdkTable-79041a4f10870a0f5f9761b7cd817bfd3fcedd5ef1c66964def1e52d3359a94d39dd6f4fc628e33d24420d6936741f3af4fb5ca172330f56a705a7ea6c54c4d9",
+            "id": "directive-AdkTable-cc64e05dcb9b97ddedcef673c03d838b77572b1cc76415f8100751e460c475774f6e70f9beac145fa9e258b204591af9acbbb135c0c3e3b371b7eff0a30723b6",
             "file": "projects/ng-lib/src/lib/tw-ui/components/table/directives/table.ts",
             "type": "directive",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { Directive, Input, computed, inject, signal } from '@angular/core';\nimport { FilterCriteria, TableDataSourceState } from '../models';\nimport { Identifiable, RowData } from 'projects/ng-lib/src/lib/tw-form-ui/models';\nimport { PaginationCriteria, SortCriteria } from '../models/table.interface';\n\nimport { AdkSelection } from 'projects/ng-lib/src/lib/tw-form-ui';\n\n//TODO: figure out field for search value it should change based on the column that are visible\n//TODO: maybe make a preferences adk directive of itself handling the preferences interactions\n@Directive({\n    selector: '[adk-table]',\n    exportAs: 'adkTable',\n    standalone: true,\n    hostDirectives: [AdkSelection],\n})\nexport class AdkTable<T extends Identifiable> {\n    #selection = inject(AdkSelection, { self: true });\n    @Input() set initialData(data: T[]) {\n        this.setInitialData(data);\n    }\n\n    @Input() set columns(cols: string[]) {\n        this.setColumns(cols);\n    }\n\n    @Input() set groupBy(column: string) {\n        this.setGroupBy(column);\n    }\n\n    @Input() set filterBy(criteria: FilterCriteria) {\n        this.applyFilter(criteria);\n    }\n\n    #state = signal<TableDataSourceState>({\n        dataSource: [],\n        draggedColIndex: null,\n        filteredData: [],\n        headers: [],\n        paginationCriteria: {\n            currentPage: 1,\n            totalPages: 1,\n            pageSize: 10,\n        },\n        preferenceCriteria: {\n            visibleColumns: [],\n            groupByColumn: '',\n        },\n        selectedRows: [],\n        sortCriteria: { key: '', direction: 'ascending' },\n        filterCriteria: { column: '', value: '' },\n    });\n\n    // Computed signals for derived state\n    readonly state = computed(() => this.#state());\n    readonly headers = computed(() => this.#state().headers);\n    readonly visibleData = computed(() => this.getVisibleData());\n    readonly filteredCriteria = computed(() => this.getFilterCriteriaData());\n    readonly currentPageData = computed(() => this.getCurrentPageData());\n    readonly selectedRowsData = computed(() => this.getSelectedRowsData());\n    readonly groupedData = computed(() => this.getGroupedData());\n    readonly sortCriteriaData = computed(() => this.getSortCriteriaData());\n    readonly paginationCriteria = computed(() => this.getPaginationCriteria());\n\n    setInitialData(data: Partial<T>[]) {\n        this.#state.update((state) => ({\n            ...state,\n            dataSource: data,\n            filteredData: data,\n            headers: data.length > 0 ? Object.keys(data[0]) : [],\n            preferenceCriteria: {\n                ...state.preferenceCriteria,\n                visibleColumns: data.length > 0 ? Object.keys(data[0]) : [],\n            },\n            paginationCriteria: {\n                ...state.paginationCriteria,\n                totalPages: Math.ceil(data.length / state.paginationCriteria.pageSize),\n            },\n            filterCriteria: {\n                column: data.length > 0 ? Object.keys(data[0])[0] : '',\n                value: '',\n            },\n        }));\n        this.updatePagination();\n    }\n\n    setColumns(columns: string[]) {\n        this.#state.update((state) => ({\n            ...state,\n            headers: columns,\n            preferenceCriteria: {\n                ...state.preferenceCriteria,\n                visibleColumns: columns,\n            },\n        }));\n    }\n\n    setGroupBy(column: string) {\n        this.#state.update((state) => ({\n            ...state,\n            preferenceCriteria: {\n                ...state.preferenceCriteria,\n                groupByColumn: column,\n            },\n        }));\n    }\n\n    // Drag and Drop\n    dragStart(index: number): void {\n        console.log('dragStart', index, this.#state());\n        this.#state.update((state) => ({ ...state, draggedColIndex: index }));\n    }\n\n    dragOver(event: DragEvent): void {\n        event.preventDefault();\n    }\n\n    dragDrop(index: number): void {\n        console.log('dragDrop', index);\n        const targetIndex = index;\n        const { draggedColIndex, dataSource, headers } = this.#state();\n        // Reset selected rows if dragging a column\n        this.#selection.clear();\n        console.log('dragDrop', this.#state(), 'start', draggedColIndex, targetIndex);\n\n        if (draggedColIndex === null || draggedColIndex === targetIndex) return;\n\n        // Update headers array with dragged column\n        const newHeaders = [...headers];\n        const draggedHeader = newHeaders.splice(draggedColIndex, 1)[0];\n        newHeaders.splice(targetIndex, 0, draggedHeader);\n\n        // Update rows in dataSource array with dragged column\n        const newRows = dataSource.map((row: any) => {\n            const entries = Object.entries(row);\n            const draggedEntry = entries.splice(draggedColIndex, 1)[0];\n            console.log('dragDropEntry', draggedEntry);\n            entries.splice(targetIndex, 0, draggedEntry);\n            return Object.fromEntries(entries);\n        });\n\n        // Update state with new headers, rows, and reset draggedColIndex\n        this.#state.update((state) => ({\n            ...state,\n            headers: newHeaders,\n            dataSource: newRows,\n            filteredData: newRows,\n            selectedRows: [],\n            draggedColIndex: null,\n        }));\n\n        // Update other necessary parts of the state\n        this.updatePagination();\n    }\n\n    // Pagination\n    private updatePagination() {\n        const { dataSource, paginationCriteria } = this.#state();\n        const totalPages = Math.ceil(dataSource.length / paginationCriteria.pageSize);\n        this.#state.update((state) => ({\n            ...state,\n            paginationCriteria: {\n                ...state.paginationCriteria,\n                totalPages,\n            },\n        }));\n    }\n\n    setPage(page: number) {\n        this.#state.update((state) => ({\n            ...state,\n            paginationCriteria: {\n                ...state.paginationCriteria,\n                currentPage: page,\n            },\n        }));\n    }\n\n    setItemsPerPage(pageSize: number | string) {\n        const pageSizeNum = Number(pageSize);\n\n        this.#state.update((state) => ({\n            ...state,\n            paginationCriteria: {\n                ...state.paginationCriteria,\n                pageSize: pageSizeNum,\n                currentPage: 1,\n                totalPages: Math.ceil(state.filteredData.length / pageSizeNum),\n            },\n        }));\n        this.updatePagination();\n    }\n\n    // Sorting\n    sortBy(key: string) {\n        this.#state.update((state) => ({\n            ...state,\n            sortCriteria: {\n                key,\n                direction: state.sortCriteria.key === key && state.sortCriteria.direction === 'ascending' ? 'descending' : 'ascending',\n            },\n        }));\n        this.applySort();\n    }\n\n    private applySort() {\n        const { sortCriteria, filteredData } = this.#state();\n        const sortedData = [...filteredData].sort((a, b) => {\n            if (a[sortCriteria.key] < b[sortCriteria.key]) return sortCriteria.direction === 'ascending' ? -1 : 1;\n            if (a[sortCriteria.key] > b[sortCriteria.key]) return sortCriteria.direction === 'ascending' ? 1 : -1;\n            return 0;\n        });\n        this.#state.update((state) => ({ ...state, filteredData: sortedData }));\n    }\n\n    // Filtering\n    applyFilter(criteria: FilterCriteria) {\n        this.#state.update((state) => ({ ...state, filterCriteria: criteria }));\n        this.updateFilteredData();\n    }\n\n    private updateFilteredData() {\n        const { dataSource, filterCriteria } = this.#state();\n        const filteredData = dataSource.filter((item) =>\n            String(item[filterCriteria.column]).toLowerCase().includes(filterCriteria.value.toLowerCase())\n        );\n        this.#state.update((state) => ({ ...state, filteredData }));\n        this.updatePagination();\n    }\n\n    // Row selection\n    toggleRowSelection(row: RowData) {\n        const rowDataStr = JSON.stringify(row);\n        if (this.#selection.selected(rowDataStr)) this.#selection.deselect(rowDataStr);\n        else this.#selection.select(rowDataStr);\n        this.#state.update((state) => ({\n            ...state,\n            selectedRows: this.#selection.items(),\n        }));\n    }\n\n    toggleAllRowsSelection() {\n        this.#state.update((state) => {\n            const allSelected = state.selectedRows.length === state.dataSource.length;\n            if (allSelected) this.#selection.clear();\n\n            return {\n                ...state,\n                selectedRows: allSelected\n                    ? []\n                    : state.dataSource.map((item) => {\n                          const itemStr = JSON.stringify(item);\n                          this.#selection.select(itemStr);\n                          return item;\n                      }),\n            };\n        });\n\n        console.log('selectedRows', this.selectedRowsData());\n    }\n\n    selected(row: RowData): boolean {\n        const selectedRowStr = JSON.stringify(row);\n        return this.#selection.selected(selectedRowStr);\n    }\n\n    // Column visibility\n    toggleColumnVisibility(columns: string[]) {\n        console.log('toggleColumnVisibility', columns);\n        this.#state.update((state) => ({\n            ...state,\n            preferenceCriteria: {\n                ...state.preferenceCriteria,\n                visibleColumns: columns,\n            },\n        }));\n    }\n\n    // Helper methods for computed signals\n    private getVisibleData(): T[] {\n        const { filteredData, preferenceCriteria } = this.#state();\n        return filteredData.map((item) => {\n            const visibleItem = {} as T;\n            preferenceCriteria.visibleColumns.forEach((col) => {\n                //@ts-ignore\n                visibleItem[col] = item[col];\n            });\n            return visibleItem;\n        });\n    }\n\n    private getCurrentPageData(): T[] {\n        const { paginationCriteria } = this.#state();\n        const startIndex = (paginationCriteria.currentPage - 1) * paginationCriteria.pageSize;\n        return this.visibleData().slice(startIndex, startIndex + paginationCriteria.pageSize);\n    }\n\n    private getSelectedRowsData(): string[] {\n        const { selectedRows, dataSource } = this.#state();\n        return dataSource.filter((item) => selectedRows.includes(item)).map((item) => JSON.stringify(item));\n    }\n\n    private getGroupedData(): { [key: string]: T[] } {\n        const { filteredData, preferenceCriteria } = this.#state();\n        if (!preferenceCriteria.groupByColumn) {\n            return { All: filteredData };\n        }\n        return filteredData.reduce((groups, item) => {\n            const key = item[preferenceCriteria.groupByColumn as keyof T] as string;\n            if (!groups[key]) {\n                groups[key] = [];\n            }\n            groups[key].push(item);\n            return groups;\n        }, {} as { [key: string]: T[] });\n    }\n\n    private getSortCriteriaData(): SortCriteria {\n        const { sortCriteria } = this.#state();\n        return sortCriteria;\n    }\n\n    private getPaginationCriteria(): PaginationCriteria {\n        const { paginationCriteria } = this.#state();\n        return paginationCriteria;\n    }\n\n    private getFilterCriteriaData(): FilterCriteria {\n        const { filterCriteria } = this.#state();\n        return filterCriteria;\n    }\n\n    // Reset to initial state\n    resetToInitialState() {\n        this.#state.update((state) => ({\n            ...state,\n            filteredData: state.dataSource,\n            paginationCriteria: {\n                currentPage: 1,\n                totalPages: Math.ceil(state.dataSource.length / state.paginationCriteria.pageSize),\n                pageSize: state.paginationCriteria.pageSize,\n            },\n            selectedRows: [],\n            sortCriteria: { key: '', direction: 'ascending' },\n            filterCriteria: { column: '', value: '' },\n            preferenceCriteria: {\n                ...state.preferenceCriteria,\n                groupByColumn: '',\n            },\n        }));\n    }\n}\n",
+            "sourceCode": "import { Directive, Input, computed, inject, signal } from '@angular/core';\nimport { FilterCriteria, TableDataSourceState } from '../models';\nimport { Identifiable, RowData } from 'projects/ng-lib/src/lib/tw-form-ui/models';\nimport { PaginationCriteria, SortCriteria } from '../models/table.interface';\n\nimport { AdkSelection } from 'projects/ng-lib/src/lib/tw-form-ui';\n\n//TODO: figure out field for search value it should change based on the column that are visible\n//TODO: maybe make a preferences adk directive of itself handling the preferences interactions\n@Directive({\n    selector: '[adk-table]',\n    exportAs: 'adkTable',\n    standalone: true,\n    hostDirectives: [AdkSelection],\n})\nexport class AdkTable<T extends Identifiable> {\n    #selection = inject(AdkSelection, { self: true });\n    @Input() set initialData(data: T[]) {\n        this.setInitialData(data);\n    }\n\n    @Input() set columns(cols: string[]) {\n        this.setColumns(cols);\n    }\n\n    @Input() set groupBy(column: string) {\n        this.setGroupBy(column);\n    }\n\n    @Input() set filterBy(criteria: FilterCriteria) {\n        this.applyFilter(criteria);\n    }\n\n    #state = signal<TableDataSourceState>({\n        dataSource: [],\n        draggedColIndex: null,\n        filteredData: [],\n        headers: [],\n        paginationCriteria: {\n            currentPage: 1,\n            totalPages: 1,\n            pageSize: 10,\n        },\n        preferenceCriteria: {\n            visibleColumns: [],\n            groupByColumn: '',\n        },\n        selectedRows: [],\n        sortCriteria: { key: '', direction: 'ascending' },\n        filterCriteria: { column: '', value: '' },\n    });\n\n    // Computed signals for derived state\n    readonly state = computed(() => this.#state());\n    readonly headers = computed(() => this.#state().headers);\n    readonly visibleData = computed(() => this.getVisibleData());\n    readonly filteredCriteria = computed(() => this.getFilterCriteriaData());\n    readonly currentPageData = computed(() => this.getCurrentPageData());\n    readonly selectedRowsData = computed(() => this.getSelectedRowsData());\n    readonly groupedData = computed(() => this.getGroupedData());\n    readonly sortCriteriaData = computed(() => this.getSortCriteriaData());\n    readonly paginationCriteria = computed(() => this.getPaginationCriteria());\n    readonly preferenceCriteria = computed(() => this.getPreferenceCriteriaData());\n\n    setInitialData(data: Partial<T>[]) {\n        this.#state.update((state) => ({\n            ...state,\n            dataSource: data,\n            filteredData: data,\n            headers: data.length > 0 ? Object.keys(data[0]) : [],\n            preferenceCriteria: {\n                ...state.preferenceCriteria,\n                visibleColumns: data.length > 0 ? Object.keys(data[0]) : [],\n            },\n            paginationCriteria: {\n                ...state.paginationCriteria,\n                totalPages: Math.ceil(data.length / state.paginationCriteria.pageSize),\n            },\n            filterCriteria: {\n                column: data.length > 0 ? Object.keys(data[0])[0] : '',\n                value: '',\n            },\n        }));\n        this.updatePagination();\n    }\n\n    setColumns(columns: string[]) {\n        this.#state.update((state) => ({\n            ...state,\n            headers: columns,\n            preferenceCriteria: {\n                ...state.preferenceCriteria,\n                visibleColumns: columns,\n            },\n        }));\n    }\n\n    setGroupBy(column: string) {\n        this.#state.update((state) => ({\n            ...state,\n            preferenceCriteria: {\n                ...state.preferenceCriteria,\n                groupByColumn: column,\n            },\n        }));\n    }\n\n    // Drag and Drop\n    dragStart(index: number): void {\n        this.#state.update((state) => ({ ...state, draggedColIndex: index }));\n    }\n\n    dragOver(event: DragEvent): void {\n        event.preventDefault();\n    }\n\n    dragDrop(index: number): void {\n        const targetIndex = index;\n        const { draggedColIndex, dataSource, headers } = this.#state();\n        // Reset selected rows if dragging a column\n        this.#selection.clear();\n        if (draggedColIndex === null || draggedColIndex === targetIndex) return;\n        // Update headers array with dragged column\n        const newHeaders = [...headers];\n        const draggedHeader = newHeaders.splice(draggedColIndex, 1)[0];\n        newHeaders.splice(targetIndex, 0, draggedHeader);\n        // Update rows in dataSource array with dragged column\n        const newRows = dataSource.map((row: any) => {\n            const entries = Object.entries(row);\n            const draggedEntry = entries.splice(draggedColIndex, 1)[0];\n            entries.splice(targetIndex, 0, draggedEntry);\n            return Object.fromEntries(entries);\n        });\n        // Update state with new headers, rows, and reset draggedColIndex\n        this.#state.update((state) => ({\n            ...state,\n            headers: newHeaders,\n            dataSource: newRows,\n            filteredData: newRows,\n            selectedRows: [],\n            draggedColIndex: null,\n        }));\n        // Update other necessary parts of the state\n        this.updatePagination();\n    }\n\n    // Pagination\n    private updatePagination() {\n        const { dataSource, paginationCriteria } = this.#state();\n        const totalPages = Math.ceil(dataSource.length / paginationCriteria.pageSize);\n        this.#state.update((state) => ({\n            ...state,\n            paginationCriteria: {\n                ...state.paginationCriteria,\n                totalPages,\n            },\n        }));\n    }\n\n    setPage(page: number) {\n        this.#state.update((state) => ({\n            ...state,\n            paginationCriteria: {\n                ...state.paginationCriteria,\n                currentPage: page,\n            },\n        }));\n    }\n\n    setItemsPerPage(pageSize: number | string) {\n        const pageSizeNum = Number(pageSize);\n\n        this.#state.update((state) => ({\n            ...state,\n            paginationCriteria: {\n                ...state.paginationCriteria,\n                pageSize: pageSizeNum,\n                currentPage: 1,\n                totalPages: Math.ceil(state.filteredData.length / pageSizeNum),\n            },\n        }));\n        this.updatePagination();\n    }\n\n    // Sorting\n    sortBy(key: string) {\n        this.#state.update((state) => ({\n            ...state,\n            sortCriteria: {\n                key,\n                direction: state.sortCriteria.key === key && state.sortCriteria.direction === 'ascending' ? 'descending' : 'ascending',\n            },\n        }));\n        this.applySort();\n    }\n\n    private applySort() {\n        const { sortCriteria, filteredData } = this.#state();\n        const sortedData = [...filteredData].sort((a, b) => {\n            if (a[sortCriteria.key] < b[sortCriteria.key]) return sortCriteria.direction === 'ascending' ? -1 : 1;\n            if (a[sortCriteria.key] > b[sortCriteria.key]) return sortCriteria.direction === 'ascending' ? 1 : -1;\n            return 0;\n        });\n        this.#state.update((state) => ({ ...state, filteredData: sortedData }));\n    }\n\n    // Filtering\n    applyFilter(criteria: FilterCriteria) {\n        this.#state.update((state) => ({ ...state, filterCriteria: criteria }));\n        this.updateFilteredData();\n    }\n\n    filterColumns(search: string) {\n        this.#state.update((state) => ({\n            ...state,\n            filterCriteria: {\n                ...state.filterCriteria,\n                value: search,\n            },\n        }));\n        this.updateFilteredData();\n    }\n\n    private updateFilteredData() {\n        const { dataSource, filterCriteria } = this.#state();\n        const filteredData = dataSource.filter((item) =>\n            String(item[filterCriteria.column]).toLowerCase().includes(filterCriteria.value.toLowerCase())\n        );\n        this.#state.update((state) => ({ ...state, filteredData }));\n        this.updatePagination();\n    }\n\n    // Row selection\n    toggleRowSelection(row: RowData) {\n        const rowDataStr = JSON.stringify(row);\n        if (this.#selection.selected(rowDataStr)) this.#selection.deselect(rowDataStr);\n        else this.#selection.select(rowDataStr);\n        this.#state.update((state) => ({\n            ...state,\n            selectedRows: this.#selection.items(),\n        }));\n    }\n\n    toggleAllRowsSelection() {\n        this.#state.update((state) => {\n            const allSelected = state.selectedRows.length === state.dataSource.length;\n            if (allSelected) this.#selection.clear();\n            return {\n                ...state,\n                selectedRows: allSelected\n                    ? []\n                    : state.dataSource.map((item) => {\n                          const itemStr = JSON.stringify(item);\n                          this.#selection.select(itemStr);\n                          return item;\n                      }),\n            };\n        });\n    }\n\n    selected(row: RowData): boolean {\n        const selectedRowStr = JSON.stringify(row);\n        return this.#selection.selected(selectedRowStr);\n    }\n\n    // Column visibility\n    toggleColumnVisibility(columns: string[]) {\n        this.#state.update((state) => ({\n            ...state,\n            preferenceCriteria: {\n                ...state.preferenceCriteria,\n                visibleColumns: columns,\n            },\n        }));\n    }\n\n    // Helper methods for computed signals\n    private getVisibleData(): T[] {\n        const { filteredData, preferenceCriteria } = this.#state();\n        return filteredData.map((item) => {\n            const visibleItem = {} as T;\n            preferenceCriteria.visibleColumns.forEach((col) => {\n                //@ts-ignore\n                visibleItem[col] = item[col];\n            });\n            return visibleItem;\n        });\n    }\n\n    private getCurrentPageData(): T[] {\n        const { paginationCriteria } = this.#state();\n        const startIndex = (paginationCriteria.currentPage - 1) * paginationCriteria.pageSize;\n        return this.visibleData().slice(startIndex, startIndex + paginationCriteria.pageSize);\n    }\n\n    private getSelectedRowsData(): string[] {\n        const { selectedRows, dataSource } = this.#state();\n        return dataSource.filter((item) => selectedRows.includes(item)).map((item) => JSON.stringify(item));\n    }\n\n    private getGroupedData(): { [key: string]: T[] } {\n        const { filteredData, preferenceCriteria } = this.#state();\n        if (!preferenceCriteria.groupByColumn) {\n            return { All: filteredData };\n        }\n        return filteredData.reduce((groups, item) => {\n            const key = item[preferenceCriteria.groupByColumn as keyof T] as string;\n            if (!groups[key]) {\n                groups[key] = [];\n            }\n            groups[key].push(item);\n            return groups;\n        }, {} as { [key: string]: T[] });\n    }\n\n    private getSortCriteriaData(): SortCriteria {\n        const { sortCriteria } = this.#state();\n        return sortCriteria;\n    }\n\n    private getPaginationCriteria(): PaginationCriteria {\n        const { paginationCriteria } = this.#state();\n        return paginationCriteria;\n    }\n\n    private getFilterCriteriaData(): FilterCriteria {\n        const { filterCriteria } = this.#state();\n        return filterCriteria;\n    }\n\n    private getPreferenceCriteriaData() {\n        const { preferenceCriteria } = this.#state();\n        return preferenceCriteria;\n    }\n\n    // Reset to initial state\n    resetToInitialState() {\n        this.#state.update((state) => ({\n            ...state,\n            filteredData: state.dataSource,\n            paginationCriteria: {\n                currentPage: 1,\n                totalPages: Math.ceil(state.dataSource.length / state.paginationCriteria.pageSize),\n                pageSize: state.paginationCriteria.pageSize,\n            },\n            selectedRows: [],\n            sortCriteria: { key: '', direction: 'ascending' },\n            filterCriteria: { column: '', value: '' },\n            preferenceCriteria: {\n                ...state.preferenceCriteria,\n                groupByColumn: '',\n            },\n        }));\n    }\n}\n",
             "selector": "[adk-table]",
             "providers": [],
             "exportAs": "adkTable",
@@ -4576,6 +4576,19 @@
                     ]
                 },
                 {
+                    "name": "preferenceCriteria",
+                    "defaultValue": "computed(() => this.getPreferenceCriteriaData())",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 63,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
                     "name": "selectedRowsData",
                     "defaultValue": "computed(() => this.getSelectedRowsData())",
                     "deprecated": false,
@@ -4642,7 +4655,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 216,
+                    "line": 208,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -4663,7 +4676,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 205,
+                    "line": 197,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4739,7 +4752,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 108,
+                    "line": 109,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -4755,12 +4768,40 @@
                     ]
                 },
                 {
+                    "name": "filterColumns",
+                    "args": [
+                        {
+                            "name": "search",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 213,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "search",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
                     "name": "getCurrentPageData",
                     "args": [],
                     "optional": false,
                     "returnType": "T[]",
                     "typeParameters": [],
-                    "line": 291,
+                    "line": 290,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4773,7 +4814,7 @@
                     "optional": false,
                     "returnType": "FilterCriteria",
                     "typeParameters": [],
-                    "line": 327,
+                    "line": 326,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4786,7 +4827,7 @@
                     "optional": false,
                     "returnType": "literal type",
                     "typeParameters": [],
-                    "line": 302,
+                    "line": 301,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4799,7 +4840,20 @@
                     "optional": false,
                     "returnType": "PaginationCriteria",
                     "typeParameters": [],
-                    "line": 322,
+                    "line": 321,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "getPreferenceCriteriaData",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "any",
+                    "typeParameters": [],
+                    "line": 331,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4812,7 +4866,7 @@
                     "optional": false,
                     "returnType": "string[]",
                     "typeParameters": [],
-                    "line": 297,
+                    "line": 296,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4825,7 +4879,7 @@
                     "optional": false,
                     "returnType": "SortCriteria",
                     "typeParameters": [],
-                    "line": 317,
+                    "line": 316,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4838,7 +4892,7 @@
                     "optional": false,
                     "returnType": "T[]",
                     "typeParameters": [],
-                    "line": 279,
+                    "line": 278,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4851,7 +4905,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 333,
+                    "line": 337,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -4896,7 +4950,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 86,
+                    "line": 87,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -4924,7 +4978,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 97,
+                    "line": 98,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -4952,7 +5006,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 64,
+                    "line": 65,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -4980,7 +5034,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 178,
+                    "line": 170,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -5008,7 +5062,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 168,
+                    "line": 160,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -5036,7 +5090,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 194,
+                    "line": 186,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -5057,7 +5111,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 241,
+                    "line": 244,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -5102,7 +5156,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 231,
+                    "line": 234,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -5123,7 +5177,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 221,
+                    "line": 224,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -5136,7 +5190,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 156,
+                    "line": 148,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -5843,7 +5897,7 @@
         },
         {
             "name": "ButtonComponent",
-            "id": "component-ButtonComponent-9ff83dcebe8f51ebdb68405f0436373f43085056dc68644fb8d78209a73aba68782854c46d71af36753d3ea19656b54fb0e80e13be26fd6a52be91ca3afd2f2f",
+            "id": "component-ButtonComponent-4378805a8d8092af328480e3f30b40cf056a7477bf9b8120ea29e4b5172753f946414f6672038a74af8389d697005282389574f74f9f5edbbf8f79079507cabb",
             "file": "projects/ng-lib/src/lib/tw-ui/components/button.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -5854,7 +5908,7 @@
             "selector": "adk-button",
             "styleUrls": [],
             "styles": [
-                "\n            :host {\n                display: block;\n                width: 100%;\n            }\n            button:disabled {\n                cursor: not-allowed;\n                opacity: 0.5;\n            }\n        "
+                "\n            :host {\n                display: block;\n                width: auto;\n            }\n            button:disabled {\n                cursor: not-allowed;\n                opacity: 0.5;\n            }\n        "
             ],
             "template": "<button\n    [ngClass]=\"getButtonClasses()\"\n    class=\"select-none rounded-lg bg-blue-500 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none w-full {{\n        disabled ? (disabledStyle$ | async) : (color$ | async)\n    }}\"\n    [disabled]=\"disabled\"\n    type=\"button\"\n>\n    <ng-content></ng-content>\n</button>\n",
             "templateUrl": [],
@@ -6059,10 +6113,10 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { BehaviorSubject, Observable } from 'rxjs';\nimport { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';\nimport { CommonModule, NgClass } from '@angular/common';\n\n@Component({\n    selector: 'adk-button',\n    standalone: true,\n    imports: [CommonModule, NgClass],\n    template: `\n        <button\n            [ngClass]=\"getButtonClasses()\"\n            class=\"select-none rounded-lg bg-blue-500 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none w-full {{\n                disabled ? (disabledStyle$ | async) : (color$ | async)\n            }}\"\n            [disabled]=\"disabled\"\n            type=\"button\"\n        >\n            <ng-content></ng-content>\n        </button>\n    `,\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n            button:disabled {\n                cursor: not-allowed;\n                opacity: 0.5;\n            }\n        `,\n    ],\n    changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class ButtonComponent implements OnInit, OnChanges {\n    @Input() disabled = false;\n    @Input() variant: 'filled' | 'gradient' | 'outlined' | 'text' = 'filled';\n    @Input() color: 'primary' | 'secondary' | 'success' | 'warn' | 'danger' = 'primary';\n    @Input() type: 'button' | 'submit' | 'reset' = 'button';\n    @Input() customClasses = '';\n    @Input() bgColor = 'bg-blue-500';\n    @Input() textColor = 'text-white';\n    @Input() hoverEffect = 'hover:shadow-lg';\n    @Input() disabledEffect = 'opacity-50 cursor-not-allowed opacity-50 disabled:cursor-not-allowed disabled:opacity-50';\n\n    btnStyle = new BehaviorSubject<string>('');\n    disabledStyle = new BehaviorSubject<string>('');\n\n    get color$(): Observable<string> {\n        return this.btnStyle.asObservable();\n    }\n\n    get disabledStyle$(): Observable<string> {\n        return this.disabledStyle.asObservable();\n    }\n\n    private readonly colorClasses = {\n        primary: 'bg-blue-500',\n        secondary: 'bg-gray-700',\n        success: 'bg-green-500',\n        warn: 'bg-amber-500',\n        danger: 'bg-red-500',\n    };\n\n    private readonly variantClasses = {\n        filled: 'text-white shadow-md shadow-gray-900/10',\n        gradient: 'bg-gradient-to-r from-{color}-500 to-{color}-600 text-white',\n        outlined: 'border border-{color}-500 text-{color}-500 hover:bg-{color}-500 hover:text-white',\n        text: 'text-{color}-500 hover:text-{color}-600',\n    };\n\n    ngOnInit(): void {\n        this.getButtonClasses();\n    }\n\n    ngOnChanges({ disabled, variant, color, customClasses, bgColor, textColor, hoverEffect, disabledEffect }: SimpleChanges) {\n        if (variant || color || customClasses || bgColor || textColor || hoverEffect || disabledEffect || disabled) {\n            this.disabled = disabled ? disabled.currentValue : false;\n            this.getButtonClasses();\n        }\n    }\n\n    getButtonClasses(): string {\n        const baseClasses =\n            'select-none rounded-lg py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase transition-all w-full';\n        const variantClass = this.variantClasses[this.variant] || this.variantClasses['filled'];\n        const colorClass = this.colorClasses[this.color] || this.colorClasses['primary'];\n        const hoverClass = this.disabled ? '' : this.hoverEffect;\n        const disabledClass = this.disabled ? this.disabledEffect : '';\n\n        return `${baseClasses} ${colorClass} ${variantClass} ${hoverClass} ${disabledClass} ${this.customClasses}`;\n    }\n}\n",
+            "sourceCode": "import { BehaviorSubject, Observable } from 'rxjs';\nimport { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';\nimport { CommonModule, NgClass } from '@angular/common';\n\n@Component({\n    selector: 'adk-button',\n    standalone: true,\n    imports: [CommonModule, NgClass],\n    template: `\n        <button\n            [ngClass]=\"getButtonClasses()\"\n            class=\"select-none rounded-lg bg-blue-500 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none w-full {{\n                disabled ? (disabledStyle$ | async) : (color$ | async)\n            }}\"\n            [disabled]=\"disabled\"\n            type=\"button\"\n        >\n            <ng-content></ng-content>\n        </button>\n    `,\n    styles: [\n        `\n            :host {\n                display: block;\n                width: auto;\n            }\n            button:disabled {\n                cursor: not-allowed;\n                opacity: 0.5;\n            }\n        `,\n    ],\n    changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class ButtonComponent implements OnInit, OnChanges {\n    @Input() disabled = false;\n    @Input() variant: 'filled' | 'gradient' | 'outlined' | 'text' = 'filled';\n    @Input() color: 'primary' | 'secondary' | 'success' | 'warn' | 'danger' = 'primary';\n    @Input() type: 'button' | 'submit' | 'reset' = 'button';\n    @Input() customClasses = '';\n    @Input() bgColor = 'bg-blue-500';\n    @Input() textColor = 'text-white';\n    @Input() hoverEffect = 'hover:shadow-lg';\n    @Input() disabledEffect = 'opacity-50 cursor-not-allowed opacity-50 disabled:cursor-not-allowed disabled:opacity-50';\n\n    btnStyle = new BehaviorSubject<string>('');\n    disabledStyle = new BehaviorSubject<string>('');\n\n    get color$(): Observable<string> {\n        return this.btnStyle.asObservable();\n    }\n\n    get disabledStyle$(): Observable<string> {\n        return this.disabledStyle.asObservable();\n    }\n\n    private readonly colorClasses = {\n        primary: 'bg-blue-500',\n        secondary: 'bg-gray-700',\n        success: 'bg-green-500',\n        warn: 'bg-amber-500',\n        danger: 'bg-red-500',\n    };\n\n    private readonly variantClasses = {\n        filled: 'text-white shadow-md shadow-gray-900/10',\n        gradient: 'bg-gradient-to-r from-{color}-500 to-{color}-600 text-white',\n        outlined: 'border border-{color}-500 text-{color}-500 hover:bg-{color}-500 hover:text-white',\n        text: 'text-{color}-500 hover:text-{color}-600',\n    };\n\n    ngOnInit(): void {\n        this.getButtonClasses();\n    }\n\n    ngOnChanges({ disabled, variant, color, customClasses, bgColor, textColor, hoverEffect, disabledEffect }: SimpleChanges) {\n        if (variant || color || customClasses || bgColor || textColor || hoverEffect || disabledEffect || disabled) {\n            this.disabled = disabled ? disabled.currentValue : false;\n            this.getButtonClasses();\n        }\n    }\n\n    getButtonClasses(): string {\n        const baseClasses =\n            'select-none rounded-lg py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase transition-all w-full';\n        const variantClass = this.variantClasses[this.variant] || this.variantClasses['filled'];\n        const colorClass = this.colorClasses[this.color] || this.colorClasses['primary'];\n        const hoverClass = this.disabled ? '' : this.hoverEffect;\n        const disabledClass = this.disabled ? this.disabledEffect : '';\n\n        return `${baseClasses} ${colorClass} ${variantClass} ${hoverClass} ${disabledClass} ${this.customClasses}`;\n    }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
-            "stylesData": "\n            :host {\n                display: block;\n                width: 100%;\n            }\n            button:disabled {\n                cursor: not-allowed;\n                opacity: 0.5;\n            }\n        \n",
+            "stylesData": "\n            :host {\n                display: block;\n                width: auto;\n            }\n            button:disabled {\n                cursor: not-allowed;\n                opacity: 0.5;\n            }\n        \n",
             "extends": [],
             "implements": [
                 "OnInit",
@@ -9484,7 +9538,7 @@
         },
         {
             "name": "TableComponent",
-            "id": "component-TableComponent-9bf03ccdb46035273e8d1373e26946e8a7fdbc95a4771fa551463b86fc509100c601dd2176d124a62430f4e0607a8fb65622576b086f3b72616c76988ad87e06",
+            "id": "component-TableComponent-ddbcb784788edcf4ad0ec15ccbfc49bef526f427e265fdb1fdd7b54c277c3481bfdef8b78315f007196fd98d517a2edb163791ff83b86b3c10bc64648b65513c",
             "file": "projects/ng-lib/src/lib/tw-ui/components/table/new/table.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -9510,6 +9564,24 @@
             ],
             "inputsClass": [
                 {
+                    "name": "actionButtons",
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 72,
+                    "type": "literal type[]",
+                    "decorators": []
+                },
+                {
+                    "name": "actionColName",
+                    "defaultValue": "'Actions'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 71,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
                     "name": "columns",
                     "defaultValue": "[]",
                     "deprecated": false,
@@ -9524,6 +9596,15 @@
                     "deprecationMessage": "",
                     "line": 62,
                     "type": "RowData[]",
+                    "decorators": []
+                },
+                {
+                    "name": "isActionButton",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 70,
+                    "type": "boolean",
                     "decorators": []
                 },
                 {
@@ -9575,7 +9656,7 @@
                     "name": "tableHeader",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 70,
+                    "line": 73,
                     "type": "literal type",
                     "decorators": []
                 }
@@ -9613,7 +9694,7 @@
                     "type": "literal type",
                     "optional": false,
                     "description": "",
-                    "line": 79
+                    "line": 81
                 },
                 {
                     "name": "field",
@@ -9623,37 +9704,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 85
-                },
-                {
-                    "name": "filterColumn",
-                    "defaultValue": "''",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "string",
-                    "optional": false,
-                    "description": "",
-                    "line": 82
-                },
-                {
-                    "name": "filterValue",
-                    "defaultValue": "''",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "string",
-                    "optional": false,
-                    "description": "",
-                    "line": 83
-                },
-                {
-                    "name": "groupByColumn",
-                    "defaultValue": "''",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "string",
-                    "optional": false,
-                    "description": "",
-                    "line": 78
+                    "line": 84
                 },
                 {
                     "name": "itemsPerPage",
@@ -9663,7 +9714,7 @@
                     "type": "number",
                     "optional": false,
                     "description": "",
-                    "line": 80
+                    "line": 82
                 },
                 {
                     "name": "rowFocus",
@@ -9673,20 +9724,10 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 76
+                    "line": 79
                 }
             ],
             "methodsClass": [
-                {
-                    "name": "applyFilter",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 102,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                },
                 {
                     "name": "isCellFieldObject",
                     "args": [
@@ -9700,7 +9741,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 129,
+                    "line": 115,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -9728,7 +9769,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 125,
+                    "line": 111,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -9756,7 +9797,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 119,
+                    "line": 105,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -9784,7 +9825,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 114,
+                    "line": 100,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -9805,7 +9846,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 87,
+                    "line": 86,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -9822,7 +9863,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 134,
+                    "line": 120,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -9838,17 +9879,55 @@
                     ]
                 },
                 {
+                    "name": "onFormValueChanges",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 143,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
                     "name": "onItemsPerPageChange",
                     "args": [],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 110,
+                    "line": 96,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
                 {
-                    "name": "onSettingCriteria",
+                    "name": "onRowClick",
+                    "args": [
+                        {
+                            "name": "rowData",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 92,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "rowData",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "onSettingsCriteria",
                     "args": [
                         {
                             "name": "event",
@@ -9860,7 +9939,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 139,
+                    "line": 125,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -9881,7 +9960,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 158,
+                    "line": 149,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -9901,7 +9980,7 @@
                     "optional": false,
                     "returnType": "Field",
                     "typeParameters": [],
-                    "line": 150,
+                    "line": 135,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -9930,7 +10009,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { AdkFormGroup, AdkSelection } from '../../../../directives';\nimport { AsyncPipe, CommonModule } from '@angular/common';\nimport { Component, Input, OnInit, inject } from '@angular/core';\nimport { Field, FieldsComponent, RowData } from '../../../../tw-form-ui';\nimport { FormsModule, ReactiveFormsModule } from '@angular/forms';\n\nimport { AdkExpansionPanelComponent } from '../../expansion-panel.component';\nimport { AdkTable } from '../directives/table';\nimport { AdkTooltipDirective } from '../../../../directives/tooltip';\nimport { ButtonComponent } from '../../button.component';\nimport { CheckboxComponent } from 'projects/ng-lib/src/public-api';\nimport { ImperativeObservable } from '../../../../utils';\nimport { SettingCriteria } from '../models';\nimport { SortableIconComponent } from '../utils';\nimport { TableHeaderComponent } from './table-header.component';\nimport { TwCardComponent } from '../../card/tw-card.component';\nimport { TwTableSettingsDialogComponent } from './tw-table-settings-dialog.component';\nimport { TwTypographyComponent } from '../../typography.component';\nimport { searchColumnSelector } from './fields.controls';\n\nconst imports = [\n    CommonModule,\n    ReactiveFormsModule,\n    AdkSelection,\n    AdkTooltipDirective,\n    AdkExpansionPanelComponent,\n    AsyncPipe,\n    TableHeaderComponent,\n    TwTypographyComponent,\n    TwCardComponent,\n    CheckboxComponent,\n    SortableIconComponent,\n    FieldsComponent,\n    AdkTable,\n    FormsModule,\n    ButtonComponent,\n    TwTableSettingsDialogComponent,\n];\n\n@Component({\n    selector: 'tw-table',\n    standalone: true,\n    imports: [...imports],\n    hostDirectives: [AdkTable, AdkFormGroup],\n    templateUrl: './table.component.html',\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n            .material-symbols-outlined {\n                font-size: 16px !important;\n            }\n        `,\n    ],\n})\nexport class TableComponent implements OnInit {\n    #formGroup = inject(AdkFormGroup, { self: true });\n    adkTable = inject(AdkTable);\n    @Input() isWrapped = false;\n    @Input() set data(value: RowData[]) {\n        this.adkTable.initialData = value;\n    }\n    @Input() columns: string[] = [];\n    @Input() isDraggable = false;\n    @Input() isSelectable = false;\n    @Input() isSortable = false;\n    @Input() isSearchable = false;\n    @Input() tableHeader!: { title: string; subtitle: string; isSearchable: boolean; buttons: any[] };\n\n    get formGroup() {\n        return this.#formGroup.formGroup();\n    }\n\n    rowFocus = new ImperativeObservable<RowData | null>(null);\n\n    groupByColumn: string = '';\n    expandedGroups: { [key: string]: boolean } = {};\n    itemsPerPage: number = 10;\n\n    filterColumn: string = '';\n    filterValue: string = '';\n\n    field = new ImperativeObservable<Field | undefined>(undefined);\n\n    ngOnInit(): void {\n        console.log('ngOnInit', this.data, this.adkTable.state(), this.formGroup.value);\n        this.field.value = this.setField(this.columns[0]);\n        this.#formGroup.setFormGroup([this.field.value]);\n        this.formGroup.valueChanges.subscribe((e) => {\n            console.log('formGroup valueChanges', e);\n        });\n    }\n\n    // onFilterColumnChange({ column }: FilterCriteria) {\n    //     console.log('onFilterColumnChange', column);\n    //     this.filterColumn = column;\n    //     this.applyFilter();\n    // }\n\n    applyFilter() {\n        this.adkTable.applyFilter({ column: this.filterColumn, value: this.filterValue });\n    }\n\n    // toggleGroup(key: string) {\n    //     this.expandedGroups[key] = !this.expandedGroups[key];\n    // }\n\n    onItemsPerPageChange() {\n        this.adkTable.setItemsPerPage(this.itemsPerPage);\n    }\n\n    isSelected(row: RowData): boolean {\n        const rowStr = JSON.stringify(row);\n        return this.adkTable.selectedRowsData().includes(rowStr);\n    }\n\n    isRowFocused(row: RowData): boolean {\n        const selectedRowStr = JSON.stringify(this.rowFocus.value);\n        const rowStr = JSON.stringify(row);\n        return selectedRowStr === rowStr;\n    }\n\n    isCellValArray(value: string | []) {\n        return Array.isArray(value);\n    }\n\n    isCellFieldObject(value: Field | any) {\n        if (typeof value === 'object') return true;\n        return false;\n    }\n\n    onDragDrop(index: number) {\n        this.adkTable.dragDrop(index);\n        this.columns = this.adkTable.headers();\n    }\n\n    onSettingCriteria(event: SettingCriteria) {\n        console.log('onSettingCriteria', event);\n        this.adkTable.setGroupBy(event.groupByColumn);\n        this.adkTable.setColumns(event.visibleColumns);\n        this.filterColumn = event.column;\n        this.groupByColumn = event.groupByColumn;\n        this.applyFilter();\n        this.field.value = this.setField(event.column);\n        console.log('onSettingCriteria after', this.adkTable.state(), this.field.value);\n    }\n\n    setField(column: string | undefined): Field {\n        this.resetField();\n        setTimeout(() => {\n            console.info('Timed column value update');\n        }, 1000);\n        return searchColumnSelector(column ?? '');\n    }\n\n    private resetField(): void {\n        this.field.value = undefined;\n    }\n}\n",
+            "sourceCode": "import { AdkFormGroup, AdkSelection } from '../../../../directives';\nimport { AsyncPipe, CommonModule } from '@angular/common';\nimport { Component, Input, OnInit, inject } from '@angular/core';\nimport { Field, FieldsComponent, RowData } from '../../../../tw-form-ui';\nimport { FormsModule, ReactiveFormsModule } from '@angular/forms';\n\nimport { AdkExpansionPanelComponent } from '../../expansion-panel.component';\nimport { AdkTable } from '../directives/table';\nimport { AdkTooltipDirective } from '../../../../directives/tooltip';\nimport { ButtonComponent } from '../../button.component';\nimport { CheckboxComponent } from 'projects/ng-lib/src/public-api';\nimport { ImperativeObservable } from '../../../../utils';\nimport { SettingCriteria } from '../models';\nimport { SortableIconComponent } from '../utils';\nimport { TableHeaderComponent } from './table-header.component';\nimport { TwCardComponent } from '../../card/tw-card.component';\nimport { TwTableSettingsDialogComponent } from './tw-table-settings-dialog.component';\nimport { TwTypographyComponent } from '../../typography.component';\nimport { searchColumnSelector } from './fields.controls';\n\nconst imports = [\n    CommonModule,\n    ReactiveFormsModule,\n    AdkSelection,\n    AdkTooltipDirective,\n    AdkExpansionPanelComponent,\n    AsyncPipe,\n    TableHeaderComponent,\n    TwTypographyComponent,\n    TwCardComponent,\n    CheckboxComponent,\n    SortableIconComponent,\n    FieldsComponent,\n    AdkTable,\n    FormsModule,\n    ButtonComponent,\n    TwTableSettingsDialogComponent,\n];\n\n@Component({\n    selector: 'tw-table',\n    standalone: true,\n    imports: [...imports],\n    hostDirectives: [AdkTable, AdkFormGroup],\n    templateUrl: './table.component.html',\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n            .material-symbols-outlined {\n                font-size: 16px !important;\n            }\n        `,\n    ],\n})\nexport class TableComponent implements OnInit {\n    #formGroup = inject(AdkFormGroup, { self: true });\n    adkTable = inject(AdkTable);\n    @Input() isWrapped = false;\n    @Input() set data(value: RowData[]) {\n        this.adkTable.initialData = value;\n    }\n    @Input() columns: string[] = [];\n    @Input() isDraggable = false;\n    @Input() isSelectable = false;\n    @Input() isSortable = false;\n    @Input() isSearchable = false;\n    @Input() isActionButton = false;\n    @Input() actionColName: string = 'Actions';\n    @Input() actionButtons: { icon?: string; label: string; color: string; onClick: (rowData: any) => void }[] = [];\n    @Input() tableHeader!: { title: string; subtitle: string; isSearchable: boolean; buttons: any[] };\n\n    get formGroup() {\n        return this.#formGroup.formGroup();\n    }\n\n    rowFocus = new ImperativeObservable<RowData | null>(null);\n\n    expandedGroups: { [key: string]: boolean } = {};\n    itemsPerPage: number = 10;\n\n    field = new ImperativeObservable<Field | undefined>(undefined);\n\n    ngOnInit(): void {\n        this.field.value = this.setField(this.adkTable.headers()[0]);\n        this.#formGroup.setFormGroup([this.field.value]);\n        this.onFormValueChanges();\n    }\n\n    onRowClick(rowData: any) {\n        console.log('Row clicked:', rowData);\n    }\n\n    onItemsPerPageChange() {\n        this.adkTable.setItemsPerPage(this.itemsPerPage);\n    }\n\n    isSelected(row: RowData): boolean {\n        const rowStr = JSON.stringify(row);\n        return this.adkTable.selectedRowsData().includes(rowStr);\n    }\n\n    isRowFocused(row: RowData): boolean {\n        const selectedRowStr = JSON.stringify(this.rowFocus.value);\n        const rowStr = JSON.stringify(row);\n        return selectedRowStr === rowStr;\n    }\n\n    isCellValArray(value: string | []) {\n        return Array.isArray(value);\n    }\n\n    isCellFieldObject(value: Field | any) {\n        if (typeof value === 'object') return true;\n        return false;\n    }\n\n    onDragDrop(index: number) {\n        this.adkTable.dragDrop(index);\n        this.columns = this.adkTable.headers();\n    }\n\n    onSettingsCriteria(event: SettingCriteria) {\n        this.adkTable.setGroupBy(event.groupByColumn);\n        this.adkTable.setColumns(event.visibleColumns);\n        this.columns = event.visibleColumns;\n        if (event.column) this.adkTable.applyFilter({ column: event.column, value: '' });\n        this.field.value = this.setField(event.column);\n        this.#formGroup.setFormGroup([this.field.value]);\n        this.onFormValueChanges();\n    }\n\n    setField(column: string | undefined): Field {\n        this.resetField();\n        setTimeout(() => {\n            console.info('Timed column value update');\n        }, 1000);\n        return searchColumnSelector(column ?? '');\n    }\n\n    onFormValueChanges() {\n        this.formGroup.valueChanges.subscribe((e) => {\n            this.adkTable.filterColumns(e['searchColumn']);\n        });\n    }\n\n    private resetField(): void {\n        this.field.value = undefined;\n    }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "\n            :host {\n                display: block;\n                width: 100%;\n            }\n            .material-symbols-outlined {\n                font-size: 16px !important;\n            }\n        \n",
@@ -9975,11 +10054,11 @@
                         "name": "formGroup",
                         "type": "",
                         "returnType": "",
-                        "line": 72
+                        "line": 75
                     }
                 }
             },
-            "templateData": "@if(adkTable) {\n@if(isWrapped && tableHeader) {\n<tw-card>\n  <div class=\"adk-card-header\">\n    <ng-container *ngTemplateOutlet=\"tableWrapperHeader; context: {adkTable, tableHeader}\"></ng-container>\n    <!-- <select [(ngModel)]=\"filterColumn\" (change)=\"onFilterColumnChange($event.target.value)\">\n      <option *ngFor=\"let col of columns\" [value]=\"col\">Filter by {{ col }}</option>\n    </select>\n    <input [(ngModel)]=\"filterValue\" (input)=\"applyFilter()\" [ngModelOptions]=\"{ standalone: true }\"\n      placeholder=\"Enter filter value\" />\n    <select [(ngModel)]=\"groupByColumn\" (change)=\"adkTable.setGroupBy(groupByColumn)\">\n      <option value=\"\">No Grouping</option>\n      <option *ngFor=\"let col of columns\" [value]=\"col\">Group by {{ col }}</option>\n    </select> -->\n  </div>\n  <div class=\"adk-card-body\">\n    <ng-container *ngTemplateOutlet=\"tableContent; context: {\n                    adkTable,\n                    groupByColumn: groupByColumn\n    }\"></ng-container>\n  </div>\n  @if (adkTable.visibleData().length > 5) {\n  <div class=\"adk-card-footer\">\n    <!-- <tw-table-footer (actionButtonClicked)=\"actionButtonTriggered()\"></tw-table-footer> -->\n  </div>\n  }\n</tw-card>\n} @else {\n<ng-container *ngTemplateOutlet=\"tableContent; context: {\n                        adkTable,\n                        groupByColumn: groupByColumn\n        }\"></ng-container>\n}\n}\n\n<!-- Table -->\n<ng-template #tableContent let-adkTable=\"adkTable\" let-groupByColumn=\"groupByColumn\">\n  <table aria-hidden=\"true\" class=\"w-full text-left table-auto min-w-max\">\n    <thead>\n      <ng-container *ngTemplateOutlet=\"\n                   renderThead;\n                   context: {\n                       groupData: adkTable.groupedData(),\n                       columns: adkTable?.headers(),\n                       isSelectable,\n                       sortDataSource: adkTable.currentPageData()\n                   }\n               \">\n      </ng-container>\n    </thead>\n    <tbody>\n      <ng-container *ngIf=\"groupByColumn; else flatView\">\n        @for(group of adkTable.groupedData() | keyvalue; track $index) {\n        <!-- <pre>{{group | json}}</pre> -->\n        <ng-container *ngTemplateOutlet=\"\n                       groupByRender;\n                       context: { group, columns: adkTable?.headers(), isSelectable }\n                   \"></ng-container>\n        }\n      </ng-container>\n      <ng-template #flatView>\n        @for(rowData of adkTable.currentPageData(); track $index) {\n        <ng-container\n          *ngTemplateOutlet=\"renderRow; context: { columns: adkTable?.headers(), rowData, rowIndex: $index, isSelectable }\"></ng-container>\n        }\n      </ng-template>\n      <!-- @for(groupKey of objectKeysGroupData(groupData); track $index){\n         @if(groupBy && groupKey !== '') {\n         <ng-container\n           *ngTemplateOutlet=\"groupByRender; context: { groupData, headers, isSelectable, groupKey, adkTable }\"></ng-container>\n         } @else {\n         @for(rowData of groupData[groupKey]; track $index) {\n         <ng-container\n           *ngTemplateOutlet=\"renderRow; context: { headers, rowData, rowIndex: $index, isSelectable, adkTable }\"></ng-container>\n         }\n         }\n         } -->\n    </tbody>\n  </table>\n</ng-template>\n\n<!-- Render Table Header -->\n<ng-template #renderThead let-groupData=\"groupData\" let-columns=\"columns\" let-isSelectable=\"isSelectable\"\n  let-sortDataSource=\"sortDataSource\">\n  <tr>\n    @if(isSelectable) {\n    <th id=\"checkAll\" class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-1 max-w-[10px]\">\n      <ng-container\n        *ngTemplateOutlet=\"checkbox; context: { adkTable, groupData, rowData: undefined, isCheckAll: true }\"></ng-container>\n    </th>\n    } @for(col of columns; track $index) {\n    <th [id]=\"col\" class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer\" [attr.key]=\"col\"\n      [ngClass]=\"{ 'border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer': true }\"\n      [attr.draggable]=\"isDraggable\" (dragstart)=\"adkTable.dragStart($index)\" (dragover)=\"adkTable.dragOver($event)\"\n      (drop)=\"adkTable.dragDrop($index, $event)\" scope=\"col\">\n      <tw-typography [variant]=\"'small'\"\n        [classStyle]=\"'flex items-center justify-between gap-2 font-normal leading-none opacity-70'\">\n        {{ col ?? ' ' | uppercase }}\n        <div class=\"flex flex-row gap-2\">\n          @if($index !== columns.length && isSortable) {\n          <tw-sortable-icon (click)=\"adkTable.sortBy(col)\" (keydown)=\"sortRows(col)\"></tw-sortable-icon>\n          } @if(adkTable?.sortCriteriaData().key === col) {\n          <span>{{ sortDataSource.direction === 'ascending' ? '🔼' : '🔽' }}</span>\n          }\n        </div>\n      </tw-typography>\n    </th>\n    }\n  </tr>\n</ng-template>\n\n<!-- Group By Render -->\n<ng-template #groupByRender let-group=\"group\" let-columns=\"columns\" let-isSelectable=\"isSelectable\">\n  <tr>\n    <td [colSpan]=\"columns.length + (isSelectable ? 1 : 0) + (actionButton ? 1 : 0)\">\n      <adk-expansion-panel>\n        <ng-template #expansionPanelHeader>\n          <span class=\"min-w-[200px] max-w-[200px] truncate\">\n            ({{ group.value.length}})\n            {{group.key }}</span>\n        </ng-template>\n        <ng-template #expansionPanelBody>\n          <table aria-hidden=\"true\" class=\"w-full min-w-max table-auto text-left\">\n            <tbody>\n              @for(rowData of group.value; track $index) {\n              <ng-container\n                *ngTemplateOutlet=\"renderRow; context: { columns, rowData, rowIndex: $index, isSelectable, adkTable }\">\n              </ng-container>\n              }\n            </tbody>\n          </table>\n        </ng-template>\n      </adk-expansion-panel>\n    </td>\n  </tr>\n</ng-template>\n\n<!-- Render Row Table Cells -->\n<ng-template #renderRow let-columns=\"columns\" let-rowData=\"rowData\" let-rowIndex=\"rowIndex\"\n  let-isSelectable=\"isSelectable\">\n  <tr [ngClass]=\"isRowFocused(rowData) ? 'bg-light-blue-50' : ''\" (click)=\"rowFocus.value = rowData\">\n    @if(isSelectable) {\n    <td [ngClass]=\"isSelectable ? 'p-1' : 'p-4'\" class=\"border-b border-blue-gray-50 p-1 max-h-[38px] max-w-[15px]\">\n      <ng-container\n        *ngTemplateOutlet=\"checkbox; context: { adkTable, groupData: undefined, rowData, isCheckAll: false }\"></ng-container>\n    </td>\n    } @for (col of columns; track $index) {\n    <td [ngClass]=\"isSelectable ? 'p-1' : 'p-2'\"\n      class=\"border-b border-blue-gray-50 min-h-[48.5px] min-w-[60px] max-w-[60px] truncate\">\n      <div [adkTooltip]=\"rowData[col]\" tooltipPlacement=\"bottom\" [ngStyle]=\"{ cursor: 'text' }\">\n        @if(isCellValArray(rowData[col])) { @if(isSelectable && isMultiSelectField){\n        <adk-field *ngIf=\"adkTable.selected(rowData) && (cellMultiSelector(rowIndex, rowData[col]) | async) as field\"\n          [field]=\"field\"></adk-field>\n        } @else {\n        <tw-typography [variant]=\"'small'\" class=\"font-normal ml-2\">\n          {{ rowData[col].join(', ') }}\n        </tw-typography>\n        } } @else { @if (isCellFieldObject(rowData[col])) {\n        <adk-field [field]=\"rowData[col]\"></adk-field>\n        } @else {\n        <tw-typography [variant]=\"'small'\" class=\"font-normal ml-2\">\n          {{ rowData[col] }}\n        </tw-typography>\n        } }\n      </div>\n    </td>\n    }\n  </tr>\n</ng-template>\n\n<!-- Checkbox Render -->\n<ng-template #checkbox let-isCheckAll=\"isCheckAll\" let-groupData=\"groupData\" let-rowData=\"rowData\">\n  @if(isCheckAll) {\n  <div class=\"inline-flex items-center\">\n    <label for=\"selectAllCheckbox\" class=\"relative flex items-center p-3 rounded-full cursor-pointer\">\n      <input type=\"checkbox\"\n        class=\"before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10 w-4 h-4\"\n        id=\"selectAllCheckbox\" name=\"selectAllCheckbox\"\n        [checked]=\"adkTable.selectedRowsData().length === adkTable.visibleData().length\"\n        (change)=\"adkTable.toggleAllRowsSelection()\" />\n      <span\n        class=\"absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100\">\n        <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-3.5 w-3.5\" viewBox=\"0 0 20 20\" fill=\"currentColor\"\n          stroke=\"currentColor\" stroke-width=\"1\">\n          <path fill-rule=\"evenodd\"\n            d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\"\n            clip-rule=\"evenodd\"></path>\n        </svg>\n      </span>\n    </label>\n  </div>\n  } @else {\n  <div class=\"inline-flex items-center\">\n    <label class=\"relative flex items-center p-3 rounded-full cursor-pointer\" for=\"checkbox\">\n      <input type=\"checkbox\"\n        class=\"before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10 w-4 h-4\"\n        [checked]=\"isSelected(rowData)\" (change)=\"adkTable.toggleRowSelection(rowData)\" />\n      <span\n        class=\"absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100\">\n        <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-3.5 w-3.5\" viewBox=\"0 0 20 20\" fill=\"currentColor\"\n          stroke=\"currentColor\" stroke-width=\"1\">\n          <path fill-rule=\"evenodd\"\n            d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\"\n            clip-rule=\"evenodd\"></path>\n        </svg>\n      </span>\n    </label>\n  </div>\n  }\n</ng-template>\n\n<ng-template #tableWrapperHeader let-adkTable=\"adkTable\" let-tableHeader=\"tableHeader\">\n  <div class=\"relative bg-clip-border mt-4 mx-4 bg-white text-gray-700 rounded-none overflow-visible\">\n    <div class=\"mb-2 flex items-center justify-between gap-8\">\n      <div>\n        @if(tableHeader.title){\n        <tw-typography variant=\"h5\" color=\"blue-gray\"\n          classStyle=\"block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900\">{{\n          tableHeader.title }}</tw-typography>\n        } @if(tableHeader.subtitle){\n        <tw-typography color=\"gray\" classStyle=\"mt-1 font-normal\">{{ tableHeader.subtitle }}</tw-typography>\n        }\n      </div>\n      <div class=\"flex shrink-0 flex-col gap-2 sm:flex-row\">\n        @if(tableHeader.buttons && tableHeader.buttons.length > 0){ @for(button of tableHeader.buttons; track $index){\n        <div class=\"flex items-center gap-3 cursor-pointer\" (click)=\"button.onClick()\">\n          <adk-button [color]=\"button.color\" (click)=\"button.onClick()\">\n            <span class=\"flex items-center gap-2\">\n              @if(button.icon){\n              <span class=\"material-symbols-outlined\">{{ button.icon }}</span> }{{ button.label }}</span>\n          </adk-button>\n        </div>\n        } }\n        <div class=\"flex items-center gap-3 cursor-pointer\">\n          <tw-table-settings-dialog [headers]=\"adkTable.headers()\"\n            (settingsCriteria)=\"onSettingCriteria($event)\"></tw-table-settings-dialog>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"flex flex-col items-center justify-between gap-4 md:flex-row\">\n      <!-- @if(tabs?.length){ -->\n      <!-- <Tabs value=\"{tabs.length\">\n                0 ? tabs[0].value : ''} class=\"w-full md:w-max\">\n                <TabsHeader>\n                    {tabs.map(({ label, value }) => (\n                    <Tab key=\"{value}\" value=\"{value}\"> &nbsp;&nbsp;{label}&nbsp;&nbsp; </Tab>\n                    ))}\n                </TabsHeader>\n            </Tabs> -->\n      <!-- } -->\n    </div>\n    @if(isSearchable){\n    <form *ngIf=\"field.change$ | async as field\" [formGroup]=\"formGroup\"\n      class=\"flex flex-row gap-2 w-full flex-wrap z-[20000]\">\n      <pre>{{formGroup.value | json}}</pre>\n      <adk-fields [fieldConfig]=\"[field]\"></adk-fields>\n    </form>\n    }\n  </div>\n</ng-template>\n"
+            "templateData": "@if(adkTable) {\n@if(isWrapped && tableHeader) {\n<tw-card>\n  <div class=\"adk-card-header\">\n    <ng-container *ngTemplateOutlet=\"tableWrapperHeader; context: {adkTable, tableHeader}\"></ng-container>\n  </div>\n  <div class=\"adk-card-body\">\n    <ng-container *ngTemplateOutlet=\"tableContent; context: {adkTable, groupByColumn: groupByColumn}\"></ng-container>\n  </div>\n  @if (adkTable.visibleData().length > 5) {\n  <div class=\"adk-card-footer\">\n    <!-- <tw-table-footer (actionButtonClicked)=\"actionButtonTriggered()\"></tw-table-footer> -->\n  </div>\n  }\n</tw-card>\n} @else {\n<ng-container *ngTemplateOutlet=\"tableContent; context: {adkTable, groupByColumn: groupByColumn}\"></ng-container>\n}\n}\n\n<!-- Table -->\n<ng-template #tableContent let-adkTable=\"adkTable\" let-groupByColumn=\"groupByColumn\">\n  <table aria-hidden=\"true\" class=\"w-full text-left table-auto min-w-max\">\n    <thead>\n      <ng-container *ngTemplateOutlet=\"\n                   renderThead;\n                   context: {\n                       groupData: adkTable.groupedData(),\n                       columns: adkTable?.headers(),\n                       isSelectable,\n                       sortDataSource: adkTable.currentPageData()\n                   }\n               \">\n      </ng-container>\n    </thead>\n    <tbody>\n      @if(columns.length > 0) {\n      <ng-container *ngIf=\"adkTable.preferenceCriteria().groupByColumn; else flatView\">\n        @for(group of adkTable.groupedData() | keyvalue; track $index) {\n        <ng-container *ngTemplateOutlet=\"\n                       groupByRender;\n                       context: { group, columns: adkTable?.headers(), isSelectable }\n                   \"></ng-container>\n        }\n      </ng-container>\n      <ng-template #flatView>\n        @for(rowData of adkTable.currentPageData(); track $index) {\n        <ng-container\n          *ngTemplateOutlet=\"renderRow; context: { columns: adkTable?.headers(), rowData, rowIndex: $index, isSelectable }\"></ng-container>\n        }\n      </ng-template>\n      }\n    </tbody>\n  </table>\n</ng-template>\n\n<!-- Render Table Header -->\n<ng-template #renderThead let-groupData=\"groupData\" let-columns=\"columns\" let-isSelectable=\"isSelectable\"\n  let-sortDataSource=\"sortDataSource\">\n  <tr>\n    @if(isSelectable && columns.length > 0) {\n    <th id=\"checkAll\" class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-1 max-w-[10px]\">\n      <ng-container\n        *ngTemplateOutlet=\"checkbox; context: { adkTable, groupData, rowData: undefined, isCheckAll: true }\"></ng-container>\n    </th>\n    } @for(col of columns; track $index) {\n    <th [id]=\"col\" class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer\" [attr.key]=\"col\"\n      [ngClass]=\"{ 'border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer': true }\"\n      [attr.draggable]=\"isDraggable\" (dragstart)=\"adkTable.dragStart($index)\" (dragover)=\"adkTable.dragOver($event)\"\n      (drop)=\"adkTable.dragDrop($index, $event)\" scope=\"col\">\n      <tw-typography [variant]=\"'small'\"\n        [classStyle]=\"'flex items-center justify-between gap-2 font-normal leading-none opacity-70'\">\n        {{ col ?? ' ' | uppercase }}\n        <div class=\"flex flex-row gap-2\">\n          @if($index !== columns.length && isSortable) {\n          <tw-sortable-icon (click)=\"adkTable.sortBy(col)\" (keydown)=\"sortRows(col)\"></tw-sortable-icon>\n          } @if(adkTable?.sortCriteriaData().key === col) {\n          <span>{{ sortDataSource.direction === 'ascending' ? '🔼' : '🔽' }}</span>\n          }\n        </div>\n      </tw-typography>\n    </th>\n    }@if(isActionButton) {\n    <th scope=\"col\" class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-3 text-right\">\n      <tw-typography [variant]=\"'small'\" [color]=\"'blue-gray'\" [classStyle]=\"'font-normal'\">\n        {{ actionColName ?? 'Actions' }}\n      </tw-typography>\n    </th>\n    }\n  </tr>\n</ng-template>\n\n<!-- Group By Render -->\n<ng-template #groupByRender let-group=\"group\" let-columns=\"columns\" let-isSelectable=\"isSelectable\"\n  let-actionButton=\"actionButton\">\n  <tr>\n    <td [colSpan]=\"columns.length + (isSelectable ? 1 : 0) + (actionButton ? 1 : 0)\" class=\"w-full\">\n      <adk-expansion-panel class=\"full\">\n        <ng-template #expansionPanelHeader>\n          <span class=\"min-w-[200px] max-w-[200px] truncate\">\n            ({{ group.value.length }})\n            {{ group.key }}\n          </span>\n        </ng-template>\n        <ng-template #expansionPanelBody>\n          <table aria-hidden=\"true\" class=\"w-full min-w-max table-auto text-left\">\n            <thead>\n              <tr>\n                @if(isSelectable) {\n                <th class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-1 max-w-[10px]\"></th>\n                }\n                @for(col of columns; track $index) {\n                <th class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-3\">\n                  <tw-typography [variant]=\"'small'\" [color]=\"'blue-gray'\" [classStyle]=\"'font-normal'\">\n                    {{ col | uppercase }}\n                  </tw-typography>\n                </th>\n                }\n                @if(isActionButton) {\n                <th class=\"border-b border-blue-gray-100 bg-blue-gray-50 p-3 text-right\">\n                  <tw-typography [variant]=\"'small'\" [color]=\"'blue-gray'\" [classStyle]=\"'font-normal'\">\n                    {{ actionColName ?? 'Actions' }}\n                  </tw-typography>\n                </th>\n                }\n              </tr>\n            </thead>\n            <tbody>\n              @for(rowData of group.value; track $index) {\n              <ng-container\n                *ngTemplateOutlet=\"renderRow; context: { columns, rowData, rowIndex: $index, isSelectable, adkTable, actionButton }\">\n              </ng-container>\n              }\n            </tbody>\n          </table>\n        </ng-template>\n      </adk-expansion-panel>\n    </td>\n  </tr>\n</ng-template>\n\n<!-- Render Row Table Cells -->\n<ng-template #renderRow let-columns=\"columns\" let-rowData=\"rowData\" let-rowIndex=\"rowIndex\"\n  let-isSelectable=\"isSelectable\">\n  <tr [ngClass]=\"isRowFocused(rowData) ? 'bg-light-blue-50' : ''\" (keypress)=\"rowFocus.value = rowData\"\n    (click)=\"rowFocus.value = rowData\">\n    @if(isSelectable) {\n    <td [ngClass]=\"isSelectable ? 'p-1' : 'p-4'\" class=\"border-b border-blue-gray-50 p-1 max-h-[38px] max-w-[15px]\">\n      <ng-container\n        *ngTemplateOutlet=\"checkbox; context: { adkTable, groupData: undefined, rowData, isCheckAll: false }\"></ng-container>\n    </td>\n    }\n    @for (col of columns; track $index) {\n    <td [ngClass]=\"isSelectable ? 'p-1' : 'p-2'\"\n      class=\"border-b border-blue-gray-50 min-h-[48.5px] min-w-[60px] max-w-[60px] truncate\">\n      <div [adkTooltip]=\"rowData[col]\" tooltipPlacement=\"bottom\" [ngStyle]=\"{ cursor: 'text' }\">\n        @if(isCellValArray(rowData[col])) { @if(isSelectable && isMultiSelectField){\n        <adk-field *ngIf=\"adkTable.selected(rowData) && (cellMultiSelector(rowIndex, rowData[col]) | async) as field\"\n          [field]=\"field\"></adk-field>\n        } @else {\n        <tw-typography [variant]=\"'small'\" class=\"font-normal ml-2\">\n          {{ rowData[col].join(', ') }}\n        </tw-typography>\n        } } @else {\n        @if (isCellFieldObject(rowData[col])) {\n        <adk-field [field]=\"rowData[col]\"></adk-field>\n        } @else {\n        <tw-typography [variant]=\"'small'\" class=\"font-normal ml-2\">\n          {{ rowData[col] }}\n        </tw-typography>\n        } }\n      </div>\n    </td>\n    }\n    @if (isActionButton) {\n    <td class=\"border-b border-blue-gray-50 min-h-[48.5px] w-auto max-w-[120px] p-3\">\n      <div class=\"flex items-center gap-3 cursor-pointer flex-wrap justify-end\">\n        @for(action of actionButtons; track $index) {\n        <adk-button class=\"min-w-[60px] max-w-[100px] flex-grow\" [color]=\"action.color\"\n          (click)=\"action.onClick(rowData)\">\n          <span class=\"flex items-center gap-2\">\n            @if(action.icon) {\n            <span class=\"material-symbols-outlined\">{{ action.icon }}</span>\n            } {{ action.label }}\n          </span>\n        </adk-button>\n        }\n      </div>\n    </td>\n    }\n  </tr>\n</ng-template>\n\n<!-- Checkbox Render -->\n<ng-template #checkbox let-isCheckAll=\"isCheckAll\" let-groupData=\"groupData\" let-rowData=\"rowData\">\n  @if(isCheckAll) {\n  <div class=\"inline-flex items-center\">\n    <label for=\"selectAllCheckbox\" class=\"relative flex items-center p-3 rounded-full cursor-pointer\">\n      <input type=\"checkbox\"\n        class=\"before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10 w-4 h-4\"\n        id=\"selectAllCheckbox\" name=\"selectAllCheckbox\"\n        [checked]=\"adkTable.selectedRowsData().length === adkTable.visibleData().length\"\n        (change)=\"adkTable.toggleAllRowsSelection()\" />\n      <span\n        class=\"absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100\">\n        <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-3.5 w-3.5\" viewBox=\"0 0 20 20\" fill=\"currentColor\"\n          stroke=\"currentColor\" stroke-width=\"1\">\n          <path fill-rule=\"evenodd\"\n            d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\"\n            clip-rule=\"evenodd\"></path>\n        </svg>\n      </span>\n    </label>\n  </div>\n  } @else {\n  <div class=\"inline-flex items-center\">\n    <label class=\"relative flex items-center p-3 rounded-full cursor-pointer\" for=\"checkbox\">\n      <input type=\"checkbox\"\n        class=\"before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10 w-4 h-4\"\n        [checked]=\"isSelected(rowData)\" (change)=\"adkTable.toggleRowSelection(rowData)\" />\n      <span\n        class=\"absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100\">\n        <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-3.5 w-3.5\" viewBox=\"0 0 20 20\" fill=\"currentColor\"\n          stroke=\"currentColor\" stroke-width=\"1\">\n          <path fill-rule=\"evenodd\"\n            d=\"M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z\"\n            clip-rule=\"evenodd\"></path>\n        </svg>\n      </span>\n    </label>\n  </div>\n  }\n</ng-template>\n\n<ng-template #tableWrapperHeader let-adkTable=\"adkTable\" let-tableHeader=\"tableHeader\">\n  <div class=\"relative bg-clip-border mt-4 mx-4 bg-white text-gray-700 rounded-none overflow-visible\">\n    <div class=\"mb-2 flex items-center justify-between gap-8\">\n      <div>\n        @if(tableHeader.title){\n        <tw-typography variant=\"h5\" color=\"blue-gray\"\n          classStyle=\"block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900\">{{\n          tableHeader.title }}</tw-typography>\n        } @if(tableHeader.subtitle){\n        <tw-typography color=\"gray\" classStyle=\"mt-1 font-normal\">{{ tableHeader.subtitle }}</tw-typography>\n        }\n      </div>\n      <div class=\"flex shrink-0 flex-col gap-2 sm:flex-row\">\n        @if(tableHeader.buttons && tableHeader.buttons.length > 0){ @for(button of tableHeader.buttons; track $index){\n        <div class=\"flex items-center gap-3 cursor-pointer\" (click)=\"button.onClick()\">\n          <adk-button [color]=\"button.color\" (click)=\"button.onClick()\">\n            <span class=\"flex items-center gap-2\">\n              @if(button.icon){\n              <span class=\"material-symbols-outlined\">{{ button.icon }}</span> }{{ button.label }}</span>\n          </adk-button>\n        </div>\n        } }\n        <div class=\"flex items-center gap-3 cursor-pointer\">\n          <tw-table-settings-dialog [headers]=\"adkTable.headers()\"\n            (settingsCriteria)=\"onSettingsCriteria($event)\"></tw-table-settings-dialog>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"flex flex-col items-center justify-between gap-4 md:flex-row\">\n      <!-- @if(tabs?.length){ -->\n      <!-- <Tabs value=\"{tabs.length\">\n                0 ? tabs[0].value : ''} class=\"w-full md:w-max\">\n                <TabsHeader>\n                    {tabs.map(({ label, value }) => (\n                    <Tab key=\"{value}\" value=\"{value}\"> &nbsp;&nbsp;{label}&nbsp;&nbsp; </Tab>\n                    ))}\n                </TabsHeader>\n            </Tabs> -->\n      <!-- } -->\n    </div>\n    @if(isSearchable){\n    <form *ngIf=\"field.change$ | async as field\" [formGroup]=\"formGroup\"\n      class=\"flex flex-row gap-2 w-full flex-wrap z-[20000]\">\n      <adk-fields [fieldConfig]=\"[field]\"></adk-fields>\n    </form>\n    }\n  </div>\n</ng-template>\n"
         },
         {
             "name": "TableExampleComponent",
@@ -10112,7 +10191,7 @@
         },
         {
             "name": "TableHeaderComponent",
-            "id": "component-TableHeaderComponent-25f842476acd8a10bf74db0a11644018c3001cc16c652bee70c2c7c60bcbe7be7aa9f5a77094a3e15c48e78ceb42b5f8de15f7a1896e2676c7fdd68ad4f7a46f",
+            "id": "component-TableHeaderComponent-3dc6913398a3f50914cf0943fa82253f6bae1c0469664c0a302a6f36b40b2b7b86a52abfbfe115e5ca0e4bf6e5e647b33a1c57633c3a03a93f4d78653cb20c00",
             "file": "projects/ng-lib/src/lib/tw-ui/components/table/new/table-header.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -10261,7 +10340,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 137,
+                    "line": 130,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -10288,7 +10367,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 130,
+                    "line": 124,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -10319,7 +10398,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 124,
+                    "line": 120,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -10329,7 +10408,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 151,
+                    "line": 144,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -10349,7 +10428,7 @@
                     "optional": false,
                     "returnType": "Field",
                     "typeParameters": [],
-                    "line": 143,
+                    "line": 136,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -10402,7 +10481,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';\nimport { AsyncPipe, CommonModule } from '@angular/common';\nimport { Field, FieldsComponent } from '../../../../tw-form-ui';\nimport { FilterCriteria, PreferenceCriteria } from '../models';\n\nimport { AdkFormGroup } from '../../../../directives';\nimport { AdkTable } from '../directives/table';\nimport { ButtonComponent } from '../../button.component';\nimport { ImperativeObservable } from 'projects/ng-lib/src/lib/utils';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { TwTypographyComponent } from '../../typography.component';\nimport { searchColumnSelector } from '../utils';\n\n// TODO: get values to output to parent component\n// wondering if I should add all to one component and have controls to turn certain features on and off\n// or if I should have separate components for each feature\n@Component({\n    selector: 'tw-table-header',\n    standalone: true,\n    imports: [CommonModule, ReactiveFormsModule, AsyncPipe, TwTypographyComponent, ButtonComponent, FieldsComponent, AdkTable],\n    hostDirectives: [AdkFormGroup],\n    template: ` <div class=\"relative bg-clip-border mt-4 mx-4 bg-white text-gray-700 rounded-none overflow-visible\">\n        <div class=\"mb-2 flex items-center justify-between gap-8\">\n            <div>\n                @if(title){\n                <tw-typography\n                    variant=\"h5\"\n                    color=\"blue-gray\"\n                    classStyle=\"block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900\"\n                    >{{ title }}</tw-typography\n                >\n                } @if(subtitle){\n                <tw-typography color=\"gray\" classStyle=\"mt-1 font-normal\">{{ subtitle }}</tw-typography>\n                }\n            </div>\n            <div class=\"flex shrink-0 flex-col gap-2 sm:flex-row\">\n                @if(buttons && buttons.length > 0){ @for(button of buttons; track $index){\n                <div class=\"flex items-center gap-3 cursor-pointer\" (click)=\"button.onClick()\">\n                    <adk-button [color]=\"button.color\" (click)=\"button.onClick()\">\n                        <span class=\"flex items-center gap-2\">\n                            @if(button.icon){\n                            <span class=\"material-symbols-outlined\">{{ button.icon }}</span> }{{ button.label }}</span\n                        >\n                    </adk-button>\n                </div>\n                } }\n                <div class=\"flex items-center gap-3 cursor-pointer\">\n                    <!-- <tw-table-settings-dialog (triggerUpdate)=\"handlePreferences()\"></tw-table-settings-dialog> -->\n                </div>\n            </div>\n        </div>\n\n        <div class=\"flex flex-col items-center justify-between gap-4 md:flex-row\">\n            <!-- @if(tabs?.length){ -->\n            <!-- <Tabs value=\"{tabs.length\">\n                0 ? tabs[0].value : ''} class=\"w-full md:w-max\">\n                <TabsHeader>\n                    {tabs.map(({ label, value }) => (\n                    <Tab key=\"{value}\" value=\"{value}\"> &nbsp;&nbsp;{label}&nbsp;&nbsp; </Tab>\n                    ))}\n                </TabsHeader>\n            </Tabs> -->\n            <!-- } -->\n        </div>\n        @if((searchColumn.change$ | async) && isSearchable){\n        <form *ngIf=\"field.change$ | async as field\" [formGroup]=\"formGroup\" class=\"flex flex-row gap-2 w-full flex-wrap z-[20000]\">\n            <adk-fields [fieldConfig]=\"[field]\"></adk-fields>\n        </form>\n        }\n    </div>`,\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n            .material-symbols-outlined {\n                font-size: 16px !important;\n            }\n        `,\n    ],\n})\nexport class TableHeaderComponent implements OnInit, AfterViewInit {\n    #formGroup = inject(AdkFormGroup, { self: true });\n    // adkTable = inject(AdkTable);\n\n    @Input() title?: string;\n    @Input() subtitle?: string;\n    @Input() isSearchable = false;\n    @Input() searchColumnValue?: string;\n    @Input() visibleColumns: string[] = [];\n    @Input() buttons: {\n        label: string;\n        onClick: () => void;\n        color: 'primary' | 'secondary' | 'success' | 'warn' | 'danger';\n        icon: string;\n    }[] = [];\n    @Output() preferenceCriteria = new EventEmitter<PreferenceCriteria>();\n    @Output() filterCriteria = new EventEmitter<FilterCriteria>();\n\n    searchColumn = new ImperativeObservable<string | null>('');\n    field = new ImperativeObservable<Field | undefined>(undefined);\n    isFirstChange = true;\n\n    get formGroup() {\n        return this.#formGroup.formGroup();\n    }\n\n    ngAfterViewInit(): void {\n        console.log('ngAfterViewInit', this.searchColumn.value);\n        this.searchColumn.value = this.visibleColumns[0];\n        this.searchColumn.change$.subscribe((e: any) => {\n            this.#formGroup.reset();\n            this.field.value = this.setField(e);\n            this.#formGroup.setFormGroup([this.field.value]);\n            this.formGroup.valueChanges.subscribe((e) => {\n                this.handleFiltering(e);\n            });\n            // if (!this.isFirstChange) {\n            // this.actionKeyPress.emit(true);\n            // }\n        });\n    }\n    ngOnInit(): void {\n        // this.tdss.initialFilterSearch();\n        // this.adkTable.applyFilter({ column: this.adkTable.headers()[0], value: this.searchColumnValue ?? '' });\n        this.filterCriteria.emit({ column: this.visibleColumns[0], value: this.searchColumnValue ?? '' });\n    }\n\n    handlePreferences(event: any): void {\n        console.log('handlePreferences', event);\n        // this.searchColumn.value = this.visibleColumns[0];\n\n        // this.actionKeyPress.emit(true);\n    }\n\n    handleFiltering({ searchColumn }: any): void {\n        console.log('handleFiltering', searchColumn);\n        // this.adkTable.applyFilter({ column: this.searchColumn.value ?? '', value: searchColumn });\n        // this.actionKeyPress.emit(true);\n    }\n\n    setField(column: string | undefined): Field {\n        this.resetField();\n        setTimeout(() => {\n            console.info('Timed column value update');\n        }, 1000);\n        return searchColumnSelector(column ?? '');\n    }\n\n    private resetField(): void {\n        this.field.value = undefined;\n    }\n}\n",
+            "sourceCode": "import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';\nimport { AsyncPipe, CommonModule } from '@angular/common';\nimport { Field, FieldsComponent } from '../../../../tw-form-ui';\nimport { FilterCriteria, PreferenceCriteria } from '../models';\n\nimport { AdkFormGroup } from '../../../../directives';\nimport { AdkTable } from '../directives/table';\nimport { ButtonComponent } from '../../button.component';\nimport { ImperativeObservable } from 'projects/ng-lib/src/lib/utils';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { TwTypographyComponent } from '../../typography.component';\nimport { searchColumnSelector } from '../utils';\n\n// TODO: get values to output to parent component\n// wondering if I should add all to one component and have controls to turn certain features on and off\n// or if I should have separate components for each feature\n@Component({\n    selector: 'tw-table-header',\n    standalone: true,\n    imports: [CommonModule, ReactiveFormsModule, AsyncPipe, TwTypographyComponent, ButtonComponent, FieldsComponent, AdkTable],\n    hostDirectives: [AdkFormGroup],\n    template: ` <div class=\"relative bg-clip-border mt-4 mx-4 bg-white text-gray-700 rounded-none overflow-visible\">\n        <div class=\"mb-2 flex items-center justify-between gap-8\">\n            <div>\n                @if(title){\n                <tw-typography\n                    variant=\"h5\"\n                    color=\"blue-gray\"\n                    classStyle=\"block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900\"\n                    >{{ title }}</tw-typography\n                >\n                } @if(subtitle){\n                <tw-typography color=\"gray\" classStyle=\"mt-1 font-normal\">{{ subtitle }}</tw-typography>\n                }\n            </div>\n            <div class=\"flex shrink-0 flex-col gap-2 sm:flex-row\">\n                @if(buttons && buttons.length > 0){ @for(button of buttons; track $index){\n                <div class=\"flex items-center gap-3 cursor-pointer\" (click)=\"button.onClick()\">\n                    <adk-button [color]=\"button.color\" (click)=\"button.onClick()\">\n                        <span class=\"flex items-center gap-2\">\n                            @if(button.icon){\n                            <span class=\"material-symbols-outlined\">{{ button.icon }}</span> }{{ button.label }}</span\n                        >\n                    </adk-button>\n                </div>\n                } }\n                <div class=\"flex items-center gap-3 cursor-pointer\">\n                    <!-- <tw-table-settings-dialog (triggerUpdate)=\"handlePreferences()\"></tw-table-settings-dialog> -->\n                </div>\n            </div>\n        </div>\n\n        <div class=\"flex flex-col items-center justify-between gap-4 md:flex-row\">\n            <!-- @if(tabs?.length){ -->\n            <!-- <Tabs value=\"{tabs.length\">\n                0 ? tabs[0].value : ''} class=\"w-full md:w-max\">\n                <TabsHeader>\n                    {tabs.map(({ label, value }) => (\n                    <Tab key=\"{value}\" value=\"{value}\"> &nbsp;&nbsp;{label}&nbsp;&nbsp; </Tab>\n                    ))}\n                </TabsHeader>\n            </Tabs> -->\n            <!-- } -->\n        </div>\n        @if((searchColumn.change$ | async) && isSearchable){\n        <form *ngIf=\"field.change$ | async as field\" [formGroup]=\"formGroup\" class=\"flex flex-row gap-2 w-full flex-wrap z-[20000]\">\n            <adk-fields [fieldConfig]=\"[field]\"></adk-fields>\n        </form>\n        }\n    </div>`,\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n            .material-symbols-outlined {\n                font-size: 16px !important;\n            }\n        `,\n    ],\n})\nexport class TableHeaderComponent implements OnInit, AfterViewInit {\n    #formGroup = inject(AdkFormGroup, { self: true });\n    // adkTable = inject(AdkTable);\n\n    @Input() title?: string;\n    @Input() subtitle?: string;\n    @Input() isSearchable = false;\n    @Input() searchColumnValue?: string;\n    @Input() visibleColumns: string[] = [];\n    @Input() buttons: {\n        label: string;\n        onClick: () => void;\n        color: 'primary' | 'secondary' | 'success' | 'warn' | 'danger';\n        icon: string;\n    }[] = [];\n    @Output() preferenceCriteria = new EventEmitter<PreferenceCriteria>();\n    @Output() filterCriteria = new EventEmitter<FilterCriteria>();\n\n    searchColumn = new ImperativeObservable<string | null>('');\n    field = new ImperativeObservable<Field | undefined>(undefined);\n    isFirstChange = true;\n\n    get formGroup() {\n        return this.#formGroup.formGroup();\n    }\n\n    ngAfterViewInit(): void {\n        this.searchColumn.value = this.visibleColumns[0];\n        this.searchColumn.change$.subscribe((e: any) => {\n            this.#formGroup.reset();\n            this.field.value = this.setField(e);\n            this.#formGroup.setFormGroup([this.field.value]);\n            this.formGroup.valueChanges.subscribe((e) => {\n                this.handleFiltering(e);\n            });\n        });\n    }\n    ngOnInit(): void {\n        this.filterCriteria.emit({ column: this.visibleColumns[0], value: this.searchColumnValue ?? '' });\n    }\n\n    handlePreferences(event: any): void {\n        console.log('handlePreferences', event);\n        // this.searchColumn.value = this.visibleColumns[0];\n        // this.actionKeyPress.emit(true);\n    }\n\n    handleFiltering({ searchColumn }: any): void {\n        console.log('handleFiltering', searchColumn);\n        // this.adkTable.applyFilter({ column: this.searchColumn.value ?? '', value: searchColumn });\n        // this.actionKeyPress.emit(true);\n    }\n\n    setField(column: string | undefined): Field {\n        this.resetField();\n        setTimeout(() => {\n            console.info('Timed column value update');\n        }, 1000);\n        return searchColumnSelector(column ?? '');\n    }\n\n    private resetField(): void {\n        this.field.value = undefined;\n    }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "\n            :host {\n                display: block;\n                width: 100%;\n            }\n            .material-symbols-outlined {\n                font-size: 16px !important;\n            }\n        \n",
@@ -10425,7 +10504,7 @@
         },
         {
             "name": "TableWrapperComponent",
-            "id": "component-TableWrapperComponent-6bcc1ebfde8bcc7b09705d35650b8083cee9248d97e09f02052290af335abf3bd3848bf550f2ec15deb5a9a07eb6f4e96eac0e6286992999b62c34089f193feb",
+            "id": "component-TableWrapperComponent-1618016ef5c0001bed212b87b75ebc0397364bc1982f74233e9331b5d25a995ef3e63f9eef3a0a19418ecac34c8082583f2bf8cb06b28a965265545ad764911a",
             "file": "projects/ng-lib/src/lib/tw-ui/components/table/new/table-wrapper.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -10522,28 +10601,7 @@
                     ]
                 }
             ],
-            "methodsClass": [
-                {
-                    "name": "ngAfterViewInit",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 66,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                },
-                {
-                    "name": "ngOnInit",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 70,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                }
-            ],
+            "methodsClass": [],
             "deprecated": false,
             "deprecationMessage": "",
             "hostBindings": [],
@@ -10573,15 +10631,11 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { AfterViewInit, Component, Input, OnInit, ViewChild, inject } from '@angular/core';\n\nimport { AdkTable } from '../directives/table';\nimport { CommonModule } from '@angular/common';\nimport { RowData } from '../../../../tw-form-ui';\nimport { TableComponent } from './table.component';\nimport { TableHeaderComponent } from './table-header.component';\nimport { TwCardComponent } from '../../card/tw-card.component';\n\n@Component({\n    selector: 'tw-table-wrapper',\n    standalone: true,\n    imports: [CommonModule, TwCardComponent, TableComponent, TableHeaderComponent, AdkTable],\n    hostDirectives: [AdkTable],\n    template: `\n        <tw-card>\n            <div class=\"adk-card-header\">\n                <tw-table-header\n                    [title]=\"tableHeader.title\"\n                    [subtitle]=\"tableHeader.subtitle\"\n                    [isSearchable]=\"tableHeader.isSearchable\"\n                    [buttons]=\"tableHeader.buttons\"\n                ></tw-table-header>\n            </div>\n            <div class=\"adk-card-body\">\n                <tw-table\n                    #table\n                    [data]=\"data\"\n                    [columns]=\"columns\"\n                    [isSelectable]=\"isSelectable\"\n                    [isDraggable]=\"isDraggable\"\n                    [isSortable]=\"isSortable\"\n                ></tw-table>\n            </div>\n            @if (data.length > 5) {\n            <div class=\"adk-card-footer\">\n                <!-- <tw-table-footer (actionButtonClicked)=\"actionButtonTriggered()\"></tw-table-footer> -->\n            </div>\n            }\n        </tw-card>\n    `,\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n        `,\n    ],\n})\nexport class TableWrapperComponent implements OnInit, AfterViewInit {\n    @ViewChild('table') table!: TableComponent;\n    @Input() data: RowData[] = [];\n    @Input() columns: string[] = [];\n    @Input() isDraggable = false;\n    @Input() isSelectable = false;\n    @Input() isSortable = false;\n\n    @Input() tableHeader: { title: string; subtitle: string; isSearchable: boolean; buttons: any[] } = {\n        title: 'Table Header',\n        subtitle: 'Table Subtitle',\n        isSearchable: false,\n        buttons: [],\n    };\n\n    ngAfterViewInit(): void {\n        console.log('TableWrapperComponent AfterViewInit', this.table.adkTable.state());\n    }\n\n    ngOnInit() {\n        console.log('TableWrapperComponent OnInit', this.data);\n    }\n}\n",
+            "sourceCode": "import { Component, Input, ViewChild } from '@angular/core';\n\nimport { AdkTable } from '../directives/table';\nimport { CommonModule } from '@angular/common';\nimport { RowData } from '../../../../tw-form-ui';\nimport { TableComponent } from './table.component';\nimport { TableHeaderComponent } from './table-header.component';\nimport { TwCardComponent } from '../../card/tw-card.component';\n\n@Component({\n    selector: 'tw-table-wrapper',\n    standalone: true,\n    imports: [CommonModule, TwCardComponent, TableComponent, TableHeaderComponent, AdkTable],\n    hostDirectives: [AdkTable],\n    template: `\n        <tw-card>\n            <div class=\"adk-card-header\">\n                <tw-table-header\n                    [title]=\"tableHeader.title\"\n                    [subtitle]=\"tableHeader.subtitle\"\n                    [isSearchable]=\"tableHeader.isSearchable\"\n                    [buttons]=\"tableHeader.buttons\"\n                ></tw-table-header>\n            </div>\n            <div class=\"adk-card-body\">\n                <tw-table\n                    #table\n                    [data]=\"data\"\n                    [columns]=\"columns\"\n                    [isSelectable]=\"isSelectable\"\n                    [isDraggable]=\"isDraggable\"\n                    [isSortable]=\"isSortable\"\n                ></tw-table>\n            </div>\n            @if (data.length > 5) {\n            <div class=\"adk-card-footer\">\n                <!-- <tw-table-footer (actionButtonClicked)=\"actionButtonTriggered()\"></tw-table-footer> -->\n            </div>\n            }\n        </tw-card>\n    `,\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n        `,\n    ],\n})\nexport class TableWrapperComponent {\n    @ViewChild('table') table!: TableComponent;\n    @Input() data: RowData[] = [];\n    @Input() columns: string[] = [];\n    @Input() isDraggable = false;\n    @Input() isSelectable = false;\n    @Input() isSortable = false;\n\n    @Input() tableHeader: { title: string; subtitle: string; isSearchable: boolean; buttons: any[] } = {\n        title: 'Table Header',\n        subtitle: 'Table Subtitle',\n        isSearchable: false,\n        buttons: [],\n    };\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "\n            :host {\n                display: block;\n                width: 100%;\n            }\n        \n",
-            "extends": [],
-            "implements": [
-                "OnInit",
-                "AfterViewInit"
-            ]
+            "extends": []
         },
         {
             "name": "TextareaComponent",
@@ -12810,7 +12864,7 @@
         },
         {
             "name": "TwTableSettingsDialogComponent",
-            "id": "component-TwTableSettingsDialogComponent-485cd3859c6113413b40cae604a07bb522be33a74076397a0cca4a010c8248d59db8cf0580b769f4b985052a1c14820b1255062bf0b9021767de5d5a6d9b0d48-1",
+            "id": "component-TwTableSettingsDialogComponent-9d8507bc7ab3cb76e3d6665181274d9b48c7950ae6b6b0693d4a5f17613f00bf3c43054fd140503defa889f8dc962c40ee6ee0da19b26b0f12741aecd97a64f8-1",
             "file": "projects/ng-lib/src/lib/tw-ui/components/table/new/tw-table-settings-dialog.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -12913,7 +12967,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 162,
+                    "line": 150,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -12923,7 +12977,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 172,
+                    "line": 158,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -12933,7 +12987,7 @@
                     "optional": false,
                     "returnType": "string[]",
                     "typeParameters": [],
-                    "line": 168,
+                    "line": 154,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -12953,7 +13007,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 152,
+                    "line": 140,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -12963,7 +13017,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 158,
+                    "line": 146,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -13021,7 +13075,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';\nimport { FilterCriteria, PreferenceCriteria, SettingCriteria } from '../models/table.interface';\nimport { preferenceColumnSelector, preferenceGroupBySelector, preferenceVisibilitySelector } from './fields.controls';\n\nimport { AdkFormGroup } from 'projects/ng-lib/src/lib/directives';\nimport { AdkTablePreferences } from '../directives/preferences';\nimport { ButtonComponent } from '../../button.component';\nimport { CommonModule } from '@angular/common';\nimport { DialogComponent } from '../../dialog/dialog.component';\nimport { FieldComponent } from 'projects/ng-lib/src/lib/tw-form-ui/components/field.component';\nimport { FieldsComponent } from 'projects/ng-lib/src/lib/tw-form-ui';\nimport { IconButtonComponent } from '../utils/icon-button.component';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { SettingsIconComponent } from '../utils/settings-icon.component';\nimport { TwCardComponent } from '../../card/tw-card.component';\nimport { TwTypographyComponent } from '../../typography.component';\n\n@Component({\n    selector: 'tw-table-settings-dialog',\n    standalone: true,\n    imports: [\n        CommonModule,\n        ReactiveFormsModule,\n        SettingsIconComponent,\n        TwCardComponent,\n        TwTypographyComponent,\n        IconButtonComponent,\n        DialogComponent,\n        ButtonComponent,\n        FieldsComponent,\n        FieldComponent,\n        AdkTablePreferences,\n    ],\n    hostDirectives: [AdkFormGroup],\n    template: `\n        <adk-settings-icon (click)=\"openDialog()\"> </adk-settings-icon>\n        <tw-dialog [isOpen]=\"isDialogOpen\" (close)=\"closeDialog()\" class=\"bg-transparent shadow-none\">\n            <tw-card [isHeaderWrapped]=\"true\" [isFooterWrapped]=\"true\">\n                <tw-typography\n                    variant=\"h3\"\n                    color=\"blue-gray\"\n                    class=\"adk-card-header\"\n                    classStyle=\"antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900 flex flex-row\"\n                >\n                    Column Preferences\n                    <div class=\"grow\"></div>\n                    <adk-icon-button (click)=\"closeDialog()\"></adk-icon-button>\n                </tw-typography>\n                <div class=\"adk-card-body\">\n                    <form [formGroup]=\"formGroup\">\n                        @if (visibleColumnField) {\n                        <tw-typography class=\"adk-card-subtitle mb-3 font-normal\" variant=\"paragraph\" color=\"gray\">\n                            Customize the columns visibility.\n                        </tw-typography>\n                        <adk-fields [fieldConfig]=\"[visibleColumnField]\" [wrapperClass]=\"'flex flex-col gap-4'\"></adk-fields>\n                        } @if (columnField) {\n                        <tw-typography class=\"mt-4 font-normal\" variant=\"paragraph\" color=\"gray\">\n                            Select the column to filter a search value\n                        </tw-typography>\n                        <adk-fields class=\"mt-4\" [fieldConfig]=\"[columnField]\" [wrapperClass]=\"'flex flex-col gap-4'\"></adk-fields>\n                        } @if (groupByField) {\n                        <adk-fields class=\"mt-4\" [fieldConfig]=\"[groupByField]\" [wrapperClass]=\"'flex flex-col gap-4'\"></adk-fields>\n                        }\n                    </form>\n                </div>\n                <div class=\"adk-card-footer\">\n                    <adk-button\n                        class=\"w-full\"\n                        (click)=\"closeDialog()\"\n                        customClasses=\"align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-blue-500 text-white shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none block w-full\"\n                    >\n                        Close Preferences\n                    </adk-button>\n                </div>\n            </tw-card>\n        </tw-dialog>\n    `,\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n        `,\n    ],\n})\nexport class TwTableSettingsDialogComponent implements OnInit, AfterViewInit {\n    @Input() headers: string[] = [];\n    @Output() settingsCriteria = new EventEmitter<SettingCriteria>();\n    #formGroup = inject(AdkFormGroup, { self: true });\n    isDialogOpen = false;\n    visibleColumnField = preferenceVisibilitySelector(this.headers);\n    columnField = preferenceColumnSelector(this.headers);\n    groupByField = preferenceGroupBySelector(this.headers);\n\n    get formGroup() {\n        return this.#formGroup.formGroup();\n    }\n\n    ngAfterViewInit(): void {\n        this.#formGroup.setFormGroup([this.visibleColumnField, this.columnField, this.groupByField]);\n        let previousValue = this.formGroup.value;\n        const headers = this.headers;\n        console.log('ngAfterViewInit', this.formGroup.value);\n\n        this.formGroup.valueChanges.subscribe((currentValue) => {\n            console.log('ngAfterViewInit current', currentValue);\n            let selectedVisibleColumns: string[] = [];\n            let action = {\n                visibleColumns: selectedVisibleColumns,\n                groupByColumn: currentValue['groupByColumn'],\n                column: currentValue['column'],\n            };\n\n            // Check if any relevant value has changed\n            let hasChanged = false;\n\n            if (previousValue['groupByColumn'] !== currentValue['groupByColumn']) {\n                hasChanged = true;\n            }\n\n            if (previousValue['column'] !== currentValue['column']) {\n                hasChanged = true;\n            }\n\n            headers.forEach((element) => {\n                if (previousValue[element] !== currentValue[element]) {\n                    hasChanged = true;\n                }\n            });\n\n            if (!hasChanged) {\n                return;\n            }\n\n            // Update previous value\n            previousValue = { ...currentValue };\n\n            // Process the changes\n            headers.forEach((element) => {\n                if (currentValue[element]) selectedVisibleColumns.push(element);\n            });\n\n            action.visibleColumns = selectedVisibleColumns;\n            action.groupByColumn = currentValue['groupByColumn'] === 'none' ? '' : currentValue['groupByColumn'];\n            action.column = currentValue['column'];\n            this.settingsCriteria.emit(action);\n            console.log('ngAfterViewInit after', action);\n        });\n    }\n\n    ngOnInit(): void {\n        this.visibleColumnField = preferenceVisibilitySelector(this.headers);\n        this.columnField = preferenceColumnSelector(this.headers);\n        this.groupByField = preferenceGroupBySelector(this.headers);\n    }\n\n    openDialog() {\n        this.isDialogOpen = true;\n    }\n\n    closeDialog() {\n        this.isDialogOpen = false;\n        // this.triggerUpdate.emit(this.isDialogOpen);\n        console.log('closeDialog', this.formGroup.value);\n    }\n\n    getUpdatedPreferences(): string[] {\n        return ['column1', 'column2'];\n    }\n\n    getUpdatedGroupBy(): string {\n        return 'column1';\n    }\n}\n",
+            "sourceCode": "import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';\nimport { FilterCriteria, PreferenceCriteria, SettingCriteria } from '../models/table.interface';\nimport { preferenceColumnSelector, preferenceGroupBySelector, preferenceVisibilitySelector } from './fields.controls';\n\nimport { AdkFormGroup } from 'projects/ng-lib/src/lib/directives';\nimport { AdkTablePreferences } from '../directives/preferences';\nimport { ButtonComponent } from '../../button.component';\nimport { CommonModule } from '@angular/common';\nimport { DialogComponent } from '../../dialog/dialog.component';\nimport { FieldComponent } from 'projects/ng-lib/src/lib/tw-form-ui/components/field.component';\nimport { FieldsComponent } from 'projects/ng-lib/src/lib/tw-form-ui';\nimport { IconButtonComponent } from '../utils/icon-button.component';\nimport { ReactiveFormsModule } from '@angular/forms';\nimport { SettingsIconComponent } from '../utils/settings-icon.component';\nimport { TwCardComponent } from '../../card/tw-card.component';\nimport { TwTypographyComponent } from '../../typography.component';\n\n@Component({\n    selector: 'tw-table-settings-dialog',\n    standalone: true,\n    imports: [\n        CommonModule,\n        ReactiveFormsModule,\n        SettingsIconComponent,\n        TwCardComponent,\n        TwTypographyComponent,\n        IconButtonComponent,\n        DialogComponent,\n        ButtonComponent,\n        FieldsComponent,\n        FieldComponent,\n        AdkTablePreferences,\n    ],\n    hostDirectives: [AdkFormGroup],\n    template: `\n        <adk-settings-icon (click)=\"openDialog()\"> </adk-settings-icon>\n        <tw-dialog [isOpen]=\"isDialogOpen\" (close)=\"closeDialog()\" class=\"bg-transparent shadow-none\">\n            <tw-card [isHeaderWrapped]=\"true\" [isFooterWrapped]=\"true\">\n                <tw-typography\n                    variant=\"h3\"\n                    color=\"blue-gray\"\n                    class=\"adk-card-header\"\n                    classStyle=\"antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900 flex flex-row\"\n                >\n                    Column Preferences\n                    <div class=\"grow\"></div>\n                    <adk-icon-button (click)=\"closeDialog()\"></adk-icon-button>\n                </tw-typography>\n                <div class=\"adk-card-body\">\n                    <form [formGroup]=\"formGroup\">\n                        @if (visibleColumnField) {\n                        <tw-typography class=\"adk-card-subtitle mb-3 font-normal\" variant=\"paragraph\" color=\"gray\">\n                            Customize the columns visibility.\n                        </tw-typography>\n                        <adk-fields [fieldConfig]=\"[visibleColumnField]\" [wrapperClass]=\"'flex flex-col gap-4'\"></adk-fields>\n                        } @if (columnField) {\n                        <tw-typography class=\"mt-4 font-normal\" variant=\"paragraph\" color=\"gray\">\n                            Select the column to filter a search value\n                        </tw-typography>\n                        <adk-fields class=\"mt-4\" [fieldConfig]=\"[columnField]\" [wrapperClass]=\"'flex flex-col gap-4'\"></adk-fields>\n                        } @if (groupByField) {\n                        <adk-fields class=\"mt-4\" [fieldConfig]=\"[groupByField]\" [wrapperClass]=\"'flex flex-col gap-4'\"></adk-fields>\n                        }\n                    </form>\n                </div>\n                <div class=\"adk-card-footer\">\n                    <adk-button\n                        class=\"w-full\"\n                        (click)=\"closeDialog()\"\n                        customClasses=\"align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-blue-500 text-white shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none block w-full\"\n                    >\n                        Close Preferences\n                    </adk-button>\n                </div>\n            </tw-card>\n        </tw-dialog>\n    `,\n    styles: [\n        `\n            :host {\n                display: block;\n                width: 100%;\n            }\n        `,\n    ],\n})\nexport class TwTableSettingsDialogComponent implements OnInit, AfterViewInit {\n    @Input() headers: string[] = [];\n    @Output() settingsCriteria = new EventEmitter<SettingCriteria>();\n    #formGroup = inject(AdkFormGroup, { self: true });\n    isDialogOpen = false;\n    visibleColumnField = preferenceVisibilitySelector(this.headers);\n    columnField = preferenceColumnSelector(this.headers);\n    groupByField = preferenceGroupBySelector(this.headers);\n\n    get formGroup() {\n        return this.#formGroup.formGroup();\n    }\n\n    ngAfterViewInit(): void {\n        this.#formGroup.setFormGroup([this.visibleColumnField, this.columnField, this.groupByField]);\n        let previousValue = this.formGroup.value;\n        const headers = this.headers;\n        this.formGroup.valueChanges.subscribe((currentValue) => {\n            let selectedVisibleColumns: string[] = [];\n            let action = {\n                visibleColumns: selectedVisibleColumns,\n                groupByColumn: currentValue['groupByColumn'],\n                column: currentValue['column'],\n            };\n            // Check if any relevant value has changed\n            let hasChanged = false;\n            if (previousValue['groupByColumn'] !== currentValue['groupByColumn']) {\n                hasChanged = true;\n            }\n            if (previousValue['column'] !== currentValue['column']) {\n                hasChanged = true;\n            }\n            headers.forEach((element) => {\n                if (previousValue[element] !== currentValue[element]) {\n                    hasChanged = true;\n                }\n            });\n            if (!hasChanged) {\n                return;\n            }\n            // Update previous value\n            previousValue = { ...currentValue };\n            // Process the changes\n            headers.forEach((element) => {\n                if (currentValue[element]) selectedVisibleColumns.push(element);\n            });\n            action.visibleColumns = selectedVisibleColumns;\n            action.groupByColumn = currentValue['groupByColumn'] === 'none' ? '' : currentValue['groupByColumn'];\n            action.column = currentValue['column'];\n            this.settingsCriteria.emit(action);\n        });\n    }\n\n    ngOnInit(): void {\n        this.visibleColumnField = preferenceVisibilitySelector(this.headers);\n        this.columnField = preferenceColumnSelector(this.headers);\n        this.groupByField = preferenceGroupBySelector(this.headers);\n    }\n\n    openDialog() {\n        this.isDialogOpen = true;\n    }\n\n    closeDialog() {\n        this.isDialogOpen = false;\n    }\n\n    getUpdatedPreferences(): string[] {\n        return ['column1', 'column2'];\n    }\n\n    getUpdatedGroupBy(): string {\n        return 'column1';\n    }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "\n            :host {\n                display: block;\n                width: 100%;\n            }\n        \n",
@@ -13779,7 +13833,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<TableComponent>",
-                "defaultValue": "{\n    title: 'TailwindUI/Components/Tables/Table',\n    component: TableComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TableComponent],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\n              ${story}\n            </div>`\n        ),\n    ],\n    args: {},\n}"
+                "defaultValue": "{\n    title: 'TailwindUI/Components/Tables/Table',\n    component: TableComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TableComponent],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\n              ${story}\n            </div>`\n        ),\n    ],\n    argTypes: {\n        isSelectable: {\n            control: 'boolean',\n        },\n        isSortable: {\n            control: 'boolean',\n        },\n        isDraggable: {\n            control: 'boolean',\n        },\n        isWrapped: {\n            control: 'boolean',\n        },\n        isSearchable: {\n            control: 'boolean',\n        },\n        isActionButton: {\n            control: 'boolean',\n        },\n        data: {\n            control: 'object',\n        },\n        columns: {\n            control: 'array',\n        },\n        tableHeader: {\n            control: 'object',\n        },\n    },\n}"
             },
             {
                 "name": "meta",
@@ -14259,7 +14313,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n    args: {\n        isSelectable: true,\n        isSortable: true,\n        isDraggable: true,\n        isWrapped: false,\n        isSearchable: true,\n        data: [\n            {\n                name: 'John Michael',\n                job: 'Manager So I started to walk into the water. I wont lie to you, I was terrified. But I pressed on, and as I made my way past the breakers, the water became calmer and calmer.',\n                date: '23/04/10',\n            },\n            {\n                name: 'Alexa Johnson',\n                job: 'CEO',\n                date: '23/04/02',\n            },\n            {\n                name: 'Sierra Brooks',\n                job: 'Designer',\n                date: '23/04/05',\n            },\n            {\n                name: 'Thomas Smith',\n                job: 'Developer',\n                date: '23/04/05',\n            },\n            {\n                name: 'Jenna Kian',\n                job: 'Marketing',\n                date: '23/04/18',\n            },\n            {\n                name: 'Denzel Washington',\n                job: 'Actor',\n                date: '23/04/05',\n            },\n            {\n                name: 'Morgan Freeman',\n                job: 'Actor',\n                date: '23/04/05',\n            },\n        ],\n        columns: ['name', 'job', 'date'],\n    },\n}"
+                "defaultValue": "{\n    args: {\n        isSelectable: true,\n        isSortable: true,\n        isDraggable: true,\n        isWrapped: false,\n        isSearchable: true,\n        isActionButton: true,\n        actionButtons: [\n            {\n                icon: 'visibility',\n                label: 'View',\n                color: 'primary',\n                onClick: action('View clicked'),\n            },\n            {\n                icon: 'edit',\n                label: 'Edit',\n                color: 'primary',\n                onClick: action('Edit clicked'),\n            },\n            {\n                icon: 'delete',\n                label: 'Delete',\n                color: 'danger',\n                onClick: action('Delete clicked'),\n            },\n        ],\n        data: [\n            {\n                name: 'John Michael',\n                job: 'Manager So I started to walk into the water. I wont lie to you, I was terrified. But I pressed on, and as I made my way past the breakers, the water became calmer and calmer.',\n                date: '23/04/10',\n            },\n            {\n                name: 'Alexa Johnson',\n                job: 'CEO',\n                date: '23/04/02',\n            },\n            {\n                name: 'Sierra Brooks',\n                job: 'Designer',\n                date: '23/04/05',\n            },\n            {\n                name: 'Thomas Smith',\n                job: 'Developer',\n                date: '23/04/05',\n            },\n            {\n                name: 'Jenna Kian',\n                job: 'Marketing',\n                date: '23/04/18',\n            },\n            {\n                name: 'Denzel Washington',\n                job: 'Actor',\n                date: '23/04/05',\n            },\n            {\n                name: 'Morgan Freeman',\n                job: 'Actor',\n                date: '23/04/05',\n            },\n        ],\n        columns: ['name', 'job', 'date'],\n    },\n}"
             },
             {
                 "name": "TableWithAllSettings",
@@ -14279,7 +14333,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n    args: {\n        isSelectable: true,\n        isSortable: true,\n        isDraggable: true,\n        isWrapped: true,\n        isSearchable: true,\n        data: [\n            {\n                name: 'John Michael',\n                job: 'Manager So I started to walk into the water. I wont lie to you, I was terrified. But I pressed on, and as I made my way past the breakers, the water became calmer and calmer.',\n                date: '23/04/10',\n            },\n            {\n                name: 'Alexa Johnson',\n                job: 'CEO',\n                date: '23/04/02',\n            },\n            {\n                name: 'Sierra Brooks',\n                job: 'Designer',\n                date: '23/04/05',\n            },\n            {\n                name: 'Thomas Smith',\n                job: 'Developer',\n                date: '23/04/05',\n            },\n            {\n                name: 'Jenna Kian',\n                job: 'Marketing',\n                date: '23/04/18',\n            },\n            {\n                name: 'Denzel Washington',\n                job: 'Actor',\n                date: '23/04/05',\n            },\n            {\n                name: 'Morgan Freeman',\n                job: 'Actor',\n                date: '23/04/05',\n            },\n        ],\n        columns: ['name', 'job', 'date'],\n        tableHeader: {\n            title: 'Table Header',\n            subtitle: 'Table Subtitle',\n            isSearchable: true,\n            buttons: [\n                {\n                    label: 'View ALL',\n                    onClick: action('View All clicked'),\n                    color: 'primary',\n                    icon: '',\n                },\n                { label: 'add member', onClick: action('Add Member clicked'), color: 'primary', icon: 'person_add' },\n            ],\n        },\n    },\n}"
+                "defaultValue": "{\n    args: {\n        isSelectable: true,\n        isSortable: true,\n        isDraggable: true,\n        isWrapped: true,\n        isSearchable: true,\n        isActionButton: true,\n        actionButtons: [\n            {\n                icon: 'visibility',\n                label: 'View',\n                color: 'primary',\n                onClick: action('View clicked'),\n            },\n            {\n                icon: 'edit',\n                label: 'Edit',\n                color: 'primary',\n                onClick: action('Edit clicked'),\n            },\n            {\n                icon: 'delete',\n                label: 'Delete',\n                color: 'danger',\n                onClick: action('Delete clicked'),\n            },\n        ],\n        data: [\n            {\n                name: 'John Michael',\n                job: 'Manager So I started to walk into the water. I wont lie to you, I was terrified. But I pressed on, and as I made my way past the breakers, the water became calmer and calmer.',\n                date: '23/04/10',\n            },\n            {\n                name: 'Alexa Johnson',\n                job: 'CEO',\n                date: '23/04/02',\n            },\n            {\n                name: 'Sierra Brooks',\n                job: 'Designer',\n                date: '23/04/05',\n            },\n            {\n                name: 'Thomas Smith',\n                job: 'Developer',\n                date: '23/04/05',\n            },\n            {\n                name: 'Jenna Kian',\n                job: 'Marketing',\n                date: '23/04/18',\n            },\n            {\n                name: 'Denzel Washington',\n                job: 'Actor',\n                date: '23/04/05',\n            },\n            {\n                name: 'Morgan Freeman',\n                job: 'Actor',\n                date: '23/04/05',\n            },\n        ],\n        columns: ['name', 'job', 'date'],\n        tableHeader: {\n            title: 'Table Header',\n            subtitle: 'Table Subtitle',\n            isSearchable: true,\n            buttons: [\n                {\n                    label: 'View ALL',\n                    onClick: action('View All clicked'),\n                    color: 'primary',\n                    icon: '',\n                },\n                { label: 'add member', onClick: action('Add Member clicked'), color: 'primary', icon: 'person_add' },\n            ],\n        },\n    },\n}"
             },
             {
                 "name": "titleCase",
@@ -16124,7 +16178,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<TableComponent>",
-                    "defaultValue": "{\n    title: 'TailwindUI/Components/Tables/Table',\n    component: TableComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TableComponent],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\n              ${story}\n            </div>`\n        ),\n    ],\n    args: {},\n}"
+                    "defaultValue": "{\n    title: 'TailwindUI/Components/Tables/Table',\n    component: TableComponent,\n    tags: ['autodocs'],\n    parameters: {\n        layout: 'fullscreen',\n    },\n    decorators: [\n        moduleMetadata({\n            imports: [TableComponent],\n        }),\n        componentWrapperDecorator(\n            (story) => `<div style=\"margin: 3em; display: flex; justify-content: center; align-items: center\">\n              ${story}\n            </div>`\n        ),\n    ],\n    argTypes: {\n        isSelectable: {\n            control: 'boolean',\n        },\n        isSortable: {\n            control: 'boolean',\n        },\n        isDraggable: {\n            control: 'boolean',\n        },\n        isWrapped: {\n            control: 'boolean',\n        },\n        isSearchable: {\n            control: 'boolean',\n        },\n        isActionButton: {\n            control: 'boolean',\n        },\n        data: {\n            control: 'object',\n        },\n        columns: {\n            control: 'array',\n        },\n        tableHeader: {\n            control: 'object',\n        },\n    },\n}"
                 },
                 {
                     "name": "TableWithAllSettings",
@@ -16134,7 +16188,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n    args: {\n        isSelectable: true,\n        isSortable: true,\n        isDraggable: true,\n        isWrapped: false,\n        isSearchable: true,\n        data: [\n            {\n                name: 'John Michael',\n                job: 'Manager So I started to walk into the water. I wont lie to you, I was terrified. But I pressed on, and as I made my way past the breakers, the water became calmer and calmer.',\n                date: '23/04/10',\n            },\n            {\n                name: 'Alexa Johnson',\n                job: 'CEO',\n                date: '23/04/02',\n            },\n            {\n                name: 'Sierra Brooks',\n                job: 'Designer',\n                date: '23/04/05',\n            },\n            {\n                name: 'Thomas Smith',\n                job: 'Developer',\n                date: '23/04/05',\n            },\n            {\n                name: 'Jenna Kian',\n                job: 'Marketing',\n                date: '23/04/18',\n            },\n            {\n                name: 'Denzel Washington',\n                job: 'Actor',\n                date: '23/04/05',\n            },\n            {\n                name: 'Morgan Freeman',\n                job: 'Actor',\n                date: '23/04/05',\n            },\n        ],\n        columns: ['name', 'job', 'date'],\n    },\n}"
+                    "defaultValue": "{\n    args: {\n        isSelectable: true,\n        isSortable: true,\n        isDraggable: true,\n        isWrapped: false,\n        isSearchable: true,\n        isActionButton: true,\n        actionButtons: [\n            {\n                icon: 'visibility',\n                label: 'View',\n                color: 'primary',\n                onClick: action('View clicked'),\n            },\n            {\n                icon: 'edit',\n                label: 'Edit',\n                color: 'primary',\n                onClick: action('Edit clicked'),\n            },\n            {\n                icon: 'delete',\n                label: 'Delete',\n                color: 'danger',\n                onClick: action('Delete clicked'),\n            },\n        ],\n        data: [\n            {\n                name: 'John Michael',\n                job: 'Manager So I started to walk into the water. I wont lie to you, I was terrified. But I pressed on, and as I made my way past the breakers, the water became calmer and calmer.',\n                date: '23/04/10',\n            },\n            {\n                name: 'Alexa Johnson',\n                job: 'CEO',\n                date: '23/04/02',\n            },\n            {\n                name: 'Sierra Brooks',\n                job: 'Designer',\n                date: '23/04/05',\n            },\n            {\n                name: 'Thomas Smith',\n                job: 'Developer',\n                date: '23/04/05',\n            },\n            {\n                name: 'Jenna Kian',\n                job: 'Marketing',\n                date: '23/04/18',\n            },\n            {\n                name: 'Denzel Washington',\n                job: 'Actor',\n                date: '23/04/05',\n            },\n            {\n                name: 'Morgan Freeman',\n                job: 'Actor',\n                date: '23/04/05',\n            },\n        ],\n        columns: ['name', 'job', 'date'],\n    },\n}"
                 },
                 {
                     "name": "TableWithAllSettingsAndWrapped",
@@ -16144,7 +16198,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n    args: {\n        isSelectable: true,\n        isSortable: true,\n        isDraggable: true,\n        isWrapped: true,\n        isSearchable: true,\n        data: [\n            {\n                name: 'John Michael',\n                job: 'Manager So I started to walk into the water. I wont lie to you, I was terrified. But I pressed on, and as I made my way past the breakers, the water became calmer and calmer.',\n                date: '23/04/10',\n            },\n            {\n                name: 'Alexa Johnson',\n                job: 'CEO',\n                date: '23/04/02',\n            },\n            {\n                name: 'Sierra Brooks',\n                job: 'Designer',\n                date: '23/04/05',\n            },\n            {\n                name: 'Thomas Smith',\n                job: 'Developer',\n                date: '23/04/05',\n            },\n            {\n                name: 'Jenna Kian',\n                job: 'Marketing',\n                date: '23/04/18',\n            },\n            {\n                name: 'Denzel Washington',\n                job: 'Actor',\n                date: '23/04/05',\n            },\n            {\n                name: 'Morgan Freeman',\n                job: 'Actor',\n                date: '23/04/05',\n            },\n        ],\n        columns: ['name', 'job', 'date'],\n        tableHeader: {\n            title: 'Table Header',\n            subtitle: 'Table Subtitle',\n            isSearchable: true,\n            buttons: [\n                {\n                    label: 'View ALL',\n                    onClick: action('View All clicked'),\n                    color: 'primary',\n                    icon: '',\n                },\n                { label: 'add member', onClick: action('Add Member clicked'), color: 'primary', icon: 'person_add' },\n            ],\n        },\n    },\n}"
+                    "defaultValue": "{\n    args: {\n        isSelectable: true,\n        isSortable: true,\n        isDraggable: true,\n        isWrapped: true,\n        isSearchable: true,\n        isActionButton: true,\n        actionButtons: [\n            {\n                icon: 'visibility',\n                label: 'View',\n                color: 'primary',\n                onClick: action('View clicked'),\n            },\n            {\n                icon: 'edit',\n                label: 'Edit',\n                color: 'primary',\n                onClick: action('Edit clicked'),\n            },\n            {\n                icon: 'delete',\n                label: 'Delete',\n                color: 'danger',\n                onClick: action('Delete clicked'),\n            },\n        ],\n        data: [\n            {\n                name: 'John Michael',\n                job: 'Manager So I started to walk into the water. I wont lie to you, I was terrified. But I pressed on, and as I made my way past the breakers, the water became calmer and calmer.',\n                date: '23/04/10',\n            },\n            {\n                name: 'Alexa Johnson',\n                job: 'CEO',\n                date: '23/04/02',\n            },\n            {\n                name: 'Sierra Brooks',\n                job: 'Designer',\n                date: '23/04/05',\n            },\n            {\n                name: 'Thomas Smith',\n                job: 'Developer',\n                date: '23/04/05',\n            },\n            {\n                name: 'Jenna Kian',\n                job: 'Marketing',\n                date: '23/04/18',\n            },\n            {\n                name: 'Denzel Washington',\n                job: 'Actor',\n                date: '23/04/05',\n            },\n            {\n                name: 'Morgan Freeman',\n                job: 'Actor',\n                date: '23/04/05',\n            },\n        ],\n        columns: ['name', 'job', 'date'],\n        tableHeader: {\n            title: 'Table Header',\n            subtitle: 'Table Subtitle',\n            isSearchable: true,\n            buttons: [\n                {\n                    label: 'View ALL',\n                    onClick: action('View All clicked'),\n                    color: 'primary',\n                    icon: '',\n                },\n                { label: 'add member', onClick: action('Add Member clicked'), color: 'primary', icon: 'person_add' },\n            ],\n        },\n    },\n}"
                 }
             ],
             "projects/ng-lib/src/lib/tw-ui/components/table/new/tw-table-wrapper.stories.ts": [
@@ -17985,7 +18039,7 @@
                 "linktype": "directive",
                 "name": "AdkTable",
                 "coveragePercent": 0,
-                "coverageCount": "0/41",
+                "coverageCount": "0/44",
                 "status": "low"
             },
             {
@@ -18145,7 +18199,7 @@
                 "linktype": "component",
                 "name": "TableWrapperComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/10",
+                "coverageCount": "0/8",
                 "status": "low"
             },
             {
@@ -18154,7 +18208,7 @@
                 "linktype": "component",
                 "name": "TableComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/29",
+                "coverageCount": "0/30",
                 "status": "low"
             },
             {
