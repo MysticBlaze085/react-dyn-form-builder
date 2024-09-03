@@ -2,14 +2,14 @@
 @if(isWrapped && tableHeader) {
 <tw-card>
   <div class="adk-card-header">
-    <ng-container *ngTemplateOutlet="tableWrapperHeader; context: {adkTable, tableHeader}"></ng-container>
+    <ng-container *ngTemplateOutlet="tableHeaderView; context: {adkTable, tableHeader}"></ng-container>
   </div>
   <div class="adk-card-body">
     <ng-container *ngTemplateOutlet="tableContent; context: {adkTable, groupByColumn: groupByColumn}"></ng-container>
   </div>
   @if (adkTable.visibleData().length > 5) {
   <div class="adk-card-footer">
-    <!-- <tw-table-footer (actionButtonClicked)="actionButtonTriggered()"></tw-table-footer> -->
+    <ng-container *ngTemplateOutlet="tableFooterView; context: {adkTable}"></ng-container>
   </div>
   }
 </tw-card>
@@ -232,7 +232,8 @@
   }
 </ng-template>
 
-<ng-template #tableWrapperHeader let-adkTable="adkTable" let-tableHeader="tableHeader">
+<!-- Table Wrapper Header -->
+<ng-template #tableHeaderView let-adkTable="adkTable" let-tableHeader="tableHeader">
   <div class="relative bg-clip-border mt-4 mx-4 bg-white text-gray-700 rounded-none overflow-visible">
     <div class="mb-2 flex items-center justify-between gap-8">
       <div>
@@ -278,6 +279,29 @@
       class="flex flex-row gap-2 w-full flex-wrap z-[20000]">
       <adk-fields [fieldConfig]="[field]"></adk-fields>
     </form>
+    }
+  </div>
+</ng-template>
+
+<!-- Table Footer -->
+<ng-template #tableFooterView let-adkTable="adkTable">
+  <div class="flex items-center justify-between border-t border-gray-50 p-4">
+    <tw-typography variant="small" color="gray" class="w-full" classStyle="flex flex-row font-normal">
+      <span class="flex flex-col justify-center mr-2" style="white-space: 'nowrap'">
+        Page {{ adkTable.paginationCriteria().currentPage }} of {{ adkTable.paginationCriteria().totalPages }}
+      </span>
+      <adk-select [field]="paginationField" (fieldValueChange)="adkTable.setItemsPerPage($event)"></adk-select>
+    </tw-typography>
+    @if(adkTable.paginationCriteria().totalPages > 1){
+    <div class="flex gap-2">
+      <adk-button size="sm" color="primary" [disabled]="adkTable.paginationCriteria().currentPage === 1"
+        (click)="adkTable.setPage(adkTable.paginationCriteria().currentPage - 1)">
+        Previous
+      </adk-button>
+      <adk-button size="sm" color="primary" (click)="adkTable.setPage(adkTable.paginationCriteria().currentPage + 1)"
+        [disabled]="adkTable.paginationCriteria().currentPage === adkTable.paginationCriteria().totalPages"> Next
+      </adk-button>
+    </div>
     }
   </div>
 </ng-template>

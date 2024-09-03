@@ -1,18 +1,17 @@
 import { AdkFormGroup, AdkSelection } from '../../../../directives';
 import { AsyncPipe, CommonModule } from '@angular/common';
+import { CheckboxComponent, SelectComponent } from 'projects/ng-lib/src/public-api';
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { Field, FieldsComponent, RowData } from '../../../../tw-form-ui';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SortableIconComponent, paginationSelector } from '../utils';
 
 import { AdkExpansionPanelComponent } from '../../expansion-panel.component';
 import { AdkTable } from '../directives/table';
 import { AdkTooltipDirective } from '../../../../directives/tooltip';
 import { ButtonComponent } from '../../button.component';
-import { CheckboxComponent } from 'projects/ng-lib/src/public-api';
 import { ImperativeObservable } from '../../../../utils';
 import { SettingCriteria } from '../models';
-import { SortableIconComponent } from '../utils';
-import { TableHeaderComponent } from './table-header.component';
 import { TwCardComponent } from '../../card/tw-card.component';
 import { TwTableSettingsDialogComponent } from './tw-table-settings-dialog.component';
 import { TwTypographyComponent } from '../../typography.component';
@@ -25,7 +24,6 @@ const imports = [
     AdkTooltipDirective,
     AdkExpansionPanelComponent,
     AsyncPipe,
-    TableHeaderComponent,
     TwTypographyComponent,
     TwCardComponent,
     CheckboxComponent,
@@ -35,6 +33,7 @@ const imports = [
     FormsModule,
     ButtonComponent,
     TwTableSettingsDialogComponent,
+    SelectComponent,
 ];
 
 @Component({
@@ -83,13 +82,15 @@ export class TableComponent implements OnInit {
 
     rowFocus = new ImperativeObservable<RowData | null>(null);
     expandedGroups: { [key: string]: boolean } = {};
-    itemsPerPage: number = 10;
+    itemsPerPage: number = 5;
     field = new ImperativeObservable<Field | undefined>(undefined);
+    paginationField = paginationSelector;
 
     ngOnInit(): void {
         this.field.value = this.setField(this.adkTable.headers()[0]);
         this.#formGroup.setFormGroup([this.field.value]);
         this.onFormValueChanges();
+        this.adkTable.setItemsPerPage(this.itemsPerPage);
     }
 
     onRowClick(rowData: RowData) {
