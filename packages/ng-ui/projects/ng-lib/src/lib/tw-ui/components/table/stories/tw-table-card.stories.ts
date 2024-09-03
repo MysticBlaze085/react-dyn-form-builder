@@ -99,7 +99,6 @@ export const Draggable: Story = {
 export const WithActionColumn: Story = {
     args: {
         ...Default.args,
-        actionColName: 'Actions',
         actionButton: 'Edit',
     },
 };
