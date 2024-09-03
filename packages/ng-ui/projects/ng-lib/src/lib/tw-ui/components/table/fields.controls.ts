@@ -1,4 +1,4 @@
-import { Field, FieldBuilder, FieldOptions } from '../../../../tw-form-ui/models/field';
+import { Field, FieldBuilder, FieldOptions } from '../../../tw-form-ui';
 
 import { TitleCasePipe } from '@angular/common';
 

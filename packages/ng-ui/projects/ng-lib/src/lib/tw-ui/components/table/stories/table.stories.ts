@@ -1,7 +1,7 @@
 import { Meta, StoryObj, componentWrapperDecorator, moduleMetadata } from '@storybook/angular';
 import { userEvent, within } from '@storybook/testing-library';
 
-import { TableComponent } from './table.component';
+import { TableComponent } from '../table.component';
 import { action } from '@storybook/addon-actions';
 
 const meta: Meta<TableComponent> = {

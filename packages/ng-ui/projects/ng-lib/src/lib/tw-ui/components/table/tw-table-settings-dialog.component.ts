@@ -1,17 +1,19 @@
-import { AdkFormGroup, FieldsComponent } from '../../../tw-form-ui';
-import { AfterViewInit, Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
-import { SettingsIconComponent, preferenceColumnSelector, preferenceGroupBySelector, preferenceVisibilitySelector } from './utils';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { preferenceColumnSelector, preferenceGroupBySelector, preferenceVisibilitySelector } from './fields.controls';
 
+import { AdkFormGroup } from 'projects/ng-lib/src/lib/directives';
+import { AdkTablePreferences } from './directives/preferences';
 import { ButtonComponent } from '../button.component';
 import { CommonModule } from '@angular/common';
 import { DialogComponent } from '../dialog/dialog.component';
-import { FieldComponent } from '../../../tw-form-ui/components/field.component';
+import { FieldComponent } from 'projects/ng-lib/src/lib/tw-form-ui/components/field.component';
+import { FieldsComponent } from 'projects/ng-lib/src/lib/tw-form-ui';
 import { IconButtonComponent } from './utils/icon-button.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TableDataSourceService } from './table-datasource.service';
+import { SettingCriteria } from './models/table.interface';
+import { SettingsIconComponent } from './utils/settings-icon.component';
 import { TwCardComponent } from '../card/tw-card.component';
 import { TwTypographyComponent } from '../typography.component';
-import { distinctUntilChanged } from 'rxjs';
 
 @Component({
     selector: 'tw-table-settings-dialog',
@@ -27,6 +29,7 @@ import { distinctUntilChanged } from 'rxjs';
         ButtonComponent,
         FieldsComponent,
         FieldComponent,
+        AdkTablePreferences,
     ],
     hostDirectives: [AdkFormGroup],
     template: `
@@ -82,13 +85,13 @@ import { distinctUntilChanged } from 'rxjs';
     ],
 })
 export class TwTableSettingsDialogComponent implements OnInit, AfterViewInit {
-    @Output() triggerUpdate = new EventEmitter<boolean>();
+    @Input() headers: string[] = [];
+    @Output() settingsCriteria = new EventEmitter<SettingCriteria>();
     #formGroup = inject(AdkFormGroup, { self: true });
     isDialogOpen = false;
-    tdss = inject(TableDataSourceService);
-    visibleColumnField = preferenceVisibilitySelector(this.tdss.get('headers'));
-    columnField = preferenceColumnSelector(this.tdss.get('headers'));
-    groupByField = preferenceGroupBySelector(this.tdss.get('headers'));
+    visibleColumnField = preferenceVisibilitySelector(this.headers);
+    columnField = preferenceColumnSelector(this.headers);
+    groupByField = preferenceGroupBySelector(this.headers);
 
     get formGroup() {
         return this.#formGroup.formGroup();
@@ -97,53 +100,47 @@ export class TwTableSettingsDialogComponent implements OnInit, AfterViewInit {
     ngAfterViewInit(): void {
         this.#formGroup.setFormGroup([this.visibleColumnField, this.columnField, this.groupByField]);
         let previousValue = this.formGroup.value;
-        const headers = this.tdss.get('headers');
-
-        this.formGroup.valueChanges.pipe(distinctUntilChanged()).subscribe((currentValue) => {
+        const headers = this.headers;
+        this.formGroup.valueChanges.subscribe((currentValue) => {
             let selectedVisibleColumns: string[] = [];
-            let action = { visibleColumns: selectedVisibleColumns, groupBy: currentValue['groupBy'] };
-
+            let action = {
+                visibleColumns: selectedVisibleColumns,
+                groupByColumn: currentValue['groupByColumn'],
+                column: currentValue['column'],
+            };
             // Check if any relevant value has changed
             let hasChanged = false;
-
-            if (previousValue['groupBy'] !== currentValue['groupBy']) {
+            if (previousValue['groupByColumn'] !== currentValue['groupByColumn']) {
                 hasChanged = true;
             }
-
             if (previousValue['column'] !== currentValue['column']) {
                 hasChanged = true;
             }
-
             headers.forEach((element) => {
                 if (previousValue[element] !== currentValue[element]) {
                     hasChanged = true;
                 }
             });
-
             if (!hasChanged) {
                 return;
             }
-
             // Update previous value
             previousValue = { ...currentValue };
-
             // Process the changes
             headers.forEach((element) => {
                 if (currentValue[element]) selectedVisibleColumns.push(element);
             });
-
             action.visibleColumns = selectedVisibleColumns;
-            action.groupBy = currentValue['groupBy'] === 'none' ? '' : currentValue['groupBy'];
-            this.tdss.setPreferences(action);
-            this.tdss.setFilter({ column: currentValue['column'], value: '' });
-            this.triggerUpdate.emit(true);
+            action.groupByColumn = currentValue['groupByColumn'] === 'none' ? '' : currentValue['groupByColumn'];
+            action.column = currentValue['column'];
+            this.settingsCriteria.emit(action);
         });
     }
 
     ngOnInit(): void {
-        this.visibleColumnField = preferenceVisibilitySelector(this.tdss.get('headers'));
-        this.columnField = preferenceColumnSelector(this.tdss.get('headers'));
-        this.groupByField = preferenceGroupBySelector(this.tdss.get('headers'));
+        this.visibleColumnField = preferenceVisibilitySelector(this.headers);
+        this.columnField = preferenceColumnSelector(this.headers);
+        this.groupByField = preferenceGroupBySelector(this.headers);
     }
 
     openDialog() {
@@ -152,7 +149,6 @@ export class TwTableSettingsDialogComponent implements OnInit, AfterViewInit {
 
     closeDialog() {
         this.isDialogOpen = false;
-        this.triggerUpdate.emit(this.isDialogOpen);
     }
 
     getUpdatedPreferences(): string[] {

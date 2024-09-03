@@ -5,6 +5,3 @@ export * from './sidebar.component';
 export * from './card/tw-card.component';
 export * from './dialog/dialog.component';
 export * from './typography.component';
-export * from './table/tw-table-card.component';
-export * from './table/tw-table.component';
-export * from './table/table-datasource.service';
