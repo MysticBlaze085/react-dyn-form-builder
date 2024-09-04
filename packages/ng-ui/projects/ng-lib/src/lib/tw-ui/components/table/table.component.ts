@@ -89,12 +89,11 @@ export class TableComponent implements OnInit {
     ngOnInit(): void {
         this.field.value = this.setField(this.adkTable.headers()[0]);
         this.#formGroup.setFormGroup([this.field.value]);
-        this.onFormValueChanges();
+        this.formValueChanges();
         this.adkTable.setItemsPerPage(this.itemsPerPage);
     }
 
     onRowClick(rowData: RowData) {
-        console.log('Row clicked:', rowData);
         this.rowClickedData.emit(rowData);
     }
 
@@ -126,14 +125,14 @@ export class TableComponent implements OnInit {
         this.columns = this.adkTable.headers();
     }
 
-    onSettingsCriteria(event: SettingCriteria) {
-        this.adkTable.setGroupBy(event.groupByColumn);
-        this.adkTable.setColumns(event.visibleColumns);
-        this.columns = event.visibleColumns;
-        if (event.column) this.adkTable.applyFilter({ column: event.column, value: '' });
-        this.field.value = this.setField(event.column);
+    setSettingsCriteria(criteria: SettingCriteria) {
+        this.adkTable.setGroupBy(criteria.groupByColumn);
+        this.adkTable.setColumns(criteria.visibleColumns);
+        this.columns = criteria.visibleColumns;
+        if (criteria.column) this.adkTable.applyFilter({ column: criteria.column, value: '' });
+        this.field.value = this.setField(criteria.column);
         this.#formGroup.setFormGroup([this.field.value]);
-        this.onFormValueChanges();
+        this.formValueChanges();
     }
 
     setField(column: string | undefined): Field {
@@ -144,7 +143,7 @@ export class TableComponent implements OnInit {
         return searchColumnSelector(column ?? '');
     }
 
-    onFormValueChanges() {
+    formValueChanges() {
         this.formGroup.valueChanges.subscribe((e) => {
             this.adkTable.filterColumns(e['searchColumn']);
         });

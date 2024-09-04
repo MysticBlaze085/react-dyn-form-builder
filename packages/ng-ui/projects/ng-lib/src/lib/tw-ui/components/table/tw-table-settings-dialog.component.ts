@@ -133,8 +133,12 @@ export class TwTableSettingsDialogComponent implements OnInit, AfterViewInit {
             action.visibleColumns = selectedVisibleColumns;
             action.groupByColumn = currentValue['groupByColumn'] === 'none' ? '' : currentValue['groupByColumn'];
             action.column = currentValue['column'];
-            this.settingsCriteria.emit(action);
+            this.emitSettingsCriteria(action);
         });
+    }
+
+    emitSettingsCriteria(criteria: SettingCriteria) {
+        this.settingsCriteria.emit(criteria);
     }
 
     ngOnInit(): void {

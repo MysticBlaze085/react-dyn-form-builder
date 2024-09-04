@@ -45,7 +45,7 @@ import { Field } from '../../models';
                 tabindex="-1"
                 role="listbox"
                 class="w-full max-h-96 bg-white p-3 border border-gray-50 rounded-md shadow-lg shadow-gray-500/10 font-sans text-sm font-normal text-blue-gray-500 overflow-auto focus:outline-none"
-                [ngStyle]="{ top: dropdownTop, left: dropdownLeft, width: dropdownWidth }"
+                [ngStyle]="{ top: dropdownTop, left: dropdownLeft, width: dropdownWidth, position: 'absolute', zIndex: '1000' }"
                 id=":r1l:"
                 aria-orientation="vertical"
             >
@@ -132,7 +132,7 @@ export class SelectComponent implements OnChanges {
     toggleDropdown() {
         this.isOpen = !this.isOpen;
         if (this.isOpen) {
-            setTimeout(() => this.updateDropdownPosition(), 0); // Ensure the dropdown is rendered
+            this.updateDropdownPosition();
         }
     }
 
@@ -148,21 +148,8 @@ export class SelectComponent implements OnChanges {
 
     private updateDropdownPosition() {
         const buttonRect = this.dropdownButton.nativeElement.getBoundingClientRect();
-        const dropdownHeight = this.dropdownList.nativeElement.offsetHeight;
-        const viewportHeight = window.innerHeight;
-
-        const spaceBelow = viewportHeight - buttonRect.bottom;
-        const spaceAbove = buttonRect.top;
-
-        if (spaceBelow < dropdownHeight && spaceAbove > dropdownHeight) {
-            // Open upwards
-            this.dropdownTop = `-${dropdownHeight}px`;
-        } else {
-            // Open downwards
-            this.dropdownTop = `${buttonRect.height}px`;
-        }
-
-        this.dropdownLeft = '0px';
+        this.dropdownTop = `${buttonRect.height}px`;
+        this.dropdownLeft = `0px`;
         this.dropdownWidth = `${buttonRect.width}px`;
     }
 }
