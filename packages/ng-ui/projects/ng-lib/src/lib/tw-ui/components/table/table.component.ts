@@ -61,6 +61,7 @@ const imports = [
 export class TableComponent implements OnInit {
     #formGroup = inject(AdkFormGroup, { self: true });
     adkTable = inject(AdkTable);
+
     @Input() isWrapped = false;
     @Input() set data(value: RowData[]) {
         this.adkTable.initialData = value;
@@ -93,22 +94,52 @@ export class TableComponent implements OnInit {
         this.adkTable.setItemsPerPage(this.itemsPerPage);
     }
 
-    onRowClick(rowData: RowData) {
-        this.rowClickedData.emit(rowData);
-    }
-
     onItemsPerPageChange() {
         this.adkTable.setItemsPerPage(this.itemsPerPage);
     }
 
-    isSelected(row: RowData): boolean {
-        const rowStr = JSON.stringify(row);
-        return this.adkTable.selectedRowsData().includes(rowStr);
+    isSelected(row: string): boolean {
+        const parseIfString = (item: any) => {
+            if (typeof item === 'string') {
+                try {
+                    return JSON.parse(item);
+                } catch (error) {
+                    console.error('Error parsing:', error);
+                    return null;
+                }
+            }
+            return item;
+        };
+
+        const parsedRow = parseIfString(row);
+        if (!parsedRow) return false;
+
+        const selectedRows = this.adkTable.selectedRowsData().map(parseIfString).filter(Boolean);
+
+        return selectedRows.some((selectedRow) => {
+            return Object.keys(parsedRow).every((key) => parsedRow[key] === selectedRow[key]);
+        });
     }
 
     setRowFocus(rowData: RowData) {
+        const { filteredData, headers } = this.adkTable.state();
+
+        const rowDataIndex = filteredData.findIndex((data) => {
+            return headers.every((key) => data[key] === rowData[key]);
+        });
         this.rowFocus.value = rowData;
-        this.rowClickedData.emit(rowData);
+
+        if (rowDataIndex === -1) {
+            console.error('No matching row found in filteredData');
+            this.rowClickedData.emit(rowData);
+        } else {
+            try {
+                this.rowClickedData.emit(filteredData[rowDataIndex]);
+            } catch (error) {
+                console.error('Error emitting row clicked data:', error);
+                this.rowClickedData.emit(rowData);
+            }
+        }
     }
 
     isCellValArray(value: string | []) {

@@ -26,9 +26,11 @@ export interface TableDataSourceState {
     headers: string[];
     paginationCriteria: PaginationCriteria;
     preferenceCriteria: PreferenceCriteria;
-    selectedRows: any[];
+    selectedRows: string[];
     sortCriteria: SortCriteria;
     filterCriteria: FilterCriteria;
+    needsFilterSort: boolean;
+    toggleAll: boolean;
 }
 
 export interface PaginationCriteria {

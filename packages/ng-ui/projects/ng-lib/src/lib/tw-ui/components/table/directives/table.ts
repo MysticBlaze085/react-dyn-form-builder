@@ -48,6 +48,8 @@ export class AdkTable<T extends Identifiable> {
         selectedRows: [],
         sortCriteria: { key: '', direction: 'ascending' },
         filterCriteria: { column: '', value: '' },
+        needsFilterSort: false,
+        toggleAll: false,
     });
 
     // Computed signals for derived state
@@ -61,6 +63,7 @@ export class AdkTable<T extends Identifiable> {
     readonly sortCriteriaData = computed(() => this.getSortCriteriaData());
     readonly paginationCriteria = computed(() => this.getPaginationCriteria());
     readonly preferenceCriteria = computed(() => this.getPreferenceCriteriaData());
+    readonly isToggleAll = computed(() => this.#state().toggleAll);
 
     setInitialData(data: Partial<T>[]) {
         this.#state.update((state) => ({
@@ -117,13 +120,14 @@ export class AdkTable<T extends Identifiable> {
     dragDrop(index: number): void {
         const targetIndex = index;
         const { draggedColIndex, dataSource, headers } = this.#state();
-        // Reset selected rows if dragging a column
-        this.#selection.clear();
+
         if (draggedColIndex === null || draggedColIndex === targetIndex) return;
+
         // Update headers array with dragged column
         const newHeaders = [...headers];
         const draggedHeader = newHeaders.splice(draggedColIndex, 1)[0];
         newHeaders.splice(targetIndex, 0, draggedHeader);
+
         // Update rows in dataSource array with dragged column
         const newRows = dataSource.map((row: any) => {
             const entries = Object.entries(row);
@@ -131,17 +135,45 @@ export class AdkTable<T extends Identifiable> {
             entries.splice(targetIndex, 0, draggedEntry);
             return Object.fromEntries(entries);
         });
-        // Update state with new headers, rows, and reset draggedColIndex
+
+        // Update state with new headers and rows, but don't filter or sort yet
         this.#state.update((state) => ({
             ...state,
             headers: newHeaders,
             dataSource: newRows,
             filteredData: newRows,
-            selectedRows: [],
             draggedColIndex: null,
+            needsFilterSort: true, // Flag to indicate filtering and sorting is needed
         }));
-        // Update other necessary parts of the state
-        this.updatePagination();
+
+        // Defer filtering and sorting
+        setTimeout(() => this.applyFilterAndSort(), 0);
+        console.warn('table state:', this.#state());
+    }
+
+    private applyFilterAndSort(): void {
+        const { dataSource, filterCriteria, sortCriteria, needsFilterSort } = this.#state();
+
+        if (!needsFilterSort) return;
+
+        // Apply filter
+        const filteredData = dataSource.filter((item) =>
+            String(item[filterCriteria.column]).toLowerCase().includes(filterCriteria.value.toLowerCase())
+        );
+
+        // Apply sort
+        const sortedData = [...filteredData].sort((a, b) => {
+            if (a[sortCriteria.key] < b[sortCriteria.key]) return sortCriteria.direction === 'ascending' ? -1 : 1;
+            if (a[sortCriteria.key] > b[sortCriteria.key]) return sortCriteria.direction === 'ascending' ? 1 : -1;
+            return 0;
+        });
+
+        // Update state with filtered and sorted data
+        this.#state.update((state) => ({
+            ...state,
+            filteredData: sortedData,
+            needsFilterSort: false,
+        }));
     }
 
     // Pagination
@@ -192,6 +224,7 @@ export class AdkTable<T extends Identifiable> {
             },
         }));
         this.applySort();
+        console.log('state', this.#state());
     }
 
     private applySort() {
@@ -239,23 +272,31 @@ export class AdkTable<T extends Identifiable> {
             ...state,
             selectedRows: this.#selection.items(),
         }));
+        console.log('table state:', this.#selection.items(), this.selectedRowsData());
     }
 
     toggleAllRowsSelection() {
+        const { dataSource } = this.#state();
+        const selectionItems = this.#selection.items();
+        console.log('toggleAllRowsSelection', dataSource, selectionItems);
         this.#state.update((state) => {
-            const allSelected = state.selectedRows.length === state.dataSource.length;
-            if (allSelected) this.#selection.clear();
+            const allSelected = selectionItems.length === dataSource.length;
+            console.log('allSelected', allSelected, this.isToggleAll());
+            if (allSelected) {
+                this.#selection.clear();
+            } else {
+                dataSource.forEach((item) => {
+                    const itemStr = JSON.stringify(item);
+                    this.#selection.select(itemStr);
+                });
+            }
             return {
                 ...state,
-                selectedRows: allSelected
-                    ? []
-                    : state.dataSource.map((item) => {
-                          const itemStr = JSON.stringify(item);
-                          this.#selection.select(itemStr);
-                          return item;
-                      }),
+                selectedRows: this.#selection.items(),
+                toggleAll: !allSelected,
             };
         });
+        console.log('table state:', this.#state(), this.getSelectedRowsData());
     }
 
     selected(row: RowData): boolean {
@@ -294,8 +335,7 @@ export class AdkTable<T extends Identifiable> {
     }
 
     private getSelectedRowsData(): string[] {
-        const { selectedRows, dataSource } = this.#state();
-        return dataSource.filter((item) => selectedRows.includes(item)).map((item) => JSON.stringify(item));
+        return this.#selection.items();
     }
 
     private getGroupedData(): { [key: string]: T[] } {
