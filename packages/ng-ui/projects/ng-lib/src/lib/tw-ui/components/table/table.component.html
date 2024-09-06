@@ -74,7 +74,7 @@
           <div class="flex flex-row gap-2">
             @if($index !== columns.length && isSortable) {
             <tw-sortable-icon (click)="adkTable.sortBy(col)" (keydown)="adkTable.sortBy(col)"></tw-sortable-icon>
-            } @if(adkTable?.sortCriteriaData()?.key === col) {
+            } @if(adkTable.sortCriteriaData().key === col) {
             <span>{{ sortDataSource.direction === 'ascending' ? '🔼' : '🔽' }}</span>
             }
           </div>
@@ -145,7 +145,7 @@
     <tr [ngClass]="rowFocus.value === rowData  ? 'bg-light-blue-50' : ''" (keypress)="setRowFocus(rowData)"
       (click)="setRowFocus(rowData)">
       @if(isSelectable) {
-      <td [ngClass]="isSelectable ? 'p-1' : 'p-4'" class="border-b border-blue-gray-50 p-1 max-h-[38px] max-w-[15px]">
+      <td [ngClass]="isSelectable ? 'p-1' : 'p-4'" class="border-b border-blue-gray-50 p-1 max-h-[38px] max-w-[45px]">
         <ng-container
           *ngTemplateOutlet="checkbox; context: { adkTable, groupData: undefined, rowData, isCheckAll: false }"></ng-container>
       </td>
