@@ -27,7 +27,6 @@
                      context: {
                          groupData: adkTable.groupedData(),
                          columns: adkTable?.headers(),
-                         isSelectable: config.isSelectable,
                          sortDataSource: adkTable.currentPageData(),
                          config
                      }
@@ -57,10 +56,10 @@
 </ng-template>
 
 <!-- Render Table Header -->
-<ng-template #renderThead let-groupData="groupData" let-columns="columns" let-isSelectable="isSelectable"
+<ng-template #renderThead let-groupData="groupData" let-columns="columns" let-config="config"
   let-sortDataSource="sortDataSource" let-config="config">
   <tr>
-    @if(isSelectable && columns.length > 0) {
+    @if(config.isSelectable && columns.length > 0) {
     <th id="checkAll" class="border-b border-blue-gray-100 bg-blue-gray-50 p-1">
       <ng-container
         *ngTemplateOutlet="checkbox; context: { adkTable, groupData, rowData: undefined, isCheckAll: true }"></ng-container>
@@ -136,26 +135,29 @@
 </ng-template>
 
 <!-- Render Row Table Cells -->
-<ng-template #renderRow let-columns="columns" let-rowData="rowData" let-rowIndex="rowIndex"
-  let-isSelectable="isSelectable" let-config="config">
+<ng-template #renderRow let-columns="columns" let-rowData="rowData" let-rowIndex="rowIndex" let-config="config">
   <tr [ngClass]="rowFocus.value === rowData  ? 'bg-light-blue-50' : ''" (keypress)="setRowFocus(rowData)"
     (click)="setRowFocus(rowData)">
-    @if(isSelectable) {
-    <td [ngClass]="isSelectable ? 'p-1' : 'p-4'" class="border-b border-blue-gray-50 p-1 max-h-[38px] max-w-[45px]">
+    @if(config.isSelectable) {
+    <td [ngClass]="config.isSelectable ? 'p-1' : 'p-4'"
+      class="border-b border-blue-gray-50 p-1 max-h-[38px] max-w-[45px]">
       <ng-container
         *ngTemplateOutlet="checkbox; context: { adkTable, groupData: undefined, rowData, isCheckAll: false }"></ng-container>
     </td>
     } @for (col of columns; track $index) {
-    <td [ngClass]="isSelectable ? 'p-1' : 'p-2'"
+    <td [ngClass]="config.isSelectable ? 'p-1' : 'p-2'"
       class="border-b border-blue-gray-50 min-h-[48.5px] min-w-[60px] max-w-[60px] truncate">
       <div [adkTooltip]="rowData[col]" tooltipPlacement="bottom" [ngStyle]="{ cursor: 'text' }">
-        @if(isCellValArray(rowData[col])) { @if(isSelectable && isMultiSelectField && adkTable.selected(rowData)){
+        @if(isCellValArray(rowData[col])) { @if(config.isSelectable && config.isMultiSelectField &&
+        isSelected(rowData)){
         <adk-fields *ngIf="(cellMultiSelector(rowIndex, rowData[col]) | async) as field"
           [fieldConfig]="[field]"></adk-fields>
         } @else {
         <tw-typography [variant]="'small'" class="font-normal ml-2"> {{ rowData[col].join(', ') }} </tw-typography>
         } } @else { @if (isCellFieldObject(rowData[col])) {
+        @if (config.isMultiSelectField && isSelected(rowData)) {
         <adk-fields [fieldConfig]="[rowData[col]]"></adk-fields>
+        }
         } @else {
         <tw-typography [variant]="'small'" class="font-normal ml-2"> {{ rowData[col] }} </tw-typography>
         } }
@@ -243,10 +245,12 @@
           </adk-button>
         </div>
         } }
+        @if(tableHeader.isPreference) {
         <div class="flex items-center gap-3 cursor-pointer">
           <tw-table-settings-dialog [headers]="adkTable.headers()"
             (settingsCriteria)="setSettingsCriteria($event)"></tw-table-settings-dialog>
         </div>
+        }
       </div>
     </div>
 

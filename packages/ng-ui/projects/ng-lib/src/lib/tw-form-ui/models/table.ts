@@ -33,7 +33,8 @@ export interface TableProps {
     title: string;
     subtitle: string;
     isSearchable: boolean;
-    buttons: any[];
+    isPreference?: boolean;
+    buttons?: any[];
   };
   field?: Field;
 }

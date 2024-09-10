@@ -1173,6 +1173,7 @@ export const TableWithAllSettingsAndWrapped: Story = {
         title: 'Table Header',
         subtitle: 'Table Subtitle',
         isSearchable: true,
+        isPreference: true,
         buttons: [
           {
             label: 'View ALL',
@@ -1203,39 +1204,12 @@ export const TableTestingOutput: Story = {
       .setIsSortable(true)
       .setIsSearchable(true)
       .setIsActionButton(true)
-      .setActionButtons([
-        {
-          icon: 'visibility',
-          label: 'View',
-          color: 'primary',
-          onClick: action('View clicked'),
-        },
-        {
-          icon: 'edit',
-          label: 'Edit',
-          color: 'primary',
-          onClick: action('Edit clicked'),
-        },
-        {
-          icon: 'delete',
-          label: 'Delete',
-          color: 'danger',
-          onClick: action('Delete clicked'),
-        },
-      ])
+      .setIsMultiSelectField(true)
       .setTableHeader({
         title: 'Table Header',
         subtitle: 'Table Subtitle',
         isSearchable: true,
-        buttons: [
-          {
-            label: 'View ALL',
-            onClick: action('View All clicked'),
-            color: 'primary',
-            icon: '',
-          },
-          { label: 'add member', onClick: action('Add Member clicked'), color: 'primary', icon: 'person_add' },
-        ],
+        isPreference: false,
       })
       .build(),
   },

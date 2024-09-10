@@ -226,7 +226,6 @@ export class AdkTable<T extends Identifiable> {
       },
     }));
     this.applySort();
-    console.log('state', this.#state());
   }
 
   private applySort() {
@@ -274,16 +273,13 @@ export class AdkTable<T extends Identifiable> {
       ...state,
       selectedRows: this.#selection.items(),
     }));
-    console.log('table state:', this.#selection.items(), this.selectedRowsData());
   }
 
   toggleAllRowsSelection() {
     const { dataSource } = this.#state();
     const selectionItems = this.#selection.items();
-    console.log('toggleAllRowsSelection', dataSource, selectionItems);
     this.#state.update((state) => {
       const allSelected = selectionItems.length === dataSource.length;
-      console.log('allSelected', allSelected, this.isToggleAll());
       if (allSelected) {
         this.#selection.clear();
       } else {
@@ -298,7 +294,6 @@ export class AdkTable<T extends Identifiable> {
         toggleAll: !allSelected,
       };
     });
-    console.log('table state:', this.#state(), this.getSelectedRowsData());
   }
 
   selected(row: RowData): boolean {

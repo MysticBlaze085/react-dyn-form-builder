@@ -65,7 +65,13 @@ export class TableBuilder {
     return this;
   }
 
-  setTableHeader(tableHeader: { title: string; subtitle: string; isSearchable: boolean; buttons: any[] }): TableBuilder {
+  setTableHeader(tableHeader: {
+    title: string;
+    subtitle: string;
+    isSearchable: boolean;
+    isPreference?: boolean;
+    buttons?: any[];
+  }): TableBuilder {
     this.props.tableHeader = tableHeader;
     return this;
   }

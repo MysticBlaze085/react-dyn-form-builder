@@ -14,6 +14,7 @@ import { FieldComponent } from '../../../tw-form-ui/components/field.component';
 import { ImperativeObservable } from '../../../utils';
 import { Observable } from 'rxjs';
 import { SelectComponent } from '../../../tw-form-ui/components/types/select.component';
+import { SelectionUtils } from '../../../utils/deep-compare';
 import { SettingCriteria } from './models';
 import { TwCardComponent } from '../card/tw-card.component';
 import { TwTableSettingsDialogComponent } from './tw-table-settings-dialog.component';
@@ -83,29 +84,6 @@ export class TableComponent implements OnInit {
 
   columns: string[] = [];
 
-  // #formGroup = inject(AdkFormGroup, { self: true });
-  // #adkFields = inject(AdkFieldList, { self: true });
-  // adkTable = inject(AdkTable);
-
-  // @Input() isWrapped = false;
-  // @Input() set data(value: RowData[]) {
-  //     this.adkTable.initialData = value;
-  // }
-  // @Input() columns: string[] = [];
-  // @Input() isDraggable = false;
-  // @Input() isSelectable = false;
-  // @Input() isSortable = false;
-  // @Input() isSearchable = false;
-  // @Input() isActionButton = false;
-  // @Input() isMultiSelectField = false;
-  // @Input() actionColName?: string;
-  // @Input() actionButtons: {
-  //     icon?: string;
-  //     label: string;
-  //     color: 'primary' | 'secondary' | 'success' | 'warn' | 'danger';
-  //     onClick: (rowData: any) => void;
-  // }[] = [];
-  // @Input() tableHeader!: { title: string; subtitle: string; isSearchable: boolean; buttons: any[] };
   @Output() rowClickedData = new EventEmitter<RowData>();
 
   get formGroup() {
@@ -120,48 +98,40 @@ export class TableComponent implements OnInit {
 
   ngOnInit(): void {
     this.updateTableFromConfig();
+  }
 
-    this.data = this.config.data;
+  private updateTableFromConfig(): void {
+    this.data = this.config.data || [];
+    this.columns = this.config.columns || [];
+
     this.field.value = this.setField(this.adkTable.headers()[0]);
     this.#formGroup.setFormGroup([this.field.value]);
     this.formValueChanges();
     this.adkTable.setItemsPerPage(this.itemsPerPage);
     this.adkTable.setColumns(this.columns);
-
-    console.log('TableComponent initialized', this.#adkFields.fields(), this.#formGroup.formGroup());
-  }
-
-  private updateTableFromConfig(): void {
-    // Update component properties based on the config
-    this.columns = this.config.columns || [];
-    this.data = this.config.data || [];
   }
 
   onItemsPerPageChange() {
     this.adkTable.setItemsPerPage(this.itemsPerPage);
   }
 
-  isSelected(row: string): boolean {
-    const parseIfString = (item: any) => {
-      if (typeof item === 'string') {
-        try {
-          return JSON.parse(item);
-        } catch (error) {
-          console.error('Error parsing:', error);
-          return null;
-        }
-      }
-      return item;
-    };
+  isSelected(row: string | RowData | any): boolean {
+    const selectedRows = this.adkTable.selectedRowsData();
 
-    const parsedRow = parseIfString(row);
-    if (!parsedRow) return false;
+    // Check if the row or any selected row is a complex object
+    const isComplex = this.isComplexObject(row) || selectedRows.some(this.isComplexObject);
 
-    const selectedRows = this.adkTable.selectedRowsData().map(parseIfString).filter(Boolean);
+    if (isComplex) {
+      // Use deep comparison for complex objects
+      return SelectionUtils.isSelected(row, selectedRows);
+    } else {
+      // Use stringify method for simple objects or primitives
+      return SelectionUtils.isSelectedStringify(row, selectedRows);
+    }
+  }
 
-    return selectedRows.some((selectedRow) => {
-      return Object.keys(parsedRow).every((key) => parsedRow[key] === selectedRow[key]);
-    });
+  private isComplexObject(obj: any): boolean {
+    return typeof obj === 'object' && obj !== null && Object.keys(obj).length > 1;
   }
 
   setRowFocus(rowData: RowData) {
@@ -190,7 +160,6 @@ export class TableComponent implements OnInit {
   }
 
   isCellFieldObject(value: Field | any) {
-    console.log('isCellFieldObject', value);
     if (typeof value === 'object') return true;
     return false;
   }
@@ -231,11 +200,6 @@ export class TableComponent implements OnInit {
   }
 
   mapSelectedRows() {
-    const dataOutput = {
-      selectedRows: this.adkTable.selectedRowsData(),
-      formGroupValues: this.formGroup.value,
-    };
-    console.log('data output', dataOutput);
     return {
       selectedRows: this.adkTable.selectedRowsData(),
       formGroupValues: this.formGroup.value,
