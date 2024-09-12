@@ -170,6 +170,7 @@ export class TableComponent implements OnInit {
   }
 
   setSettingsCriteria(criteria: SettingCriteria) {
+    console.log('setSettingsCriteria', criteria);
     this.adkTable.setGroupBy(criteria.groupByColumn);
     this.adkTable.setColumns(criteria.visibleColumns);
     this.columns = criteria.visibleColumns;

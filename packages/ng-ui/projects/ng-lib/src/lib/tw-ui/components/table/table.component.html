@@ -39,14 +39,14 @@
           @for(group of adkTable.groupedData() | keyvalue; track $index) {
           <ng-container *ngTemplateOutlet="
                          groupByRender;
-                         context: { group, columns: adkTable?.headers(), isSelectable: config.isSelectable, actionButton: config.isActionButton, config }
+                         context: { group, columns: adkTable?.headers(), actionButton: config.isActionButton, config }
                      "></ng-container>
           }
         </ng-container>
         <ng-template #flatView>
           @for(rowData of adkTable.currentPageData(); track $index) {
           <ng-container
-            *ngTemplateOutlet="renderRow; context: { columns: adkTable?.headers(), rowData, rowIndex: $index, isSelectable: config.isSelectable, config }"></ng-container>
+            *ngTemplateOutlet="renderRow; context: { columns: adkTable?.headers(), rowData, rowIndex: $index, config }"></ng-container>
           }
         </ng-template>
         }
@@ -57,7 +57,7 @@
 
 <!-- Render Table Header -->
 <ng-template #renderThead let-groupData="groupData" let-columns="columns" let-config="config"
-  let-sortDataSource="sortDataSource" let-config="config">
+  let-sortDataSource="sortDataSource">
   <tr>
     @if(config.isSelectable && columns.length > 0) {
     <th id="checkAll" class="border-b border-blue-gray-100 bg-blue-gray-50 p-1">
@@ -91,10 +91,10 @@
 </ng-template>
 
 <!-- Group By Render -->
-<ng-template #groupByRender let-group="group" let-columns="columns" let-isSelectable="isSelectable"
-  let-actionButton="actionButton" let-config="config">
+<ng-template #groupByRender let-group="group" let-columns="columns" let-config="config" let-actionButton="actionButton"
+  let-config="config">
   <tr>
-    <td [colSpan]="columns.length + (isSelectable ? 1 : 0) + (actionButton ? 1 : 0)" class="w-full">
+    <td [colSpan]="columns.length + (config.isSelectable ? 1 : 0) + (actionButton ? 1 : 0)" class="w-full">
       <adk-expansion-panel class="full">
         <ng-template #expansionPanelHeader>
           <span class="min-w-[200px] max-w-[200px] truncate"> ({{ group.value.length }}) {{ group.key }} </span>
@@ -103,7 +103,7 @@
           <table aria-hidden="true" class="w-full min-w-max table-auto text-left">
             <thead>
               <tr>
-                @if(isSelectable) {
+                @if(config.isSelectable) {
                 <th class="border-b border-blue-gray-100 bg-blue-gray-50 p-1 max-w-[10px]"></th>
                 } @for(col of columns; track $index) {
                 <th class="border-b border-blue-gray-100 bg-blue-gray-50 p-3">
@@ -123,7 +123,7 @@
             <tbody>
               @for(rowData of group.value; track $index) {
               <ng-container
-                *ngTemplateOutlet="renderRow; context: { columns, rowData, rowIndex: $index, isSelectable, adkTable, actionButton }">
+                *ngTemplateOutlet="renderRow; context: { columns, rowData, rowIndex: $index, adkTable, actionButton, config }">
               </ng-container>
               }
             </tbody>
@@ -266,7 +266,7 @@
               </Tabs> -->
       <!-- } -->
     </div>
-    @if(isSearchable){
+    @if(tableHeader.isSearchable){
     <form *ngIf="field.change$ | async as field" [formGroup]="formGroup"
       class="flex flex-row gap-2 w-full flex-wrap z-[20000]">
       <adk-fields [fieldConfig]="[field]"></adk-fields>

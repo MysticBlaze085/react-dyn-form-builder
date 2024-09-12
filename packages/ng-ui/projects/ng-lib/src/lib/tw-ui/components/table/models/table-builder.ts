@@ -48,6 +48,11 @@ export class TableBuilder {
     return this;
   }
 
+  setGroupBy(groupBy: string): TableBuilder {
+    this.props.groupBy = groupBy;
+    return this;
+  }
+
   setActionColName(actionColName: string): TableBuilder {
     this.props.actionColName = actionColName;
     return this;

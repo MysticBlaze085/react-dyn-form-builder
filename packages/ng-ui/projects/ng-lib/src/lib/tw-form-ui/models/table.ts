@@ -22,6 +22,7 @@ export interface TableProps {
   isSearchable?: boolean;
   isActionButton?: boolean;
   isMultiSelectField?: boolean;
+  groupBy?: string;
   actionColName?: string;
   actionButtons?: {
     icon?: string;
