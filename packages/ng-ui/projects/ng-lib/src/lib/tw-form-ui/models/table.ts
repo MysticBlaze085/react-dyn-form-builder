@@ -48,15 +48,3 @@ export type Table = {
   rows: Observable<RowData[]>;
   props?: TableProps;
 };
-
-export class TableBuilder {
-  static createTable(type: TABLE_TYPE, headers: string[], rows: Observable<RowData[]>, props?: TableProps): Table {
-    const table = {
-      type,
-      headers: headers || [],
-      rows: rows,
-      props: props || {},
-    };
-    return table;
-  }
-}

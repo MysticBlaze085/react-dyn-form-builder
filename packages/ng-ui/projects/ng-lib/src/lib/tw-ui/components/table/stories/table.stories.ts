@@ -1069,7 +1069,7 @@ const mockDataTwo = [
 import { Meta, StoryObj, componentWrapperDecorator, moduleMetadata } from '@storybook/angular';
 import { userEvent, within } from '@storybook/testing-library';
 
-import { TableBuilder } from '../models/table-builder';
+import { TableBuilder } from '../utils/table-builder';
 import { TableComponent } from '../table.component';
 import { action } from '@storybook/addon-actions';
 
