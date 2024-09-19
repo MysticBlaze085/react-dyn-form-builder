@@ -200,6 +200,7 @@ export class TableComponent implements OnInit {
     this.formGroup.valueChanges.subscribe((e) => {
       console.log('FormGroup Check', e);
     });
+    console.log('form group', this.formGroup.value);
   }
 
   cellMultiSelector(index: number | string, value: string[]): Observable<Field> {
