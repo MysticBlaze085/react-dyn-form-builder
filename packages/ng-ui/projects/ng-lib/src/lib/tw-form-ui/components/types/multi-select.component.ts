@@ -120,7 +120,7 @@ import { ImperativeObservable } from '../../../utils';
 export class MultiSelectComponent implements OnChanges, AfterViewInit {
   @Input() field!: Field;
 
-  formControl: { [key: string]: AbstractControl | any } = {};
+  formControl: { [key: string]: AbstractControl | any } = { key: new FormControl('') };
   isOpen = false;
   selectedOptions = new ImperativeObservable<FieldOptions[]>([]);
   filteredOptions = new ImperativeObservable<FieldOptions[]>([]);
@@ -173,7 +173,7 @@ export class MultiSelectComponent implements OnChanges, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.filteredOptions.value = this.options;
-    this.initFormControl();
+    this.initFormControl(this.field);
     this.searchText.valueChanges.subscribe((value) => {
       const searchVal = value ?? '';
       this.filteredOptions.value = this.options.filter((opt) => opt.label.toLowerCase().includes(searchVal.toLowerCase()));
@@ -187,22 +187,18 @@ export class MultiSelectComponent implements OnChanges, AfterViewInit {
       this.filteredOptions.value = this.field?.props?.options
         ? this.field?.props?.options.filter((opt) => opt.label.toLowerCase().includes(searchVal.toLowerCase()))
         : [];
-      this.initFormControl();
-      console.log('MultiSelectComponent ngOnChanges', this.field, this.formControl);
     }
   }
 
   onOptionSelected(value: string) {
-    console.log('onOptionSelected setValue', this.field.key, value);
-    this.safeSetValue(this.field.key, value);
+    this.safeSetValue(this.field?.key, value);
   }
 
-  private initFormControl(): void {
-    if (this.field && this.field.formControl) {
-      this.formControl[this.field.key] = this.field.formControl;
-      console.log('FormControl initialized for: ', this.field.key, this.formControl[this.field.key]);
+  private initFormControl(field: Field): void {
+    if (field && field.formControl) {
+      this.formControl[field.key] = field.formControl;
     } else {
-      console.error(`FormControl for key ${this.field.key} is not properly defined in the field configuration.`);
+      console.error(`FormControl for key ${field.key} is not properly defined in the field configuration.`);
     }
   }
 
@@ -225,21 +221,18 @@ export class MultiSelectComponent implements OnChanges, AfterViewInit {
         this.selectedOptions.value = this.selectedOptions.value.filter((value) => value !== option);
         this.filteredOptions.value.push(option);
         const selectedOptionVal = this.selectedOptions.value.map((opt) => opt.value);
-        console.log('toggleOption isMultipleTag setValue', this.field.key, selectedOptionVal);
-        this.safeSetValue(this.field.key, selectedOptionVal);
+        this.safeSetValue(this.field?.key, selectedOptionVal);
       } else {
         this.selectedOptions.value.push(option);
         this.filteredOptions.value = this.filteredOptions.value.filter((value) => value !== option);
         const selectedOptionVal = this.selectedOptions.value.map((opt) => opt.value);
-        console.log('toggleOption isMultipleTag else setValue', this.field.key, selectedOptionVal);
-        this.safeSetValue(this.field.key, selectedOptionVal);
+        this.safeSetValue(this.field?.key, selectedOptionVal);
       }
     } else {
       this.selectedOptions.value = [option];
       this.filteredOptions.value = this.options.filter((value) => value !== option);
       const selectedOptionVal = option.value;
-      console.log('toggleOption else setValue', this.field.key, selectedOptionVal);
-      this.safeSetValue(this.field.key, selectedOptionVal);
+      this.safeSetValue(this.field?.key, selectedOptionVal);
     }
     this.selectedOptionChange.emit(this.selectedOptions.value);
   }
@@ -248,23 +241,12 @@ export class MultiSelectComponent implements OnChanges, AfterViewInit {
     this.filteredOptions.value = this.filteredOptions.value.concat(this.selectedOptions.value);
     this.selectedOptions.value = [];
     this.selectedOptionChange.emit(this.selectedOptions.value);
-    console.log('clearOption setValue', this.field.key);
-    this.safeSetValue(this.field.key, '');
+    this.safeSetValue(this.field?.key, '');
   }
 
   private safeSetValue(key: string, value: any): void {
-    try {
-      this.formControl[key].setValue(value);
-    } finally {
-      console.error(`FormControl for key ${key} is not properly initialized or doesn't have a setValue method.`);
-    }
-    // setTimeout(() => {
-    //   console.log('safeSetValue', this.formControl[key], value);
-    //   if (this.formControl[key] instanceof Object && this.formControl[key].setValue instanceof Function) {
-    //     this.formControl[key].setValue(value);
-    //   } else {
-    //     console.error(`FormControl for key ${key} is not properly initialized or doesn't have a setValue method.`);
-    //   }
-    // });
+    const keyObjectControl = new FormControl('');
+    keyObjectControl.setValue(value);
+    this.formControl[key] = keyObjectControl;
   }
 }

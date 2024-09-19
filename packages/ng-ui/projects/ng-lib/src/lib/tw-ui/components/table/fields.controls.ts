@@ -94,10 +94,7 @@ export const cellSelector: (index: string | number, params: string[]) => Field =
         };
     });
 
-    const columnSearchColumn: Field = FieldBuilder.createField('custom-select', 'cell', index, '', '', {
-        isMultipleTag: true,
-        options: [...mapVisibleColumnsOptions],
-    });
+    const columnSearchColumn: Field = FieldBuilder.createOptionsField('custom-select', 'cell', '', '', [...mapVisibleColumnsOptions]);
 
     return {
         ...columnSearchColumn,

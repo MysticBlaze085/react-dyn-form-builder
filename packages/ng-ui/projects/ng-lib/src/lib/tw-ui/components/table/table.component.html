@@ -266,7 +266,7 @@
       <!-- } -->
     </div>
     @if(tableHeader.isSearchable){
-    <form *ngIf="field.change$ | async as field" [formGroup]="formGroup"
+    <form *ngIf="field.change$ | async as field" [formGroup]="filterFG"
       class="flex flex-row gap-2 w-full flex-wrap z-[20000]">
       <adk-fields [fieldConfig]="[field]"></adk-fields>
     </form>

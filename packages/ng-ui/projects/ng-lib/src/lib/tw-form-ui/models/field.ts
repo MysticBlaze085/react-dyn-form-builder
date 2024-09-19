@@ -138,7 +138,8 @@ export class FieldBuilder {
         };
         const addedValidations = field.validation || [];
         field.validation = props?.required ? [Validators.required, ...addedValidations] : field.validation;
-        field.formControl = field.type === 'checkbox' ? this.checkboxFormFields(field) : new FormControl(field.value, field.validation);
+        field.formControl =
+          field.type === 'checkbox' ? this.checkboxFormFields(field) : (new FormControl(field.value, field.validation) as FormControl);
         return field;
     }
 

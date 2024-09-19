@@ -1069,6 +1069,7 @@ const mockDataTwo = [
 import { Meta, StoryObj, componentWrapperDecorator, moduleMetadata } from '@storybook/angular';
 import { userEvent, within } from '@storybook/testing-library';
 
+import { ReactiveFormsModule } from '@angular/forms';
 import { TableBuilder } from '../utils/table-builder';
 import { TableComponent } from '../table.component';
 import { action } from '@storybook/addon-actions';
@@ -1082,7 +1083,7 @@ const meta: Meta<TableComponent> = {
   },
   decorators: [
     moduleMetadata({
-      imports: [TableComponent],
+      imports: [TableComponent, ReactiveFormsModule],
     }),
     componentWrapperDecorator(
       (story) => `<div style="margin: 3em; display: flex; justify-content: center; align-items: center">

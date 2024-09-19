@@ -45,7 +45,7 @@ const imports = [
   standalone: true,
   // Removed hostDirectives as they are now included in imports
   imports: [...imports],
-  hostDirectives: [AdkTable, AdkFormGroup, AdkFieldList],
+  hostDirectives: [AdkTable, AdkFormGroup],
   templateUrl: './table.component.html',
   styles: [
     `
@@ -78,13 +78,18 @@ export class TableComponent implements OnInit {
   }
   private _config: any = {};
 
+  #filterFG = inject(AdkFormGroup, { self: true });
   #formGroup = inject(AdkFormGroup, { self: true });
-  #adkFields = inject(AdkFieldList, { self: true });
   adkTable = inject(AdkTable);
 
   columns: string[] = [];
 
   @Output() rowClickedData = new EventEmitter<RowData>();
+  @Output() selectedRowsEmitValue = new EventEmitter<any[]>();
+
+  get filterFG() {
+    return this.#filterFG.formGroup();
+  }
 
   get formGroup() {
     return this.#formGroup.formGroup();
@@ -105,7 +110,7 @@ export class TableComponent implements OnInit {
     this.columns = this.config.columns || [];
 
     this.field.value = this.setField(this.adkTable.headers()[0]);
-    this.#formGroup.setFormGroup([this.field.value]);
+    this.#filterFG.setFormGroup([this.field.value]);
     this.formValueChanges();
     this.adkTable.setItemsPerPage(this.itemsPerPage);
     this.adkTable.setColumns(this.columns);
@@ -176,7 +181,7 @@ export class TableComponent implements OnInit {
     this.columns = criteria.visibleColumns;
     if (criteria.column) this.adkTable.applyFilter({ column: criteria.column, value: '' });
     this.field.value = this.setField(criteria.column);
-    this.#formGroup.setFormGroup([this.field.value]);
+    this.#filterFG.setFormGroup([this.field.value]);
     this.formValueChanges();
   }
 
@@ -189,14 +194,16 @@ export class TableComponent implements OnInit {
   }
 
   formValueChanges() {
-    this.formGroup.valueChanges.subscribe((e) => {
+    this.filterFG.valueChanges.subscribe((e) => {
       this.adkTable.filterColumns(e['searchColumn']);
+    });
+    this.formGroup.valueChanges.subscribe((e) => {
+      console.log('FormGroup Check', e);
     });
   }
 
   cellMultiSelector(index: number | string, value: string[]): Observable<Field> {
     const field = new ImperativeObservable<Field>(cellSelector(index, value));
-    this.#adkFields.add(field.value);
     return field.change$;
   }
 
