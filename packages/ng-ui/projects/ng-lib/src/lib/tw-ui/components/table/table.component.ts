@@ -34,7 +34,6 @@ const imports = [
   SortableIconComponent,
   FieldsComponent,
   FieldComponent,
-  AdkTable,
   FormsModule,
   ButtonComponent,
   TwTableSettingsDialogComponent,
@@ -44,6 +43,7 @@ const imports = [
 @Component({
   selector: 'tw-table',
   standalone: true,
+  // Removed hostDirectives as they are now included in imports
   imports: [...imports],
   hostDirectives: [AdkTable, AdkFormGroup, AdkFieldList],
   templateUrl: './table.component.html',

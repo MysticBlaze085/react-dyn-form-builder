@@ -1,0 +1,101 @@
+{
+  "root": true,
+  "ignorePatterns": ["**/*.d.ts", "**/*.json", "**/*.stories.ts"],
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "env": {
+        "jasmine": true
+      },
+      "parserOptions": {
+        "project": ["tsconfig.json", "e2e/tsconfig.json"],
+        "createDefaultProgram": true
+      },
+      "extends": [
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "plugin:prettier/recommended",
+        "plugin:@ngrx/recommended"
+      ],
+      "rules": {
+        "@typescript-eslint/no-unsafe-call": "off",
+        "@typescript-eslint/member-ordering": "off",
+        "@typescript-eslint/no-inferrable-types": "off",
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-floating-promises": "off",
+        "@typescript-eslint/no-useless-constructor": "off",
+        "@typescript-eslint/restrict-template-expressions": "off",
+        "@typescript-eslint/unbound-method": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/no-misused-promises": "off",
+        "no-prototype-builtins": "off",
+        "@ngrx/avoid-mapping-selectors": "off",
+        "@ngrx/avoid-combining-selectors": "off",
+        "no-void": [
+          "error",
+          {
+            "allowAsStatement": true
+          }
+        ],
+        "no-debugger": "warn",
+        "@typescript-eslint/explicit-member-accessibility": [
+          "off",
+          {
+            "overrides": {
+              "accessors": "explicit",
+              "constructors": "no-public",
+              "methods": "explicit",
+              "properties": "off",
+              "parameterProperties": "explicit"
+            }
+          }
+        ],
+        "@typescript-eslint/no-empty-function": [
+          "warn",
+          {
+            "allow": ["constructors"]
+          }
+        ],
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          {
+            "argsIgnorePattern": "^_"
+          }
+        ],
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "prefix": "lyn",
+            "style": "kebab-case"
+          }
+        ],
+        "prettier/prettier": [
+          "error",
+          {
+            "endOfLine": "auto"
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.html"],
+      "extends": ["plugin:@angular-eslint/template/recommended", "plugin:prettier/recommended"],
+      "rules": {
+        "@angular-eslint/template/no-negated-async": "off"
+      }
+    },
+    {
+      "files": ["*.ts"],
+      "extends": ["plugin:@ngrx/recommended"]
+    }
+  ]
+}

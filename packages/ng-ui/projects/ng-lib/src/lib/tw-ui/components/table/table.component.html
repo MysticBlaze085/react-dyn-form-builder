@@ -91,8 +91,7 @@
 </ng-template>
 
 <!-- Group By Render -->
-<ng-template #groupByRender let-group="group" let-columns="columns" let-config="config" let-actionButton="actionButton"
-  let-config="config">
+<ng-template #groupByRender let-group="group" let-columns="columns" let-config="config" let-actionButton="actionButton">
   <tr>
     <td [colSpan]="columns.length + (config.isSelectable ? 1 : 0) + (actionButton ? 1 : 0)" class="w-full">
       <adk-expansion-panel class="full">
