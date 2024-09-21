@@ -1066,6 +1066,287 @@ const mockDataTwo = [
   },
 ];
 
+const mockDataThree = [
+  {
+    userName: 'rcp-admin',
+    displayName: 'RCP Admin',
+    email: 'andy.scott@rhapsod.health',
+    userZid: '236954760123521326',
+    orgZid: 'rhapsody-health',
+    state: 'USER_STATE_ACTIVE',
+    type: 'HUMAN',
+    grants: [
+      {
+        serviceId: 'envoy-tools-standalone',
+        projectZid: '265481886246122980',
+        grantZid: '266080360360588772',
+        grantedRoles: ['user'],
+      },
+      {
+        serviceId: 'atlas-chronicle',
+        projectZid: '265252074105681380',
+        grantZid: '272322138134820324',
+        grantedRoles: ['admin'],
+      },
+      {
+        serviceId: 'semantic-dashboard',
+        projectZid: '265511721454613988',
+        grantZid: '268509787019294180',
+        grantedRoles: ['access'],
+      },
+      {
+        serviceId: 'atlas-deploy',
+        projectZid: '265227730885359076',
+        grantZid: '272322064684168676',
+        grantedRoles: ['admin'],
+      },
+      {
+        serviceId: 'atlas-iam',
+        projectZid: '265237192228484580',
+        grantZid: '272322111089948132',
+        grantedRoles: ['admin'],
+      },
+      {
+        serviceId: 'Atlas',
+        projectZid: '236954744067725614',
+        grantZid: '238553850921883923',
+        grantedRoles: ['instance-admin', 'manifest-admin', 'registry-admin'],
+      },
+    ],
+    createdTs: 1697732044000,
+    updateTs: 1707472157000,
+  },
+  {
+    userName: 'josh.varner',
+    displayName: 'Josh Varner',
+    email: 'josh.varner@rhapsody.health',
+    userZid: '252025051245713683',
+    orgZid: 'rhapsody-health',
+    state: 'USER_STATE_ACTIVE',
+    type: 'HUMAN',
+    grants: [
+      {
+        serviceId: 'Atlas',
+        projectZid: '236954744067725614',
+        grantZid: '253329726616115475',
+        grantedRoles: null,
+      },
+    ],
+    createdTs: 1706714637000,
+    updateTs: 1706714637000,
+  },
+  {
+    userName: 'christopher.stehno',
+    displayName: 'Christopher Stehno',
+    email: 'christopher.stehno@rhapsody.health',
+    userZid: '259871968390551864',
+    orgZid: 'rhapsody-health',
+    state: 'USER_STATE_ACTIVE',
+    type: 'HUMAN',
+    grants: [
+      {
+        serviceId: 'Atlas',
+        projectZid: '236954744067725614',
+        grantZid: '259991201497749816',
+        grantedRoles: ['instance-reader', 'manifest-reader', 'registry-reader'],
+      },
+    ],
+    createdTs: 1711391764000,
+    updateTs: 1711391764000,
+  },
+  {
+    userName: 'thomas.myers@rhapsody.health',
+    displayName: 'Thomas Myers',
+    email: 'thomas.myers@rhapsody.health',
+    userZid: '260870799425018168',
+    orgZid: 'rhapsody-health',
+    state: 'USER_STATE_INITIAL',
+    type: 'HUMAN',
+    grants: [],
+    createdTs: 1711987114000,
+    updateTs: 1711987114000,
+  },
+  {
+    userName: 'john.smith',
+    displayName: 'John Smith',
+    email: 'john.smith@rhapsody.health',
+    userZid: '264397833866589668',
+    orgZid: 'rhapsody-health',
+    state: 'USER_STATE_ACTIVE',
+    type: 'HUMAN',
+    grants: [],
+    createdTs: 1714089390000,
+    updateTs: 1714089390000,
+  },
+  {
+    userName: 'john.smith2',
+    displayName: 'John2 Smith2',
+    email: 'john.smith2@rhapsody.health',
+    userZid: '265078698942674404',
+    orgZid: 'rhapsody-health',
+    state: 'USER_STATE_ACTIVE',
+    type: 'HUMAN',
+    grants: [],
+    createdTs: 1714495217000,
+    updateTs: 1714495217000,
+  },
+  {
+    userName: 'sam.jakos',
+    displayName: 'Sam Jakos',
+    email: 'sam.jakos@rhapsody.health',
+    userZid: '266073095641511396',
+    orgZid: 'rhapsody-health',
+    state: 'USER_STATE_ACTIVE',
+    type: 'HUMAN',
+    grants: [
+      {
+        serviceId: 'envoy-tools-standalone',
+        projectZid: '265481886246122980',
+        grantZid: '266073675495716324',
+        grantedRoles: ['user'],
+      },
+    ],
+    createdTs: 1715087923000,
+    updateTs: 1715088790000,
+  },
+  {
+    userName: 'john.smith3',
+    displayName: 'John2 Smith2',
+    email: 'john.smith3@rhapsody.health',
+    userZid: '272285369322452452',
+    orgZid: 'rhapsody-health',
+    state: 'USER_STATE_ACTIVE',
+    type: 'HUMAN',
+    grants: [
+      {
+        serviceId: 'atlas-deploy',
+        projectZid: '265227730885359076',
+        grantZid: '272285378919020004',
+        grantedRoles: ['registry:read', 'manifests:read'],
+      },
+      {
+        serviceId: 'atlas-iam',
+        projectZid: '265237192228484580',
+        grantZid: '272285382895220196',
+        grantedRoles: ['orgs:read', 'users:write', 'users:read'],
+      },
+    ],
+    createdTs: 1718790728000,
+    updateTs: 1718790728000,
+  },
+  {
+    userName: 'john.smith4',
+    displayName: 'John4 Smith4',
+    email: 'john.smith4@rhapsody.health',
+    userZid: '272285759862486500',
+    orgZid: 'rhapsody-health',
+    state: 'USER_STATE_ACTIVE',
+    type: 'HUMAN',
+    grants: [
+      {
+        serviceId: 'atlas-deploy',
+        projectZid: '265227730885359076',
+        grantZid: '272285783384339940',
+        grantedRoles: ['registry:read', 'manifests:read'],
+      },
+      {
+        serviceId: 'atlas-iam',
+        projectZid: '265237192228484580',
+        grantZid: '272285788132095460',
+        grantedRoles: ['orgs:read', 'users:write', 'users:read'],
+      },
+    ],
+    createdTs: 1718790961000,
+    updateTs: 1718790961000,
+  },
+  {
+    userName: 'melissa',
+    displayName: 'melissa langhausen',
+    email: 'melissa.langhausen@rhapsody.health',
+    userZid: '272285849167607268',
+    orgZid: 'rhapsody-health',
+    state: 'USER_STATE_ACTIVE',
+    type: 'HUMAN',
+    grants: [
+      {
+        serviceId: 'atlas-deploy',
+        projectZid: '265227730885359076',
+        grantZid: '272285859603035620',
+        grantedRoles: ['registry:read', 'manifests:read'],
+      },
+      {
+        serviceId: 'atlas-iam',
+        projectZid: '265237192228484580',
+        grantZid: '272285863025587684',
+        grantedRoles: ['orgs:read', 'users:write', 'users:read'],
+      },
+    ],
+    createdTs: 1718791014000,
+    updateTs: 1718791014000,
+  },
+  {
+    userName: 'melissa.langhausen@rhapsody.health',
+    displayName: 'melissa langhausen',
+    email: 'melissa.langhausen@rhapsody.health',
+    userZid: '272285890724836836',
+    orgZid: 'rhapsody-health',
+    state: 'USER_STATE_ACTIVE',
+    type: 'HUMAN',
+    grants: [
+      {
+        serviceId: 'atlas-deploy',
+        projectZid: '265227730885359076',
+        grantZid: '272285901931951588',
+        grantedRoles: ['registry:read', 'manifests:read'],
+      },
+      {
+        serviceId: 'atlas-iam',
+        projectZid: '265237192228484580',
+        grantZid: '272285905354569188',
+        grantedRoles: ['orgs:read', 'users:write', 'users:read'],
+      },
+    ],
+    createdTs: 1718791039000,
+    updateTs: 1718791039000,
+  },
+  {
+    userName: 'quintonn.rothmann@lyniate.com',
+    displayName: 'Quintonn Rothmann',
+    email: 'quintonn.rothmann@rhapsody.health',
+    userZid: '274165832152528356',
+    orgZid: 'rhapsody-health',
+    state: 'USER_STATE_ACTIVE',
+    type: 'HUMAN',
+    grants: [],
+    createdTs: 1719911570000,
+    updateTs: 1719911570000,
+  },
+  {
+    userName: 'craig.simmons.rhapsody-health',
+    displayName: 'Craig Simmons',
+    email: 'craig.simmons@rhapsody.health',
+    userZid: '275216233043867126',
+    orgZid: 'rhapsody-health',
+    state: 'USER_STATE_ACTIVE',
+    type: 'HUMAN',
+    grants: [],
+    createdTs: 1720537659000,
+    updateTs: 1720537659000,
+  },
+  {
+    userName: 'frazer.chan@lyniate.com',
+    displayName: 'Frazer Chan',
+    email: 'frazer.chan@rhapsody.health',
+    userZid: '277210277609504588',
+    orgZid: 'rhapsody-health',
+    state: 'USER_STATE_ACTIVE',
+    type: 'HUMAN',
+    grants: [],
+    createdTs: 1721726201000,
+    updateTs: 1721726201000,
+  },
+];
+
 import { Meta, StoryObj, componentWrapperDecorator, moduleMetadata } from '@storybook/angular';
 import { userEvent, within } from '@storybook/testing-library';
 
@@ -1212,6 +1493,24 @@ export const TableTestingOutput: Story = {
         isSearchable: true,
         isPreference: false,
       })
+      .build(),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const row = canvas.getByText('Atlas');
+    await userEvent.click(row);
+  },
+};
+
+export const TableAppUsagegOutput: Story = {
+  args: {
+    config: new TableBuilder()
+      .setIsWrapped(true)
+      .setData(mockDataThree)
+      .setColumns(['userName', 'roles', 'services'])
+      .setIsDraggable(true)
+      .setIsSelectable(true)
+      .setIsSortable(true)
       .build(),
   },
   play: async ({ canvasElement }) => {

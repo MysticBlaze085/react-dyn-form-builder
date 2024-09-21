@@ -40,6 +40,8 @@ const imports = [
   SelectComponent,
 ];
 
+// FIXME: issue when data is selected only shows the current active headers selection of data and no the whole row of information
+
 @Component({
   selector: 'tw-table',
   standalone: true,
@@ -103,6 +105,7 @@ export class TableComponent implements OnInit {
 
   ngOnInit(): void {
     this.updateTableFromConfig();
+    console.log('Table ADK', this.adkTable.state());
   }
 
   private updateTableFromConfig(): void {
@@ -122,10 +125,11 @@ export class TableComponent implements OnInit {
 
   isSelected(row: string | RowData | any): boolean {
     const selectedRows = this.adkTable.selectedRowsData();
-
+    console.log('Selected Rows', selectedRows);
+    console.log('Row Data', row);
     // Check if the row or any selected row is a complex object
     const isComplex = this.isComplexObject(row) || selectedRows.some(this.isComplexObject);
-
+    console.log('IsComplex', isComplex);
     if (isComplex) {
       // Use deep comparison for complex objects
       return SelectionUtils.isSelected(row, selectedRows);
@@ -200,7 +204,6 @@ export class TableComponent implements OnInit {
     this.formGroup.valueChanges.subscribe((e) => {
       console.log('FormGroup Check', e);
     });
-    console.log('form group', this.formGroup.value);
   }
 
   cellMultiSelector(index: number | string, value: string[]): Observable<Field> {
