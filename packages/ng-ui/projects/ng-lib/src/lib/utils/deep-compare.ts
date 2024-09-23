@@ -14,29 +14,25 @@ export class SelectionUtils {
 
     const parsedRow = parseIfString(row);
     if (!parsedRow) return false;
-
     const parsedSelectedRows = selectedRows.map(parseIfString).filter(Boolean);
 
     return parsedSelectedRows.some((selectedRow) => {
-      return SelectionUtils.deepCompare(parsedRow, selectedRow);
+      return SelectionUtils.fullCompare(parsedRow, selectedRow);
     });
   }
 
-  private static deepCompare(obj1: any, obj2: any): boolean {
+  private static fullCompare(obj1: any, obj2: any): boolean {
     if (obj1 === obj2) return true;
     if (typeof obj1 !== 'object' || typeof obj2 !== 'object' || obj1 == null || obj2 == null) return false;
 
-    const keys1 = Object.keys(obj1);
-    const keys2 = Object.keys(obj2);
-
-    if (keys1.length !== keys2.length) return false;
-
-    for (const key of keys1) {
-      if (!keys2.includes(key)) return false;
-      if (!SelectionUtils.deepCompare(obj1[key], obj2[key])) return false;
-    }
-
-    return true;
+    const keys = Object.keys(obj1);
+    return keys.every((key) => {
+      if (!Object.prototype.hasOwnProperty.call(obj2, key)) return false;
+      if (typeof obj1[key] === 'object' && obj1[key] !== null) {
+        return SelectionUtils.fullCompare(obj1[key], obj2[key]);
+      }
+      return obj1[key] === obj2[key];
+    });
   }
 
   static isSelectedStringify(row: string | any, selectedRows: any[]): boolean {
