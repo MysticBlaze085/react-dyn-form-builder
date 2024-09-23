@@ -280,9 +280,12 @@ export class AdkTable<T extends Identifiable> {
     const selectionItems = this.#selection.items();
     this.#state.update((state) => {
       const allSelected = selectionItems.length === dataSource.length;
-      if (allSelected) {
+      const hasASelection = selectionItems.length > dataSource.length && selectionItems.length !== 0;
+      console.log('All Select', allSelected, !hasASelection);
+      if (allSelected && !hasASelection) {
         this.#selection.clear();
       } else {
+        this.#selection.clear();
         dataSource.forEach((item) => {
           const itemStr = JSON.stringify(item);
           this.#selection.select(itemStr);
