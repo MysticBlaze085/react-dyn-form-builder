@@ -105,7 +105,6 @@ export class TableComponent implements OnInit {
 
   ngOnInit(): void {
     this.updateTableFromConfig();
-    console.log('Table ADK', this.adkTable.state());
   }
 
   private updateTableFromConfig(): void {
@@ -125,12 +124,9 @@ export class TableComponent implements OnInit {
 
   isSelected(row: string | RowData | any): boolean {
     const selectedRows = this.adkTable.selectedRowsData();
-    console.log('Selected Rows', selectedRows);
-    console.log('Row Data', row);
     // Check if the row or any selected row is a complex object
-    const isComplex = this.isComplexObject(row) || selectedRows.some(this.isComplexObject);
-    console.log('IsComplex', isComplex);
-    if (isComplex) {
+    const isComplex = this.isComplexObject(row);
+    if (!isComplex) {
       // Use deep comparison for complex objects
       return SelectionUtils.isSelected(row, selectedRows);
     } else {
@@ -140,7 +136,18 @@ export class TableComponent implements OnInit {
   }
 
   private isComplexObject(obj: any): boolean {
-    return typeof obj === 'object' && obj !== null && Object.keys(obj).length > 1;
+    let isComplex = false;
+    if (typeof obj === 'object') {
+      const keys = Object.keys(obj);
+      keys.forEach((key) => {
+        if (!isComplex)
+          if (typeof obj[key] === 'object') {
+            if (obj[key]['formControl']) isComplex = true;
+            return;
+          }
+      });
+    }
+    return isComplex;
   }
 
   setRowFocus(rowData: RowData) {
@@ -179,7 +186,6 @@ export class TableComponent implements OnInit {
   }
 
   setSettingsCriteria(criteria: SettingCriteria) {
-    console.log('setSettingsCriteria', criteria);
     this.adkTable.setGroupBy(criteria.groupByColumn);
     this.adkTable.setColumns(criteria.visibleColumns);
     this.columns = criteria.visibleColumns;

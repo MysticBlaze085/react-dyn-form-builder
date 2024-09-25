@@ -281,7 +281,6 @@ export class AdkTable<T extends Identifiable> {
     this.#state.update((state) => {
       const allSelected = selectionItems.length === dataSource.length;
       const hasASelection = selectionItems.length > dataSource.length && selectionItems.length !== 0;
-      console.log('All Select', allSelected, !hasASelection);
       if (allSelected && !hasASelection) {
         this.#selection.clear();
       } else {

@@ -16,9 +16,7 @@ export class SelectionUtils {
     if (!parsedRow) return false;
     const parsedSelectedRows = selectedRows.map(parseIfString).filter(Boolean);
 
-    return parsedSelectedRows.some((selectedRow) => {
-      return SelectionUtils.fullCompare(parsedRow, selectedRow);
-    });
+    return parsedSelectedRows.some((selectedRow) => SelectionUtils.fullCompare(parsedRow, selectedRow));
   }
 
   private static fullCompare(obj1: any, obj2: any): boolean {

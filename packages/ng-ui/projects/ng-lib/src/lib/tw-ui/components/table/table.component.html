@@ -1,299 +1,299 @@
 @if(adkTable) { @if(config.isWrapped && config.tableHeader) {
-  <tw-card>
-    <div class="adk-card-header">
-      <ng-container
-        *ngTemplateOutlet="tableHeaderView; context: {adkTable, tableHeader: config.tableHeader}"></ng-container>
-    </div>
-    <div class="adk-card-body">
-      <ng-container *ngTemplateOutlet="tableContent; context: {adkTable, config}"></ng-container>
-    </div>
-    @if (adkTable.visibleData().length > 5) {
-    <div class="adk-card-footer">
-      <ng-container *ngTemplateOutlet="tableFooterView; context: {adkTable}"></ng-container>
-    </div>
-    }
-  </tw-card>
-  } @else {
-  <ng-container *ngTemplateOutlet="tableContent; context: {adkTable, config}"></ng-container>
-  } }
+<tw-card>
+  <div class="adk-card-header">
+    <ng-container
+      *ngTemplateOutlet="tableHeaderView; context: {adkTable, tableHeader: config.tableHeader}"></ng-container>
+  </div>
+  <div class="adk-card-body">
+    <ng-container *ngTemplateOutlet="tableContent; context: {adkTable, config}"></ng-container>
+  </div>
+  @if (adkTable.visibleData().length > 5) {
+  <div class="adk-card-footer">
+    <ng-container *ngTemplateOutlet="tableFooterView; context: {adkTable}"></ng-container>
+  </div>
+  }
+</tw-card>
+} @else {
+<ng-container *ngTemplateOutlet="tableContent; context: {adkTable, config}"></ng-container>
+} }
 
-  <!-- Table -->
-  <ng-template #tableContent let-adkTable="adkTable" let-config="config">
-    <div class="table-wrapper">
-      <table aria-hidden="true" class="w-full text-left table-auto min-w-max">
-        <thead>
+<!-- Table -->
+<ng-template #tableContent let-adkTable="adkTable" let-config="config">
+  <div class="table-wrapper">
+    <table aria-hidden="true" class="w-full text-left table-auto min-w-max">
+      <thead>
+        <ng-container *ngTemplateOutlet="
+                     renderThead;
+                     context: {
+                         groupData: adkTable.groupedData(),
+                         columns: adkTable?.headers(),
+                         sortDataSource: adkTable.currentPageData(),
+                         config
+                     }
+                 ">
+        </ng-container>
+      </thead>
+      <tbody>
+        @if(columns.length > 0) {
+        <ng-container *ngIf="adkTable.preferenceCriteria().groupByColumn; else flatView">
+          @for(group of adkTable.groupedData() | keyvalue; track $index) {
           <ng-container *ngTemplateOutlet="
-                       renderThead;
-                       context: {
-                           groupData: adkTable.groupedData(),
-                           columns: adkTable?.headers(),
-                           sortDataSource: adkTable.currentPageData(),
-                           config
-                       }
-                   ">
-          </ng-container>
-        </thead>
-        <tbody>
-          @if(columns.length > 0) {
-          <ng-container *ngIf="adkTable.preferenceCriteria().groupByColumn; else flatView">
-            @for(group of adkTable.groupedData() | keyvalue; track $index) {
-            <ng-container *ngTemplateOutlet="
-                           groupByRender;
-                           context: { group, columns: adkTable?.headers(), actionButton: config.isActionButton, config }
-                       "></ng-container>
-            }
-          </ng-container>
-          <ng-template #flatView>
-            @for(rowData of adkTable.currentPageData(); track $index) {
-            <ng-container
-              *ngTemplateOutlet="renderRow; context: { columns: adkTable?.headers(), rowData, rowIndex: $index, config }"></ng-container>
-            }
-          </ng-template>
+                         groupByRender;
+                         context: { group, columns: adkTable?.headers(), actionButton: config.isActionButton, config }
+                     "></ng-container>
           }
-        </tbody>
-      </table>
-    </div>
-  </ng-template>
+        </ng-container>
+        <ng-template #flatView>
+          @for(rowData of adkTable.currentPageData(); track $index) {
+          <ng-container
+            *ngTemplateOutlet="renderRow; context: { columns: adkTable?.headers(), rowData, rowIndex: $index, config }"></ng-container>
+          }
+        </ng-template>
+        }
+      </tbody>
+    </table>
+  </div>
+</ng-template>
 
-  <!-- Render Table Header -->
-  <ng-template #renderThead let-groupData="groupData" let-columns="columns" let-config="config"
-    let-sortDataSource="sortDataSource">
-    <tr>
-      @if(config.isSelectable && columns.length > 0) {
-      <th id="checkAll" class="border-b border-blue-gray-100 bg-blue-gray-50 p-1">
-        <ng-container
-          *ngTemplateOutlet="checkbox; context: { adkTable, groupData, rowData: undefined, isCheckAll: true }"></ng-container>
-      </th>
-      } @for(col of columns; track $index) {
-      <th [id]="col" class="border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer" [attr.key]="col"
-        [ngClass]="{ 'border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer': true }"
-        [attr.draggable]="config.isDraggable" (dragstart)="adkTable.dragStart($index)"
-        (dragover)="adkTable.dragOver($event)" (drop)="adkTable.dragDrop($index)" scope="col">
-        <tw-typography [variant]="'small'"
-          [classStyle]="'flex items-center justify-between gap-2 font-normal leading-none opacity-70'">
-          {{ col ?? ' ' | uppercase }}
-          <div class="flex flex-row gap-2">
-            @if($index !== columns.length && config.isSortable) {
-            <tw-sortable-icon (click)="adkTable.sortBy(col)" (keydown)="adkTable.sortBy(col)"></tw-sortable-icon>
-            } @if(adkTable.sortCriteriaData().key === col) {
-            <span>{{ sortDataSource.direction === 'ascending' ? '🔼' : '🔽' }}</span>
-            }
-          </div>
-        </tw-typography>
-      </th>
-      }@if(config.isActionButton) {
-      <th scope="col" class="border-b border-blue-gray-100 bg-blue-gray-50 p-3 text-right">
-        <tw-typography [variant]="'small'" [color]="'blue-gray'" [classStyle]="'font-normal'"> {{ config.actionColName }}
-        </tw-typography>
-      </th>
-      }
-    </tr>
-  </ng-template>
+<!-- Render Table Header -->
+<ng-template #renderThead let-groupData="groupData" let-columns="columns" let-config="config"
+  let-sortDataSource="sortDataSource">
+  <tr>
+    @if(config.isSelectable && columns.length > 0) {
+    <th id="checkAll" class="border-b border-blue-gray-100 bg-blue-gray-50 p-1">
+      <ng-container
+        *ngTemplateOutlet="checkbox; context: { adkTable, groupData, rowData: undefined, isCheckAll: true }"></ng-container>
+    </th>
+    } @for(col of columns; track $index) {
+    <th [id]="col" class="border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer" [attr.key]="col"
+      [ngClass]="{ 'border-b border-blue-gray-100 bg-blue-gray-50 p-3 cursor-pointer': true }"
+      [attr.draggable]="config.isDraggable" (dragstart)="adkTable.dragStart($index)"
+      (dragover)="adkTable.dragOver($event)" (drop)="adkTable.dragDrop($index)" scope="col">
+      <tw-typography [variant]="'small'"
+        [classStyle]="'flex items-center justify-between gap-2 font-normal leading-none opacity-70'">
+        {{ col ?? ' ' | uppercase }}
+        <div class="flex flex-row gap-2">
+          @if($index !== columns.length && config.isSortable) {
+          <tw-sortable-icon (click)="adkTable.sortBy(col)" (keydown)="adkTable.sortBy(col)"></tw-sortable-icon>
+          } @if(adkTable.sortCriteriaData().key === col) {
+          <span>{{ sortDataSource.direction === 'ascending' ? '🔼' : '🔽' }}</span>
+          }
+        </div>
+      </tw-typography>
+    </th>
+    }@if(config.isActionButton) {
+    <th scope="col" class="border-b border-blue-gray-100 bg-blue-gray-50 p-3 text-right">
+      <tw-typography [variant]="'small'" [color]="'blue-gray'" [classStyle]="'font-normal'"> {{ config.actionColName }}
+      </tw-typography>
+    </th>
+    }
+  </tr>
+</ng-template>
 
-  <!-- Group By Render -->
-  <ng-template #groupByRender let-group="group" let-columns="columns" let-config="config" let-actionButton="actionButton">
-    <tr>
-      <td [colSpan]="columns.length + (config.isSelectable ? 1 : 0) + (actionButton ? 1 : 0)" class="w-full">
-        <adk-expansion-panel class="full">
-          <ng-template #expansionPanelHeader>
-            <span class="min-w-[200px] max-w-[200px] truncate"> ({{ group.value.length }}) {{ group.key }} </span>
-          </ng-template>
-          <ng-template #expansionPanelBody>
-            <table aria-hidden="true" class="w-full min-w-max table-auto text-left">
-              <thead>
-                <tr>
-                  @if(config.isSelectable) {
-                  <th class="border-b border-blue-gray-100 bg-blue-gray-50 p-1 max-w-[10px]"></th>
-                  } @for(col of columns; track $index) {
-                  <th class="border-b border-blue-gray-100 bg-blue-gray-50 p-3">
-                    <tw-typography [variant]="'small'" [color]="'blue-gray'" [classStyle]="'font-normal'">
-                      {{ col | uppercase }}
-                    </tw-typography>
-                  </th>
-                  } @if(config.isActionButton) {
-                  <th class="border-b border-blue-gray-100 bg-blue-gray-50 p-3 text-right">
-                    <tw-typography [variant]="'small'" [color]="'blue-gray'" [classStyle]="'font-normal'">
-                      {{ config.actionColName }}
-                    </tw-typography>
-                  </th>
-                  }
-                </tr>
-              </thead>
-              <tbody>
-                @for(rowData of group.value; track $index) {
-                <ng-container
-                  *ngTemplateOutlet="renderRow; context: { columns, rowData, rowIndex: $index, adkTable, actionButton, config }">
-                </ng-container>
+<!-- Group By Render -->
+<ng-template #groupByRender let-group="group" let-columns="columns" let-config="config" let-actionButton="actionButton">
+  <tr>
+    <td [colSpan]="columns.length + (config.isSelectable ? 1 : 0) + (actionButton ? 1 : 0)" class="w-full">
+      <adk-expansion-panel class="full">
+        <ng-template #expansionPanelHeader>
+          <span class="min-w-[200px] max-w-[200px] truncate"> ({{ group.value.length }}) {{ group.key }} </span>
+        </ng-template>
+        <ng-template #expansionPanelBody>
+          <table aria-hidden="true" class="w-full min-w-max table-auto text-left">
+            <thead>
+              <tr>
+                @if(config.isSelectable) {
+                <th class="border-b border-blue-gray-100 bg-blue-gray-50 p-1 max-w-[10px]"></th>
+                } @for(col of columns; track $index) {
+                <th class="border-b border-blue-gray-100 bg-blue-gray-50 p-3">
+                  <tw-typography [variant]="'small'" [color]="'blue-gray'" [classStyle]="'font-normal'">
+                    {{ col | uppercase }}
+                  </tw-typography>
+                </th>
+                } @if(config.isActionButton) {
+                <th class="border-b border-blue-gray-100 bg-blue-gray-50 p-3 text-right">
+                  <tw-typography [variant]="'small'" [color]="'blue-gray'" [classStyle]="'font-normal'">
+                    {{ config.actionColName }}
+                  </tw-typography>
+                </th>
                 }
-              </tbody>
-            </table>
-          </ng-template>
-        </adk-expansion-panel>
-      </td>
-    </tr>
-  </ng-template>
+              </tr>
+            </thead>
+            <tbody>
+              @for(rowData of group.value; track $index) {
+              <ng-container
+                *ngTemplateOutlet="renderRow; context: { columns, rowData, rowIndex: $index, adkTable, actionButton, config }">
+              </ng-container>
+              }
+            </tbody>
+          </table>
+        </ng-template>
+      </adk-expansion-panel>
+    </td>
+  </tr>
+</ng-template>
 
-  <!-- Render Row Table Cells -->
-  <ng-template #renderRow let-columns="columns" let-rowData="rowData" let-rowIndex="rowIndex" let-config="config">
-    <tr [ngClass]="rowFocus.value === rowData  ? 'bg-light-blue-50' : ''" (keypress)="setRowFocus(rowData)"
-      (click)="setRowFocus(rowData)">
-      @if(config.isSelectable) {
-      <td [ngClass]="config.isSelectable ? 'p-1' : 'p-4'"
-        class="border-b border-blue-gray-50 p-1 max-h-[38px] max-w-[45px]">
-        <ng-container
-          *ngTemplateOutlet="checkbox; context: { adkTable, groupData: undefined, rowData, isCheckAll: false }"></ng-container>
-      </td>
-      } @for (col of columns; track $index) {
-      <td [ngClass]="config.isSelectable ? 'p-1' : 'p-2'"
-        class="border-b border-blue-gray-50 min-h-[48.5px] min-w-[60px] max-w-[60px] truncate">
-        <div [adkTooltip]="rowData[col]" tooltipPlacement="bottom" [ngStyle]="{ cursor: 'text' }">
-          @if(isCellValArray(rowData[col])) { @if(config.isSelectable && config.isMultiSelectField &&
-          isSelected(rowData)){
-          <adk-fields *ngIf="(cellMultiSelector(rowIndex, rowData[col]) | async) as field"
-            [fieldConfig]="[field]"></adk-fields>
-          } @else {
-          <tw-typography [variant]="'small'" class="font-normal ml-2"> {{ rowData[col].join(', ') }} </tw-typography>
-          } } @else { @if (isCellFieldObject(rowData[col])) {
-          @if (config.isMultiSelectField && isSelected(rowData)) {
-          <adk-fields [fieldConfig]="[rowData[col]]"></adk-fields>
-          }
-          } @else {
-          <tw-typography [variant]="'small'" class="font-normal ml-2"> {{ rowData[col] }} </tw-typography>
-          } }
-        </div>
-      </td>
-      } @if (config.isActionButton) {
-      <td class="border-b border-blue-gray-50 min-h-[48.5px] w-auto max-w-[120px] p-3">
-        <div class="flex items-center gap-3 cursor-pointer flex-wrap justify-end">
-          @for(action of config.actionButtons; track $index) {
-          <adk-button class="min-w-[60px] max-w-[100px] flex-grow" [color]="action.color"
-            (click)="action.onClick(rowData)">
+<!-- Render Row Table Cells -->
+<ng-template #renderRow let-columns="columns" let-rowData="rowData" let-rowIndex="rowIndex" let-config="config">
+  <tr [ngClass]="rowFocus.value === rowData  ? 'bg-light-blue-50' : ''" (keypress)="setRowFocus(rowData)"
+    (click)="setRowFocus(rowData)">
+    @if(config.isSelectable) {
+    <td [ngClass]="config.isSelectable ? 'p-1' : 'p-4'"
+      class="border-b border-blue-gray-50 p-1 max-h-[38px] max-w-[45px]">
+      <ng-container
+        *ngTemplateOutlet="checkbox; context: { adkTable, groupData: undefined, rowData, isCheckAll: false }"></ng-container>
+    </td>
+    } @for (col of columns; track $index) {
+    <td [ngClass]="config.isSelectable ? 'p-1' : 'p-2'"
+      class="border-b border-blue-gray-50 min-h-[48.5px] min-w-[60px] max-w-[60px] truncate">
+      <div [adkTooltip]="rowData[col]" tooltipPlacement="bottom" [ngStyle]="{ cursor: 'text' }">
+        @if(isCellValArray(rowData[col])) { @if(config.isSelectable && config.isMultiSelectField &&
+        isSelected(rowData)){
+        <adk-fields *ngIf="(cellMultiSelector(rowIndex, rowData[col]) | async) as field"
+          [fieldConfig]="[field]"></adk-fields>
+        } @else {
+        <tw-typography [variant]="'small'" class="font-normal ml-2"> {{ rowData[col].join(', ') }} </tw-typography>
+        } } @else { @if (isCellFieldObject(rowData[col])) {
+        @if (config.isMultiSelectField && isSelected(rowData)) {
+        <adk-fields [fieldConfig]="[rowData[col]]"></adk-fields>
+        }
+        } @else {
+        <tw-typography [variant]="'small'" class="font-normal ml-2"> {{ rowData[col] }} </tw-typography>
+        } }
+      </div>
+    </td>
+    } @if (config.isActionButton) {
+    <td class="border-b border-blue-gray-50 min-h-[48.5px] w-auto max-w-[120px] p-3">
+      <div class="flex items-center gap-3 cursor-pointer flex-wrap justify-end">
+        @for(action of config.actionButtons; track $index) {
+        <adk-button class="min-w-[60px] max-w-[100px] flex-grow" [color]="action.color"
+          (click)="action.onClick(rowData)">
+          <span class="flex items-center gap-2">
+            @if(action.icon) {
+            <span class="material-symbols-outlined">{{ action.icon }}</span>
+            } {{ action.label }}
+          </span>
+        </adk-button>
+        }
+      </div>
+    </td>
+    }
+  </tr>
+</ng-template>
+
+<!-- Checkbox Render -->
+<ng-template #checkbox let-isCheckAll="isCheckAll" let-groupData="groupData" let-rowData="rowData">
+  @if(isCheckAll) {
+  <div class="inline-flex items-center">
+    <label for="selectAllCheckbox" class="relative flex items-center p-3 rounded-full cursor-pointer">
+      <input type="checkbox"
+        class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10 w-4 h-4"
+        id="selectAllCheckbox" name="selectAllCheckbox" [checked]="adkTable.isToggleAll()"
+        (change)="adkTable.toggleAllRowsSelection()" />
+      <span
+        class="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"
+          stroke="currentColor" stroke-width="1">
+          <path fill-rule="evenodd"
+            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+            clip-rule="evenodd"></path>
+        </svg>
+      </span>
+    </label>
+  </div>
+  } @else {
+  <div class="inline-flex items-center">
+    <label class="relative flex items-center p-3 rounded-full cursor-pointer" for="checkbox">
+      <input type="checkbox"
+        class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10 w-4 h-4"
+        [checked]="isSelected(rowData)" (change)="adkTable.toggleRowSelection(rowData)" />
+      <span
+        class="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"
+          stroke="currentColor" stroke-width="1">
+          <path fill-rule="evenodd"
+            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+            clip-rule="evenodd"></path>
+        </svg>
+      </span>
+    </label>
+  </div>
+  }
+</ng-template>
+
+<!-- Table Wrapper Header -->
+<ng-template #tableHeaderView let-adkTable="adkTable" let-tableHeader="tableHeader">
+  <div class="relative bg-clip-border mt-4 mx-4 bg-white text-gray-700 rounded-none overflow-visible">
+    <div class="mb-2 flex items-center justify-between gap-8">
+      <div>
+        @if(tableHeader.title){
+        <tw-typography variant="h5" color="blue-gray"
+          classStyle="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">{{
+          tableHeader.title }}</tw-typography>
+        } @if(tableHeader.subtitle){
+        <tw-typography color="gray" classStyle="mt-1 font-normal">{{ tableHeader.subtitle }}</tw-typography>
+        }
+      </div>
+      <div class="flex shrink-0 flex-col gap-2 sm:flex-row">
+        @if(tableHeader.buttons && tableHeader.buttons.length > 0){ @for(button of tableHeader.buttons; track $index){
+        <div class="flex items-center gap-3 cursor-pointer" (click)="button.onClick()">
+          <adk-button [color]="button.color" (click)="button.onClick()">
             <span class="flex items-center gap-2">
-              @if(action.icon) {
-              <span class="material-symbols-outlined">{{ action.icon }}</span>
-              } {{ action.label }}
-            </span>
+              @if(button.icon){
+              <span class="material-symbols-outlined">{{ button.icon }}</span> }{{ button.label }}</span>
           </adk-button>
-          }
         </div>
-      </td>
-      }
-    </tr>
-  </ng-template>
-
-  <!-- Checkbox Render -->
-  <ng-template #checkbox let-isCheckAll="isCheckAll" let-groupData="groupData" let-rowData="rowData">
-    @if(isCheckAll) {
-    <div class="inline-flex items-center">
-      <label for="selectAllCheckbox" class="relative flex items-center p-3 rounded-full cursor-pointer">
-        <input type="checkbox"
-          class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10 w-4 h-4"
-          id="selectAllCheckbox" name="selectAllCheckbox" [checked]="adkTable.isToggleAll()"
-          (change)="adkTable.toggleAllRowsSelection()" />
-        <span
-          class="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"
-            stroke="currentColor" stroke-width="1">
-            <path fill-rule="evenodd"
-              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-              clip-rule="evenodd"></path>
-          </svg>
-        </span>
-      </label>
+        } }
+        @if(tableHeader.isPreference) {
+        <div class="flex items-center gap-3 cursor-pointer">
+          <tw-table-settings-dialog [headers]="adkTable.headers()"
+            (settingsCriteria)="setSettingsCriteria($event)"></tw-table-settings-dialog>
+        </div>
+        }
+      </div>
     </div>
-    } @else {
-    <div class="inline-flex items-center">
-      <label class="relative flex items-center p-3 rounded-full cursor-pointer" for="checkbox">
-        <input type="checkbox"
-          class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900 hover:before:opacity-10 w-4 h-4"
-          [checked]="isSelected(rowData)" (change)="adkTable.toggleRowSelection(rowData)" />
-        <span
-          class="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"
-            stroke="currentColor" stroke-width="1">
-            <path fill-rule="evenodd"
-              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-              clip-rule="evenodd"></path>
-          </svg>
-        </span>
-      </label>
+
+    <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
+      <!-- @if(tabs?.length){ -->
+      <!-- <Tabs value="{tabs.length">
+                  0 ? tabs[0].value : ''} class="w-full md:w-max">
+                  <TabsHeader>
+                      {tabs.map(({ label, value }) => (
+                      <Tab key="{value}" value="{value}"> &nbsp;&nbsp;{label}&nbsp;&nbsp; </Tab>
+                      ))}
+                  </TabsHeader>
+              </Tabs> -->
+      <!-- } -->
+    </div>
+    @if(tableHeader.isSearchable){
+    <form *ngIf="field.change$ | async as field" [formGroup]="filterFG"
+      class="flex flex-row gap-2 w-full flex-wrap z-[20000]">
+      <adk-fields [fieldConfig]="[field]"></adk-fields>
+    </form>
+    }
+  </div>
+</ng-template>
+
+<!-- Table Footer -->
+<ng-template #tableFooterView let-adkTable="adkTable">
+  <div class="flex items-center justify-between border-t border-gray-50 p-4">
+    <tw-typography variant="small" color="gray" class="w-full" classStyle="flex flex-row font-normal">
+      <span class="flex flex-col justify-center mr-2" style="white-space: 'nowrap'">
+        Page {{ adkTable.paginationCriteria().currentPage }} of {{ adkTable.paginationCriteria().totalPages }}
+      </span>
+      <adk-select [field]="paginationField" (fieldValueChange)="adkTable.setItemsPerPage($event)"></adk-select>
+    </tw-typography>
+    @if(adkTable.paginationCriteria().totalPages > 1){
+    <div class="flex gap-2">
+      <adk-button size="sm" color="primary" [disabled]="adkTable.paginationCriteria().currentPage === 1"
+        (click)="adkTable.setPage(adkTable.paginationCriteria().currentPage - 1)">
+        Previous
+      </adk-button>
+      <adk-button size="sm" color="primary" (click)="adkTable.setPage(adkTable.paginationCriteria().currentPage + 1)"
+        [disabled]="adkTable.paginationCriteria().currentPage === adkTable.paginationCriteria().totalPages">
+        Next
+      </adk-button>
     </div>
     }
-  </ng-template>
-
-  <!-- Table Wrapper Header -->
-  <ng-template #tableHeaderView let-adkTable="adkTable" let-tableHeader="tableHeader">
-    <div class="relative bg-clip-border mt-4 mx-4 bg-white text-gray-700 rounded-none overflow-visible">
-      <div class="mb-2 flex items-center justify-between gap-8">
-        <div>
-          @if(tableHeader.title){
-          <tw-typography variant="h5" color="blue-gray"
-            classStyle="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">{{
-            tableHeader.title }}</tw-typography>
-          } @if(tableHeader.subtitle){
-          <tw-typography color="gray" classStyle="mt-1 font-normal">{{ tableHeader.subtitle }}</tw-typography>
-          }
-        </div>
-        <div class="flex shrink-0 flex-col gap-2 sm:flex-row">
-          @if(tableHeader.buttons && tableHeader.buttons.length > 0){ @for(button of tableHeader.buttons; track $index){
-          <div class="flex items-center gap-3 cursor-pointer" (click)="button.onClick()">
-            <adk-button [color]="button.color" (click)="button.onClick()">
-              <span class="flex items-center gap-2">
-                @if(button.icon){
-                <span class="material-symbols-outlined">{{ button.icon }}</span> }{{ button.label }}</span>
-            </adk-button>
-          </div>
-          } }
-          @if(tableHeader.isPreference) {
-          <div class="flex items-center gap-3 cursor-pointer">
-            <tw-table-settings-dialog [headers]="adkTable.headers()"
-              (settingsCriteria)="setSettingsCriteria($event)"></tw-table-settings-dialog>
-          </div>
-          }
-        </div>
-      </div>
-
-      <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
-        <!-- @if(tabs?.length){ -->
-        <!-- <Tabs value="{tabs.length">
-                    0 ? tabs[0].value : ''} class="w-full md:w-max">
-                    <TabsHeader>
-                        {tabs.map(({ label, value }) => (
-                        <Tab key="{value}" value="{value}"> &nbsp;&nbsp;{label}&nbsp;&nbsp; </Tab>
-                        ))}
-                    </TabsHeader>
-                </Tabs> -->
-        <!-- } -->
-      </div>
-      @if(tableHeader.isSearchable){
-      <form *ngIf="field.change$ | async as field" [formGroup]="filterFG"
-        class="flex flex-row gap-2 w-full flex-wrap z-[20000]">
-        <adk-fields [fieldConfig]="[field]"></adk-fields>
-      </form>
-      }
-    </div>
-  </ng-template>
-
-  <!-- Table Footer -->
-  <ng-template #tableFooterView let-adkTable="adkTable">
-    <div class="flex items-center justify-between border-t border-gray-50 p-4">
-      <tw-typography variant="small" color="gray" class="w-full" classStyle="flex flex-row font-normal">
-        <span class="flex flex-col justify-center mr-2" style="white-space: 'nowrap'">
-          Page {{ adkTable.paginationCriteria().currentPage }} of {{ adkTable.paginationCriteria().totalPages }}
-        </span>
-        <adk-select [field]="paginationField" (fieldValueChange)="adkTable.setItemsPerPage($event)"></adk-select>
-      </tw-typography>
-      @if(adkTable.paginationCriteria().totalPages > 1){
-      <div class="flex gap-2">
-        <adk-button size="sm" color="primary" [disabled]="adkTable.paginationCriteria().currentPage === 1"
-          (click)="adkTable.setPage(adkTable.paginationCriteria().currentPage - 1)">
-          Previous
-        </adk-button>
-        <adk-button size="sm" color="primary" (click)="adkTable.setPage(adkTable.paginationCriteria().currentPage + 1)"
-          [disabled]="adkTable.paginationCriteria().currentPage === adkTable.paginationCriteria().totalPages">
-          Next
-        </adk-button>
-      </div>
-      }
-    </div>
-  </ng-template>
+  </div>
+</ng-template>
