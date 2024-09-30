@@ -142,7 +142,8 @@ export class TableComponent implements OnInit {
       keys.forEach((key) => {
         if (!isComplex)
           if (typeof obj[key] === 'object') {
-            if (obj[key]['formControl']) isComplex = true;
+            const isFormControl = obj[key] && obj[key]['formControl'];
+            if (isFormControl) isComplex = true;
             return;
           }
       });

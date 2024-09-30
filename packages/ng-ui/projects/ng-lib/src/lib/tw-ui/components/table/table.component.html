@@ -20,7 +20,7 @@
 <!-- Table -->
 <ng-template #tableContent let-adkTable="adkTable" let-config="config">
   <div class="table-wrapper">
-    <table aria-hidden="true" class="w-full text-left table-auto min-w-max">
+    <table [attr.aria-hidden]="true" class="w-full text-left table-auto min-w-max">
       <thead>
         <ng-container *ngTemplateOutlet="
                      renderThead;
@@ -99,7 +99,7 @@
           <span class="min-w-[200px] max-w-[200px] truncate"> ({{ group.value.length }}) {{ group.key }} </span>
         </ng-template>
         <ng-template #expansionPanelBody>
-          <table aria-hidden="true" class="w-full min-w-max table-auto text-left">
+          <table [attr.aria-hidden]="true" class="w-full min-w-max table-auto text-left">
             <thead>
               <tr>
                 @if(config.isSelectable) {
@@ -237,11 +237,16 @@
       <div class="flex shrink-0 flex-col gap-2 sm:flex-row">
         @if(tableHeader.buttons && tableHeader.buttons.length > 0){ @for(button of tableHeader.buttons; track $index){
         <div class="flex items-center gap-3 cursor-pointer" (click)="button.onClick()">
+          @if(button.label) {
           <adk-button [color]="button.color" (click)="button.onClick()">
             <span class="flex items-center gap-2">
               @if(button.icon){
               <span class="material-symbols-outlined">{{ button.icon }}</span> }{{ button.label }}</span>
           </adk-button>
+          }
+          @if(button.icon && button.label === undefined) {
+          <span class="material-symbols-outlined">{{ button.icon }}</span>
+          }
         </div>
         } }
         @if(tableHeader.isPreference) {
