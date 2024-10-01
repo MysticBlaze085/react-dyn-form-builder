@@ -1502,11 +1502,54 @@ export const TableTestingOutput: Story = {
   },
 };
 
+
+function mergeUsers(users: any[]): any[] {
+  const createUserList = users.map((user) => ({
+    userName: user.userName,
+    displayName: user.displayName,
+    email: user.email,
+    userZid: user.userZid,
+    orgZid: user.orgZid,
+    state: user.state,
+    type: user.type,
+    grants: user.grants,
+    createdTs: user.createdTs,
+    updateTs: user.updateTs,
+  }));
+  const mergedUsersMap: { [key: string]: any } = {};
+
+  createUserList.forEach((user) => {
+    if (!mergedUsersMap[user.userName]) {
+      mergedUsersMap[user.userName] = {
+        userName: user.userName,
+        services: [],
+        roles: [],
+      };
+    }
+
+    user.grants.forEach((grant: any) => {
+      if (!mergedUsersMap[user.userName].services.includes(grant.serviceId)) {
+        mergedUsersMap[user.userName].services.push(grant.serviceId);
+      }
+      if (grant.grantedRoles) {
+        grant.grantedRoles.forEach((role: any) => {
+          if (!mergedUsersMap[user.userName].roles.includes(role)) {
+            mergedUsersMap[user.userName].roles.push(role);
+          }
+        });
+      }
+    });
+  });
+
+  return Object.values(mergedUsersMap);
+}
+
+
 export const TableAppUsagegOutput: Story = {
   args: {
     config: new TableBuilder()
       .setIsWrapped(true)
-      .setData(mockDataThree)
+      .setData(mergeUsers(mockDataThree))
       .setColumns(['userName', 'roles', 'services'])
       .setIsDraggable(true)
       .setIsSelectable(true)
