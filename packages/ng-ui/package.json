@@ -10,28 +10,29 @@
     "storybook": "ng run ng-ui:storybook",
     "build-storybook": "ng run ng-ui:build-storybook",
     "init-msw": "msw init src/",
-    "build-library": "ng build ng-lib"
+    "build-library": "ng build ng-lib",
+    "pack-lib": "cd dist/ng-lib && npx pnpm pack"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "^18.2.0",
+    "@angular/cdk": "^17.0.0",
     "@angular/common": "^18.2.0",
     "@angular/compiler": "^18.2.0",
     "@angular/core": "^18.2.0",
+    "@angular/elements": "17.0.0",
     "@angular/forms": "^18.2.0",
     "@angular/platform-browser": "^18.2.0",
     "@angular/platform-browser-dynamic": "^18.2.0",
-    "@angular/cdk": "^17.0.0",
-    "@angular/elements": "17.0.0",
     "@angular/router": "^17.0.0",
     "@material-tailwind/html": "^2.2.2",
     "@tailwindcss/forms": "^0.5.7",
     "rxjs": "~7.8.0",
-    "tailwindcss": "^3.4.6",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.0"
   },
   "devDependencies": {
+    "@angular-builders/custom-webpack": "^18.0.0",
     "@angular-devkit/build-angular": "^18.2.9",
     "@angular/cli": "^18.2.9",
     "@angular/compiler-cli": "^18.2.0",
@@ -53,7 +54,7 @@
     "@types/jasmine": "~4.3.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.9",
-    "autoprefixer": "^10.4.19",
+    "autoprefixer": "^10.4.20",
     "css-loader": "^7.1.2",
     "jasmine-core": "~4.5.0",
     "jest": "^29.7.0",
@@ -66,10 +67,11 @@
     "msw": "^1.2.1",
     "msw-storybook-addon": "^1.10.0",
     "ng-packagr": "^17.3.0",
-    "postcss": "^8.4.39",
+    "postcss": "^8.4.47",
     "postcss-loader": "^8.1.1",
     "storybook": "^7.6.6",
     "style-loader": "^4.0.0",
-    "typescript": "~5.2.2"
+    "tailwindcss": "^3.4.14",
+    "typescript": "<5.6.0"
   }
 }

@@ -8,6 +8,7 @@ module.exports = withMT({
         './src/**/*.{html,ts}',
         './src/**/!(*.stories|*.spec).{ts,html}',
         './projects/ng-lib/src/**/!(*.stories|*.spec).{ts,html}',
+        "./projects/ng-lib/src/**/*.{html,ts}",
         './node_modules/@material-tailwind/html/**/*.{js,ts,jsx,tsx}',
     ],
     theme: {

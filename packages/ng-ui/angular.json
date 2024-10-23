@@ -10,95 +10,126 @@
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
-          "build": {
-              "builder": "@angular-devkit/build-angular:browser",
-              "options": {
-                  "outputPath": "dist/ng-ui",
-                  "index": "src/index.html",
-                  "main": "src/main.ts",
-                  "polyfills": ["zone.js"],
-                  "tsConfig": "tsconfig.app.json",
-                  "assets": ["src/favicon.ico", "src/assets"],
-                  "styles": ["src/styles.css"],
-                  "scripts": ["node_modules/@material-tailwind/html/scripts/ripple.js"]
-              },
-              "configurations": {
-                  "production": {
-                      "budgets": [
-                          {
-                              "type": "initial",
-                              "maximumWarning": "500kb",
-                              "maximumError": "1mb"
-                          },
-                          {
-                              "type": "anyComponentStyle",
-                              "maximumWarning": "2kb",
-                              "maximumError": "4kb"
-                          }
-                      ],
-                      "outputHashing": "all"
-                  },
-                  "development": {
-                      "buildOptimizer": false,
-                      "optimization": false,
-                      "vendorChunk": true,
-                      "extractLicenses": false,
-                      "sourceMap": true,
-                      "namedChunks": true
-                  }
-              },
-              "defaultConfiguration": "production"
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/ng-ui",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.css"
+            ],
+            "scripts": [
+              "node_modules/@material-tailwind/html/scripts/ripple.js"
+            ]
           },
-          "serve": {
-              "builder": "@angular-devkit/build-angular:dev-server",
-              "configurations": {
-                  "production": {
-                      "buildTarget": "ng-ui:build:production"
-                  },
-                  "development": {
-                      "buildTarget": "ng-ui:build:development"
-                  }
-              },
-              "defaultConfiguration": "development"
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
           },
-          "extract-i18n": {
-              "builder": "@angular-devkit/build-angular:extract-i18n",
-              "options": {
-                  "buildTarget": "ng-ui:build"
-              }
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "ng-ui:build:production"
+            },
+            "development": {
+              "buildTarget": "ng-ui:build:development"
+            }
           },
-          "test": {
-              "builder": "@angular-devkit/build-angular:karma",
-              "options": {
-                  "polyfills": ["zone.js", "zone.js/testing"],
-                  "tsConfig": "tsconfig.spec.json",
-                  "assets": ["src/favicon.ico", "src/assets"],
-                  "styles": ["src/styles.css"],
-                  "scripts": []
-              }
-          },
-          "storybook": {
-              "builder": "@storybook/angular:start-storybook",
-              "options": {
-                  "port": 6006,
-                  "configDir": ".storybook",
-                  "browserTarget": "ng-ui:build",
-                  "compodoc": true,
-                  "compodocArgs": ["-e", "json", "-d", "."],
-                  "styles": ["src/styles.css"]
-              }
-          },
-          "build-storybook": {
-              "builder": "@storybook/angular:build-storybook",
-              "options": {
-                  "configDir": ".storybook",
-                  "browserTarget": "ng-ui:build",
-                  "compodoc": true,
-                  "compodocArgs": ["-e", "json", "-d", "."],
-                  "outputDir": "storybook-static",
-                  "styles": ["src/styles.css"]
-              }
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "buildTarget": "ng-ui:build"
           }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "tsconfig.spec.json",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.css"
+            ],
+            "scripts": []
+          }
+        },
+        "storybook": {
+          "builder": "@storybook/angular:start-storybook",
+          "options": {
+            "port": 6006,
+            "configDir": ".storybook",
+            "browserTarget": "ng-ui:build",
+            "compodoc": true,
+            "compodocArgs": [
+              "-e",
+              "json",
+              "-d",
+              "."
+            ],
+            "styles": [
+              "src/styles.css"
+            ]
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
+          "options": {
+            "configDir": ".storybook",
+            "browserTarget": "ng-ui:build",
+            "compodoc": true,
+            "compodocArgs": [
+              "-e",
+              "json",
+              "-d",
+              "."
+            ],
+            "outputDir": "storybook-static",
+            "styles": [
+              "src/styles.css"
+            ]
+          }
+        }
       }
     },
     "ng-lib": {
@@ -110,25 +141,21 @@
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/ng-lib/ng-package.json"
+            "project": "projects/ng-lib/ng-package.json",
+            "tsConfig": "projects/ng-lib/tsconfig.lib.json"
           },
           "configurations": {
             "production": {
               "tsConfig": "projects/ng-lib/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/ng-lib/tsconfig.lib.json"
             }
-          },
-          "defaultConfiguration": "production"
+          }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "tsConfig": "projects/ng-lib/tsconfig.spec.json",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
+            "styles": [
+              "src/tailwind.css"
             ]
           }
         }
