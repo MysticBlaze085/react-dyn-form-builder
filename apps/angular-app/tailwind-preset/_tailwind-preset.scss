@@ -1,0 +1,116 @@
+// @import "~@ng-select/ng-select/themes/default.theme.css";
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+:root {
+  /* Colors */
+  --primary-light: #5eead4;
+  --primary: #1A81F4;
+  --primary-dark: #115bb1;
+  --secondary-light: #bae6fd;
+  --secondary: #979797;
+  --secondary-dark: #0369a1;
+  --white: #ffffff;
+  --black: #000000;
+
+  /* Spacing */
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: .25em .4em;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25rem;
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.badge-pill {
+  padding-right: .6em;
+  padding-left: .6em;
+  border-radius: 10rem;
+}
+
+.bg-atom-blue {
+  background-color: var(--primary) !important;
+}
+
+.bg-atom-blue-dk {
+  background-color: var(--primary-dark);
+}
+
+.atom-btn-primary {
+  background-color: var(--primary);
+  color: white;
+  &:hover {
+    background-color: var(--primary-dark);
+    color: white;
+  }
+}
+
+.atom-btn-secondary {
+  background-color: var(--secondary);
+  color: white;
+  &:hover {
+    background-color: var(--primary-dark);
+    color: white;
+  }
+}
+
+.card {
+  // background-color: var(--primary);
+  border-top: 4px solid var(--primary) !important;
+}
+
+@layer components {
+    .card {
+      background-color: theme('colors.white');
+      border-radius: theme('borderRadius.lg');
+      padding: theme('spacing.6');
+      box-shadow: theme('boxShadow.md');
+    }
+    .chip {
+      display: inline-block;
+      padding: 0 25px;
+      height: 50px;
+      font-size: 18px;
+      line-height: 50px;
+      border-radius: 25px;
+      background-color: theme('color.white');
+    }
+
+    .chip img {
+      float: left;
+      margin: 0 10px 0 -25px;
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+    }
+
+    .closebtn {
+      padding-left: 10px;
+      color: theme('color.gray-light');
+      font-weight: bold;
+      float: right;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .closebtn:hover {
+      color: theme('color.gray-dark');
+    }
+  }
+
+  // Have to pay for this to work I believe
+@layer utilities{
+  .bg-rhap-blue { background-color: var(--primary), text-2, text-white}
+  .bg-rhap-blue-dk { background-color: var(--primary-dark), text-2, text-white}
+}

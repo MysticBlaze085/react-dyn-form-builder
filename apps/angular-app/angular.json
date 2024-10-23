@@ -32,9 +32,12 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "./node_modules/ng-lib/src/tailwind.scss",
+              "./tailwind-preset/_tailwind-preset.scss",
+              "./node_modules/@material-tailwind/html/styles/material-tailwind.css"
             ],
-            "scripts": []
+            "scripts": ["./node_modules/@material-tailwind/html/scripts/ripple.js"]
           },
           "configurations": {
             "production": {
